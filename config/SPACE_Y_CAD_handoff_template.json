@@ -1,0 +1,35 @@
+{
+  "schema_version": "SPACE_Y_CAD_HANDOFF_V1",
+  "purpose": "PDR_PRELIMINARY_NOT_FOR_MANUFACTURE_OR_TEST",
+  "decision_id": "INPUT_REQUIRED",
+  "status": "INPUT_U",
+  "provisional_baseline_candidate_id": null,
+  "decided_requirements": [],
+  "provisional_parameters": [],
+  "parameter_selection_reasons": [],
+  "models_and_sources": {"model_ids": [], "source_ids": []},
+  "unresolved_inputs": [
+    "approved actual requirements",
+    "approved baseline candidate",
+    "CAD-driving parameter values with provenance",
+    "closure evidence for cooling, supply, structural and combustion constraints"
+  ],
+  "change_triggers": [
+    "requirement revision",
+    "coolant composition or property-source change",
+    "CEA station or geometry mapping change",
+    "supply boundary or duty-cycle change",
+    "material, manufacturing process, wall or channel geometry change",
+    "new test or validation evidence"
+  ],
+  "pre_manufacture_and_test_risks": [
+    "This template contains no approved geometry or operating point.",
+    "PDR selection does not constitute manufacture release or test safety approval."
+  ],
+  "handoff_blockers": [
+    "No actual candidate has been approved as the provisional CAD baseline."
+  ],
+  "manufacture_release": false,
+  "test_safety_approval": false,
+  "validated_engine_prediction": false
+}

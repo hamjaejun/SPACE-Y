@@ -113,3 +113,24 @@ python -m venv .venv
 ```
 
 RPA 검사는 설치 위치와 라이선스 상태에 의존하므로 보고서의 명령과 제한을 확인한다. 실행 파일, 설치 절대경로와 라이선스 자료는 이 저장소에 포함하지 않는다.
+
+## PDR 후보 의사결정과 CAD 인계
+
+- [PDR 의사결정 엔진 구현 기록](docs/PDR_의사결정_엔진_구현기록.md)
+- `src/space_y/design_decision.py`: 요구 성능과 냉각·공급·구조·연소 안정성을 hard constraint로 비교하고 출처·모델·가정·검증 수준을 추적
+- [PDR 입력 Schema](schemas/SPACE_Y_PDR_decision.schema.json), [실제 입력 준비표](config/SPACE_Y_PDR_input_readiness.json), [CAD 인계 Schema](schemas/SPACE_Y_CAD_handoff.schema.json)
+- [합성 A/B/C 분기 예제](examples/pdr_decision_synthetic_candidates.json)와 `artifacts/pdr/` 실행 증거
+
+필수 제약 위반은 다른 장점이나 가중점수로 상쇄하지 않는다. 증거 또는 필수 입력이 없으면 `UNKNOWN`, 제한된 근거나 미종결 위험은 `CONDITIONAL_REVIEW`로 유지한다. 합성 fixture가 모두 PASS여도 실제 설계, 안전 확보 또는 CAD 기준안으로 승격하지 않는다.
+
+로컬 RPA 2.3 확인에서는 exact 2-propanol 기체 열화학 record만 확인했고 액체 냉각에 필요한 exact 물성 record는 확인하지 못했다. RPA→Property Adapter는 `INPUT_U`를 유지하며 저장소에는 실행 파일·database·계수·설치 경로가 아닌 비식별 capability 감사 결과만 포함한다.
+
+PDR 합성 분기 실행:
+
+```powershell
+.\.venv\Scripts\space-y.exe pdr-decide examples\pdr_decision_synthetic_candidates.json
+```
+
+이 기능은 PDR 후보 선정 근거를 기록하는 도구다. 실제 IPA 물성 및 실제 엔진 조건 검증은 미완료이며 결과는 안전성 승인, 제작 승인 또는 실험 검증을 의미하지 않는다.
+
+2026-11-01 기준 전체 자동 테스트 89개와 Python compile, 44개 JSON 파싱, `git diff --check`가 통과했다. 이 숫자는 소프트웨어 회귀검사 결과이며 실제 엔진 물리 검증 건수가 아니다.

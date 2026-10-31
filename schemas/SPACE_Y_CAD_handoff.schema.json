@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SPACE Y preliminary CAD handoff",
+  "type": "object",
+  "required": [
+    "schema_version", "purpose", "decision_id", "status",
+    "provisional_baseline_candidate_id", "decided_requirements",
+    "provisional_parameters", "parameter_selection_reasons",
+    "models_and_sources", "unresolved_inputs", "change_triggers",
+    "pre_manufacture_and_test_risks", "handoff_blockers",
+    "manufacture_release", "test_safety_approval", "validated_engine_prediction"
+  ],
+  "properties": {
+    "schema_version": {"const": "SPACE_Y_CAD_HANDOFF_V1"},
+    "purpose": {"const": "PDR_PRELIMINARY_NOT_FOR_MANUFACTURE_OR_TEST"},
+    "decision_id": {"type": "string", "minLength": 1},
+    "status": {"enum": ["INPUT_U", "PDR_CONDITIONAL"]},
+    "provisional_baseline_candidate_id": {"type": ["string", "null"]},
+    "decided_requirements": {"type": "array", "items": {"type": "object"}},
+    "provisional_parameters": {"type": "array", "items": {"type": "object"}},
+    "parameter_selection_reasons": {"type": "array", "items": {"type": "string"}},
+    "models_and_sources": {
+      "type": "object",
+      "required": ["model_ids", "source_ids"],
+      "properties": {
+        "model_ids": {"type": "array", "items": {"type": "string"}},
+        "source_ids": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "unresolved_inputs": {"type": "array", "items": {"type": "string"}},
+    "change_triggers": {"type": "array", "items": {"type": "string"}},
+    "pre_manufacture_and_test_risks": {"type": "array", "items": {"type": "string"}},
+    "handoff_blockers": {"type": "array", "items": {"type": "string"}},
+    "manufacture_release": {"const": false},
+    "test_safety_approval": {"const": false},
+    "validated_engine_prediction": {"const": false}
+  },
+  "additionalProperties": false
+}

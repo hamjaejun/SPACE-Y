@@ -199,3 +199,15 @@ README의 “수식 구분자를 GitHub Markdown용으로 정리했다”는 설
 2026-10-31 현재 CEA–GAS–Bartz, 단일 구간 GAS–WALL–COOLANT, 단일 냉각 경로 다구간 marching, 합성 N/2N/4N 기록과 Property Adapter 경계까지 구현했다. CoolProp 8.0.0 PC-SAFT exact IPA capability probe를 추가했지만 엔탈피·비열·점도·열전도율과 p,h flash가 지원되지 않아 실제 backend는 구현하지 않았다. 전체 자동 테스트 74개와 Python compile/JSON parse 검사가 통과했다. 이는 합성 산술 및 인터페이스 검증이며 실제 IPA 또는 실제 엔진 물리 검증은 아니다. 실제 엔진 예측 검증은 `false`, V01–V12는 `NOT_RUN`, refinement asymptotic regime은 `NOT_ESTABLISHED`를 유지한다.
 
 현재 공개 트리에서는 로컬 사용자 절대경로를 `<USER_HOME>` 등으로 비식별화했다. RPA 실행 파일·설치 경로·라이선스 자료, REFPROP/DIPPR 유료 데이터와 물성 계수는 포함하지 않는다. 단, 과거 원격 커밋에 이미 포함된 로컬 경로는 일반 후속 커밋으로 삭제해도 Git 이력에는 남는다. 이력 재작성이나 force push는 별도 승인 없이는 수행하지 않는다.
+
+## 13. 2026-11-01 PDR 의사결정 시스템
+
+`src/space_y/design_decision.py`와 `space-y pdr-decide`를 추가했다. 후보별 요구 성능과 냉각·공급·구조·연소 안정성을 별도 hard constraint로 평가하고, 식/방법·model/source/assumption ID·검증 수준·불확실성·미확인 입력을 결과에 보존한다. 필수 위반은 `EXCLUDED`, 필수 자료 누락은 `UNKNOWN`, 제한된 근거나 미종결 위험은 `CONDITIONAL_REVIEW`이며 안전성을 가중합하지 않는다.
+
+합성 A/B/C fixture는 분기 재현성만 확인한다. A는 합성이므로 조건부 검토, B는 필수 냉각 제약 위반으로 제외, C는 공급 입력 누락으로 판단 보류다. 실제 SPACE Y 파라미터나 허용값은 포함하지 않았고 합성 후보는 CAD 기준안으로 승격되지 않는다. CAD 인계는 별도 Schema/템플릿으로 결정값·잠정값·미확인값, 변경 trigger와 제작·시험 전 위험을 분리한다.
+
+로컬 RPA Standard Edition v.2.3.2 조사에서는 exact 2-propanol 기체 열화학 record를 확인했지만 coolant properties/transport database에 exact 액체 record를 확인하지 못했다. RPA→Property Adapter는 `INPUT_U`다. 실행 파일, 매뉴얼, database, 계수, 설치 절대경로는 공개 트리에 포함하지 않고 해시·page-level finding과 상태만 감사 artifact로 기록한다.
+
+실제 PDR 입력 준비표의 성능·냉각·공급·구조·연소·CAD 항목은 현재 모두 `INPUT_U`다. 자동 테스트는 의사결정 로직과 추적성을 확인할 뿐 실제 엔진 안전성이나 물리 검증이 아니다. V01–V12는 `NOT_RUN`, `validated_engine_prediction=false`를 유지한다.
+
+이번 변경 후 전체 자동 테스트는 89개가 통과했다. Python compile, 전체 JSON 파싱과 `git diff --check`도 별도 실행해 통과시켰다.

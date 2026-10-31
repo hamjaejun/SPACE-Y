@@ -1,0 +1,48 @@
+{
+  "schema_version": "SPACE_Y_PDR_INPUT_READINESS_V1",
+  "record_date": "2026-11-01",
+  "purpose": "ACTUAL_CANDIDATE_INPUT_REQUIREMENTS_NO_ASSUMED_VALUES",
+  "overall_status": "INPUT_U",
+  "actual_design_values_present": false,
+  "categories": {
+    "requirements_and_performance": [
+      {"id": "PDR-R01", "name": "approved thrust requirement and tolerance", "status": "INPUT_U", "unit_requirement": "N", "evidence_required": "approved requirement and revision"},
+      {"id": "PDR-R02", "name": "approved chamber-pressure and mixture-ratio candidate set", "status": "INPUT_U", "unit_requirement": "Pa_abs and dimensionless", "evidence_required": "candidate definition and provenance"},
+      {"id": "PDR-R03", "name": "burn duration, duty cycle, and performance margins", "status": "INPUT_U", "unit_requirement": "s and documented margins", "evidence_required": "approved mission/test requirement"},
+      {"id": "PDR-R04", "name": "CEA/RPA case files with explicit station and geometry mapping", "status": "INPUT_U", "unit_requirement": "versioned files", "evidence_required": "reproducible run records and software versions"}
+    ],
+    "cooling": [
+      {"id": "PDR-C01", "name": "exact coolant composition and inlet thermodynamic state", "status": "INPUT_U", "unit_requirement": "composition, Pa_abs, K or J/kg", "evidence_required": "measured/approved boundary and uncertainty"},
+      {"id": "PDR-C02", "name": "validated exact-IPA property provider", "status": "INPUT_U", "unit_requirement": "SI with declared enthalpy reference", "evidence_required": "p,T and p,h, transport, saturation, ranges, uncertainty and license"},
+      {"id": "PDR-C03", "name": "cooling-channel geometry and surface condition", "status": "INPUT_U", "unit_requirement": "m and documented roughness definition", "evidence_required": "versioned CAD/measurement source"},
+      {"id": "PDR-C04", "name": "gas-side radiation input or justified model scope", "status": "INPUT_U", "unit_requirement": "W/m2 or documented exclusion evidence", "evidence_required": "source-backed radiation assessment"},
+      {"id": "PDR-C05", "name": "wall material conductivity and temperature limits", "status": "INPUT_U", "unit_requirement": "W/(m K), K", "evidence_required": "temperature-dependent source, lot/process applicability and allowable definition"},
+      {"id": "PDR-C06", "name": "boiling, phase-change and wall-state acceptance criteria", "status": "INPUT_U", "unit_requirement": "documented criteria", "evidence_required": "approved model/test basis; no extrapolation"}
+    ],
+    "supply": [
+      {"id": "PDR-S01", "name": "tank/source pressure and temperature versus time", "status": "INPUT_U", "unit_requirement": "Pa_abs, K, s", "evidence_required": "facility model or measured envelope with uncertainty"},
+      {"id": "PDR-S02", "name": "line, valve, regulator, injector and cooling-path loss data", "status": "INPUT_U", "unit_requirement": "geometry or loss coefficient with ranges", "evidence_required": "component data and reference location"},
+      {"id": "PDR-S03", "name": "required propellant/coolant flow and pressure boundary", "status": "INPUT_U", "unit_requirement": "kg/s and Pa_abs", "evidence_required": "candidate-specific mass balance and boundary mode"},
+      {"id": "PDR-S04", "name": "transient exclusions and test monitoring limits", "status": "INPUT_U", "unit_requirement": "documented scope", "evidence_required": "PDR-approved handling of startup, shutdown and regulator dynamics"}
+    ],
+    "structural": [
+      {"id": "PDR-T01", "name": "pressure and temperature load cases", "status": "INPUT_U", "unit_requirement": "Pa_abs, K and time/load identifiers", "evidence_required": "versioned load definition linked to thermal result"},
+      {"id": "PDR-T02", "name": "temperature-dependent material properties and allowables", "status": "INPUT_U", "unit_requirement": "Pa versus K", "evidence_required": "material condition, manufacturing process, source and acceptance rule"},
+      {"id": "PDR-T03", "name": "load-bearing geometry, joints, constraints and minimum thickness", "status": "INPUT_U", "unit_requirement": "m and configuration", "evidence_required": "versioned CAD and joint/seal definition"},
+      {"id": "PDR-T04", "name": "approved structural margin or factor policy", "status": "INPUT_U", "unit_requirement": "dimensionless and failure-mode specific", "evidence_required": "team/competition requirement; not assumed by software"}
+    ],
+    "combustion_stability": [
+      {"id": "PDR-B01", "name": "injector geometry and pressure-drop evidence", "status": "INPUT_U", "unit_requirement": "m, Pa and operating envelope", "evidence_required": "versioned injector definition and test/model source"},
+      {"id": "PDR-B02", "name": "feed-system and chamber acoustic/dynamic evidence", "status": "INPUT_U", "unit_requirement": "frequency/damping or test evidence", "evidence_required": "separate dynamic analysis or relevant test"},
+      {"id": "PDR-B03", "name": "ignition, startup and shutdown stability evidence", "status": "INPUT_U", "unit_requirement": "time histories and acceptance criteria", "evidence_required": "test plan or validated transient model"},
+      {"id": "PDR-B04", "name": "combustion-stability acceptance criteria", "status": "INPUT_U", "unit_requirement": "documented limits", "evidence_required": "approved source; CEA/RPA steady performance is insufficient"}
+    ],
+    "cad_handoff": [
+      {"id": "PDR-H01", "name": "approved provisional baseline candidate", "status": "INPUT_U", "unit_requirement": "candidate ID and decision record", "evidence_required": "PDR owner approval"},
+      {"id": "PDR-H02", "name": "parameter status and selection reason per CAD-driving value", "status": "INPUT_U", "unit_requirement": "DECIDED/PROVISIONAL/UNKNOWN", "evidence_required": "source, model, assumption and change trigger"},
+      {"id": "PDR-H03", "name": "manufacturing and test verification risks", "status": "INPUT_U", "unit_requirement": "risk register references", "evidence_required": "responsible owner and closure evidence"}
+    ]
+  },
+  "validated_engine_prediction": false,
+  "physical_validation_v01_v12": "NOT_RUN"
+}

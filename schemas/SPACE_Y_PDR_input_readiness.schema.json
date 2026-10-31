@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SPACE Y PDR actual-input readiness",
+  "type": "object",
+  "required": [
+    "schema_version", "record_date", "purpose", "overall_status",
+    "actual_design_values_present", "categories",
+    "validated_engine_prediction", "physical_validation_v01_v12"
+  ],
+  "properties": {
+    "schema_version": {"const": "SPACE_Y_PDR_INPUT_READINESS_V1"},
+    "record_date": {"type": "string", "format": "date"},
+    "purpose": {"const": "ACTUAL_CANDIDATE_INPUT_REQUIREMENTS_NO_ASSUMED_VALUES"},
+    "overall_status": {"const": "INPUT_U"},
+    "actual_design_values_present": {"const": false},
+    "categories": {
+      "type": "object",
+      "required": [
+        "requirements_and_performance", "cooling", "supply", "structural",
+        "combustion_stability", "cad_handoff"
+      ],
+      "properties": {
+        "requirements_and_performance": {"$ref": "#/$defs/items"},
+        "cooling": {"$ref": "#/$defs/items"},
+        "supply": {"$ref": "#/$defs/items"},
+        "structural": {"$ref": "#/$defs/items"},
+        "combustion_stability": {"$ref": "#/$defs/items"},
+        "cad_handoff": {"$ref": "#/$defs/items"}
+      },
+      "additionalProperties": false
+    },
+    "validated_engine_prediction": {"const": false},
+    "physical_validation_v01_v12": {"const": "NOT_RUN"}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "status", "unit_requirement", "evidence_required"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "name": {"type": "string", "minLength": 1},
+          "status": {"const": "INPUT_U"},
+          "unit_requirement": {"type": "string", "minLength": 1},
+          "evidence_required": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

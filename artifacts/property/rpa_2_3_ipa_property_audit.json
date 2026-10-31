@@ -1,0 +1,80 @@
+{
+  "record_id": "SPACE-Y-RPA-2.3-IPA-AUDIT-001",
+  "review_date": "2026-11-01",
+  "purpose": "LOCAL_CAPABILITY_AUDIT_NO_DATABASE_REDISTRIBUTION",
+  "rpa_product_version": "Standard Edition v.2.3.2",
+  "fluid_identity": {
+    "chemical_name": "2-propanol",
+    "cas_number": "67-63-0",
+    "accepted_alias_in_thermochemistry_database": "C3H8O,2propanol",
+    "one_propanol_or_generic_propanol_accepted": false
+  },
+  "files_examined": [
+    {
+      "logical_name": "standard/resources/thermo.inp",
+      "sha256": "d7c5ff8081d57abbb72ceeb57661ec1ad1243bd486dd167102c19686767ee5dd",
+      "result": "EXACT_GAS_SPECIES_FOUND"
+    },
+    {
+      "logical_name": "standard/resources/properties.inp",
+      "sha256": "815de5220bbdc51a9890b89e00deba39e3c557f64e84e6cbf1cba6f6b3f72802",
+      "result": "EXACT_COOLANT_RECORD_NOT_FOUND"
+    },
+    {
+      "logical_name": "standard/resources/trans.inp",
+      "sha256": "78d5844f7d423f09821f5aaafe65f18778949d93ab600d2ed9c131379e7c1b53",
+      "result": "EXACT_TRANSPORT_RECORD_NOT_FOUND"
+    }
+  ],
+  "combustion_thermochemistry": {
+    "status": "AVAILABLE_FOR_RPA_COMBUSTION_THERMOCHEMISTRY_ONLY",
+    "phase": "gas",
+    "temperature_intervals_K": [[200.0, 1000.0], [1000.0, 6000.0]],
+    "source_note": "The installed record header attributes the gas thermochemistry to TRC/Chao. Coefficients are not copied into this repository.",
+    "not_evidence_for": [
+      "compressed-liquid coolant density",
+      "liquid heat capacity",
+      "liquid viscosity",
+      "liquid thermal conductivity",
+      "liquid enthalpy reference or p,h inversion",
+      "saturation or phase-equilibrium state"
+    ]
+  },
+  "regenerative_coolant_properties": {
+    "overall_status": "INPUT_U",
+    "density": "INPUT_U",
+    "cp": "INPUT_U",
+    "viscosity": "INPUT_U",
+    "thermal_conductivity": "INPUT_U",
+    "enthalpy_and_reference_state": "INPUT_U",
+    "phase_change_and_saturation": "INPUT_U",
+    "valid_temperature_pressure_ranges": "INPUT_U",
+    "uncertainty": "INPUT_U",
+    "user_database_present_in_reviewed_installation": false
+  },
+  "manual_evidence": [
+    {
+      "document": "RPA User Manual",
+      "pages": "40, 54-57",
+      "finding": "Coolant use requires properties beyond the extended NASA thermochemistry database; the manual describes standard/user thermodynamic and properties databases and tabular p,T coolant properties."
+    },
+    {
+      "document": "RPA Thermal Analysis",
+      "pages": "15-17",
+      "finding": "Thermal analysis describes coolant-side correlations and marching/pressure-loss methods but does not supply an exact 2-propanol property record."
+    }
+  ],
+  "property_adapter_connection": {
+    "implemented": false,
+    "status": "INPUT_U",
+    "reason": "The reviewed installation does not provide the exact liquid-property, enthalpy-reference, saturation, valid-range, and uncertainty evidence required by the adapter contract."
+  },
+  "license_and_publication": {
+    "installed_database_files_committed": false,
+    "coefficients_committed": false,
+    "absolute_install_path_committed": false,
+    "redistribution_assessment": "Metadata, hashes, and findings only; the RPA executables, manuals, databases, and license material remain outside the repository."
+  },
+  "validated_engine_prediction": false,
+  "physical_validation_v01_v12": "NOT_RUN"
+}

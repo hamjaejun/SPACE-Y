@@ -101,6 +101,14 @@ REFPROP는 후보 제품으로서는 강력하지만 **REFPROP 10의 공개 flui
 
 비등 상관식, 병렬 채널, 설계 최적화는 이 단계에 포함하지 않았다.
 
+## 7.1 RPA 2.3 로컬 데이터베이스 확인
+
+2026-11-01 로컬 RPA Standard Edition v.2.3.2 설치를 읽기 전용으로 확인했다. combustion thermochemistry database에는 exact `C3H8O,2propanol` 기체 record가 200–1000 K와 1000–6000 K 구간으로 존재한다. 그러나 coolant properties와 transport database에서는 exact 2-propanol/CAS 67-63-0 record를 찾지 못했고, 검토 설치에 사용자 property database도 없었다.
+
+RPA User Manual은 extended NASA thermochemistry database와 냉각유체에 필요한 밀도·비열·점도·열전도율·기화 관련 물성을 구분한다. 따라서 기체 열화학 record를 액체 냉각 Property Adapter로 전용하지 않는다. 실제 IPA의 p,T/p,h 상태, 수송물성, 엔탈피 기준, 포화상태, 유효범위와 불확실성은 `INPUT_U`를 유지한다.
+
+비공개 또는 재배포 조건이 불명확한 실행 파일·매뉴얼·database·계수는 포함하지 않았다. 비식별화된 파일 해시와 capability 판정은 `artifacts/property/rpa_2_3_ipa_property_audit.json`에 기록한다.
+
 ## 8. CoolProp 8.0.0 로컬 capability probe
 
 공개 PyPI wheel을 Git에 포함되지 않는 로컬 `.venv`에 설치해 `PCSAFT::2-PROPANOL`을 비설계 조건 300 K, 101325 Pa에서 실행했다. 이 조건은 SPACE Y 입력이나 운전점이 아니라 API 기능 존재 여부만 확인하기 위한 점이다.

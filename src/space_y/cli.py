@@ -6,6 +6,7 @@ from pathlib import Path
 import sys
 
 from .contract import build_validation_report
+from .design_decision import solve_design_decision_file
 from .external import probe_cea, probe_rpa, run_cea_request, write_json
 from .gas import solve_gas_map_file
 from .gas_wall import solve_gas_wall_file
@@ -87,6 +88,13 @@ def build_parser() -> argparse.ArgumentParser:
         "--schema", default="schemas/SPACE_Y_M0_refinement_suite.schema.json"
     )
     refinement.add_argument("--output")
+
+    decision = sub.add_parser("pdr-decide")
+    decision.add_argument("request")
+    decision.add_argument(
+        "--schema", default="schemas/SPACE_Y_PDR_decision.schema.json"
+    )
+    decision.add_argument("--output")
     return parser
 
 
@@ -120,6 +128,8 @@ def main(argv: list[str] | None = None) -> int:
         result = solve_coupled_multisegment_file(args.request, args.schema)
     elif args.command == "m0-refinement-run":
         result = solve_refinement_suite_file(args.request, args.schema)
+    elif args.command == "pdr-decide":
+        result = solve_design_decision_file(args.request, args.schema)
     else:
         raise AssertionError(args.command)
     _emit(result, args.output)

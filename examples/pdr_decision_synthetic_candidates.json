@@ -1,0 +1,306 @@
+{
+  "schema_version": "SPACE_Y_PDR_DECISION_V1",
+  "purpose": "SYNTHETIC_DECISION_LOGIC_TEST",
+  "decision_id": "SPACE-Y-PDR-SYNTHETIC-001",
+  "prepared_date": "2026-11-01",
+  "requirements_version": "SYNTHETIC-LOGIC-ONLY",
+  "status_policy": {
+    "safety_is_hard_constraint": true,
+    "allow_weighted_safety_tradeoff": false,
+    "accepted_validation_levels": ["SYNTHETIC_ARITHMETIC"]
+  },
+  "sources": [
+    {
+      "id": "SRC-SYN-REQ",
+      "title": "Synthetic candidate decision fixture requirements",
+      "type": "SYNTHETIC_TEST_FIXTURE",
+      "version": "1",
+      "locator": "examples/pdr_decision_synthetic_candidates.json",
+      "license_scope": "PROJECT_TEST_FIXTURE",
+      "status": "AVAILABLE",
+      "validation_level": "SYNTHETIC_ARITHMETIC"
+    }
+  ],
+  "models": [
+    {
+      "id": "MODEL-SYN-PERF",
+      "name": "Synthetic performance comparator",
+      "version": "1",
+      "scope": "Decision logic only; no engine prediction",
+      "equation_or_method": "direct comparison of supplied synthetic flags",
+      "source_ids": ["SRC-SYN-REQ"],
+      "status": "AVAILABLE",
+      "validation_level": "SYNTHETIC_ARITHMETIC"
+    },
+    {
+      "id": "MODEL-SYN-COOL",
+      "name": "Synthetic cooling evidence",
+      "version": "1",
+      "scope": "Decision logic only; not M0 physics",
+      "equation_or_method": "supplied synthetic criterion state",
+      "source_ids": ["SRC-SYN-REQ"],
+      "status": "AVAILABLE",
+      "validation_level": "SYNTHETIC_ARITHMETIC"
+    },
+    {
+      "id": "MODEL-SYN-SUPPLY",
+      "name": "Synthetic supply evidence",
+      "version": "1",
+      "scope": "Decision logic only",
+      "equation_or_method": "supplied synthetic criterion state",
+      "source_ids": ["SRC-SYN-REQ"],
+      "status": "AVAILABLE",
+      "validation_level": "SYNTHETIC_ARITHMETIC"
+    },
+    {
+      "id": "MODEL-SYN-STRUCT",
+      "name": "Synthetic structural evidence",
+      "version": "1",
+      "scope": "Decision logic only",
+      "equation_or_method": "supplied synthetic criterion state",
+      "source_ids": ["SRC-SYN-REQ"],
+      "status": "AVAILABLE",
+      "validation_level": "SYNTHETIC_ARITHMETIC"
+    },
+    {
+      "id": "MODEL-SYN-COMB",
+      "name": "Synthetic combustion evidence",
+      "version": "1",
+      "scope": "Decision logic only; no instability prediction",
+      "equation_or_method": "supplied synthetic criterion state",
+      "source_ids": ["SRC-SYN-REQ"],
+      "status": "AVAILABLE",
+      "validation_level": "SYNTHETIC_ARITHMETIC"
+    }
+  ],
+  "assumptions": [
+    {
+      "id": "ASM-SYN-ONLY",
+      "text": "All flags are manufactured solely to test decision branching.",
+      "status": "CONFIRMED",
+      "source_ids": ["SRC-SYN-REQ"],
+      "impact": "No result may be used as an actual SPACE Y design value."
+    }
+  ],
+  "global_missing_inputs": [
+    "approved actual performance requirements",
+    "actual IPA composition and validated properties",
+    "facility supply boundary conditions",
+    "temperature-dependent material allowables",
+    "combustion stability test or dynamic-analysis evidence"
+  ],
+  "candidates": [
+    {
+      "id": "SYN-A",
+      "label": "후보 A (합성 논리 시험)",
+      "parameters": [
+        {
+          "id": "SYNTHETIC-DESIGN-INDEX",
+          "name": "Synthetic design index",
+          "value": "A",
+          "unit": null,
+          "status": "PROVISIONAL",
+          "source_ids": ["SRC-SYN-REQ"],
+          "selection_reason": "Distinguishes logic-test candidates; not a physical parameter."
+        }
+      ],
+      "performance_criteria": [
+        {
+          "id": "A-PERF-1", "name": "Synthetic required performance flag", "mandatory": true,
+          "status": "PASS", "actual_value": "met", "requirement": "met", "unit": null,
+          "equation_or_method": "direct synthetic flag comparison", "model_ids": ["MODEL-SYN-PERF"],
+          "source_ids": ["SRC-SYN-REQ"], "assumption_ids": ["ASM-SYN-ONLY"],
+          "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null,
+          "notes": "Not an engine performance calculation."
+        }
+      ],
+      "performance_unresolved_risks": [],
+      "performance_missing_inputs": [],
+      "safety_assessments": {
+        "cooling": {
+          "criteria": [{
+            "id": "A-COOL-1", "name": "Synthetic cooling constraint", "mandatory": true,
+            "status": "PASS", "actual_value": "met", "requirement": "met", "unit": null,
+            "equation_or_method": "synthetic state", "model_ids": ["MODEL-SYN-COOL"],
+            "source_ids": ["SRC-SYN-REQ"], "assumption_ids": ["ASM-SYN-ONLY"],
+            "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null,
+            "notes": "Does not represent IPA or wall-temperature validation."
+          }],
+          "unresolved_risks": [], "missing_required_inputs": []
+        },
+        "supply": {
+          "criteria": [{
+            "id": "A-SUP-1", "name": "Synthetic supply constraint", "mandatory": true,
+            "status": "PASS", "actual_value": "met", "requirement": "met", "unit": null,
+            "equation_or_method": "synthetic state", "model_ids": ["MODEL-SYN-SUPPLY"],
+            "source_ids": ["SRC-SYN-REQ"], "assumption_ids": ["ASM-SYN-ONLY"],
+            "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null, "notes": "Logic test only."
+          }],
+          "unresolved_risks": [], "missing_required_inputs": []
+        },
+        "structural": {
+          "criteria": [{
+            "id": "A-STR-1", "name": "Synthetic structural constraint", "mandatory": true,
+            "status": "PASS", "actual_value": "met", "requirement": "met", "unit": null,
+            "equation_or_method": "synthetic state", "model_ids": ["MODEL-SYN-STRUCT"],
+            "source_ids": ["SRC-SYN-REQ"], "assumption_ids": ["ASM-SYN-ONLY"],
+            "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null, "notes": "Logic test only."
+          }],
+          "unresolved_risks": [], "missing_required_inputs": []
+        },
+        "combustion": {
+          "criteria": [{
+            "id": "A-COMB-1", "name": "Synthetic combustion evidence flag", "mandatory": true,
+            "status": "PASS", "actual_value": "met", "requirement": "met", "unit": null,
+            "equation_or_method": "synthetic state", "model_ids": ["MODEL-SYN-COMB"],
+            "source_ids": ["SRC-SYN-REQ"], "assumption_ids": ["ASM-SYN-ONLY"],
+            "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null,
+            "notes": "CEA/RPA steady performance is not used as a combustion-stability pass."
+          }],
+          "unresolved_risks": [], "missing_required_inputs": []
+        }
+      },
+      "decision_notes": {
+        "advantages": ["No manufactured hard-constraint violation in this logic fixture."],
+        "limitations": ["Every result is synthetic and has no physical validation."],
+        "additional_verification": ["Replace every synthetic criterion with source-backed actual evidence."]
+      }
+    },
+    {
+      "id": "SYN-B",
+      "label": "후보 B (합성 제약 위반)",
+      "parameters": [{
+        "id": "SYNTHETIC-DESIGN-INDEX", "name": "Synthetic design index", "value": "B",
+        "unit": null, "status": "PROVISIONAL", "source_ids": ["SRC-SYN-REQ"],
+        "selection_reason": "Distinguishes logic-test candidates; not a physical parameter."
+      }],
+      "performance_criteria": [{
+        "id": "B-PERF-1", "name": "Synthetic required performance flag", "mandatory": true,
+        "status": "PASS", "actual_value": "met", "requirement": "met", "unit": null,
+        "equation_or_method": "direct synthetic flag comparison", "model_ids": ["MODEL-SYN-PERF"],
+        "source_ids": ["SRC-SYN-REQ"], "assumption_ids": ["ASM-SYN-ONLY"],
+        "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null, "notes": "Logic test only."
+      }],
+      "performance_unresolved_risks": [], "performance_missing_inputs": [],
+      "safety_assessments": {
+        "cooling": {
+          "criteria": [{
+            "id": "B-COOL-1", "name": "Synthetic mandatory cooling constraint", "mandatory": true,
+            "status": "FAIL", "actual_value": "violated", "requirement": "met", "unit": null,
+            "equation_or_method": "synthetic state", "model_ids": ["MODEL-SYN-COOL"],
+            "source_ids": ["SRC-SYN-REQ"], "assumption_ids": ["ASM-SYN-ONLY"],
+            "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null,
+            "notes": "Manufactured failure used to verify exclusion."
+          }], "unresolved_risks": [], "missing_required_inputs": []
+        },
+        "supply": {
+          "criteria": [{
+            "id": "B-SUP-1", "name": "Synthetic supply constraint", "mandatory": true,
+            "status": "PASS", "actual_value": "met", "requirement": "met", "unit": null,
+            "equation_or_method": "synthetic state", "model_ids": ["MODEL-SYN-SUPPLY"],
+            "source_ids": ["SRC-SYN-REQ"], "assumption_ids": ["ASM-SYN-ONLY"],
+            "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null, "notes": "Logic test only."
+          }], "unresolved_risks": [], "missing_required_inputs": []
+        },
+        "structural": {
+          "criteria": [{
+            "id": "B-STR-1", "name": "Synthetic structural constraint", "mandatory": true,
+            "status": "PASS", "actual_value": "met", "requirement": "met", "unit": null,
+            "equation_or_method": "synthetic state", "model_ids": ["MODEL-SYN-STRUCT"],
+            "source_ids": ["SRC-SYN-REQ"], "assumption_ids": ["ASM-SYN-ONLY"],
+            "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null, "notes": "Logic test only."
+          }], "unresolved_risks": [], "missing_required_inputs": []
+        },
+        "combustion": {
+          "criteria": [{
+            "id": "B-COMB-1", "name": "Synthetic combustion evidence flag", "mandatory": true,
+            "status": "PASS", "actual_value": "met", "requirement": "met", "unit": null,
+            "equation_or_method": "synthetic state", "model_ids": ["MODEL-SYN-COMB"],
+            "source_ids": ["SRC-SYN-REQ"], "assumption_ids": ["ASM-SYN-ONLY"],
+            "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null, "notes": "Logic test only."
+          }], "unresolved_risks": [], "missing_required_inputs": []
+        }
+      },
+      "decision_notes": {
+        "advantages": ["Synthetic performance flag is met."],
+        "limitations": ["A mandatory synthetic cooling constraint is violated."],
+        "additional_verification": ["A failed hard constraint cannot be offset by other merits."]
+      }
+    },
+    {
+      "id": "SYN-C",
+      "label": "후보 C (합성 자료 부족)",
+      "parameters": [{
+        "id": "SYNTHETIC-DESIGN-INDEX", "name": "Synthetic design index", "value": "C",
+        "unit": null, "status": "PROVISIONAL", "source_ids": ["SRC-SYN-REQ"],
+        "selection_reason": "Distinguishes logic-test candidates; not a physical parameter."
+      }],
+      "performance_criteria": [{
+        "id": "C-PERF-1", "name": "Synthetic required performance flag", "mandatory": true,
+        "status": "PASS", "actual_value": "met", "requirement": "met", "unit": null,
+        "equation_or_method": "direct synthetic flag comparison", "model_ids": ["MODEL-SYN-PERF"],
+        "source_ids": ["SRC-SYN-REQ"], "assumption_ids": ["ASM-SYN-ONLY"],
+        "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null, "notes": "Logic test only."
+      }],
+      "performance_unresolved_risks": [], "performance_missing_inputs": [],
+      "safety_assessments": {
+        "cooling": {
+          "criteria": [{
+            "id": "C-COOL-1", "name": "Synthetic cooling constraint", "mandatory": true,
+            "status": "PASS", "actual_value": "met", "requirement": "met", "unit": null,
+            "equation_or_method": "synthetic state", "model_ids": ["MODEL-SYN-COOL"],
+            "source_ids": ["SRC-SYN-REQ"], "assumption_ids": ["ASM-SYN-ONLY"],
+            "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null, "notes": "Logic test only."
+          }], "unresolved_risks": [], "missing_required_inputs": []
+        },
+        "supply": {
+          "criteria": [{
+            "id": "C-SUP-1", "name": "Synthetic supply constraint", "mandatory": true,
+            "status": "INPUT_U", "actual_value": null, "requirement": "met", "unit": null,
+            "equation_or_method": "not evaluated because input is missing", "model_ids": ["MODEL-SYN-SUPPLY"],
+            "source_ids": [], "assumption_ids": ["ASM-SYN-ONLY"],
+            "validation_level": "NOT_VALIDATED", "uncertainty": null,
+            "notes": "Manufactured missing input used to verify UNKNOWN propagation."
+          }], "unresolved_risks": [], "missing_required_inputs": ["synthetic supply boundary input"]
+        },
+        "structural": {
+          "criteria": [{
+            "id": "C-STR-1", "name": "Synthetic structural constraint", "mandatory": true,
+            "status": "PASS", "actual_value": "met", "requirement": "met", "unit": null,
+            "equation_or_method": "synthetic state", "model_ids": ["MODEL-SYN-STRUCT"],
+            "source_ids": ["SRC-SYN-REQ"], "assumption_ids": ["ASM-SYN-ONLY"],
+            "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null, "notes": "Logic test only."
+          }], "unresolved_risks": [], "missing_required_inputs": []
+        },
+        "combustion": {
+          "criteria": [{
+            "id": "C-COMB-1", "name": "Synthetic combustion evidence flag", "mandatory": true,
+            "status": "PASS", "actual_value": "met", "requirement": "met", "unit": null,
+            "equation_or_method": "synthetic state", "model_ids": ["MODEL-SYN-COMB"],
+            "source_ids": ["SRC-SYN-REQ"], "assumption_ids": ["ASM-SYN-ONLY"],
+            "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null, "notes": "Logic test only."
+          }], "unresolved_risks": [], "missing_required_inputs": []
+        }
+      },
+      "decision_notes": {
+        "advantages": ["No manufactured violation has been demonstrated."],
+        "limitations": ["A mandatory supply input is missing."],
+        "additional_verification": ["Obtain the missing input before comparing this candidate further."]
+      }
+    }
+  ],
+  "cad_handoff_request": {
+    "provisional_baseline_candidate_id": null,
+    "decided_requirements": [],
+    "parameter_selection_reasons": [],
+    "change_triggers": [
+      "replacement of synthetic criteria with actual requirements",
+      "change in coolant composition or property provider",
+      "change in facility boundary conditions",
+      "change in material or geometry"
+    ],
+    "pre_manufacture_and_test_risks": [
+      "No actual design candidate or parameter is represented in this fixture."
+    ]
+  }
+}
