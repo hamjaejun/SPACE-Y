@@ -1,0 +1,105 @@
+{
+  "purpose": "NON_DESIGN_INTERFACE_VERIFICATION",
+  "run_id": "M0-COUPLED-SYNTHETIC-001",
+  "case_id": "NON_DESIGN_SYNTHETIC_COUPLED",
+  "geometry_version": "SYNTHETIC-COUPLED-GEOMETRY-V1",
+  "segment_id": "SYN-CPL-01",
+  "spatial_basis": "ONE_SYNTHETIC_CHANNEL_SEGMENT",
+  "model_scope": "STEADY_SINGLE_SEGMENT_GAS_WALL_COOLANT",
+  "flow_boundary_mode": "PRESCRIBED_MASS_FLOW",
+  "formula_version": "RPA_2012_BASIC_BARTZ",
+  "formula_source": "RPA Thermal Analysis documentation (2012), Basic Bartz equation, page 7",
+  "cea_run_artifact": "../artifacts/phase1/cea_rp1311_example13_rocket_run.json",
+  "chamber_station_index": 0,
+  "cea_station_index": 3,
+  "transport_basis": "frozen",
+  "coolant_boundary": {
+    "mass_flow_kg_s": 1.0,
+    "mass_flow_source": "synthetic arithmetic fixture; not a SPACE Y flow condition",
+    "inlet_pressure_Pa_abs": 1000000.0,
+    "inlet_pressure_source": "synthetic arithmetic fixture; not a SPACE Y pressure condition",
+    "inlet_temperature_K": 300.0,
+    "inlet_temperature_source": "synthetic arithmetic fixture; not a SPACE Y inlet condition"
+  },
+  "coolant_property_model": {
+    "model": "TABULATED_T_PRESSURE_BOUNDED",
+    "source": "synthetic variable-property table for interpolation verification; not a real fluid",
+    "pressure_range_Pa_abs": [500000.0, 2000000.0],
+    "rows": [
+      {"temperature_K": 250.0, "enthalpy_J_kg": 0.0, "density_kg_m3": 850.0, "viscosity_Pa_s": 0.002, "cp_J_kgK": 1800.0, "conductivity_W_mK": 0.14},
+      {"temperature_K": 300.0, "enthalpy_J_kg": 100000.0, "density_kg_m3": 820.0, "viscosity_Pa_s": 0.0015, "cp_J_kgK": 1950.0, "conductivity_W_mK": 0.15},
+      {"temperature_K": 350.0, "enthalpy_J_kg": 205000.0, "density_kg_m3": 790.0, "viscosity_Pa_s": 0.0011, "cp_J_kgK": 2100.0, "conductivity_W_mK": 0.16},
+      {"temperature_K": 500.0, "enthalpy_J_kg": 535000.0, "density_kg_m3": 730.0, "viscosity_Pa_s": 0.0007, "cp_J_kgK": 2300.0, "conductivity_W_mK": 0.18}
+    ]
+  },
+  "single_phase_bulk_domain": {
+    "classification": "SYNTHETIC_SINGLE_PHASE_LIQUID_DOMAIN",
+    "source": "synthetic bounded domain for stop-rule testing; not a real-fluid phase envelope",
+    "temperature_range_K": [250.0, 500.0],
+    "pressure_range_Pa_abs": [500000.0, 2000000.0]
+  },
+  "coolant_heat_transfer_closure": {
+    "source": "synthetic Gnielinski applicability domain for code verification only",
+    "re_range": [4000.0, 1000000.0],
+    "pr_range": [1.0, 100.0],
+    "geometry": "circular_tube",
+    "fully_developed_required": true,
+    "thermal_boundary_condition": "SYNTHETIC_SEGMENT_AVERAGED_HEATING"
+  },
+  "coolant_friction_closure": {
+    "source": "synthetic Colebrook applicability domain for code verification only",
+    "re_range": [4000.0, 1000000.0],
+    "relative_roughness_range": [0.0, 0.01],
+    "geometry": "circular_tube"
+  },
+  "geometry": {
+    "throat_diameter_m": 0.1,
+    "throat_diameter_source": "synthetic non-design fixture; not SPACE Y geometry",
+    "bartz_curvature_radius_m": 0.15,
+    "bartz_curvature_radius_source": "synthetic non-design fixture; not SPACE Y geometry",
+    "gas_area_m2": 0.01,
+    "gas_area_source": "synthetic non-design fixture; not SPACE Y geometry",
+    "coolant_area_m2": 0.02,
+    "coolant_area_source": "synthetic non-design fixture; not SPACE Y geometry",
+    "wall_thickness_m": 0.002,
+    "wall_thickness_source": "synthetic non-design fixture; not SPACE Y wall thickness",
+    "wall_conductivity_W_mK": 20.0,
+    "wall_conductivity_source": "synthetic constant for arithmetic verification; not a material selection",
+    "wall_conduction_area_m2": 0.01,
+    "wall_conduction_area_source": "synthetic non-design fixture; not SPACE Y geometry",
+    "length_m": 0.1,
+    "flow_area_m2": 0.001,
+    "hydraulic_diameter_m": 0.01,
+    "flow_geometry_source": "synthetic circular-tube arithmetic fixture; not SPACE Y geometry",
+    "equivalent_sand_roughness_m": 0.000001,
+    "equivalent_sand_roughness_source": "synthetic ks; not measured Ra or SPACE Y roughness",
+    "local_loss_coefficient": 0.5,
+    "local_loss_source": "synthetic local-loss coefficient for arithmetic verification",
+    "closure_geometry": "circular_tube",
+    "fully_developed": true,
+    "thermal_boundary_condition": "SYNTHETIC_SEGMENT_AVERAGED_HEATING"
+  },
+  "radiation": {
+    "definition": "EXPLICIT_NET_RATE_GAS_TO_WALL_POSITIVE",
+    "q_rad_net_W": 1000.0,
+    "source": "explicit synthetic nonzero rate for conservation testing; not an engine estimate"
+  },
+  "gas_wall_numerics": {
+    "max_iterations": 100,
+    "relaxation": 0.5,
+    "wall_temperature_tolerance_K": 1e-8,
+    "energy_residual_tolerance_W": 1e-7,
+    "initial_gas_side_wall_temperature_K": 1000.0,
+    "initial_temperature_source": "synthetic numerical initial iterate only"
+  },
+  "coupled_numerics": {
+    "max_iterations": 100,
+    "relaxation": 0.5,
+    "outlet_temperature_tolerance_K": 1e-8,
+    "outlet_pressure_tolerance_Pa": 1e-5,
+    "energy_residual_tolerance_W": 1e-7,
+    "initial_outlet_temperature_K": 300.0,
+    "initial_outlet_pressure_Pa_abs": 999000.0,
+    "initial_state_source": "synthetic numerical initial iterate only"
+  }
+}

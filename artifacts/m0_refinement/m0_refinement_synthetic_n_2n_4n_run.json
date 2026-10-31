@@ -1,0 +1,2606 @@
+{
+  "run_id": "M0-REFINEMENT-SYNTHETIC-001",
+  "case_id": "NON_DESIGN_SYNTHETIC_CONSTANT_GAS_FIELD",
+  "status": "MODEL_U",
+  "numerical_status": "PASS",
+  "model_scope": "N_2N_4N_SINGLE_PATH_GRID_SENSITIVITY",
+  "gas_state_policy": "EXPLICIT_PER_CELL_NO_INTERPOLATION",
+  "levels": [
+    {
+      "label": "N",
+      "cell_count": 1,
+      "gas_state_policy": "EXPLICIT_PER_CELL_NO_INTERPOLATION",
+      "result": {
+        "run_id": "M0-REFINEMENT-SYNTHETIC-001:N",
+        "case_id": "NON_DESIGN_SYNTHETIC_CONSTANT_GAS_FIELD",
+        "geometry_version": "SYNTHETIC-REFINEMENT-GEOMETRY-V1",
+        "spatial_basis": "ONE_SYNTHETIC_SINGLE_COOLANT_PATH_FIXED_DOMAIN:N",
+        "model_scope": "STEADY_SINGLE_PATH_MULTISEGMENT_GAS_WALL_COOLANT",
+        "status": "MODEL_U",
+        "numerical_status": "PASS",
+        "coolant_flow_direction": "DECREASING_GAS_AXIAL_COORDINATE",
+        "gas_axial_order_segment_ids": [
+          "N-X0"
+        ],
+        "coolant_flow_order_segment_ids": [
+          "N-X0"
+        ],
+        "segments": [
+          {
+            "segment_id": "N-X0",
+            "coolant_path_index": 0,
+            "gas_axial_coordinate_m": 0.15,
+            "gas_axial_coordinate_source": "explicit synthetic cell center",
+            "cea_station_mapping": {
+              "method": "EXPLICIT_NO_INTERPOLATION",
+              "source": "constant manufactured gas field: explicit station 3 reused without spatial interpolation",
+              "cea_run_artifact": "../artifacts/phase1/cea_rp1311_example13_rocket_run.json",
+              "chamber_station_index": 0,
+              "cea_station_index": 3,
+              "transport_basis": "frozen"
+            },
+            "status": "MODEL_U",
+            "execution_status": "EXECUTED",
+            "upstream_segment_id": null,
+            "solution": {
+              "run_id": "M0-REFINEMENT-SYNTHETIC-001:N:N-X0",
+              "case_id": "NON_DESIGN_SYNTHETIC_CONSTANT_GAS_FIELD",
+              "segment_id": "N-X0",
+              "geometry_version": "SYNTHETIC-REFINEMENT-GEOMETRY-V1",
+              "spatial_basis": "ONE_SYNTHETIC_SINGLE_COOLANT_PATH_FIXED_DOMAIN:N",
+              "status": "MODEL_U",
+              "numerical_status": "PASS",
+              "iterations": 38,
+              "cea_artifact_sha256": "5b2469ea75b95ead9aee37a67770f761474b569ce47125e1224d0340841e68f0",
+              "interface_consumption": {
+                "interface_version": "SPACE_Y_WALL_COOLANT_V1",
+                "status": "CONSUMED_BY_OUTER_COUPLED_COOLANT_SOLVER",
+                "note": "the nested GAS-WALL record retains its local NOT_RUN marker; the outer solver performs the coolant state and pressure update"
+              },
+              "gas_wall_solution": {
+                "run_id": "M0-REFINEMENT-SYNTHETIC-001:N:N-X0",
+                "case_id": "NON_DESIGN_SYNTHETIC_CONSTANT_GAS_FIELD",
+                "segment_id": "N-X0",
+                "geometry_version": "SYNTHETIC-REFINEMENT-GEOMETRY-V1",
+                "spatial_basis": "ONE_SYNTHETIC_SINGLE_COOLANT_PATH_FIXED_DOMAIN:N",
+                "status": "MODEL_U",
+                "numerical_status": "PASS",
+                "formula_version": "RPA_2012_BASIC_BARTZ",
+                "transport_basis": "frozen",
+                "cea_station_index": 3,
+                "cea_artifact_sha256": "5b2469ea75b95ead9aee37a67770f761474b569ce47125e1224d0340841e68f0",
+                "iterations": 37,
+                "wall_temperature_update_residual_K": 8.453753252979368e-09,
+                "energy_residual_max_W": 1.7462298274040222e-10,
+                "bartz": {
+                  "wall_temperature_used_K": 2603.625658390055,
+                  "sigma": 0.897466792844561,
+                  "h_g_W_m2K": 22357.449444875325,
+                  "adiabatic_wall_temperature_K": 2821.6927044308845,
+                  "chamber_reference": {
+                    "temperature_K": 3002.5400574804275,
+                    "pressure_Pa_abs": 20684271.240234375,
+                    "c_star_m_s": 1946.6824123708707,
+                    "viscosity_Pa_s": 7.992036518561244e-05,
+                    "cp_J_kgK": 3642.6615839196998,
+                    "Pr": 0.47879491138342495,
+                    "throat_diameter_m": 0.1,
+                    "curvature_radius_m": 0.15
+                  },
+                  "station": {
+                    "Mach": 2.1037567956327248,
+                    "gamma": 1.1790641349149722,
+                    "area_ratio_A_At": 2.4856568126753125,
+                    "Pr": 0.4853450214590086
+                  }
+                },
+                "geometry": {
+                  "throat_diameter_m": 0.1,
+                  "throat_diameter_source": "synthetic non-design fixture; not SPACE Y geometry",
+                  "bartz_curvature_radius_m": 0.15,
+                  "bartz_curvature_radius_source": "synthetic non-design fixture; not SPACE Y geometry",
+                  "gas_area_m2": 0.03,
+                  "gas_area_source": "synthetic full-domain area partitioned by explicit cell fraction",
+                  "coolant_area_m2": 0.06,
+                  "coolant_area_source": "synthetic full-domain area partitioned by explicit cell fraction",
+                  "wall_thickness_m": 0.002,
+                  "wall_thickness_source": "synthetic non-design fixture; not SPACE Y wall thickness",
+                  "wall_conductivity_W_mK": 20.0,
+                  "wall_conductivity_source": "synthetic constant for arithmetic verification; not a material selection",
+                  "wall_conduction_area_m2": 0.03,
+                  "wall_conduction_area_source": "synthetic full-domain area partitioned by explicit cell fraction"
+                },
+                "radiation": {
+                  "definition": "EXPLICIT_NET_RATE_GAS_TO_WALL_POSITIVE",
+                  "q_rad_net_W": 900.0,
+                  "source": "synthetic full-domain nonzero net rate partitioned by cell fraction; not a radiation model"
+                },
+                "coolant_side_boundary": {
+                  "mode": "PRESCRIBED_FILM_COEFFICIENT_AND_BULK_TEMPERATURE",
+                  "h_c_W_m2K": 1379.0892276407471,
+                  "h_c_source": "computed from supplied coolant closure: synthetic Gnielinski applicability domain for code verification only",
+                  "bulk_temperature_K": 334.5824292504572,
+                  "bulk_temperature_source": "current segment mean bulk state in coupled iteration"
+                },
+                "wall_conduction": {
+                  "model": "STEADY_1D_CONSTANT_K_RESISTANCE",
+                  "resistance_K_W": 0.0033333333333333335
+                },
+                "wall_solution": {
+                  "gas_resistance_K_W": 0.0014909273714571163,
+                  "wall_resistance_K_W": 0.0033333333333333335,
+                  "coolant_resistance_K_W": 0.012085270722605002,
+                  "q_conv_W": 146262.68871786422,
+                  "q_rad_net_W": 900.0,
+                  "q_total_W": 147162.68871786422,
+                  "gas_side_wall_temperature_K": 2603.6256583985087,
+                  "coolant_side_wall_temperature_K": 2113.083362672295,
+                  "q_conduction_W": 147162.68871786405,
+                  "q_coolant_W": 147162.68871786422,
+                  "gas_balance_residual_W": 0.0,
+                  "wall_balance_residual_W": 1.7462298274040222e-10,
+                  "coolant_balance_residual_W": -1.7462298274040222e-10
+                },
+                "coolant_interface": {
+                  "interface_version": "SPACE_Y_WALL_COOLANT_V1",
+                  "run_id": "M0-REFINEMENT-SYNTHETIC-001:N:N-X0",
+                  "case_id": "NON_DESIGN_SYNTHETIC_CONSTANT_GAS_FIELD",
+                  "segment_id": "N-X0",
+                  "spatial_basis": "ONE_SYNTHETIC_SINGLE_COOLANT_PATH_FIXED_DOMAIN:N",
+                  "mode": "PRESCRIBED_FILM_COEFFICIENT_AND_BULK_TEMPERATURE",
+                  "heat_rate_sign_convention": "POSITIVE_WALL_TO_COOLANT",
+                  "coolant_wetted_area_m2": 0.06,
+                  "bulk_temperature_K": 334.5824292504572,
+                  "h_c_W_m2K": 1379.0892276407471,
+                  "wall_temperature_coolant_side_K": 2113.083362672295,
+                  "heat_rate_into_coolant_W": 147162.68871786422,
+                  "units": {
+                    "temperature": "K",
+                    "heat_rate": "W",
+                    "area": "m2",
+                    "heat_transfer_coefficient": "W/(m2 K)"
+                  },
+                  "coolant_state_update": "NOT_RUN",
+                  "pressure_loss_update": "NOT_RUN",
+                  "applicability_status": "MODEL_U",
+                  "reason": "prescribed Robin boundary only; no coolant property or closure evaluation",
+                  "required_before_state_update": [
+                    "I02 inlet absolute pressure and source",
+                    "I03 inlet thermodynamic state and source",
+                    "I04 path mass flow and boundary role",
+                    "I05-I06 channel path and geometry",
+                    "I09-I12 local flow geometry and area basis",
+                    "I15 coolant property model and valid range",
+                    "I18 coolant closure version and applicability domain",
+                    "I19 supported local-loss inputs",
+                    "I20 spatial basis",
+                    "I21-I23 time/numerical/residual definitions"
+                  ]
+                },
+                "implemented_models": [
+                  "single-segment steady gas-film/wall/coolant-film resistance network",
+                  "Bartz sigma fixed-point iteration with computed gas-side wall temperature",
+                  "explicit net-radiation rate without a default",
+                  "independent gas, wall-conduction, and coolant energy residuals"
+                ],
+                "not_implemented": [
+                  "coolant enthalpy or pressure-loss state update",
+                  "coolant closure applicability evaluation",
+                  "temperature-dependent or multidimensional wall conduction",
+                  "multiple segments or axial conduction",
+                  "CEA station interpolation",
+                  "radiation model calculation",
+                  "uncertainty propagation or safety-allowable assessment"
+                ],
+                "physical_validation_v01_v12": "NOT_RUN",
+                "validated_engine_prediction": false
+              },
+              "coolant_solution": {
+                "inlet": {
+                  "temperature_K": 300.0,
+                  "pressure_Pa_abs": 1000000.0,
+                  "enthalpy_J_kg": 100000.0,
+                  "density_kg_m3": 820.0,
+                  "viscosity_Pa_s": 0.0015,
+                  "cp_J_kgK": 1950.0,
+                  "conductivity_W_mK": 0.15
+                },
+                "mean_evaluation_state": {
+                  "temperature_K": 334.5824292504572,
+                  "pressure_Pa_abs": 999692.8015034588,
+                  "enthalpy_J_kg": 172623.10142596014,
+                  "density_kg_m3": 799.2505424497257,
+                  "viscosity_Pa_s": 0.0012233405659963425,
+                  "cp_J_kgK": 2053.7472877513715,
+                  "conductivity_W_mK": 0.15691648585009144
+                },
+                "outlet": {
+                  "temperature_K": 369.1648585081201,
+                  "pressure_Pa_abs": 999385.603006939,
+                  "enthalpy_J_kg": 247162.68871786428,
+                  "density_kg_m3": 782.3340565967519,
+                  "viscosity_Pa_s": 0.001048893710645013,
+                  "cp_J_kgK": 2125.5531446774935,
+                  "conductivity_W_mK": 0.16255531446774935
+                },
+                "local_closures": {
+                  "Reynolds": 8174.338592177362,
+                  "Prandtl": 16.011270936894693,
+                  "darcy_factor": 0.03273714199889737,
+                  "Nusselt": 87.88682847245548,
+                  "h_c_W_m2K": 1379.0892276407471,
+                  "velocity_m_s": 1.2511721254951813,
+                  "pressure_drop_Pa": 614.3969930609699,
+                  "relative_roughness": 9.999999999999999e-05,
+                  "heat_transfer_applicability": {
+                    "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                    "reasons": []
+                  },
+                  "friction_applicability": {
+                    "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                    "source": "synthetic Colebrook applicability domain for code verification only",
+                    "re_range": [
+                      4000.0,
+                      1000000.0
+                    ],
+                    "relative_roughness_range": [
+                      0.0,
+                      0.01
+                    ]
+                  }
+                },
+                "mass_flow_kg_s": 1.0,
+                "heat_rate_into_coolant_W": 147162.68871786422,
+                "coolant_energy_residual_W": -5.820766091346741e-11,
+                "outlet_temperature_update_residual_K": 7.205699148471467e-09,
+                "outlet_pressure_update_residual_Pa": 2.153683453798294e-08,
+                "bulk_single_phase_status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "bulk_single_phase_domain": {
+                  "classification": "SYNTHETIC_SINGLE_PHASE_LIQUID_DOMAIN",
+                  "source": "synthetic bounded domain for stop-rule testing; not a real-fluid phase envelope",
+                  "temperature_min_K": 250.0,
+                  "temperature_max_K": 500.0,
+                  "pressure_min_Pa_abs": 500000.0,
+                  "pressure_max_Pa_abs": 2000000.0
+                },
+                "wall_phase_change_status": "NOT_EVALUATED",
+                "wall_phase_change_reason": "no saturation, ONB, CHF, dryout, or two-phase closure was supplied",
+                "status": "MODEL_U"
+              },
+              "qoi": {
+                "Y01": {
+                  "value": 2603.6256583985087,
+                  "unit": "K",
+                  "status": "MODEL_U"
+                },
+                "Y02": {
+                  "value": 614.3969930609455,
+                  "unit": "Pa",
+                  "status": "MODEL_U"
+                },
+                "Y03": {
+                  "value": 147162.68871786422,
+                  "unit": "W",
+                  "status": "MODEL_U"
+                },
+                "Y04": {
+                  "value": 999385.603006939,
+                  "unit": "Pa(a)",
+                  "status": "MODEL_U"
+                },
+                "Y05": {
+                  "value": 369.1648585081201,
+                  "unit": "K",
+                  "status": "MODEL_U"
+                }
+              },
+              "checks": {
+                "coupled_temperature_update_K": 7.205699148471467e-09,
+                "coupled_pressure_update_Pa": 2.153683453798294e-08,
+                "coolant_energy_residual_W": -5.820766091346741e-11,
+                "wall_energy_residual_max_W": 1.7462298274040222e-10,
+                "heat_transfer_closure": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "friction_closure": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "bulk_single_phase": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "wall_phase_change": "NOT_EVALUATED"
+              },
+              "implemented_models": [
+                "single-segment nested GAS-WALL and coolant-state fixed-point iteration",
+                "bounded temperature-tabulated variable coolant properties without extrapolation",
+                "conditional supplied-domain Gnielinski heat transfer",
+                "conditional supplied-domain Colebrook Darcy friction",
+                "Darcy-Weisbach friction and explicit local loss",
+                "coolant enthalpy energy balance and pressure update"
+              ],
+              "not_implemented": [
+                "wall boiling, ONB, CHF, dryout, or two-phase flow",
+                "pressure-dependent coolant properties within the supplied table",
+                "acceleration pressure drop",
+                "multiple segments, parallel distribution, or axial conduction",
+                "CEA station interpolation",
+                "uncertainty propagation or safety-allowable assessment"
+              ],
+              "physical_validation_v01_v12": "NOT_RUN",
+              "validated_engine_prediction": false
+            },
+            "checks": {
+              "mass_residual_kg_s": 0.0,
+              "coolant_energy_residual_W": -5.820766091346741e-11,
+              "wall_energy_residual_max_W": 1.7462298274040222e-10
+            }
+          }
+        ],
+        "coolant_path_boundary": {
+          "inlet": {
+            "segment_id": "N-X0",
+            "temperature_K": 300.0,
+            "pressure_Pa_abs": 1000000.0,
+            "enthalpy_J_kg": 100000.0,
+            "mass_flow_kg_s": 1.0
+          },
+          "outlet": {
+            "segment_id": "N-X0",
+            "temperature_K": 369.1648585081201,
+            "pressure_Pa_abs": 999385.603006939,
+            "enthalpy_J_kg": 247162.68871786428,
+            "mass_flow_kg_s": 1.0
+          }
+        },
+        "qoi": {
+          "Y01": {
+            "value": 2603.6256583985087,
+            "unit": "K",
+            "location": "N-X0",
+            "status": "MODEL_U"
+          },
+          "Y02": {
+            "value": 614.3969930609455,
+            "unit": "Pa",
+            "status": "MODEL_U"
+          },
+          "Y03": {
+            "value": 147162.68871786422,
+            "unit": "W",
+            "status": "MODEL_U"
+          },
+          "Y04": {
+            "value": 999385.603006939,
+            "unit": "Pa(a)",
+            "status": "MODEL_U"
+          },
+          "Y05": {
+            "value": 369.1648585081201,
+            "unit": "K",
+            "status": "MODEL_U"
+          }
+        },
+        "checks": {
+          "segment_count": 1,
+          "mass_residual_max_kg_s": 0.0,
+          "segment_coolant_energy_residual_max_W": 5.820766091346741e-11,
+          "segment_wall_energy_residual_max_W": 1.7462298274040222e-10,
+          "total_heat_into_coolant_W": 147162.68871786422,
+          "boundary_coolant_enthalpy_rise_W": 147162.68871786428,
+          "total_energy_residual_W": -5.820766091346741e-11,
+          "pressure_drop_sum_Pa": 614.3969930609455,
+          "pressure_drop_sum_residual_Pa": 0.0,
+          "enthalpy_continuity_residual_max_J_kg": 0.0,
+          "pressure_continuity_residual_max_Pa": 0.0,
+          "continuity": [],
+          "cea_station_mapping": "EXPLICIT_NO_INTERPOLATION_PER_SEGMENT"
+        },
+        "implemented_models": [
+          "single-path axial marching in explicit coolant-flow order",
+          "explicit increasing or decreasing gas-coordinate coolant direction",
+          "segment outlet enthalpy and pressure propagation to downstream inlet",
+          "per-segment explicit CEA station mapping without interpolation",
+          "single-segment GAS-WALL-COOLANT solver reuse",
+          "per-segment and whole-path conservation residuals",
+          "upstream failure blocking and status propagation"
+        ],
+        "not_implemented": [
+          "parallel-channel distribution or manifold network",
+          "axial wall conduction",
+          "CEA station interpolation",
+          "wall boiling, phase change, or two-phase flow",
+          "acceleration pressure drop",
+          "uncertainty propagation, safety allowables, or engine optimization"
+        ],
+        "physical_validation_v01_v12": "NOT_RUN",
+        "validated_engine_prediction": false
+      },
+      "normalized_residuals": {
+        "total_energy": 3.955327360528275e-16,
+        "segment_coolant_energy_max": 3.955327360528275e-16,
+        "segment_wall_energy_max": 1.1865982081584826e-15,
+        "pressure_drop_sum": 0.0,
+        "mass": 0.0
+      }
+    },
+    {
+      "label": "2N",
+      "cell_count": 2,
+      "gas_state_policy": "EXPLICIT_PER_CELL_NO_INTERPOLATION",
+      "result": {
+        "run_id": "M0-REFINEMENT-SYNTHETIC-001:2N",
+        "case_id": "NON_DESIGN_SYNTHETIC_CONSTANT_GAS_FIELD",
+        "geometry_version": "SYNTHETIC-REFINEMENT-GEOMETRY-V1",
+        "spatial_basis": "ONE_SYNTHETIC_SINGLE_COOLANT_PATH_FIXED_DOMAIN:2N",
+        "model_scope": "STEADY_SINGLE_PATH_MULTISEGMENT_GAS_WALL_COOLANT",
+        "status": "MODEL_U",
+        "numerical_status": "PASS",
+        "coolant_flow_direction": "DECREASING_GAS_AXIAL_COORDINATE",
+        "gas_axial_order_segment_ids": [
+          "2N-X0",
+          "2N-X1"
+        ],
+        "coolant_flow_order_segment_ids": [
+          "2N-X1",
+          "2N-X0"
+        ],
+        "segments": [
+          {
+            "segment_id": "2N-X1",
+            "coolant_path_index": 0,
+            "gas_axial_coordinate_m": 0.225,
+            "gas_axial_coordinate_source": "explicit synthetic cell center",
+            "cea_station_mapping": {
+              "method": "EXPLICIT_NO_INTERPOLATION",
+              "source": "constant manufactured gas field: explicit station 3 reused without spatial interpolation",
+              "cea_run_artifact": "../artifacts/phase1/cea_rp1311_example13_rocket_run.json",
+              "chamber_station_index": 0,
+              "cea_station_index": 3,
+              "transport_basis": "frozen"
+            },
+            "status": "MODEL_U",
+            "execution_status": "EXECUTED",
+            "upstream_segment_id": null,
+            "solution": {
+              "run_id": "M0-REFINEMENT-SYNTHETIC-001:2N:2N-X1",
+              "case_id": "NON_DESIGN_SYNTHETIC_CONSTANT_GAS_FIELD",
+              "segment_id": "2N-X1",
+              "geometry_version": "SYNTHETIC-REFINEMENT-GEOMETRY-V1",
+              "spatial_basis": "ONE_SYNTHETIC_SINGLE_COOLANT_PATH_FIXED_DOMAIN:2N",
+              "status": "MODEL_U",
+              "numerical_status": "PASS",
+              "iterations": 35,
+              "cea_artifact_sha256": "5b2469ea75b95ead9aee37a67770f761474b569ce47125e1224d0340841e68f0",
+              "interface_consumption": {
+                "interface_version": "SPACE_Y_WALL_COOLANT_V1",
+                "status": "CONSUMED_BY_OUTER_COUPLED_COOLANT_SOLVER",
+                "note": "the nested GAS-WALL record retains its local NOT_RUN marker; the outer solver performs the coolant state and pressure update"
+              },
+              "gas_wall_solution": {
+                "run_id": "M0-REFINEMENT-SYNTHETIC-001:2N:2N-X1",
+                "case_id": "NON_DESIGN_SYNTHETIC_CONSTANT_GAS_FIELD",
+                "segment_id": "2N-X1",
+                "geometry_version": "SYNTHETIC-REFINEMENT-GEOMETRY-V1",
+                "spatial_basis": "ONE_SYNTHETIC_SINGLE_COOLANT_PATH_FIXED_DOMAIN:2N",
+                "status": "MODEL_U",
+                "numerical_status": "PASS",
+                "formula_version": "RPA_2012_BASIC_BARTZ",
+                "transport_basis": "frozen",
+                "cea_station_index": 3,
+                "cea_artifact_sha256": "5b2469ea75b95ead9aee37a67770f761474b569ce47125e1224d0340841e68f0",
+                "iterations": 37,
+                "wall_temperature_update_residual_K": 9.023551683640108e-09,
+                "energy_residual_max_W": 2.9103830456733704e-11,
+                "bartz": {
+                  "wall_temperature_used_K": 2616.475294186637,
+                  "sigma": 0.8958210233942985,
+                  "h_g_W_m2K": 22316.45048248972,
+                  "adiabatic_wall_temperature_K": 2821.6927044308845,
+                  "chamber_reference": {
+                    "temperature_K": 3002.5400574804275,
+                    "pressure_Pa_abs": 20684271.240234375,
+                    "c_star_m_s": 1946.6824123708707,
+                    "viscosity_Pa_s": 7.992036518561244e-05,
+                    "cp_J_kgK": 3642.6615839196998,
+                    "Pr": 0.47879491138342495,
+                    "throat_diameter_m": 0.1,
+                    "curvature_radius_m": 0.15
+                  },
+                  "station": {
+                    "Mach": 2.1037567956327248,
+                    "gamma": 1.1790641349149722,
+                    "area_ratio_A_At": 2.4856568126753125,
+                    "Pr": 0.4853450214590086
+                  }
+                },
+                "geometry": {
+                  "throat_diameter_m": 0.1,
+                  "throat_diameter_source": "synthetic non-design fixture; not SPACE Y geometry",
+                  "bartz_curvature_radius_m": 0.15,
+                  "bartz_curvature_radius_source": "synthetic non-design fixture; not SPACE Y geometry",
+                  "gas_area_m2": 0.015,
+                  "gas_area_source": "synthetic full-domain area partitioned by explicit cell fraction",
+                  "coolant_area_m2": 0.03,
+                  "coolant_area_source": "synthetic full-domain area partitioned by explicit cell fraction",
+                  "wall_thickness_m": 0.002,
+                  "wall_thickness_source": "synthetic non-design fixture; not SPACE Y wall thickness",
+                  "wall_conductivity_W_mK": 20.0,
+                  "wall_conductivity_source": "synthetic constant for arithmetic verification; not a material selection",
+                  "wall_conduction_area_m2": 0.015,
+                  "wall_conduction_area_source": "synthetic full-domain area partitioned by explicit cell fraction"
+                },
+                "radiation": {
+                  "definition": "EXPLICIT_NET_RATE_GAS_TO_WALL_POSITIVE",
+                  "q_rad_net_W": 450.0,
+                  "source": "synthetic full-domain nonzero net rate partitioned by cell fraction; not a radiation model"
+                },
+                "coolant_side_boundary": {
+                  "mode": "PRESCRIBED_FILM_COEFFICIENT_AND_BULK_TEMPERATURE",
+                  "h_c_W_m2K": 1253.296621046019,
+                  "h_c_source": "computed from supplied coolant closure: synthetic Gnielinski applicability domain for code verification only",
+                  "bulk_temperature_K": 316.4633006231871,
+                  "bulk_temperature_source": "current segment mean bulk state in coupled iteration"
+                },
+                "wall_conduction": {
+                  "model": "STEADY_1D_CONSTANT_K_RESISTANCE",
+                  "resistance_K_W": 0.006666666666666667
+                },
+                "wall_solution": {
+                  "gas_resistance_K_W": 0.0029873328968231623,
+                  "wall_resistance_K_W": 0.006666666666666667,
+                  "coolant_resistance_K_W": 0.026596523738740205,
+                  "q_conv_W": 68695.86260488743,
+                  "q_rad_net_W": 450.0,
+                  "q_total_W": 69145.86260488743,
+                  "gas_side_wall_temperature_K": 2616.4752941956604,
+                  "coolant_side_wall_temperature_K": 2155.5028768297443,
+                  "q_conduction_W": 69145.8626048874,
+                  "q_coolant_W": 69145.86260488743,
+                  "gas_balance_residual_W": 0.0,
+                  "wall_balance_residual_W": 2.9103830456733704e-11,
+                  "coolant_balance_residual_W": -2.9103830456733704e-11
+                },
+                "coolant_interface": {
+                  "interface_version": "SPACE_Y_WALL_COOLANT_V1",
+                  "run_id": "M0-REFINEMENT-SYNTHETIC-001:2N:2N-X1",
+                  "case_id": "NON_DESIGN_SYNTHETIC_CONSTANT_GAS_FIELD",
+                  "segment_id": "2N-X1",
+                  "spatial_basis": "ONE_SYNTHETIC_SINGLE_COOLANT_PATH_FIXED_DOMAIN:2N",
+                  "mode": "PRESCRIBED_FILM_COEFFICIENT_AND_BULK_TEMPERATURE",
+                  "heat_rate_sign_convention": "POSITIVE_WALL_TO_COOLANT",
+                  "coolant_wetted_area_m2": 0.03,
+                  "bulk_temperature_K": 316.4633006231871,
+                  "h_c_W_m2K": 1253.296621046019,
+                  "wall_temperature_coolant_side_K": 2155.5028768297443,
+                  "heat_rate_into_coolant_W": 69145.86260488743,
+                  "units": {
+                    "temperature": "K",
+                    "heat_rate": "W",
+                    "area": "m2",
+                    "heat_transfer_coefficient": "W/(m2 K)"
+                  },
+                  "coolant_state_update": "NOT_RUN",
+                  "pressure_loss_update": "NOT_RUN",
+                  "applicability_status": "MODEL_U",
+                  "reason": "prescribed Robin boundary only; no coolant property or closure evaluation",
+                  "required_before_state_update": [
+                    "I02 inlet absolute pressure and source",
+                    "I03 inlet thermodynamic state and source",
+                    "I04 path mass flow and boundary role",
+                    "I05-I06 channel path and geometry",
+                    "I09-I12 local flow geometry and area basis",
+                    "I15 coolant property model and valid range",
+                    "I18 coolant closure version and applicability domain",
+                    "I19 supported local-loss inputs",
+                    "I20 spatial basis",
+                    "I21-I23 time/numerical/residual definitions"
+                  ]
+                },
+                "implemented_models": [
+                  "single-segment steady gas-film/wall/coolant-film resistance network",
+                  "Bartz sigma fixed-point iteration with computed gas-side wall temperature",
+                  "explicit net-radiation rate without a default",
+                  "independent gas, wall-conduction, and coolant energy residuals"
+                ],
+                "not_implemented": [
+                  "coolant enthalpy or pressure-loss state update",
+                  "coolant closure applicability evaluation",
+                  "temperature-dependent or multidimensional wall conduction",
+                  "multiple segments or axial conduction",
+                  "CEA station interpolation",
+                  "radiation model calculation",
+                  "uncertainty propagation or safety-allowable assessment"
+                ],
+                "physical_validation_v01_v12": "NOT_RUN",
+                "validated_engine_prediction": false
+              },
+              "coolant_solution": {
+                "inlet": {
+                  "temperature_K": 300.0,
+                  "pressure_Pa_abs": 1000000.0,
+                  "enthalpy_J_kg": 100000.0,
+                  "density_kg_m3": 820.0,
+                  "viscosity_Pa_s": 0.0015,
+                  "cp_J_kgK": 1950.0,
+                  "conductivity_W_mK": 0.15
+                },
+                "mean_evaluation_state": {
+                  "temperature_K": 316.4633006231871,
+                  "pressure_Pa_abs": 999843.8127011552,
+                  "enthalpy_J_kg": 134572.93130869287,
+                  "density_kg_m3": 810.1220196260878,
+                  "viscosity_Pa_s": 0.0013682935950145034,
+                  "cp_J_kgK": 1999.3899018695613,
+                  "conductivity_W_mK": 0.1532926601246374
+                },
+                "outlet": {
+                  "temperature_K": 332.9266012404226,
+                  "pressure_Pa_abs": 999687.6254023387,
+                  "enthalpy_J_kg": 169145.86260488746,
+                  "density_kg_m3": 800.2440392557464,
+                  "viscosity_Pa_s": 0.0012365871900766193,
+                  "cp_J_kgK": 2048.779803721268,
+                  "conductivity_W_mK": 0.15658532024808453
+                },
+                "local_closures": {
+                  "Reynolds": 7308.373024938412,
+                  "Prandtl": 17.84659744596019,
+                  "darcy_factor": 0.03374153865829909,
+                  "Nusselt": 81.75842339920277,
+                  "h_c_W_m2K": 1253.296621046019,
+                  "velocity_m_s": 1.2343819520688384,
+                  "pressure_drop_Pa": 312.3745976612805,
+                  "relative_roughness": 9.999999999999999e-05,
+                  "heat_transfer_applicability": {
+                    "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                    "reasons": []
+                  },
+                  "friction_applicability": {
+                    "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                    "source": "synthetic Colebrook applicability domain for code verification only",
+                    "re_range": [
+                      4000.0,
+                      1000000.0
+                    ],
+                    "relative_roughness_range": [
+                      0.0,
+                      0.01
+                    ]
+                  }
+                },
+                "mass_flow_kg_s": 1.0,
+                "heat_rate_into_coolant_W": 69145.86260488743,
+                "coolant_energy_residual_W": -2.9103830456733704e-11,
+                "outlet_temperature_update_residual_K": -5.95156279814546e-09,
+                "outlet_pressure_update_residual_Pa": 2.8172507882118225e-08,
+                "bulk_single_phase_status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "bulk_single_phase_domain": {
+                  "classification": "SYNTHETIC_SINGLE_PHASE_LIQUID_DOMAIN",
+                  "source": "synthetic bounded domain for stop-rule testing; not a real-fluid phase envelope",
+                  "temperature_min_K": 250.0,
+                  "temperature_max_K": 500.0,
+                  "pressure_min_Pa_abs": 500000.0,
+                  "pressure_max_Pa_abs": 2000000.0
+                },
+                "wall_phase_change_status": "NOT_EVALUATED",
+                "wall_phase_change_reason": "no saturation, ONB, CHF, dryout, or two-phase closure was supplied",
+                "status": "MODEL_U"
+              },
+              "qoi": {
+                "Y01": {
+                  "value": 2616.4752941956604,
+                  "unit": "K",
+                  "status": "MODEL_U"
+                },
+                "Y02": {
+                  "value": 312.3745976613136,
+                  "unit": "Pa",
+                  "status": "MODEL_U"
+                },
+                "Y03": {
+                  "value": 69145.86260488743,
+                  "unit": "W",
+                  "status": "MODEL_U"
+                },
+                "Y04": {
+                  "value": 999687.6254023387,
+                  "unit": "Pa(a)",
+                  "status": "MODEL_U"
+                },
+                "Y05": {
+                  "value": 332.9266012404226,
+                  "unit": "K",
+                  "status": "MODEL_U"
+                }
+              },
+              "checks": {
+                "coupled_temperature_update_K": -5.95156279814546e-09,
+                "coupled_pressure_update_Pa": 2.8172507882118225e-08,
+                "coolant_energy_residual_W": -2.9103830456733704e-11,
+                "wall_energy_residual_max_W": 2.9103830456733704e-11,
+                "heat_transfer_closure": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "friction_closure": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "bulk_single_phase": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "wall_phase_change": "NOT_EVALUATED"
+              },
+              "implemented_models": [
+                "single-segment nested GAS-WALL and coolant-state fixed-point iteration",
+                "bounded temperature-tabulated variable coolant properties without extrapolation",
+                "conditional supplied-domain Gnielinski heat transfer",
+                "conditional supplied-domain Colebrook Darcy friction",
+                "Darcy-Weisbach friction and explicit local loss",
+                "coolant enthalpy energy balance and pressure update"
+              ],
+              "not_implemented": [
+                "wall boiling, ONB, CHF, dryout, or two-phase flow",
+                "pressure-dependent coolant properties within the supplied table",
+                "acceleration pressure drop",
+                "multiple segments, parallel distribution, or axial conduction",
+                "CEA station interpolation",
+                "uncertainty propagation or safety-allowable assessment"
+              ],
+              "physical_validation_v01_v12": "NOT_RUN",
+              "validated_engine_prediction": false
+            },
+            "checks": {
+              "mass_residual_kg_s": 0.0,
+              "coolant_energy_residual_W": -2.9103830456733704e-11,
+              "wall_energy_residual_max_W": 2.9103830456733704e-11
+            }
+          },
+          {
+            "segment_id": "2N-X0",
+            "coolant_path_index": 1,
+            "gas_axial_coordinate_m": 0.075,
+            "gas_axial_coordinate_source": "explicit synthetic cell center",
+            "cea_station_mapping": {
+              "method": "EXPLICIT_NO_INTERPOLATION",
+              "source": "constant manufactured gas field: explicit station 3 reused without spatial interpolation",
+              "cea_run_artifact": "../artifacts/phase1/cea_rp1311_example13_rocket_run.json",
+              "chamber_station_index": 0,
+              "cea_station_index": 3,
+              "transport_basis": "frozen"
+            },
+            "status": "MODEL_U",
+            "execution_status": "EXECUTED",
+            "upstream_segment_id": "2N-X1",
+            "solution": {
+              "run_id": "M0-REFINEMENT-SYNTHETIC-001:2N:2N-X0",
+              "case_id": "NON_DESIGN_SYNTHETIC_CONSTANT_GAS_FIELD",
+              "segment_id": "2N-X0",
+              "geometry_version": "SYNTHETIC-REFINEMENT-GEOMETRY-V1",
+              "spatial_basis": "ONE_SYNTHETIC_SINGLE_COOLANT_PATH_FIXED_DOMAIN:2N",
+              "status": "MODEL_U",
+              "numerical_status": "PASS",
+              "iterations": 33,
+              "cea_artifact_sha256": "5b2469ea75b95ead9aee37a67770f761474b569ce47125e1224d0340841e68f0",
+              "interface_consumption": {
+                "interface_version": "SPACE_Y_WALL_COOLANT_V1",
+                "status": "CONSUMED_BY_OUTER_COUPLED_COOLANT_SOLVER",
+                "note": "the nested GAS-WALL record retains its local NOT_RUN marker; the outer solver performs the coolant state and pressure update"
+              },
+              "gas_wall_solution": {
+                "run_id": "M0-REFINEMENT-SYNTHETIC-001:2N:2N-X0",
+                "case_id": "NON_DESIGN_SYNTHETIC_CONSTANT_GAS_FIELD",
+                "segment_id": "2N-X0",
+                "geometry_version": "SYNTHETIC-REFINEMENT-GEOMETRY-V1",
+                "spatial_basis": "ONE_SYNTHETIC_SINGLE_COOLANT_PATH_FIXED_DOMAIN:2N",
+                "status": "MODEL_U",
+                "numerical_status": "PASS",
+                "formula_version": "RPA_2012_BASIC_BARTZ",
+                "transport_basis": "frozen",
+                "cea_station_index": 3,
+                "cea_artifact_sha256": "5b2469ea75b95ead9aee37a67770f761474b569ce47125e1224d0340841e68f0",
+                "iterations": 37,
+                "wall_temperature_update_residual_K": 7.950802682898939e-09,
+                "energy_residual_max_W": 4.3655745685100555e-11,
+                "bartz": {
+                  "wall_temperature_used_K": 2591.483402260823,
+                  "sigma": 0.8990288438649195,
+                  "h_g_W_m2K": 22396.362836430784,
+                  "adiabatic_wall_temperature_K": 2821.6927044308845,
+                  "chamber_reference": {
+                    "temperature_K": 3002.5400574804275,
+                    "pressure_Pa_abs": 20684271.240234375,
+                    "c_star_m_s": 1946.6824123708707,
+                    "viscosity_Pa_s": 7.992036518561244e-05,
+                    "cp_J_kgK": 3642.6615839196998,
+                    "Pr": 0.47879491138342495,
+                    "throat_diameter_m": 0.1,
+                    "curvature_radius_m": 0.15
+                  },
+                  "station": {
+                    "Mach": 2.1037567956327248,
+                    "gamma": 1.1790641349149722,
+                    "area_ratio_A_At": 2.4856568126753125,
+                    "Pr": 0.4853450214590086
+                  }
+                },
+                "geometry": {
+                  "throat_diameter_m": 0.1,
+                  "throat_diameter_source": "synthetic non-design fixture; not SPACE Y geometry",
+                  "bartz_curvature_radius_m": 0.15,
+                  "bartz_curvature_radius_source": "synthetic non-design fixture; not SPACE Y geometry",
+                  "gas_area_m2": 0.015,
+                  "gas_area_source": "synthetic full-domain area partitioned by explicit cell fraction",
+                  "coolant_area_m2": 0.03,
+                  "coolant_area_source": "synthetic full-domain area partitioned by explicit cell fraction",
+                  "wall_thickness_m": 0.002,
+                  "wall_thickness_source": "synthetic non-design fixture; not SPACE Y wall thickness",
+                  "wall_conductivity_W_mK": 20.0,
+                  "wall_conductivity_source": "synthetic constant for arithmetic verification; not a material selection",
+                  "wall_conduction_area_m2": 0.015,
+                  "wall_conduction_area_source": "synthetic full-domain area partitioned by explicit cell fraction"
+                },
+                "radiation": {
+                  "definition": "EXPLICIT_NET_RATE_GAS_TO_WALL_POSITIVE",
+                  "q_rad_net_W": 450.0,
+                  "source": "synthetic full-domain nonzero net rate partitioned by cell fraction; not a radiation model"
+                },
+                "coolant_side_boundary": {
+                  "mode": "PRESCRIBED_FILM_COEFFICIENT_AND_BULK_TEMPERATURE",
+                  "h_c_W_m2K": 1505.847357190481,
+                  "h_c_source": "computed from supplied coolant closure: synthetic Gnielinski applicability domain for code verification only",
+                  "bulk_temperature_K": 350.9936707287966,
+                  "bulk_temperature_source": "current segment mean bulk state in coupled iteration"
+                },
+                "wall_conduction": {
+                  "model": "STEADY_1D_CONSTANT_K_RESISTANCE",
+                  "resistance_K_W": 0.006666666666666667
+                },
+                "wall_solution": {
+                  "gas_resistance_K_W": 0.0029766738087589877,
+                  "wall_resistance_K_W": 0.006666666666666667,
+                  "coolant_resistance_K_W": 0.02213593109166433,
+                  "q_conv_W": 77337.76589316245,
+                  "q_rad_net_W": 450.0,
+                  "q_total_W": 77787.76589316245,
+                  "gas_side_wall_temperature_K": 2591.4834022687737,
+                  "coolant_side_wall_temperature_K": 2072.898296314357,
+                  "q_conduction_W": 77787.76589316248,
+                  "q_coolant_W": 77787.76589316243,
+                  "gas_balance_residual_W": 0.0,
+                  "wall_balance_residual_W": -2.9103830456733704e-11,
+                  "coolant_balance_residual_W": 4.3655745685100555e-11
+                },
+                "coolant_interface": {
+                  "interface_version": "SPACE_Y_WALL_COOLANT_V1",
+                  "run_id": "M0-REFINEMENT-SYNTHETIC-001:2N:2N-X0",
+                  "case_id": "NON_DESIGN_SYNTHETIC_CONSTANT_GAS_FIELD",
+                  "segment_id": "2N-X0",
+                  "spatial_basis": "ONE_SYNTHETIC_SINGLE_COOLANT_PATH_FIXED_DOMAIN:2N",
+                  "mode": "PRESCRIBED_FILM_COEFFICIENT_AND_BULK_TEMPERATURE",
+                  "heat_rate_sign_convention": "POSITIVE_WALL_TO_COOLANT",
+                  "coolant_wetted_area_m2": 0.03,
+                  "bulk_temperature_K": 350.9936707287966,
+                  "h_c_W_m2K": 1505.847357190481,
+                  "wall_temperature_coolant_side_K": 2072.898296314357,
+                  "heat_rate_into_coolant_W": 77787.76589316243,
+                  "units": {
+                    "temperature": "K",
+                    "heat_rate": "W",
+                    "area": "m2",
+                    "heat_transfer_coefficient": "W/(m2 K)"
+                  },
+                  "coolant_state_update": "NOT_RUN",
+                  "pressure_loss_update": "NOT_RUN",
+                  "applicability_status": "MODEL_U",
+                  "reason": "prescribed Robin boundary only; no coolant property or closure evaluation",
+                  "required_before_state_update": [
+                    "I02 inlet absolute pressure and source",
+                    "I03 inlet thermodynamic state and source",
+                    "I04 path mass flow and boundary role",
+                    "I05-I06 channel path and geometry",
+                    "I09-I12 local flow geometry and area basis",
+                    "I15 coolant property model and valid range",
+                    "I18 coolant closure version and applicability domain",
+                    "I19 supported local-loss inputs",
+                    "I20 spatial basis",
+                    "I21-I23 time/numerical/residual definitions"
+                  ]
+                },
+                "implemented_models": [
+                  "single-segment steady gas-film/wall/coolant-film resistance network",
+                  "Bartz sigma fixed-point iteration with computed gas-side wall temperature",
+                  "explicit net-radiation rate without a default",
+                  "independent gas, wall-conduction, and coolant energy residuals"
+                ],
+                "not_implemented": [
+                  "coolant enthalpy or pressure-loss state update",
+                  "coolant closure applicability evaluation",
+                  "temperature-dependent or multidimensional wall conduction",
+                  "multiple segments or axial conduction",
+                  "CEA station interpolation",
+                  "radiation model calculation",
+                  "uncertainty propagation or safety-allowable assessment"
+                ],
+                "physical_validation_v01_v12": "NOT_RUN",
+                "validated_engine_prediction": false
+              },
+              "coolant_solution": {
+                "inlet": {
+                  "temperature_K": 332.9266012404226,
+                  "pressure_Pa_abs": 999687.6254023387,
+                  "enthalpy_J_kg": 169145.86260488746,
+                  "density_kg_m3": 800.2440392557464,
+                  "viscosity_Pa_s": 0.0012365871900766193,
+                  "cp_J_kgK": 2048.779803721268,
+                  "conductivity_W_mK": 0.15658532024808453
+                },
+                "mean_evaluation_state": {
+                  "temperature_K": 350.9936707287966,
+                  "pressure_Pa_abs": 999536.5813665662,
+                  "enthalpy_J_kg": 207186.07560335248,
+                  "density_kg_m3": 789.6025317084814,
+                  "viscosity_Pa_s": 0.0010973502113898758,
+                  "cp_J_kgK": 2101.324894305062,
+                  "conductivity_W_mK": 0.1601324894305062
+                },
+                "outlet": {
+                  "temperature_K": 369.0607402263863,
+                  "pressure_Pa_abs": 999385.5373308897,
+                  "enthalpy_J_kg": 246933.6284980499,
+                  "density_kg_m3": 782.3757039094455,
+                  "viscosity_Pa_s": 0.0010491713593963033,
+                  "cp_J_kgK": 2125.4143203018484,
+                  "conductivity_W_mK": 0.16254143203018484
+                },
+                "local_closures": {
+                  "Reynolds": 9112.861050379035,
+                  "Prandtl": 14.399884278106919,
+                  "darcy_factor": 0.03180393413533689,
+                  "Nusselt": 94.03759115628962,
+                  "h_c_W_m2K": 1505.847357190481,
+                  "velocity_m_s": 1.2664599717484146,
+                  "pressure_drop_Pa": 302.088071448954,
+                  "relative_roughness": 9.999999999999999e-05,
+                  "heat_transfer_applicability": {
+                    "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                    "reasons": []
+                  },
+                  "friction_applicability": {
+                    "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                    "source": "synthetic Colebrook applicability domain for code verification only",
+                    "re_range": [
+                      4000.0,
+                      1000000.0
+                    ],
+                    "relative_roughness_range": [
+                      0.0,
+                      0.01
+                    ]
+                  }
+                },
+                "mass_flow_kg_s": 1.0,
+                "heat_rate_into_coolant_W": 77787.76589316245,
+                "coolant_energy_residual_W": 0.0,
+                "outlet_temperature_update_residual_K": 9.215682439389639e-09,
+                "outlet_pressure_update_residual_Pa": 9.604264050722122e-08,
+                "bulk_single_phase_status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "bulk_single_phase_domain": {
+                  "classification": "SYNTHETIC_SINGLE_PHASE_LIQUID_DOMAIN",
+                  "source": "synthetic bounded domain for stop-rule testing; not a real-fluid phase envelope",
+                  "temperature_min_K": 250.0,
+                  "temperature_max_K": 500.0,
+                  "pressure_min_Pa_abs": 500000.0,
+                  "pressure_max_Pa_abs": 2000000.0
+                },
+                "wall_phase_change_status": "NOT_EVALUATED",
+                "wall_phase_change_reason": "no saturation, ONB, CHF, dryout, or two-phase closure was supplied",
+                "status": "MODEL_U"
+              },
+              "qoi": {
+                "Y01": {
+                  "value": 2591.4834022687737,
+                  "unit": "K",
+                  "status": "MODEL_U"
+                },
+                "Y02": {
+                  "value": 302.0880714489613,
+                  "unit": "Pa",
+                  "status": "MODEL_U"
+                },
+                "Y03": {
+                  "value": 77787.76589316245,
+                  "unit": "W",
+                  "status": "MODEL_U"
+                },
+                "Y04": {
+                  "value": 999385.5373308897,
+                  "unit": "Pa(a)",
+                  "status": "MODEL_U"
+                },
+                "Y05": {
+                  "value": 369.0607402263863,
+                  "unit": "K",
+                  "status": "MODEL_U"
+                }
+              },
+              "checks": {
+                "coupled_temperature_update_K": 9.215682439389639e-09,
+                "coupled_pressure_update_Pa": 9.604264050722122e-08,
+                "coolant_energy_residual_W": 0.0,
+                "wall_energy_residual_max_W": 4.3655745685100555e-11,
+                "heat_transfer_closure": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "friction_closure": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "bulk_single_phase": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "wall_phase_change": "NOT_EVALUATED"
+              },
+              "implemented_models": [
+                "single-segment nested GAS-WALL and coolant-state fixed-point iteration",
+                "bounded temperature-tabulated variable coolant properties without extrapolation",
+                "conditional supplied-domain Gnielinski heat transfer",
+                "conditional supplied-domain Colebrook Darcy friction",
+                "Darcy-Weisbach friction and explicit local loss",
+                "coolant enthalpy energy balance and pressure update"
+              ],
+              "not_implemented": [
+                "wall boiling, ONB, CHF, dryout, or two-phase flow",
+                "pressure-dependent coolant properties within the supplied table",
+                "acceleration pressure drop",
+                "multiple segments, parallel distribution, or axial conduction",
+                "CEA station interpolation",
+                "uncertainty propagation or safety-allowable assessment"
+              ],
+              "physical_validation_v01_v12": "NOT_RUN",
+              "validated_engine_prediction": false
+            },
+            "checks": {
+              "mass_residual_kg_s": 0.0,
+              "coolant_energy_residual_W": 0.0,
+              "wall_energy_residual_max_W": 4.3655745685100555e-11
+            }
+          }
+        ],
+        "coolant_path_boundary": {
+          "inlet": {
+            "segment_id": "2N-X1",
+            "temperature_K": 300.0,
+            "pressure_Pa_abs": 1000000.0,
+            "enthalpy_J_kg": 100000.0,
+            "mass_flow_kg_s": 1.0
+          },
+          "outlet": {
+            "segment_id": "2N-X0",
+            "temperature_K": 369.0607402263863,
+            "pressure_Pa_abs": 999385.5373308897,
+            "enthalpy_J_kg": 246933.6284980499,
+            "mass_flow_kg_s": 1.0
+          }
+        },
+        "qoi": {
+          "Y01": {
+            "value": 2616.4752941956604,
+            "unit": "K",
+            "location": "2N-X1",
+            "status": "MODEL_U"
+          },
+          "Y02": {
+            "value": 614.4626691102749,
+            "unit": "Pa",
+            "status": "MODEL_U"
+          },
+          "Y03": {
+            "value": 146933.62849804986,
+            "unit": "W",
+            "status": "MODEL_U"
+          },
+          "Y04": {
+            "value": 999385.5373308897,
+            "unit": "Pa(a)",
+            "status": "MODEL_U"
+          },
+          "Y05": {
+            "value": 369.0607402263863,
+            "unit": "K",
+            "status": "MODEL_U"
+          }
+        },
+        "checks": {
+          "segment_count": 2,
+          "mass_residual_max_kg_s": 0.0,
+          "segment_coolant_energy_residual_max_W": 2.9103830456733704e-11,
+          "segment_wall_energy_residual_max_W": 4.3655745685100555e-11,
+          "total_heat_into_coolant_W": 146933.62849804986,
+          "boundary_coolant_enthalpy_rise_W": 146933.6284980499,
+          "total_energy_residual_W": -2.9103830456733704e-11,
+          "pressure_drop_sum_Pa": 614.4626691102749,
+          "pressure_drop_sum_residual_Pa": 0.0,
+          "enthalpy_continuity_residual_max_J_kg": 0.0,
+          "pressure_continuity_residual_max_Pa": 0.0,
+          "continuity": [
+            {
+              "from_segment_id": "2N-X1",
+              "to_segment_id": "2N-X0",
+              "enthalpy_residual_J_kg": 0.0,
+              "pressure_residual_Pa": 0.0,
+              "temperature_residual_K": 0.0
+            }
+          ],
+          "cea_station_mapping": "EXPLICIT_NO_INTERPOLATION_PER_SEGMENT"
+        },
+        "implemented_models": [
+          "single-path axial marching in explicit coolant-flow order",
+          "explicit increasing or decreasing gas-coordinate coolant direction",
+          "segment outlet enthalpy and pressure propagation to downstream inlet",
+          "per-segment explicit CEA station mapping without interpolation",
+          "single-segment GAS-WALL-COOLANT solver reuse",
+          "per-segment and whole-path conservation residuals",
+          "upstream failure blocking and status propagation"
+        ],
+        "not_implemented": [
+          "parallel-channel distribution or manifold network",
+          "axial wall conduction",
+          "CEA station interpolation",
+          "wall boiling, phase change, or two-phase flow",
+          "acceleration pressure drop",
+          "uncertainty propagation, safety allowables, or engine optimization"
+        ],
+        "physical_validation_v01_v12": "NOT_RUN",
+        "validated_engine_prediction": false
+      },
+      "normalized_residuals": {
+        "total_energy": 1.9807467326732476e-16,
+        "segment_coolant_energy_max": 1.9807467326732476e-16,
+        "segment_wall_energy_max": 2.9711200990098715e-16,
+        "pressure_drop_sum": 0.0,
+        "mass": 0.0
+      }
+    },
+    {
+      "label": "4N",
+      "cell_count": 4,
+      "gas_state_policy": "EXPLICIT_PER_CELL_NO_INTERPOLATION",
+      "result": {
+        "run_id": "M0-REFINEMENT-SYNTHETIC-001:4N",
+        "case_id": "NON_DESIGN_SYNTHETIC_CONSTANT_GAS_FIELD",
+        "geometry_version": "SYNTHETIC-REFINEMENT-GEOMETRY-V1",
+        "spatial_basis": "ONE_SYNTHETIC_SINGLE_COOLANT_PATH_FIXED_DOMAIN:4N",
+        "model_scope": "STEADY_SINGLE_PATH_MULTISEGMENT_GAS_WALL_COOLANT",
+        "status": "MODEL_U",
+        "numerical_status": "PASS",
+        "coolant_flow_direction": "DECREASING_GAS_AXIAL_COORDINATE",
+        "gas_axial_order_segment_ids": [
+          "4N-X0",
+          "4N-X1",
+          "4N-X2",
+          "4N-X3"
+        ],
+        "coolant_flow_order_segment_ids": [
+          "4N-X3",
+          "4N-X2",
+          "4N-X1",
+          "4N-X0"
+        ],
+        "segments": [
+          {
+            "segment_id": "4N-X3",
+            "coolant_path_index": 0,
+            "gas_axial_coordinate_m": 0.2625,
+            "gas_axial_coordinate_source": "explicit synthetic cell center",
+            "cea_station_mapping": {
+              "method": "EXPLICIT_NO_INTERPOLATION",
+              "source": "constant manufactured gas field: explicit station 3 reused without spatial interpolation",
+              "cea_run_artifact": "../artifacts/phase1/cea_rp1311_example13_rocket_run.json",
+              "chamber_station_index": 0,
+              "cea_station_index": 3,
+              "transport_basis": "frozen"
+            },
+            "status": "MODEL_U",
+            "execution_status": "EXECUTED",
+            "upstream_segment_id": null,
+            "solution": {
+              "run_id": "M0-REFINEMENT-SYNTHETIC-001:4N:4N-X3",
+              "case_id": "NON_DESIGN_SYNTHETIC_CONSTANT_GAS_FIELD",
+              "segment_id": "4N-X3",
+              "geometry_version": "SYNTHETIC-REFINEMENT-GEOMETRY-V1",
+              "spatial_basis": "ONE_SYNTHETIC_SINGLE_COOLANT_PATH_FIXED_DOMAIN:4N",
+              "status": "MODEL_U",
+              "numerical_status": "PASS",
+              "iterations": 34,
+              "cea_artifact_sha256": "5b2469ea75b95ead9aee37a67770f761474b569ce47125e1224d0340841e68f0",
+              "interface_consumption": {
+                "interface_version": "SPACE_Y_WALL_COOLANT_V1",
+                "status": "CONSUMED_BY_OUTER_COUPLED_COOLANT_SOLVER",
+                "note": "the nested GAS-WALL record retains its local NOT_RUN marker; the outer solver performs the coolant state and pressure update"
+              },
+              "gas_wall_solution": {
+                "run_id": "M0-REFINEMENT-SYNTHETIC-001:4N:4N-X3",
+                "case_id": "NON_DESIGN_SYNTHETIC_CONSTANT_GAS_FIELD",
+                "segment_id": "4N-X3",
+                "geometry_version": "SYNTHETIC-REFINEMENT-GEOMETRY-V1",
+                "spatial_basis": "ONE_SYNTHETIC_SINGLE_COOLANT_PATH_FIXED_DOMAIN:4N",
+                "status": "MODEL_U",
+                "numerical_status": "PASS",
+                "formula_version": "RPA_2012_BASIC_BARTZ",
+                "transport_basis": "frozen",
+                "cea_station_index": 3,
+                "cea_artifact_sha256": "5b2469ea75b95ead9aee37a67770f761474b569ce47125e1224d0340841e68f0",
+                "iterations": 37,
+                "wall_temperature_update_residual_K": 9.28685039980337e-09,
+                "energy_residual_max_W": 1.4551915228366852e-11,
+                "bartz": {
+                  "wall_temperature_used_K": 2622.122061016868,
+                  "sigma": 0.8951001458389318,
+                  "h_g_W_m2K": 22298.49217625649,
+                  "adiabatic_wall_temperature_K": 2821.6927044308845,
+                  "chamber_reference": {
+                    "temperature_K": 3002.5400574804275,
+                    "pressure_Pa_abs": 20684271.240234375,
+                    "c_star_m_s": 1946.6824123708707,
+                    "viscosity_Pa_s": 7.992036518561244e-05,
+                    "cp_J_kgK": 3642.6615839196998,
+                    "Pr": 0.47879491138342495,
+                    "throat_diameter_m": 0.1,
+                    "curvature_radius_m": 0.15
+                  },
+                  "station": {
+                    "Mach": 2.1037567956327248,
+                    "gamma": 1.1790641349149722,
+                    "area_ratio_A_At": 2.4856568126753125,
+                    "Pr": 0.4853450214590086
+                  }
+                },
+                "geometry": {
+                  "throat_diameter_m": 0.1,
+                  "throat_diameter_source": "synthetic non-design fixture; not SPACE Y geometry",
+                  "bartz_curvature_radius_m": 0.15,
+                  "bartz_curvature_radius_source": "synthetic non-design fixture; not SPACE Y geometry",
+                  "gas_area_m2": 0.0075,
+                  "gas_area_source": "synthetic full-domain area partitioned by explicit cell fraction",
+                  "coolant_area_m2": 0.015,
+                  "coolant_area_source": "synthetic full-domain area partitioned by explicit cell fraction",
+                  "wall_thickness_m": 0.002,
+                  "wall_thickness_source": "synthetic non-design fixture; not SPACE Y wall thickness",
+                  "wall_conductivity_W_mK": 20.0,
+                  "wall_conductivity_source": "synthetic constant for arithmetic verification; not a material selection",
+                  "wall_conduction_area_m2": 0.0075,
+                  "wall_conduction_area_source": "synthetic full-domain area partitioned by explicit cell fraction"
+                },
+                "radiation": {
+                  "definition": "EXPLICIT_NET_RATE_GAS_TO_WALL_POSITIVE",
+                  "q_rad_net_W": 225.0,
+                  "source": "synthetic full-domain nonzero net rate partitioned by cell fraction; not a radiation model"
+                },
+                "coolant_side_boundary": {
+                  "mode": "PRESCRIBED_FILM_COEFFICIENT_AND_BULK_TEMPERATURE",
+                  "h_c_W_m2K": 1200.3916921305245,
+                  "h_c_source": "computed from supplied coolant closure: synthetic Gnielinski applicability domain for code verification only",
+                  "bulk_temperature_K": 308.0002222020711,
+                  "bulk_temperature_source": "current segment mean bulk state in coupled iteration"
+                },
+                "wall_conduction": {
+                  "model": "STEADY_1D_CONSTANT_K_RESISTANCE",
+                  "resistance_K_W": 0.013333333333333334
+                },
+                "wall_solution": {
+                  "gas_resistance_K_W": 0.005979477548500213,
+                  "wall_resistance_K_W": 0.013333333333333334,
+                  "coolant_resistance_K_W": 0.05553742757777906,
+                  "q_conv_W": 33375.93322928129,
+                  "q_rad_net_W": 225.0,
+                  "q_total_W": 33600.93322928129,
+                  "gas_side_wall_temperature_K": 2622.122061026155,
+                  "coolant_side_wall_temperature_K": 2174.1096179690708,
+                  "q_conduction_W": 33600.933229281305,
+                  "q_coolant_W": 33600.93322928129,
+                  "gas_balance_residual_W": 0.0,
+                  "wall_balance_residual_W": -1.4551915228366852e-11,
+                  "coolant_balance_residual_W": 1.4551915228366852e-11
+                },
+                "coolant_interface": {
+                  "interface_version": "SPACE_Y_WALL_COOLANT_V1",
+                  "run_id": "M0-REFINEMENT-SYNTHETIC-001:4N:4N-X3",
+                  "case_id": "NON_DESIGN_SYNTHETIC_CONSTANT_GAS_FIELD",
+                  "segment_id": "4N-X3",
+                  "spatial_basis": "ONE_SYNTHETIC_SINGLE_COOLANT_PATH_FIXED_DOMAIN:4N",
+                  "mode": "PRESCRIBED_FILM_COEFFICIENT_AND_BULK_TEMPERATURE",
+                  "heat_rate_sign_convention": "POSITIVE_WALL_TO_COOLANT",
+                  "coolant_wetted_area_m2": 0.015,
+                  "bulk_temperature_K": 308.0002222020711,
+                  "h_c_W_m2K": 1200.3916921305245,
+                  "wall_temperature_coolant_side_K": 2174.1096179690708,
+                  "heat_rate_into_coolant_W": 33600.93322928129,
+                  "units": {
+                    "temperature": "K",
+                    "heat_rate": "W",
+                    "area": "m2",
+                    "heat_transfer_coefficient": "W/(m2 K)"
+                  },
+                  "coolant_state_update": "NOT_RUN",
+                  "pressure_loss_update": "NOT_RUN",
+                  "applicability_status": "MODEL_U",
+                  "reason": "prescribed Robin boundary only; no coolant property or closure evaluation",
+                  "required_before_state_update": [
+                    "I02 inlet absolute pressure and source",
+                    "I03 inlet thermodynamic state and source",
+                    "I04 path mass flow and boundary role",
+                    "I05-I06 channel path and geometry",
+                    "I09-I12 local flow geometry and area basis",
+                    "I15 coolant property model and valid range",
+                    "I18 coolant closure version and applicability domain",
+                    "I19 supported local-loss inputs",
+                    "I20 spatial basis",
+                    "I21-I23 time/numerical/residual definitions"
+                  ]
+                },
+                "implemented_models": [
+                  "single-segment steady gas-film/wall/coolant-film resistance network",
+                  "Bartz sigma fixed-point iteration with computed gas-side wall temperature",
+                  "explicit net-radiation rate without a default",
+                  "independent gas, wall-conduction, and coolant energy residuals"
+                ],
+                "not_implemented": [
+                  "coolant enthalpy or pressure-loss state update",
+                  "coolant closure applicability evaluation",
+                  "temperature-dependent or multidimensional wall conduction",
+                  "multiple segments or axial conduction",
+                  "CEA station interpolation",
+                  "radiation model calculation",
+                  "uncertainty propagation or safety-allowable assessment"
+                ],
+                "physical_validation_v01_v12": "NOT_RUN",
+                "validated_engine_prediction": false
+              },
+              "coolant_solution": {
+                "inlet": {
+                  "temperature_K": 300.0,
+                  "pressure_Pa_abs": 1000000.0,
+                  "enthalpy_J_kg": 100000.0,
+                  "density_kg_m3": 820.0,
+                  "viscosity_Pa_s": 0.0015,
+                  "cp_J_kgK": 1950.0,
+                  "conductivity_W_mK": 0.15
+                },
+                "mean_evaluation_state": {
+                  "temperature_K": 308.0002222020711,
+                  "pressure_Pa_abs": 999921.3641249306,
+                  "enthalpy_J_kg": 116800.46662434928,
+                  "density_kg_m3": 815.1998666787573,
+                  "viscosity_Pa_s": 0.0014359982223834313,
+                  "cp_J_kgK": 1974.0006666062131,
+                  "conductivity_W_mK": 0.15160004444041422
+                },
+                "outlet": {
+                  "temperature_K": 316.00044439489585,
+                  "pressure_Pa_abs": 999842.7282499471,
+                  "enthalpy_J_kg": 133600.93322928128,
+                  "density_kg_m3": 810.3997333630625,
+                  "viscosity_Pa_s": 0.0013719964448408333,
+                  "cp_J_kgK": 1998.0013331846876,
+                  "conductivity_W_mK": 0.15320008887897918
+                },
+                "local_closures": {
+                  "Reynolds": 6963.796921281886,
+                  "Prandtl": 18.698289032127445,
+                  "darcy_factor": 0.03418877591346598,
+                  "Nusselt": 79.18148682353016,
+                  "h_c_W_m2K": 1200.3916921305245,
+                  "velocity_m_s": 1.2266930367323847,
+                  "pressure_drop_Pa": 157.2717500529472,
+                  "relative_roughness": 9.999999999999999e-05,
+                  "heat_transfer_applicability": {
+                    "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                    "reasons": []
+                  },
+                  "friction_applicability": {
+                    "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                    "source": "synthetic Colebrook applicability domain for code verification only",
+                    "re_range": [
+                      4000.0,
+                      1000000.0
+                    ],
+                    "relative_roughness_range": [
+                      0.0,
+                      0.01
+                    ]
+                  }
+                },
+                "mass_flow_kg_s": 1.0,
+                "heat_rate_into_coolant_W": 33600.93322928129,
+                "coolant_energy_residual_W": 1.4551915228366852e-11,
+                "outlet_temperature_update_residual_K": -9.246377885574475e-09,
+                "outlet_pressure_update_residual_Pa": 8.591450750827789e-08,
+                "bulk_single_phase_status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "bulk_single_phase_domain": {
+                  "classification": "SYNTHETIC_SINGLE_PHASE_LIQUID_DOMAIN",
+                  "source": "synthetic bounded domain for stop-rule testing; not a real-fluid phase envelope",
+                  "temperature_min_K": 250.0,
+                  "temperature_max_K": 500.0,
+                  "pressure_min_Pa_abs": 500000.0,
+                  "pressure_max_Pa_abs": 2000000.0
+                },
+                "wall_phase_change_status": "NOT_EVALUATED",
+                "wall_phase_change_reason": "no saturation, ONB, CHF, dryout, or two-phase closure was supplied",
+                "status": "MODEL_U"
+              },
+              "qoi": {
+                "Y01": {
+                  "value": 2622.122061026155,
+                  "unit": "K",
+                  "status": "MODEL_U"
+                },
+                "Y02": {
+                  "value": 157.2717500529252,
+                  "unit": "Pa",
+                  "status": "MODEL_U"
+                },
+                "Y03": {
+                  "value": 33600.93322928129,
+                  "unit": "W",
+                  "status": "MODEL_U"
+                },
+                "Y04": {
+                  "value": 999842.7282499471,
+                  "unit": "Pa(a)",
+                  "status": "MODEL_U"
+                },
+                "Y05": {
+                  "value": 316.00044439489585,
+                  "unit": "K",
+                  "status": "MODEL_U"
+                }
+              },
+              "checks": {
+                "coupled_temperature_update_K": -9.246377885574475e-09,
+                "coupled_pressure_update_Pa": 8.591450750827789e-08,
+                "coolant_energy_residual_W": 1.4551915228366852e-11,
+                "wall_energy_residual_max_W": 1.4551915228366852e-11,
+                "heat_transfer_closure": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "friction_closure": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "bulk_single_phase": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "wall_phase_change": "NOT_EVALUATED"
+              },
+              "implemented_models": [
+                "single-segment nested GAS-WALL and coolant-state fixed-point iteration",
+                "bounded temperature-tabulated variable coolant properties without extrapolation",
+                "conditional supplied-domain Gnielinski heat transfer",
+                "conditional supplied-domain Colebrook Darcy friction",
+                "Darcy-Weisbach friction and explicit local loss",
+                "coolant enthalpy energy balance and pressure update"
+              ],
+              "not_implemented": [
+                "wall boiling, ONB, CHF, dryout, or two-phase flow",
+                "pressure-dependent coolant properties within the supplied table",
+                "acceleration pressure drop",
+                "multiple segments, parallel distribution, or axial conduction",
+                "CEA station interpolation",
+                "uncertainty propagation or safety-allowable assessment"
+              ],
+              "physical_validation_v01_v12": "NOT_RUN",
+              "validated_engine_prediction": false
+            },
+            "checks": {
+              "mass_residual_kg_s": 0.0,
+              "coolant_energy_residual_W": 1.4551915228366852e-11,
+              "wall_energy_residual_max_W": 1.4551915228366852e-11
+            }
+          },
+          {
+            "segment_id": "4N-X2",
+            "coolant_path_index": 1,
+            "gas_axial_coordinate_m": 0.1875,
+            "gas_axial_coordinate_source": "explicit synthetic cell center",
+            "cea_station_mapping": {
+              "method": "EXPLICIT_NO_INTERPOLATION",
+              "source": "constant manufactured gas field: explicit station 3 reused without spatial interpolation",
+              "cea_run_artifact": "../artifacts/phase1/cea_rp1311_example13_rocket_run.json",
+              "chamber_station_index": 0,
+              "cea_station_index": 3,
+              "transport_basis": "frozen"
+            },
+            "status": "MODEL_U",
+            "execution_status": "EXECUTED",
+            "upstream_segment_id": "4N-X3",
+            "solution": {
+              "run_id": "M0-REFINEMENT-SYNTHETIC-001:4N:4N-X2",
+              "case_id": "NON_DESIGN_SYNTHETIC_CONSTANT_GAS_FIELD",
+              "segment_id": "4N-X2",
+              "geometry_version": "SYNTHETIC-REFINEMENT-GEOMETRY-V1",
+              "spatial_basis": "ONE_SYNTHETIC_SINGLE_COOLANT_PATH_FIXED_DOMAIN:4N",
+              "status": "MODEL_U",
+              "numerical_status": "PASS",
+              "iterations": 33,
+              "cea_artifact_sha256": "5b2469ea75b95ead9aee37a67770f761474b569ce47125e1224d0340841e68f0",
+              "interface_consumption": {
+                "interface_version": "SPACE_Y_WALL_COOLANT_V1",
+                "status": "CONSUMED_BY_OUTER_COUPLED_COOLANT_SOLVER",
+                "note": "the nested GAS-WALL record retains its local NOT_RUN marker; the outer solver performs the coolant state and pressure update"
+              },
+              "gas_wall_solution": {
+                "run_id": "M0-REFINEMENT-SYNTHETIC-001:4N:4N-X2",
+                "case_id": "NON_DESIGN_SYNTHETIC_CONSTANT_GAS_FIELD",
+                "segment_id": "4N-X2",
+                "geometry_version": "SYNTHETIC-REFINEMENT-GEOMETRY-V1",
+                "spatial_basis": "ONE_SYNTHETIC_SINGLE_COOLANT_PATH_FIXED_DOMAIN:4N",
+                "status": "MODEL_U",
+                "numerical_status": "PASS",
+                "formula_version": "RPA_2012_BASIC_BARTZ",
+                "transport_basis": "frozen",
+                "cea_station_index": 3,
+                "cea_artifact_sha256": "5b2469ea75b95ead9aee37a67770f761474b569ce47125e1224d0340841e68f0",
+                "iterations": 37,
+                "wall_temperature_update_residual_K": 8.773440640652552e-09,
+                "energy_residual_max_W": 7.275957614183426e-12,
+                "bartz": {
+                  "wall_temperature_used_K": 2610.9399092596814,
+                  "sigma": 0.8965290755142361,
+                  "h_g_W_m2K": 22334.089284952446,
+                  "adiabatic_wall_temperature_K": 2821.6927044308845,
+                  "chamber_reference": {
+                    "temperature_K": 3002.5400574804275,
+                    "pressure_Pa_abs": 20684271.240234375,
+                    "c_star_m_s": 1946.6824123708707,
+                    "viscosity_Pa_s": 7.992036518561244e-05,
+                    "cp_J_kgK": 3642.6615839196998,
+                    "Pr": 0.47879491138342495,
+                    "throat_diameter_m": 0.1,
+                    "curvature_radius_m": 0.15
+                  },
+                  "station": {
+                    "Mach": 2.1037567956327248,
+                    "gamma": 1.1790641349149722,
+                    "area_ratio_A_At": 2.4856568126753125,
+                    "Pr": 0.4853450214590086
+                  }
+                },
+                "geometry": {
+                  "throat_diameter_m": 0.1,
+                  "throat_diameter_source": "synthetic non-design fixture; not SPACE Y geometry",
+                  "bartz_curvature_radius_m": 0.15,
+                  "bartz_curvature_radius_source": "synthetic non-design fixture; not SPACE Y geometry",
+                  "gas_area_m2": 0.0075,
+                  "gas_area_source": "synthetic full-domain area partitioned by explicit cell fraction",
+                  "coolant_area_m2": 0.015,
+                  "coolant_area_source": "synthetic full-domain area partitioned by explicit cell fraction",
+                  "wall_thickness_m": 0.002,
+                  "wall_thickness_source": "synthetic non-design fixture; not SPACE Y wall thickness",
+                  "wall_conductivity_W_mK": 20.0,
+                  "wall_conductivity_source": "synthetic constant for arithmetic verification; not a material selection",
+                  "wall_conduction_area_m2": 0.0075,
+                  "wall_conduction_area_source": "synthetic full-domain area partitioned by explicit cell fraction"
+                },
+                "radiation": {
+                  "definition": "EXPLICIT_NET_RATE_GAS_TO_WALL_POSITIVE",
+                  "q_rad_net_W": 225.0,
+                  "source": "synthetic full-domain nonzero net rate partitioned by cell fraction; not a radiation model"
+                },
+                "coolant_side_boundary": {
+                  "mode": "PRESCRIBED_FILM_COEFFICIENT_AND_BULK_TEMPERATURE",
+                  "h_c_W_m2K": 1306.5465272861027,
+                  "h_c_source": "computed from supplied coolant closure: synthetic Gnielinski applicability domain for code verification only",
+                  "bulk_temperature_K": 324.4593225143799,
+                  "bulk_temperature_source": "current segment mean bulk state in coupled iteration"
+                },
+                "wall_conduction": {
+                  "model": "STEADY_1D_CONSTANT_K_RESISTANCE",
+                  "resistance_K_W": 0.013333333333333334
+                },
+                "wall_solution": {
+                  "gas_resistance_K_W": 0.00596994717949688,
+                  "wall_resistance_K_W": 0.013333333333333334,
+                  "coolant_resistance_K_W": 0.05102509958458468,
+                  "q_conv_W": 35302.28808158249,
+                  "q_rad_net_W": 225.0,
+                  "q_total_W": 35527.28808158249,
+                  "gas_side_wall_temperature_K": 2610.939909268455,
+                  "coolant_side_wall_temperature_K": 2137.2427348473548,
+                  "q_conduction_W": 35527.2880815825,
+                  "q_coolant_W": 35527.28808158249,
+                  "gas_balance_residual_W": 0.0,
+                  "wall_balance_residual_W": -7.275957614183426e-12,
+                  "coolant_balance_residual_W": 7.275957614183426e-12
+                },
+                "coolant_interface": {
+                  "interface_version": "SPACE_Y_WALL_COOLANT_V1",
+                  "run_id": "M0-REFINEMENT-SYNTHETIC-001:4N:4N-X2",
+                  "case_id": "NON_DESIGN_SYNTHETIC_CONSTANT_GAS_FIELD",
+                  "segment_id": "4N-X2",
+                  "spatial_basis": "ONE_SYNTHETIC_SINGLE_COOLANT_PATH_FIXED_DOMAIN:4N",
+                  "mode": "PRESCRIBED_FILM_COEFFICIENT_AND_BULK_TEMPERATURE",
+                  "heat_rate_sign_convention": "POSITIVE_WALL_TO_COOLANT",
+                  "coolant_wetted_area_m2": 0.015,
+                  "bulk_temperature_K": 324.4593225143799,
+                  "h_c_W_m2K": 1306.5465272861027,
+                  "wall_temperature_coolant_side_K": 2137.2427348473548,
+                  "heat_rate_into_coolant_W": 35527.28808158249,
+                  "units": {
+                    "temperature": "K",
+                    "heat_rate": "W",
+                    "area": "m2",
+                    "heat_transfer_coefficient": "W/(m2 K)"
+                  },
+                  "coolant_state_update": "NOT_RUN",
+                  "pressure_loss_update": "NOT_RUN",
+                  "applicability_status": "MODEL_U",
+                  "reason": "prescribed Robin boundary only; no coolant property or closure evaluation",
+                  "required_before_state_update": [
+                    "I02 inlet absolute pressure and source",
+                    "I03 inlet thermodynamic state and source",
+                    "I04 path mass flow and boundary role",
+                    "I05-I06 channel path and geometry",
+                    "I09-I12 local flow geometry and area basis",
+                    "I15 coolant property model and valid range",
+                    "I18 coolant closure version and applicability domain",
+                    "I19 supported local-loss inputs",
+                    "I20 spatial basis",
+                    "I21-I23 time/numerical/residual definitions"
+                  ]
+                },
+                "implemented_models": [
+                  "single-segment steady gas-film/wall/coolant-film resistance network",
+                  "Bartz sigma fixed-point iteration with computed gas-side wall temperature",
+                  "explicit net-radiation rate without a default",
+                  "independent gas, wall-conduction, and coolant energy residuals"
+                ],
+                "not_implemented": [
+                  "coolant enthalpy or pressure-loss state update",
+                  "coolant closure applicability evaluation",
+                  "temperature-dependent or multidimensional wall conduction",
+                  "multiple segments or axial conduction",
+                  "CEA station interpolation",
+                  "radiation model calculation",
+                  "uncertainty propagation or safety-allowable assessment"
+                ],
+                "physical_validation_v01_v12": "NOT_RUN",
+                "validated_engine_prediction": false
+              },
+              "coolant_solution": {
+                "inlet": {
+                  "temperature_K": 316.00044439489585,
+                  "pressure_Pa_abs": 999842.7282499471,
+                  "enthalpy_J_kg": 133600.93322928128,
+                  "density_kg_m3": 810.3997333630625,
+                  "viscosity_Pa_s": 0.0013719964448408333,
+                  "cp_J_kgK": 1998.0013331846876,
+                  "conductivity_W_mK": 0.15320008887897918
+                },
+                "mean_evaluation_state": {
+                  "temperature_K": 324.4593225143799,
+                  "pressure_Pa_abs": 999765.181989845,
+                  "enthalpy_J_kg": 151364.57728019776,
+                  "density_kg_m3": 805.3244064913721,
+                  "viscosity_Pa_s": 0.0013043254198849608,
+                  "cp_J_kgK": 2023.3779675431397,
+                  "conductivity_W_mK": 0.15489186450287598
+                },
+                "outlet": {
+                  "temperature_K": 332.91820062422084,
+                  "pressure_Pa_abs": 999687.6357298892,
+                  "enthalpy_J_kg": 169128.2213108638,
+                  "density_kg_m3": 800.2490796254675,
+                  "viscosity_Pa_s": 0.0012366543950062332,
+                  "cp_J_kgK": 2048.7546018726625,
+                  "conductivity_W_mK": 0.15658364012484416
+                },
+                "local_closures": {
+                  "Reynolds": 7666.798367605212,
+                  "Prandtl": 17.038618042154702,
+                  "darcy_factor": 0.033306611111163065,
+                  "Nusselt": 84.3521724965641,
+                  "h_c_W_m2K": 1306.5465272861027,
+                  "velocity_m_s": 1.2417356185152617,
+                  "pressure_drop_Pa": 155.09252005787755,
+                  "relative_roughness": 9.999999999999999e-05,
+                  "heat_transfer_applicability": {
+                    "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                    "reasons": []
+                  },
+                  "friction_applicability": {
+                    "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                    "source": "synthetic Colebrook applicability domain for code verification only",
+                    "re_range": [
+                      4000.0,
+                      1000000.0
+                    ],
+                    "relative_roughness_range": [
+                      0.0,
+                      0.01
+                    ]
+                  }
+                },
+                "mass_flow_kg_s": 1.0,
+                "heat_rate_into_coolant_W": 35527.28808158249,
+                "coolant_energy_residual_W": -2.9103830456733704e-11,
+                "outlet_temperature_update_residual_K": -9.643144949222915e-09,
+                "outlet_pressure_update_residual_Pa": 1.4621764421463013e-07,
+                "bulk_single_phase_status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "bulk_single_phase_domain": {
+                  "classification": "SYNTHETIC_SINGLE_PHASE_LIQUID_DOMAIN",
+                  "source": "synthetic bounded domain for stop-rule testing; not a real-fluid phase envelope",
+                  "temperature_min_K": 250.0,
+                  "temperature_max_K": 500.0,
+                  "pressure_min_Pa_abs": 500000.0,
+                  "pressure_max_Pa_abs": 2000000.0
+                },
+                "wall_phase_change_status": "NOT_EVALUATED",
+                "wall_phase_change_reason": "no saturation, ONB, CHF, dryout, or two-phase closure was supplied",
+                "status": "MODEL_U"
+              },
+              "qoi": {
+                "Y01": {
+                  "value": 2610.939909268455,
+                  "unit": "K",
+                  "status": "MODEL_U"
+                },
+                "Y02": {
+                  "value": 155.09252005792223,
+                  "unit": "Pa",
+                  "status": "MODEL_U"
+                },
+                "Y03": {
+                  "value": 35527.28808158249,
+                  "unit": "W",
+                  "status": "MODEL_U"
+                },
+                "Y04": {
+                  "value": 999687.6357298892,
+                  "unit": "Pa(a)",
+                  "status": "MODEL_U"
+                },
+                "Y05": {
+                  "value": 332.91820062422084,
+                  "unit": "K",
+                  "status": "MODEL_U"
+                }
+              },
+              "checks": {
+                "coupled_temperature_update_K": -9.643144949222915e-09,
+                "coupled_pressure_update_Pa": 1.4621764421463013e-07,
+                "coolant_energy_residual_W": -2.9103830456733704e-11,
+                "wall_energy_residual_max_W": 7.275957614183426e-12,
+                "heat_transfer_closure": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "friction_closure": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "bulk_single_phase": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "wall_phase_change": "NOT_EVALUATED"
+              },
+              "implemented_models": [
+                "single-segment nested GAS-WALL and coolant-state fixed-point iteration",
+                "bounded temperature-tabulated variable coolant properties without extrapolation",
+                "conditional supplied-domain Gnielinski heat transfer",
+                "conditional supplied-domain Colebrook Darcy friction",
+                "Darcy-Weisbach friction and explicit local loss",
+                "coolant enthalpy energy balance and pressure update"
+              ],
+              "not_implemented": [
+                "wall boiling, ONB, CHF, dryout, or two-phase flow",
+                "pressure-dependent coolant properties within the supplied table",
+                "acceleration pressure drop",
+                "multiple segments, parallel distribution, or axial conduction",
+                "CEA station interpolation",
+                "uncertainty propagation or safety-allowable assessment"
+              ],
+              "physical_validation_v01_v12": "NOT_RUN",
+              "validated_engine_prediction": false
+            },
+            "checks": {
+              "mass_residual_kg_s": 0.0,
+              "coolant_energy_residual_W": -2.9103830456733704e-11,
+              "wall_energy_residual_max_W": 7.275957614183426e-12
+            }
+          },
+          {
+            "segment_id": "4N-X1",
+            "coolant_path_index": 2,
+            "gas_axial_coordinate_m": 0.1125,
+            "gas_axial_coordinate_source": "explicit synthetic cell center",
+            "cea_station_mapping": {
+              "method": "EXPLICIT_NO_INTERPOLATION",
+              "source": "constant manufactured gas field: explicit station 3 reused without spatial interpolation",
+              "cea_run_artifact": "../artifacts/phase1/cea_rp1311_example13_rocket_run.json",
+              "chamber_station_index": 0,
+              "cea_station_index": 3,
+              "transport_basis": "frozen"
+            },
+            "status": "MODEL_U",
+            "execution_status": "EXECUTED",
+            "upstream_segment_id": "4N-X2",
+            "solution": {
+              "run_id": "M0-REFINEMENT-SYNTHETIC-001:4N:4N-X1",
+              "case_id": "NON_DESIGN_SYNTHETIC_CONSTANT_GAS_FIELD",
+              "segment_id": "4N-X1",
+              "geometry_version": "SYNTHETIC-REFINEMENT-GEOMETRY-V1",
+              "spatial_basis": "ONE_SYNTHETIC_SINGLE_COOLANT_PATH_FIXED_DOMAIN:4N",
+              "status": "MODEL_U",
+              "numerical_status": "PASS",
+              "iterations": 29,
+              "cea_artifact_sha256": "5b2469ea75b95ead9aee37a67770f761474b569ce47125e1224d0340841e68f0",
+              "interface_consumption": {
+                "interface_version": "SPACE_Y_WALL_COOLANT_V1",
+                "status": "CONSUMED_BY_OUTER_COUPLED_COOLANT_SOLVER",
+                "note": "the nested GAS-WALL record retains its local NOT_RUN marker; the outer solver performs the coolant state and pressure update"
+              },
+              "gas_wall_solution": {
+                "run_id": "M0-REFINEMENT-SYNTHETIC-001:4N:4N-X1",
+                "case_id": "NON_DESIGN_SYNTHETIC_CONSTANT_GAS_FIELD",
+                "segment_id": "4N-X1",
+                "geometry_version": "SYNTHETIC-REFINEMENT-GEOMETRY-V1",
+                "spatial_basis": "ONE_SYNTHETIC_SINGLE_COOLANT_PATH_FIXED_DOMAIN:4N",
+                "status": "MODEL_U",
+                "numerical_status": "PASS",
+                "formula_version": "RPA_2012_BASIC_BARTZ",
+                "transport_basis": "frozen",
+                "cea_station_index": 3,
+                "cea_artifact_sha256": "5b2469ea75b95ead9aee37a67770f761474b569ce47125e1224d0340841e68f0",
+                "iterations": 37,
+                "wall_temperature_update_residual_K": 8.220922609325498e-09,
+                "energy_residual_max_W": 3.637978807091713e-11,
+                "bartz": {
+                  "wall_temperature_used_K": 2598.116207328858,
+                  "sigma": 0.8981747293108248,
+                  "h_g_W_m2K": 22375.085366205083,
+                  "adiabatic_wall_temperature_K": 2821.6927044308845,
+                  "chamber_reference": {
+                    "temperature_K": 3002.5400574804275,
+                    "pressure_Pa_abs": 20684271.240234375,
+                    "c_star_m_s": 1946.6824123708707,
+                    "viscosity_Pa_s": 7.992036518561244e-05,
+                    "cp_J_kgK": 3642.6615839196998,
+                    "Pr": 0.47879491138342495,
+                    "throat_diameter_m": 0.1,
+                    "curvature_radius_m": 0.15
+                  },
+                  "station": {
+                    "Mach": 2.1037567956327248,
+                    "gamma": 1.1790641349149722,
+                    "area_ratio_A_At": 2.4856568126753125,
+                    "Pr": 0.4853450214590086
+                  }
+                },
+                "geometry": {
+                  "throat_diameter_m": 0.1,
+                  "throat_diameter_source": "synthetic non-design fixture; not SPACE Y geometry",
+                  "bartz_curvature_radius_m": 0.15,
+                  "bartz_curvature_radius_source": "synthetic non-design fixture; not SPACE Y geometry",
+                  "gas_area_m2": 0.0075,
+                  "gas_area_source": "synthetic full-domain area partitioned by explicit cell fraction",
+                  "coolant_area_m2": 0.015,
+                  "coolant_area_source": "synthetic full-domain area partitioned by explicit cell fraction",
+                  "wall_thickness_m": 0.002,
+                  "wall_thickness_source": "synthetic non-design fixture; not SPACE Y wall thickness",
+                  "wall_conductivity_W_mK": 20.0,
+                  "wall_conductivity_source": "synthetic constant for arithmetic verification; not a material selection",
+                  "wall_conduction_area_m2": 0.0075,
+                  "wall_conduction_area_source": "synthetic full-domain area partitioned by explicit cell fraction"
+                },
+                "radiation": {
+                  "definition": "EXPLICIT_NET_RATE_GAS_TO_WALL_POSITIVE",
+                  "q_rad_net_W": 225.0,
+                  "source": "synthetic full-domain nonzero net rate partitioned by cell fraction; not a radiation model"
+                },
+                "coolant_side_boundary": {
+                  "mode": "PRESCRIBED_FILM_COEFFICIENT_AND_BULK_TEMPERATURE",
+                  "h_c_W_m2K": 1435.4274040558817,
+                  "h_c_source": "computed from supplied coolant closure: synthetic Gnielinski applicability domain for code verification only",
+                  "bulk_temperature_K": 341.88462198436326,
+                  "bulk_temperature_source": "current segment mean bulk state in coupled iteration"
+                },
+                "wall_conduction": {
+                  "model": "STEADY_1D_CONSTANT_K_RESISTANCE",
+                  "resistance_K_W": 0.013333333333333334
+                },
+                "wall_solution": {
+                  "gas_resistance_K_W": 0.0059590089222505286,
+                  "wall_resistance_K_W": 0.013333333333333334,
+                  "coolant_resistance_K_W": 0.04644377450109718,
+                  "q_conv_W": 37519.07406263252,
+                  "q_rad_net_W": 225.0,
+                  "q_total_W": 37744.07406263252,
+                  "gas_side_wall_temperature_K": 2598.116207337079,
+                  "coolant_side_wall_temperature_K": 2094.861886501979,
+                  "q_conduction_W": 37744.074062632484,
+                  "q_coolant_W": 37744.07406263252,
+                  "gas_balance_residual_W": 0.0,
+                  "wall_balance_residual_W": 3.637978807091713e-11,
+                  "coolant_balance_residual_W": -3.637978807091713e-11
+                },
+                "coolant_interface": {
+                  "interface_version": "SPACE_Y_WALL_COOLANT_V1",
+                  "run_id": "M0-REFINEMENT-SYNTHETIC-001:4N:4N-X1",
+                  "case_id": "NON_DESIGN_SYNTHETIC_CONSTANT_GAS_FIELD",
+                  "segment_id": "4N-X1",
+                  "spatial_basis": "ONE_SYNTHETIC_SINGLE_COOLANT_PATH_FIXED_DOMAIN:4N",
+                  "mode": "PRESCRIBED_FILM_COEFFICIENT_AND_BULK_TEMPERATURE",
+                  "heat_rate_sign_convention": "POSITIVE_WALL_TO_COOLANT",
+                  "coolant_wetted_area_m2": 0.015,
+                  "bulk_temperature_K": 341.88462198436326,
+                  "h_c_W_m2K": 1435.4274040558817,
+                  "wall_temperature_coolant_side_K": 2094.861886501979,
+                  "heat_rate_into_coolant_W": 37744.07406263252,
+                  "units": {
+                    "temperature": "K",
+                    "heat_rate": "W",
+                    "area": "m2",
+                    "heat_transfer_coefficient": "W/(m2 K)"
+                  },
+                  "coolant_state_update": "NOT_RUN",
+                  "pressure_loss_update": "NOT_RUN",
+                  "applicability_status": "MODEL_U",
+                  "reason": "prescribed Robin boundary only; no coolant property or closure evaluation",
+                  "required_before_state_update": [
+                    "I02 inlet absolute pressure and source",
+                    "I03 inlet thermodynamic state and source",
+                    "I04 path mass flow and boundary role",
+                    "I05-I06 channel path and geometry",
+                    "I09-I12 local flow geometry and area basis",
+                    "I15 coolant property model and valid range",
+                    "I18 coolant closure version and applicability domain",
+                    "I19 supported local-loss inputs",
+                    "I20 spatial basis",
+                    "I21-I23 time/numerical/residual definitions"
+                  ]
+                },
+                "implemented_models": [
+                  "single-segment steady gas-film/wall/coolant-film resistance network",
+                  "Bartz sigma fixed-point iteration with computed gas-side wall temperature",
+                  "explicit net-radiation rate without a default",
+                  "independent gas, wall-conduction, and coolant energy residuals"
+                ],
+                "not_implemented": [
+                  "coolant enthalpy or pressure-loss state update",
+                  "coolant closure applicability evaluation",
+                  "temperature-dependent or multidimensional wall conduction",
+                  "multiple segments or axial conduction",
+                  "CEA station interpolation",
+                  "radiation model calculation",
+                  "uncertainty propagation or safety-allowable assessment"
+                ],
+                "physical_validation_v01_v12": "NOT_RUN",
+                "validated_engine_prediction": false
+              },
+              "coolant_solution": {
+                "inlet": {
+                  "temperature_K": 332.91820062422084,
+                  "pressure_Pa_abs": 999687.6357298892,
+                  "enthalpy_J_kg": 169128.2213108638,
+                  "density_kg_m3": 800.2490796254675,
+                  "viscosity_Pa_s": 0.0012366543950062332,
+                  "cp_J_kgK": 2048.7546018726625,
+                  "conductivity_W_mK": 0.15658364012484416
+                },
+                "mean_evaluation_state": {
+                  "temperature_K": 341.88462198436326,
+                  "pressure_Pa_abs": 999611.4154795737,
+                  "enthalpy_J_kg": 187957.70616716286,
+                  "density_kg_m3": 794.8692268093821,
+                  "viscosity_Pa_s": 0.0011649230241250938,
+                  "cp_J_kgK": 2075.6538659530897,
+                  "conductivity_W_mK": 0.15837692439687265
+                },
+                "outlet": {
+                  "temperature_K": 350.8510433515892,
+                  "pressure_Pa_abs": 999535.1952312624,
+                  "enthalpy_J_kg": 206872.2953734963,
+                  "density_kg_m3": 789.6595826593643,
+                  "viscosity_Pa_s": 0.0010977305510624289,
+                  "cp_J_kgK": 2101.134724468786,
+                  "conductivity_W_mK": 0.16011347244687857
+                },
+                "local_closures": {
+                  "Reynolds": 8584.258180930385,
+                  "Prandtl": 15.267230297412958,
+                  "darcy_factor": 0.0323120696740995,
+                  "Nusselt": 90.6336203662398,
+                  "h_c_W_m2K": 1435.4274040558817,
+                  "velocity_m_s": 1.2580685806821534,
+                  "pressure_drop_Pa": 152.44049862673953,
+                  "relative_roughness": 9.999999999999999e-05,
+                  "heat_transfer_applicability": {
+                    "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                    "reasons": []
+                  },
+                  "friction_applicability": {
+                    "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                    "source": "synthetic Colebrook applicability domain for code verification only",
+                    "re_range": [
+                      4000.0,
+                      1000000.0
+                    ],
+                    "relative_roughness_range": [
+                      0.0,
+                      0.01
+                    ]
+                  }
+                },
+                "mass_flow_kg_s": 1.0,
+                "heat_rate_into_coolant_W": 37744.07406263252,
+                "coolant_energy_residual_W": 7.275957614183426e-12,
+                "outlet_temperature_update_residual_K": 7.083542641339591e-09,
+                "outlet_pressure_update_residual_Pa": 2.0042061805725098e-06,
+                "bulk_single_phase_status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "bulk_single_phase_domain": {
+                  "classification": "SYNTHETIC_SINGLE_PHASE_LIQUID_DOMAIN",
+                  "source": "synthetic bounded domain for stop-rule testing; not a real-fluid phase envelope",
+                  "temperature_min_K": 250.0,
+                  "temperature_max_K": 500.0,
+                  "pressure_min_Pa_abs": 500000.0,
+                  "pressure_max_Pa_abs": 2000000.0
+                },
+                "wall_phase_change_status": "NOT_EVALUATED",
+                "wall_phase_change_reason": "no saturation, ONB, CHF, dryout, or two-phase closure was supplied",
+                "status": "MODEL_U"
+              },
+              "qoi": {
+                "Y01": {
+                  "value": 2598.116207337079,
+                  "unit": "K",
+                  "status": "MODEL_U"
+                },
+                "Y02": {
+                  "value": 152.44049862679094,
+                  "unit": "Pa",
+                  "status": "MODEL_U"
+                },
+                "Y03": {
+                  "value": 37744.07406263252,
+                  "unit": "W",
+                  "status": "MODEL_U"
+                },
+                "Y04": {
+                  "value": 999535.1952312624,
+                  "unit": "Pa(a)",
+                  "status": "MODEL_U"
+                },
+                "Y05": {
+                  "value": 350.8510433515892,
+                  "unit": "K",
+                  "status": "MODEL_U"
+                }
+              },
+              "checks": {
+                "coupled_temperature_update_K": 7.083542641339591e-09,
+                "coupled_pressure_update_Pa": 2.0042061805725098e-06,
+                "coolant_energy_residual_W": 7.275957614183426e-12,
+                "wall_energy_residual_max_W": 3.637978807091713e-11,
+                "heat_transfer_closure": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "friction_closure": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "bulk_single_phase": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "wall_phase_change": "NOT_EVALUATED"
+              },
+              "implemented_models": [
+                "single-segment nested GAS-WALL and coolant-state fixed-point iteration",
+                "bounded temperature-tabulated variable coolant properties without extrapolation",
+                "conditional supplied-domain Gnielinski heat transfer",
+                "conditional supplied-domain Colebrook Darcy friction",
+                "Darcy-Weisbach friction and explicit local loss",
+                "coolant enthalpy energy balance and pressure update"
+              ],
+              "not_implemented": [
+                "wall boiling, ONB, CHF, dryout, or two-phase flow",
+                "pressure-dependent coolant properties within the supplied table",
+                "acceleration pressure drop",
+                "multiple segments, parallel distribution, or axial conduction",
+                "CEA station interpolation",
+                "uncertainty propagation or safety-allowable assessment"
+              ],
+              "physical_validation_v01_v12": "NOT_RUN",
+              "validated_engine_prediction": false
+            },
+            "checks": {
+              "mass_residual_kg_s": 0.0,
+              "coolant_energy_residual_W": 7.275957614183426e-12,
+              "wall_energy_residual_max_W": 3.637978807091713e-11
+            }
+          },
+          {
+            "segment_id": "4N-X0",
+            "coolant_path_index": 3,
+            "gas_axial_coordinate_m": 0.0375,
+            "gas_axial_coordinate_source": "explicit synthetic cell center",
+            "cea_station_mapping": {
+              "method": "EXPLICIT_NO_INTERPOLATION",
+              "source": "constant manufactured gas field: explicit station 3 reused without spatial interpolation",
+              "cea_run_artifact": "../artifacts/phase1/cea_rp1311_example13_rocket_run.json",
+              "chamber_station_index": 0,
+              "cea_station_index": 3,
+              "transport_basis": "frozen"
+            },
+            "status": "MODEL_U",
+            "execution_status": "EXECUTED",
+            "upstream_segment_id": "4N-X1",
+            "solution": {
+              "run_id": "M0-REFINEMENT-SYNTHETIC-001:4N:4N-X0",
+              "case_id": "NON_DESIGN_SYNTHETIC_CONSTANT_GAS_FIELD",
+              "segment_id": "4N-X0",
+              "geometry_version": "SYNTHETIC-REFINEMENT-GEOMETRY-V1",
+              "spatial_basis": "ONE_SYNTHETIC_SINGLE_COOLANT_PATH_FIXED_DOMAIN:4N",
+              "status": "MODEL_U",
+              "numerical_status": "PASS",
+              "iterations": 33,
+              "cea_artifact_sha256": "5b2469ea75b95ead9aee37a67770f761474b569ce47125e1224d0340841e68f0",
+              "interface_consumption": {
+                "interface_version": "SPACE_Y_WALL_COOLANT_V1",
+                "status": "CONSUMED_BY_OUTER_COUPLED_COOLANT_SOLVER",
+                "note": "the nested GAS-WALL record retains its local NOT_RUN marker; the outer solver performs the coolant state and pressure update"
+              },
+              "gas_wall_solution": {
+                "run_id": "M0-REFINEMENT-SYNTHETIC-001:4N:4N-X0",
+                "case_id": "NON_DESIGN_SYNTHETIC_CONSTANT_GAS_FIELD",
+                "segment_id": "4N-X0",
+                "geometry_version": "SYNTHETIC-REFINEMENT-GEOMETRY-V1",
+                "spatial_basis": "ONE_SYNTHETIC_SINGLE_COOLANT_PATH_FIXED_DOMAIN:4N",
+                "status": "MODEL_U",
+                "numerical_status": "PASS",
+                "formula_version": "RPA_2012_BASIC_BARTZ",
+                "transport_basis": "frozen",
+                "cea_station_index": 3,
+                "cea_artifact_sha256": "5b2469ea75b95ead9aee37a67770f761474b569ce47125e1224d0340841e68f0",
+                "iterations": 37,
+                "wall_temperature_update_residual_K": 7.862126949476078e-09,
+                "energy_residual_max_W": 1.4551915228366852e-11,
+                "bartz": {
+                  "wall_temperature_used_K": 2589.2026227122215,
+                  "sigma": 0.8993230065934592,
+                  "h_g_W_m2K": 22403.690938578216,
+                  "adiabatic_wall_temperature_K": 2821.6927044308845,
+                  "chamber_reference": {
+                    "temperature_K": 3002.5400574804275,
+                    "pressure_Pa_abs": 20684271.240234375,
+                    "c_star_m_s": 1946.6824123708707,
+                    "viscosity_Pa_s": 7.992036518561244e-05,
+                    "cp_J_kgK": 3642.6615839196998,
+                    "Pr": 0.47879491138342495,
+                    "throat_diameter_m": 0.1,
+                    "curvature_radius_m": 0.15
+                  },
+                  "station": {
+                    "Mach": 2.1037567956327248,
+                    "gamma": 1.1790641349149722,
+                    "area_ratio_A_At": 2.4856568126753125,
+                    "Pr": 0.4853450214590086
+                  }
+                },
+                "geometry": {
+                  "throat_diameter_m": 0.1,
+                  "throat_diameter_source": "synthetic non-design fixture; not SPACE Y geometry",
+                  "bartz_curvature_radius_m": 0.15,
+                  "bartz_curvature_radius_source": "synthetic non-design fixture; not SPACE Y geometry",
+                  "gas_area_m2": 0.0075,
+                  "gas_area_source": "synthetic full-domain area partitioned by explicit cell fraction",
+                  "coolant_area_m2": 0.015,
+                  "coolant_area_source": "synthetic full-domain area partitioned by explicit cell fraction",
+                  "wall_thickness_m": 0.002,
+                  "wall_thickness_source": "synthetic non-design fixture; not SPACE Y wall thickness",
+                  "wall_conductivity_W_mK": 20.0,
+                  "wall_conductivity_source": "synthetic constant for arithmetic verification; not a material selection",
+                  "wall_conduction_area_m2": 0.0075,
+                  "wall_conduction_area_source": "synthetic full-domain area partitioned by explicit cell fraction"
+                },
+                "radiation": {
+                  "definition": "EXPLICIT_NET_RATE_GAS_TO_WALL_POSITIVE",
+                  "q_rad_net_W": 225.0,
+                  "source": "synthetic full-domain nonzero net rate partitioned by cell fraction; not a radiation model"
+                },
+                "coolant_side_boundary": {
+                  "mode": "PRESCRIBED_FILM_COEFFICIENT_AND_BULK_TEMPERATURE",
+                  "h_c_W_m2K": 1535.7538189546208,
+                  "h_c_source": "computed from supplied coolant closure: synthetic Gnielinski applicability domain for code verification only",
+                  "bulk_temperature_K": 359.78053642291604,
+                  "bulk_temperature_source": "current segment mean bulk state in coupled iteration"
+                },
+                "wall_conduction": {
+                  "model": "STEADY_1D_CONSTANT_K_RESISTANCE",
+                  "resistance_K_W": 0.013333333333333334
+                },
+                "wall_solution": {
+                  "gas_resistance_K_W": 0.0059514003160853705,
+                  "wall_resistance_K_W": 0.013333333333333334,
+                  "coolant_resistance_K_W": 0.043409735234808865,
+                  "q_conv_W": 39064.769527001816,
+                  "q_rad_net_W": 225.0,
+                  "q_total_W": 39289.769527001816,
+                  "gas_side_wall_temperature_K": 2589.2026227200836,
+                  "coolant_side_wall_temperature_K": 2065.339029026726,
+                  "q_conduction_W": 39289.7695270018,
+                  "q_coolant_W": 39289.76952700181,
+                  "gas_balance_residual_W": 0.0,
+                  "wall_balance_residual_W": 1.4551915228366852e-11,
+                  "coolant_balance_residual_W": -7.275957614183426e-12
+                },
+                "coolant_interface": {
+                  "interface_version": "SPACE_Y_WALL_COOLANT_V1",
+                  "run_id": "M0-REFINEMENT-SYNTHETIC-001:4N:4N-X0",
+                  "case_id": "NON_DESIGN_SYNTHETIC_CONSTANT_GAS_FIELD",
+                  "segment_id": "4N-X0",
+                  "spatial_basis": "ONE_SYNTHETIC_SINGLE_COOLANT_PATH_FIXED_DOMAIN:4N",
+                  "mode": "PRESCRIBED_FILM_COEFFICIENT_AND_BULK_TEMPERATURE",
+                  "heat_rate_sign_convention": "POSITIVE_WALL_TO_COOLANT",
+                  "coolant_wetted_area_m2": 0.015,
+                  "bulk_temperature_K": 359.78053642291604,
+                  "h_c_W_m2K": 1535.7538189546208,
+                  "wall_temperature_coolant_side_K": 2065.339029026726,
+                  "heat_rate_into_coolant_W": 39289.76952700181,
+                  "units": {
+                    "temperature": "K",
+                    "heat_rate": "W",
+                    "area": "m2",
+                    "heat_transfer_coefficient": "W/(m2 K)"
+                  },
+                  "coolant_state_update": "NOT_RUN",
+                  "pressure_loss_update": "NOT_RUN",
+                  "applicability_status": "MODEL_U",
+                  "reason": "prescribed Robin boundary only; no coolant property or closure evaluation",
+                  "required_before_state_update": [
+                    "I02 inlet absolute pressure and source",
+                    "I03 inlet thermodynamic state and source",
+                    "I04 path mass flow and boundary role",
+                    "I05-I06 channel path and geometry",
+                    "I09-I12 local flow geometry and area basis",
+                    "I15 coolant property model and valid range",
+                    "I18 coolant closure version and applicability domain",
+                    "I19 supported local-loss inputs",
+                    "I20 spatial basis",
+                    "I21-I23 time/numerical/residual definitions"
+                  ]
+                },
+                "implemented_models": [
+                  "single-segment steady gas-film/wall/coolant-film resistance network",
+                  "Bartz sigma fixed-point iteration with computed gas-side wall temperature",
+                  "explicit net-radiation rate without a default",
+                  "independent gas, wall-conduction, and coolant energy residuals"
+                ],
+                "not_implemented": [
+                  "coolant enthalpy or pressure-loss state update",
+                  "coolant closure applicability evaluation",
+                  "temperature-dependent or multidimensional wall conduction",
+                  "multiple segments or axial conduction",
+                  "CEA station interpolation",
+                  "radiation model calculation",
+                  "uncertainty propagation or safety-allowable assessment"
+                ],
+                "physical_validation_v01_v12": "NOT_RUN",
+                "validated_engine_prediction": false
+              },
+              "coolant_solution": {
+                "inlet": {
+                  "temperature_K": 350.8510433515892,
+                  "pressure_Pa_abs": 999535.1952312624,
+                  "enthalpy_J_kg": 206872.2953734963,
+                  "density_kg_m3": 789.6595826593643,
+                  "viscosity_Pa_s": 0.0010977305510624289,
+                  "cp_J_kgK": 2101.134724468786,
+                  "conductivity_W_mK": 0.16011347244687857
+                },
+                "mean_evaluation_state": {
+                  "temperature_K": 359.78053642291604,
+                  "pressure_Pa_abs": 999459.7663857572,
+                  "enthalpy_J_kg": 226517.1801304153,
+                  "density_kg_m3": 786.0877854308336,
+                  "viscosity_Pa_s": 0.0010739185695388905,
+                  "cp_J_kgK": 2113.0407152305547,
+                  "conductivity_W_mK": 0.16130407152305548
+                },
+                "outlet": {
+                  "temperature_K": 368.7100295002264,
+                  "pressure_Pa_abs": 999384.3375403434,
+                  "enthalpy_J_kg": 246162.06490049814,
+                  "density_kg_m3": 782.5159881999094,
+                  "viscosity_Pa_s": 0.0010501065879993962,
+                  "cp_J_kgK": 2124.9467060003017,
+                  "conductivity_W_mK": 0.1624946706000302
+                },
+                "local_closures": {
+                  "Reynolds": 9311.692975281832,
+                  "Prandtl": 14.068049497147912,
+                  "darcy_factor": 0.031623303511923405,
+                  "Nusselt": 95.20862086454605,
+                  "h_c_W_m2K": 1535.7538189546208,
+                  "velocity_m_s": 1.272122552383799,
+                  "pressure_drop_Pa": 150.85769091898334,
+                  "relative_roughness": 9.999999999999999e-05,
+                  "heat_transfer_applicability": {
+                    "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                    "reasons": []
+                  },
+                  "friction_applicability": {
+                    "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                    "source": "synthetic Colebrook applicability domain for code verification only",
+                    "re_range": [
+                      4000.0,
+                      1000000.0
+                    ],
+                    "relative_roughness_range": [
+                      0.0,
+                      0.01
+                    ]
+                  }
+                },
+                "mass_flow_kg_s": 1.0,
+                "heat_rate_into_coolant_W": 39289.769527001816,
+                "coolant_energy_residual_W": -2.1827872842550278e-11,
+                "outlet_temperature_update_residual_K": 5.983508799545234e-09,
+                "outlet_pressure_update_residual_Pa": 9.12696123123169e-08,
+                "bulk_single_phase_status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "bulk_single_phase_domain": {
+                  "classification": "SYNTHETIC_SINGLE_PHASE_LIQUID_DOMAIN",
+                  "source": "synthetic bounded domain for stop-rule testing; not a real-fluid phase envelope",
+                  "temperature_min_K": 250.0,
+                  "temperature_max_K": 500.0,
+                  "pressure_min_Pa_abs": 500000.0,
+                  "pressure_max_Pa_abs": 2000000.0
+                },
+                "wall_phase_change_status": "NOT_EVALUATED",
+                "wall_phase_change_reason": "no saturation, ONB, CHF, dryout, or two-phase closure was supplied",
+                "status": "MODEL_U"
+              },
+              "qoi": {
+                "Y01": {
+                  "value": 2589.2026227200836,
+                  "unit": "K",
+                  "status": "MODEL_U"
+                },
+                "Y02": {
+                  "value": 150.85769091895781,
+                  "unit": "Pa",
+                  "status": "MODEL_U"
+                },
+                "Y03": {
+                  "value": 39289.769527001816,
+                  "unit": "W",
+                  "status": "MODEL_U"
+                },
+                "Y04": {
+                  "value": 999384.3375403434,
+                  "unit": "Pa(a)",
+                  "status": "MODEL_U"
+                },
+                "Y05": {
+                  "value": 368.7100295002264,
+                  "unit": "K",
+                  "status": "MODEL_U"
+                }
+              },
+              "checks": {
+                "coupled_temperature_update_K": 5.983508799545234e-09,
+                "coupled_pressure_update_Pa": 9.12696123123169e-08,
+                "coolant_energy_residual_W": -2.1827872842550278e-11,
+                "wall_energy_residual_max_W": 1.4551915228366852e-11,
+                "heat_transfer_closure": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "friction_closure": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "bulk_single_phase": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "wall_phase_change": "NOT_EVALUATED"
+              },
+              "implemented_models": [
+                "single-segment nested GAS-WALL and coolant-state fixed-point iteration",
+                "bounded temperature-tabulated variable coolant properties without extrapolation",
+                "conditional supplied-domain Gnielinski heat transfer",
+                "conditional supplied-domain Colebrook Darcy friction",
+                "Darcy-Weisbach friction and explicit local loss",
+                "coolant enthalpy energy balance and pressure update"
+              ],
+              "not_implemented": [
+                "wall boiling, ONB, CHF, dryout, or two-phase flow",
+                "pressure-dependent coolant properties within the supplied table",
+                "acceleration pressure drop",
+                "multiple segments, parallel distribution, or axial conduction",
+                "CEA station interpolation",
+                "uncertainty propagation or safety-allowable assessment"
+              ],
+              "physical_validation_v01_v12": "NOT_RUN",
+              "validated_engine_prediction": false
+            },
+            "checks": {
+              "mass_residual_kg_s": 0.0,
+              "coolant_energy_residual_W": -2.1827872842550278e-11,
+              "wall_energy_residual_max_W": 1.4551915228366852e-11
+            }
+          }
+        ],
+        "coolant_path_boundary": {
+          "inlet": {
+            "segment_id": "4N-X3",
+            "temperature_K": 300.0,
+            "pressure_Pa_abs": 1000000.0,
+            "enthalpy_J_kg": 100000.0,
+            "mass_flow_kg_s": 1.0
+          },
+          "outlet": {
+            "segment_id": "4N-X0",
+            "temperature_K": 368.7100295002264,
+            "pressure_Pa_abs": 999384.3375403434,
+            "enthalpy_J_kg": 246162.06490049814,
+            "mass_flow_kg_s": 1.0
+          }
+        },
+        "qoi": {
+          "Y01": {
+            "value": 2622.122061026155,
+            "unit": "K",
+            "location": "4N-X3",
+            "status": "MODEL_U"
+          },
+          "Y02": {
+            "value": 615.6624596565962,
+            "unit": "Pa",
+            "status": "MODEL_U"
+          },
+          "Y03": {
+            "value": 146162.06490049814,
+            "unit": "W",
+            "status": "MODEL_U"
+          },
+          "Y04": {
+            "value": 999384.3375403434,
+            "unit": "Pa(a)",
+            "status": "MODEL_U"
+          },
+          "Y05": {
+            "value": 368.7100295002264,
+            "unit": "K",
+            "status": "MODEL_U"
+          }
+        },
+        "checks": {
+          "segment_count": 4,
+          "mass_residual_max_kg_s": 0.0,
+          "segment_coolant_energy_residual_max_W": 2.9103830456733704e-11,
+          "segment_wall_energy_residual_max_W": 3.637978807091713e-11,
+          "total_heat_into_coolant_W": 146162.06490049814,
+          "boundary_coolant_enthalpy_rise_W": 146162.06490049814,
+          "total_energy_residual_W": 0.0,
+          "pressure_drop_sum_Pa": 615.6624596565962,
+          "pressure_drop_sum_residual_Pa": 0.0,
+          "enthalpy_continuity_residual_max_J_kg": 0.0,
+          "pressure_continuity_residual_max_Pa": 0.0,
+          "continuity": [
+            {
+              "from_segment_id": "4N-X3",
+              "to_segment_id": "4N-X2",
+              "enthalpy_residual_J_kg": 0.0,
+              "pressure_residual_Pa": 0.0,
+              "temperature_residual_K": 0.0
+            },
+            {
+              "from_segment_id": "4N-X2",
+              "to_segment_id": "4N-X1",
+              "enthalpy_residual_J_kg": 0.0,
+              "pressure_residual_Pa": 0.0,
+              "temperature_residual_K": 0.0
+            },
+            {
+              "from_segment_id": "4N-X1",
+              "to_segment_id": "4N-X0",
+              "enthalpy_residual_J_kg": 0.0,
+              "pressure_residual_Pa": 0.0,
+              "temperature_residual_K": 0.0
+            }
+          ],
+          "cea_station_mapping": "EXPLICIT_NO_INTERPOLATION_PER_SEGMENT"
+        },
+        "implemented_models": [
+          "single-path axial marching in explicit coolant-flow order",
+          "explicit increasing or decreasing gas-coordinate coolant direction",
+          "segment outlet enthalpy and pressure propagation to downstream inlet",
+          "per-segment explicit CEA station mapping without interpolation",
+          "single-segment GAS-WALL-COOLANT solver reuse",
+          "per-segment and whole-path conservation residuals",
+          "upstream failure blocking and status propagation"
+        ],
+        "not_implemented": [
+          "parallel-channel distribution or manifold network",
+          "axial wall conduction",
+          "CEA station interpolation",
+          "wall boiling, phase change, or two-phase flow",
+          "acceleration pressure drop",
+          "uncertainty propagation, safety allowables, or engine optimization"
+        ],
+        "physical_validation_v01_v12": "NOT_RUN",
+        "validated_engine_prediction": false
+      },
+      "normalized_residuals": {
+        "total_energy": 0.0,
+        "segment_coolant_energy_max": 1.991202743102086e-16,
+        "segment_wall_energy_max": 2.489003428877608e-16,
+        "pressure_drop_sum": 0.0,
+        "mass": 0.0
+      }
+    }
+  ],
+  "grid_sensitivity": {
+    "N_to_2N": {
+      "Y01": {
+        "coarse_value": 2603.6256583985087,
+        "fine_value": 2616.4752941956604,
+        "unit": "K",
+        "signed_change": 12.849635797151677,
+        "absolute_change": 12.849635797151677,
+        "relative_change_to_fine": 0.004911048013966373
+      },
+      "Y02": {
+        "coarse_value": 614.3969930609455,
+        "fine_value": 614.4626691102749,
+        "unit": "Pa",
+        "signed_change": 0.06567604932934046,
+        "absolute_change": 0.06567604932934046,
+        "relative_change_to_fine": 0.00010688370934630998
+      },
+      "Y03": {
+        "coarse_value": 147162.68871786422,
+        "fine_value": 146933.62849804986,
+        "unit": "W",
+        "signed_change": -229.0602198143606,
+        "absolute_change": 229.0602198143606,
+        "relative_change_to_fine": 0.0015589366583797443
+      },
+      "Y04": {
+        "coarse_value": 999385.603006939,
+        "fine_value": 999385.5373308897,
+        "unit": "Pa(a)",
+        "signed_change": -0.06567604932934046,
+        "absolute_change": 0.06567604932934046,
+        "relative_change_to_fine": 6.571642962209044e-08
+      },
+      "Y05": {
+        "coarse_value": 369.1648585081201,
+        "fine_value": 369.0607402263863,
+        "unit": "K",
+        "signed_change": -0.104118281733804,
+        "absolute_change": 0.104118281733804,
+        "relative_change_to_fine": 0.00028211692652525594
+      }
+    },
+    "2N_to_4N": {
+      "Y01": {
+        "coarse_value": 2616.4752941956604,
+        "fine_value": 2622.122061026155,
+        "unit": "K",
+        "signed_change": 5.646766830494471,
+        "absolute_change": 5.646766830494471,
+        "relative_change_to_fine": 0.002153510286353579
+      },
+      "Y02": {
+        "coarse_value": 614.4626691102749,
+        "fine_value": 615.6624596565962,
+        "unit": "Pa",
+        "signed_change": 1.19979054632131,
+        "absolute_change": 1.19979054632131,
+        "relative_change_to_fine": 0.0019487797696655543
+      },
+      "Y03": {
+        "coarse_value": 146933.62849804986,
+        "fine_value": 146162.06490049814,
+        "unit": "W",
+        "signed_change": -771.5635975517216,
+        "absolute_change": 771.5635975517216,
+        "relative_change_to_fine": 0.00527882250484744
+      },
+      "Y04": {
+        "coarse_value": 999385.5373308897,
+        "fine_value": 999384.3375403434,
+        "unit": "Pa(a)",
+        "signed_change": -1.19979054632131,
+        "absolute_change": 1.19979054632131,
+        "relative_change_to_fine": 1.2005296673692133e-06
+      },
+      "Y05": {
+        "coarse_value": 369.0607402263863,
+        "fine_value": 368.7100295002264,
+        "unit": "K",
+        "signed_change": -0.35071072615988896,
+        "absolute_change": 0.35071072615988896,
+        "relative_change_to_fine": 0.0009511830384306744
+      }
+    },
+    "observed_order_from_three_levels": {
+      "Y01": 1.186230503983886,
+      "Y02": -4.191271412820707,
+      "Y03": -1.7520581465208946,
+      "Y04": -4.191271412820707,
+      "Y05": -1.752058146520907
+    },
+    "asymptotic_regime_evidence": "NOT_ESTABLISHED",
+    "fine_grid_is_reference_not_truth": true,
+    "acceptance_status": "RECORDED_NO_ENGINE_ERROR_BUDGET",
+    "reason": "synthetic arithmetic refinement has no approved engine QoI error budget and does not establish an asymptotic physical-validation regime"
+  },
+  "software_verification": {
+    "refinement_execution": "PASS",
+    "conservation_and_state_transfer": "PASS_FOR_SYNTHETIC_FIXTURE",
+    "physical_validation_claim": "NONE"
+  },
+  "not_implemented": [
+    "actual nozzle-coordinate to CEA-station validation",
+    "CEA station interpolation",
+    "actual IPA property or phase model",
+    "parallel flow distribution",
+    "axial wall conduction",
+    "boiling or two-phase model",
+    "design optimization or safety allowables"
+  ],
+  "physical_validation_v01_v12": "NOT_RUN",
+  "validated_engine_prediction": false
+}

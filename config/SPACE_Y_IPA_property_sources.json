@@ -1,0 +1,122 @@
+{
+  "record_id": "SPACE-Y-IPA-PROPERTY-SOURCES-001",
+  "purpose": "ACTUAL_IPA_READINESS_ONLY_NO_ENGINE_RUN",
+  "overall_status": "INPUT_U",
+  "fluid_identity": {
+    "chemical_name": "2-propanol",
+    "cas_number": "67-63-0",
+    "prohibited_substitutions": ["1-propanol", "CAS 71-23-8", "generic propanol"]
+  },
+  "review_date": "2026-10-31",
+  "candidates": [
+    {
+      "provider": "NIST Chemistry WebBook",
+      "dataset_or_model": "public phase-change records and Antoine vapor-pressure correlations",
+      "version": "accessed 2026-10-31",
+      "exact_identity_confirmed": true,
+      "available_scope": ["selected phase-change data", "vapor pressure in published temperature bands"],
+      "unavailable_or_unconfirmed_scope": ["compressed-liquid h(p,T)", "T(p,h)", "rho(p,T)", "mu(p,T)", "cp(p,T)", "k(p,T)", "complete saturation enthalpies"],
+      "valid_ranges": ["Antoine coefficient sets are piecewise and do not cover an approved M0 operating domain"],
+      "uncertainty": "source-specific records only; no unified M0 uncertainty model established",
+      "license_and_publication": "publicly accessible NIST SRD pages; repository redistribution of extracted tables/correlations requires a separate terms review, so this repository stores links and metadata only",
+      "source_urls": [
+        "https://webbook.nist.gov/cgi/cbook.cgi?ID=67-63-0",
+        "https://webbook.nist.gov/cgi/cbook.cgi?ID=C67630&Mask=4"
+      ],
+      "m0_status": "INPUT_U"
+    },
+    {
+      "provider": "NIST REFPROP",
+      "dataset_or_model": "REFPROP pure-fluid database candidate",
+      "version": "REFPROP 10 public fluid-list review; no installed licensed edition supplied",
+      "exact_identity_confirmed": false,
+      "available_scope": [],
+      "unavailable_or_unconfirmed_scope": ["the public REFPROP 10 pure-fluid list does not identify 2-propanol or isopropanol", "the broader NIST project page uses the ambiguous word propanol and is not evidence for CAS 67-63-0", "model valid range", "transport coverage", "enthalpy reference", "uncertainty"],
+      "valid_ranges": [],
+      "uncertainty": "unconfirmed until the licensed installation and fluid metadata are inspected",
+      "license_and_publication": "proprietary NIST product; adapter source may be public, but REFPROP binaries and fluid files must not be committed",
+      "source_urls": [
+        "https://www.nist.gov/srd/refprop",
+        "https://pages.nist.gov/REFPROP-docs/"
+      ],
+      "m0_status": "INPUT_U"
+    },
+    {
+      "provider": "AIChE DIPPR 801",
+      "dataset_or_model": "DIPPR 801 recommended pure-component correlations",
+      "version": "licensed edition not supplied",
+      "exact_identity_confirmed": true,
+      "available_scope": ["catalog identifies ISOPROPANOL, CAS 67-63-0", "database property categories include liquid heat capacity, density, thermal conductivity, viscosity, and vapor pressure"],
+      "unavailable_or_unconfirmed_scope": ["licensed coefficients", "per-correlation valid ranges", "selected edition", "enthalpy reference", "pressure dependence sufficient for M0", "phase inversion"],
+      "valid_ranges": [],
+      "uncertainty": "database advertises evaluated accuracy metadata, but no licensed record was supplied for review",
+      "license_and_publication": "licensed database; coefficients and records are not redistributable in this public repository without permission",
+      "source_urls": [
+        "https://www.aiche.org/dippr/events-products/801-database/thermophysical-properties",
+        "https://www.aiche.org/sites/default/files/docs/embedded-pdf/DIPPR-Compound-List-2011.pdf"
+      ],
+      "m0_status": "INPUT_U"
+    },
+    {
+      "provider": "CoolProp",
+      "dataset_or_model": "PC-SAFT parameter entry 2-PROPANOL",
+      "version": "8.0.0 candidate; repository evidence commit 626c95bc670b58ce64603907ed3fc192f946d4f2",
+      "exact_identity_confirmed": true,
+      "available_scope": ["exact CAS 67-63-0 PC-SAFT parameter entry", "PC-SAFT TP/PQ/DT/QT input-pair documentation"],
+      "unavailable_or_unconfirmed_scope": ["p,h flash", "viscosity", "thermal conductivity", "validated liquid cp and density ranges", "uncertainty for the intended IPA domain", "M0 phase-boundary robustness"],
+      "valid_ranges": [],
+      "uncertainty": "not established for the intended operating domain; runtime package is not installed in the project environment",
+      "license_and_publication": "CoolProp source is MIT-licensed; retain upstream citations and review bundled-data provenance before claiming validation",
+      "source_urls": [
+        "https://github.com/CoolProp/CoolProp/blob/626c95bc670b58ce64603907ed3fc192f946d4f2/dev/pcsaft/all_pcsaft_fluids.json",
+        "https://coolprop.org/coolprop/PCSAFT.html",
+        "https://pypi.org/project/CoolProp/"
+      ],
+      "m0_status": "INPUT_U"
+    },
+    {
+      "provider": "chemicals/thermo",
+      "dataset_or_model": "open-source databank aggregation and property methods",
+      "version": "not installed or pinned",
+      "exact_identity_confirmed": true,
+      "available_scope": ["CAS-based lookup includes isopropanol in published examples", "candidate correlations and databanks for exploratory cross-checks"],
+      "unavailable_or_unconfirmed_scope": ["approved method selection", "consistent p,T and p,h model", "single enthalpy reference", "validated ranges and uncertainty for all required outputs"],
+      "valid_ranges": [],
+      "uncertainty": "upstream documentation states the collection is not critically evaluated and some properties may be missing",
+      "license_and_publication": "open-source code may be depended upon under its license; underlying data sources and method citations remain source-specific",
+      "source_urls": [
+        "https://github.com/CalebBell/chemicals",
+        "https://github.com/CalebBell/thermo"
+      ],
+      "m0_status": "INPUT_U"
+    }
+  ],
+  "provenance": {
+    "provider": null,
+    "dataset_or_model": null,
+    "version": null,
+    "source_urls": [],
+    "license_summary": null,
+    "redistribution_scope": "REVIEW_REQUIRED",
+    "enthalpy_reference": null
+  },
+  "capabilities": {
+    "state_pt": {"status": "INPUT_U", "evidence": "no single reviewed executable IPA provider has been selected", "valid_temperature_range_K": null, "valid_pressure_range_Pa_abs": null, "phase_scope": null},
+    "state_ph": {"status": "INPUT_U", "evidence": "p,h inversion and enthalpy reference are not established", "valid_temperature_range_K": null, "valid_pressure_range_Pa_abs": null, "phase_scope": null},
+    "density": {"status": "INPUT_U", "evidence": "no reviewed compressed-liquid density model and range", "valid_temperature_range_K": null, "valid_pressure_range_Pa_abs": null, "phase_scope": null},
+    "viscosity": {"status": "INPUT_U", "evidence": "no reviewed viscosity correlation and range", "valid_temperature_range_K": null, "valid_pressure_range_Pa_abs": null, "phase_scope": null},
+    "cp": {"status": "INPUT_U", "evidence": "no reviewed liquid heat-capacity correlation and range", "valid_temperature_range_K": null, "valid_pressure_range_Pa_abs": null, "phase_scope": null},
+    "conductivity": {"status": "INPUT_U", "evidence": "no reviewed liquid thermal-conductivity correlation and range", "valid_temperature_range_K": null, "valid_pressure_range_Pa_abs": null, "phase_scope": null},
+    "saturation_at_temperature": {"status": "INPUT_U", "evidence": "partial vapor-pressure correlations do not provide the complete phase interface", "valid_temperature_range_K": null, "valid_pressure_range_Pa_abs": null, "phase_scope": null},
+    "saturation_at_pressure": {"status": "INPUT_U", "evidence": "inverse saturation and branch handling are not reviewed", "valid_temperature_range_K": null, "valid_pressure_range_Pa_abs": null, "phase_scope": null},
+    "phase_pt": {"status": "INPUT_U", "evidence": "single-phase margin and coexistence model are not established", "valid_temperature_range_K": null, "valid_pressure_range_Pa_abs": null, "phase_scope": null},
+    "phase_ph": {"status": "INPUT_U", "evidence": "phase or quality from p,h is not established with a reviewed enthalpy reference", "valid_temperature_range_K": null, "valid_pressure_range_Pa_abs": null, "phase_scope": null}
+  },
+  "physical_validation_v01_v12": "NOT_RUN",
+  "refinement_status_preserved": {
+    "asymptotic_regime": "NOT_ESTABLISHED",
+    "four_n_is_truth": false,
+    "richardson_extrapolation": "NOT_PERFORMED",
+    "gci": "NOT_PERFORMED"
+  }
+}

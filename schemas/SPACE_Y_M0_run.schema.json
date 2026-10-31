@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SPACE Y M0 steady single-path run request",
+  "type": "object",
+  "required": [
+    "purpose", "run_id", "model_scope", "flow_boundary_mode", "boundary",
+    "coolant_property_model", "coolant_closure", "numerics", "segments"
+  ],
+  "properties": {
+    "purpose": {"type": "string"},
+    "input_evidence_complete": {"type": "boolean"},
+    "run_id": {"type": "string", "minLength": 1},
+    "model_scope": {"const": "STEADY_SINGLE_PATH_1D"},
+    "flow_boundary_mode": {"enum": ["PRESCRIBED_MASS_FLOW", "PRESSURE_DRIVEN"]},
+    "boundary": {
+      "type": "object",
+      "required": ["inlet_pressure_Pa_abs", "inlet_temperature_K", "mass_flow_kg_s", "flow_direction"],
+      "properties": {
+        "inlet_pressure_Pa_abs": {"type": "number", "exclusiveMinimum": 0},
+        "inlet_temperature_K": {"type": "number", "exclusiveMinimum": 0},
+        "mass_flow_kg_s": {"type": "number", "exclusiveMinimum": 0},
+        "flow_direction": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "coolant_property_model": {
+      "type": "object",
+      "required": ["model", "source", "pressure_range_Pa_abs", "rows"],
+      "properties": {
+        "model": {"const": "TABULATED_T_PRESSURE_BOUNDED"},
+        "source": {"type": "string", "minLength": 1},
+        "pressure_range_Pa_abs": {
+          "type": "array", "minItems": 2, "maxItems": 2,
+          "items": {"type": "number", "exclusiveMinimum": 0}
+        },
+        "rows": {
+          "type": "array", "minItems": 2,
+          "items": {
+            "type": "object",
+            "required": ["temperature_K", "enthalpy_J_kg", "density_kg_m3", "viscosity_Pa_s", "cp_J_kgK", "conductivity_W_mK"],
+            "properties": {
+              "temperature_K": {"type": "number", "exclusiveMinimum": 0},
+              "enthalpy_J_kg": {"type": "number"},
+              "density_kg_m3": {"type": "number", "exclusiveMinimum": 0},
+              "viscosity_Pa_s": {"type": "number", "exclusiveMinimum": 0},
+              "cp_J_kgK": {"type": "number", "exclusiveMinimum": 0},
+              "conductivity_W_mK": {"type": "number", "exclusiveMinimum": 0}
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "coolant_closure": {
+      "type": "object",
+      "required": ["source", "re_range", "pr_range", "geometry", "fully_developed_required"]
+    },
+    "numerics": {
+      "type": "object",
+      "required": ["max_segment_iterations", "relaxation", "temperature_tolerance_K", "pressure_tolerance_Pa", "energy_residual_tolerance_W"]
+    },
+    "segments": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "geometry", "gas_boundary"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "geometry": {
+            "type": "object",
+            "required": [
+              "length_m", "gas_heated_area_m2", "coolant_wetted_area_m2", "flow_area_m2",
+              "hydraulic_diameter_m", "wall_resistance_K_W", "surface_efficiency",
+              "equivalent_sand_roughness_m", "local_loss_coefficient", "closure_geometry", "fully_developed"
+            ]
+          },
+          "gas_boundary": {
+            "type": "object",
+            "required": ["h_g_W_m2K", "adiabatic_wall_temperature_K", "radiation_definition", "q_rad_net_W"],
+            "properties": {
+              "h_g_W_m2K": {"type": "number", "exclusiveMinimum": 0},
+              "adiabatic_wall_temperature_K": {"type": "number", "exclusiveMinimum": 0},
+              "radiation_definition": {"const": "EXPLICIT_NET_RATE_GAS_TO_WALL_POSITIVE"},
+              "q_rad_net_W": {"type": "number"}
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,254 @@
+{
+  "purpose": "NON_DESIGN_NUMERICAL_VERIFICATION",
+  "run_id": "M0-REFINEMENT-SYNTHETIC-001",
+  "case_id": "NON_DESIGN_SYNTHETIC_CONSTANT_GAS_FIELD",
+  "geometry_version": "SYNTHETIC-REFINEMENT-GEOMETRY-V1",
+  "spatial_basis": "ONE_SYNTHETIC_SINGLE_COOLANT_PATH_FIXED_DOMAIN",
+  "model_scope": "N_2N_4N_SINGLE_PATH_GRID_SENSITIVITY",
+  "gas_state_policy": "EXPLICIT_PER_CELL_NO_INTERPOLATION",
+  "gas_axial_coordinate_reference": "synthetic 0.3 m verification domain; not SPACE Y geometry",
+  "manufactured_fixture_source": "constant explicit CEA station mapping used only to verify discretization plumbing; not a nozzle mapping",
+  "normalization": {
+    "heat_rate_floor_W": 1e-12,
+    "pressure_drop_floor_Pa": 1e-12,
+    "source": "numerical divide-by-zero guard for dimensionless residual reporting; not a physical allowable"
+  },
+  "partition_checks": {
+    "fraction_sum_tolerance": 1e-12
+  },
+  "base_marching_request": {
+    "formula_version": "RPA_2012_BASIC_BARTZ",
+    "formula_source": "RPA Thermal Analysis documentation (2012), Basic Bartz equation, page 7",
+    "coolant_boundary": {
+      "mass_flow_kg_s": 1.0,
+      "mass_flow_source": "synthetic arithmetic fixture; not a SPACE Y flow condition",
+      "inlet_pressure_Pa_abs": 1000000.0,
+      "inlet_pressure_source": "synthetic arithmetic fixture; not a SPACE Y pressure condition",
+      "inlet_temperature_K": 300.0,
+      "inlet_temperature_source": "synthetic arithmetic fixture; not a SPACE Y inlet condition"
+    },
+    "coolant_property_model": {
+      "model": "TABULATED_T_PRESSURE_BOUNDED",
+      "source": "synthetic variable-property table for interpolation verification; not a real fluid",
+      "pressure_range_Pa_abs": [500000.0, 2000000.0],
+      "rows": [
+        {"temperature_K": 250.0, "enthalpy_J_kg": 0.0, "density_kg_m3": 850.0, "viscosity_Pa_s": 0.002, "cp_J_kgK": 1800.0, "conductivity_W_mK": 0.14},
+        {"temperature_K": 300.0, "enthalpy_J_kg": 100000.0, "density_kg_m3": 820.0, "viscosity_Pa_s": 0.0015, "cp_J_kgK": 1950.0, "conductivity_W_mK": 0.15},
+        {"temperature_K": 350.0, "enthalpy_J_kg": 205000.0, "density_kg_m3": 790.0, "viscosity_Pa_s": 0.0011, "cp_J_kgK": 2100.0, "conductivity_W_mK": 0.16},
+        {"temperature_K": 500.0, "enthalpy_J_kg": 535000.0, "density_kg_m3": 730.0, "viscosity_Pa_s": 0.0007, "cp_J_kgK": 2300.0, "conductivity_W_mK": 0.18}
+      ]
+    },
+    "single_phase_bulk_domain": {
+      "classification": "SYNTHETIC_SINGLE_PHASE_LIQUID_DOMAIN",
+      "source": "synthetic bounded domain for stop-rule testing; not a real-fluid phase envelope",
+      "temperature_range_K": [250.0, 500.0],
+      "pressure_range_Pa_abs": [500000.0, 2000000.0]
+    },
+    "coolant_heat_transfer_closure": {
+      "source": "synthetic Gnielinski applicability domain for code verification only",
+      "re_range": [4000.0, 1000000.0],
+      "pr_range": [1.0, 100.0],
+      "geometry": "circular_tube",
+      "fully_developed_required": true,
+      "thermal_boundary_condition": "SYNTHETIC_SEGMENT_AVERAGED_HEATING"
+    },
+    "coolant_friction_closure": {
+      "source": "synthetic Colebrook applicability domain for code verification only",
+      "re_range": [4000.0, 1000000.0],
+      "relative_roughness_range": [0.0, 0.01],
+      "geometry": "circular_tube"
+    },
+    "marching_numerics": {
+      "total_energy_residual_tolerance_W": 1e-7,
+      "enthalpy_continuity_tolerance_J_kg": 1e-9,
+      "pressure_continuity_tolerance_Pa": 1e-9,
+      "mass_residual_tolerance_kg_s": 1e-12
+    }
+  },
+  "segment_template": {
+    "geometry": {
+      "throat_diameter_m": 0.1,
+      "throat_diameter_source": "synthetic non-design fixture; not SPACE Y geometry",
+      "bartz_curvature_radius_m": 0.15,
+      "bartz_curvature_radius_source": "synthetic non-design fixture; not SPACE Y geometry",
+      "gas_area_m2": 0.03,
+      "gas_area_source": "synthetic full-domain area partitioned by explicit cell fraction",
+      "coolant_area_m2": 0.06,
+      "coolant_area_source": "synthetic full-domain area partitioned by explicit cell fraction",
+      "wall_thickness_m": 0.002,
+      "wall_thickness_source": "synthetic non-design fixture; not SPACE Y wall thickness",
+      "wall_conductivity_W_mK": 20.0,
+      "wall_conductivity_source": "synthetic constant for arithmetic verification; not a material selection",
+      "wall_conduction_area_m2": 0.03,
+      "wall_conduction_area_source": "synthetic full-domain area partitioned by explicit cell fraction",
+      "length_m": 0.3,
+      "flow_area_m2": 0.001,
+      "hydraulic_diameter_m": 0.01,
+      "flow_geometry_source": "synthetic constant circular-tube section; not SPACE Y geometry",
+      "equivalent_sand_roughness_m": 0.000001,
+      "equivalent_sand_roughness_source": "synthetic ks; not measured Ra or SPACE Y roughness",
+      "local_loss_coefficient": 0.0,
+      "local_loss_source": "zero only for distributed-grid verification; no local fitting is represented",
+      "closure_geometry": "circular_tube",
+      "fully_developed": true,
+      "thermal_boundary_condition": "SYNTHETIC_SEGMENT_AVERAGED_HEATING"
+    },
+    "radiation": {
+      "definition": "EXPLICIT_NET_RATE_GAS_TO_WALL_POSITIVE",
+      "q_rad_net_W": 900.0,
+      "source": "synthetic full-domain nonzero net rate partitioned by cell fraction; not a radiation model"
+    },
+    "gas_wall_numerics": {
+      "max_iterations": 100,
+      "relaxation": 0.5,
+      "wall_temperature_tolerance_K": 1e-8,
+      "energy_residual_tolerance_W": 1e-7,
+      "initial_gas_side_wall_temperature_K": 1000.0,
+      "initial_temperature_source": "synthetic numerical initial iterate only"
+    },
+    "coupled_numerics": {
+      "max_iterations": 100,
+      "relaxation": 0.5,
+      "outlet_temperature_tolerance_K": 1e-8,
+      "outlet_pressure_tolerance_Pa": 1e-5,
+      "energy_residual_tolerance_W": 1e-7,
+      "initial_outlet_temperature_K": 350.0,
+      "initial_outlet_pressure_Pa_abs": 999000.0,
+      "initial_state_source": "synthetic numerical initial iterate only"
+    }
+  },
+  "levels": [
+    {
+      "label": "N",
+      "cell_count": 1,
+      "gas_axial_order_segment_ids": ["N-X0"],
+      "coolant_flow_direction": "DECREASING_GAS_AXIAL_COORDINATE",
+      "coolant_flow_order_segment_ids": ["N-X0"],
+      "segments": [
+        {
+          "segment_id": "N-X0",
+          "gas_axial_coordinate_m": 0.15,
+          "gas_axial_coordinate_source": "explicit synthetic cell center",
+          "domain_fraction": 1.0,
+          "partition_source": "one equal cell over the fixed synthetic domain",
+          "cea_station_mapping": {
+            "method": "EXPLICIT_NO_INTERPOLATION",
+            "source": "constant manufactured gas field: explicit station 3 reused without spatial interpolation",
+            "cea_run_artifact": "../artifacts/phase1/cea_rp1311_example13_rocket_run.json",
+            "chamber_station_index": 0,
+            "cea_station_index": 3,
+            "transport_basis": "frozen"
+          }
+        }
+      ]
+    },
+    {
+      "label": "2N",
+      "cell_count": 2,
+      "gas_axial_order_segment_ids": ["2N-X0", "2N-X1"],
+      "coolant_flow_direction": "DECREASING_GAS_AXIAL_COORDINATE",
+      "coolant_flow_order_segment_ids": ["2N-X1", "2N-X0"],
+      "segments": [
+        {
+          "segment_id": "2N-X0",
+          "gas_axial_coordinate_m": 0.075,
+          "gas_axial_coordinate_source": "explicit synthetic cell center",
+          "domain_fraction": 0.5,
+          "partition_source": "two equal cells over the fixed synthetic domain",
+          "cea_station_mapping": {
+            "method": "EXPLICIT_NO_INTERPOLATION",
+            "source": "constant manufactured gas field: explicit station 3 reused without spatial interpolation",
+            "cea_run_artifact": "../artifacts/phase1/cea_rp1311_example13_rocket_run.json",
+            "chamber_station_index": 0,
+            "cea_station_index": 3,
+            "transport_basis": "frozen"
+          }
+        },
+        {
+          "segment_id": "2N-X1",
+          "gas_axial_coordinate_m": 0.225,
+          "gas_axial_coordinate_source": "explicit synthetic cell center",
+          "domain_fraction": 0.5,
+          "partition_source": "two equal cells over the fixed synthetic domain",
+          "cea_station_mapping": {
+            "method": "EXPLICIT_NO_INTERPOLATION",
+            "source": "constant manufactured gas field: explicit station 3 reused without spatial interpolation",
+            "cea_run_artifact": "../artifacts/phase1/cea_rp1311_example13_rocket_run.json",
+            "chamber_station_index": 0,
+            "cea_station_index": 3,
+            "transport_basis": "frozen"
+          }
+        }
+      ]
+    },
+    {
+      "label": "4N",
+      "cell_count": 4,
+      "gas_axial_order_segment_ids": ["4N-X0", "4N-X1", "4N-X2", "4N-X3"],
+      "coolant_flow_direction": "DECREASING_GAS_AXIAL_COORDINATE",
+      "coolant_flow_order_segment_ids": ["4N-X3", "4N-X2", "4N-X1", "4N-X0"],
+      "segments": [
+        {
+          "segment_id": "4N-X0",
+          "gas_axial_coordinate_m": 0.0375,
+          "gas_axial_coordinate_source": "explicit synthetic cell center",
+          "domain_fraction": 0.25,
+          "partition_source": "four equal cells over the fixed synthetic domain",
+          "cea_station_mapping": {
+            "method": "EXPLICIT_NO_INTERPOLATION",
+            "source": "constant manufactured gas field: explicit station 3 reused without spatial interpolation",
+            "cea_run_artifact": "../artifacts/phase1/cea_rp1311_example13_rocket_run.json",
+            "chamber_station_index": 0,
+            "cea_station_index": 3,
+            "transport_basis": "frozen"
+          }
+        },
+        {
+          "segment_id": "4N-X1",
+          "gas_axial_coordinate_m": 0.1125,
+          "gas_axial_coordinate_source": "explicit synthetic cell center",
+          "domain_fraction": 0.25,
+          "partition_source": "four equal cells over the fixed synthetic domain",
+          "cea_station_mapping": {
+            "method": "EXPLICIT_NO_INTERPOLATION",
+            "source": "constant manufactured gas field: explicit station 3 reused without spatial interpolation",
+            "cea_run_artifact": "../artifacts/phase1/cea_rp1311_example13_rocket_run.json",
+            "chamber_station_index": 0,
+            "cea_station_index": 3,
+            "transport_basis": "frozen"
+          }
+        },
+        {
+          "segment_id": "4N-X2",
+          "gas_axial_coordinate_m": 0.1875,
+          "gas_axial_coordinate_source": "explicit synthetic cell center",
+          "domain_fraction": 0.25,
+          "partition_source": "four equal cells over the fixed synthetic domain",
+          "cea_station_mapping": {
+            "method": "EXPLICIT_NO_INTERPOLATION",
+            "source": "constant manufactured gas field: explicit station 3 reused without spatial interpolation",
+            "cea_run_artifact": "../artifacts/phase1/cea_rp1311_example13_rocket_run.json",
+            "chamber_station_index": 0,
+            "cea_station_index": 3,
+            "transport_basis": "frozen"
+          }
+        },
+        {
+          "segment_id": "4N-X3",
+          "gas_axial_coordinate_m": 0.2625,
+          "gas_axial_coordinate_source": "explicit synthetic cell center",
+          "domain_fraction": 0.25,
+          "partition_source": "four equal cells over the fixed synthetic domain",
+          "cea_station_mapping": {
+            "method": "EXPLICIT_NO_INTERPOLATION",
+            "source": "constant manufactured gas field: explicit station 3 reused without spatial interpolation",
+            "cea_run_artifact": "../artifacts/phase1/cea_rp1311_example13_rocket_run.json",
+            "chamber_station_index": 0,
+            "cea_station_index": 3,
+            "transport_basis": "frozen"
+          }
+        }
+      ]
+    }
+  ]
+}

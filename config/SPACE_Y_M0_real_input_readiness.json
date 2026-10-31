@@ -1,0 +1,64 @@
+{
+  "record_id": "SPACE-Y-M0-REAL-INPUT-READINESS-001",
+  "purpose": "ACTUAL_INPUT_READINESS_ONLY_NO_ENGINE_RUN",
+  "overall_status": "INPUT_U",
+  "coolant_identity": {
+    "chemical_name": "2-propanol",
+    "cas_number": "67-63-0",
+    "purity_mass_fraction": null,
+    "water_mass_fraction": null,
+    "additives": null,
+    "source": null,
+    "status": "INPUT_U"
+  },
+  "property_model": {
+    "provider": null,
+    "dataset_or_model": null,
+    "version": null,
+    "equation_references": null,
+    "temperature_range_K": null,
+    "pressure_range_Pa_abs": null,
+    "phase_scope": null,
+    "enthalpy_reference_state": null,
+    "uncertainty": null,
+    "required_outputs": ["h(p,T)", "T(p,h)", "rho(p,T)", "mu(p,T)", "cp(p,T)", "k(p,T)"],
+    "status": "INPUT_U"
+  },
+  "phase_equilibrium": {
+    "model_source": null,
+    "version": null,
+    "valid_domain": null,
+    "required_outputs": ["p_sat(T)", "T_sat(p)", "h_f(p)", "h_g(p)", "phase_or_quality(p,h)"],
+    "wall_boiling_evidence": null,
+    "status": "INPUT_U"
+  },
+  "nozzle_cea_mapping": {
+    "geometry_version": null,
+    "geometry_sha256": null,
+    "coordinate_definition": null,
+    "contour_area_source": null,
+    "cea_artifact_sha256": null,
+    "cea_case_definition": null,
+    "station_mapping_policy": "EXPLICIT_SOURCE_BACKED_NO_INTERPOLATION",
+    "segment_station_mappings": [],
+    "unresolved_conditions": [
+      "no approved nozzle contour coordinate origin, direction, units, or geometry version",
+      "no traceable segment boundary and representative coordinate definition",
+      "no reviewed A(x)/At calculation and throat-location evidence",
+      "no source-backed subsonic/throat/supersonic branch selection",
+      "no reviewed one-to-one segment to CEA station mapping",
+      "no approved policy for segments without an exact explicit CEA station"
+    ],
+    "status": "INPUT_U"
+  },
+  "prohibited_fallbacks": [
+    "do not infer IPA purity, water content, additives, or inlet composition",
+    "do not extrapolate properties outside a supplied valid temperature-pressure-phase domain",
+    "do not align enthalpy values from different reference states without a documented offset",
+    "do not classify single phase from normal boiling point alone",
+    "do not select a CEA station by nearest coordinate or area ratio without source-backed mapping",
+    "do not interpolate between CEA stations until a separate model and validation basis are approved",
+    "do not treat unit-test or synthetic-refinement PASS as V01-V12 physical validation"
+  ],
+  "physical_validation_v01_v12": "NOT_RUN"
+}

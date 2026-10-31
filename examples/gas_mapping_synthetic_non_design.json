@@ -1,0 +1,50 @@
+{
+  "purpose": "NON_DESIGN_INTERFACE_VERIFICATION",
+  "run_id": "GAS-SYNTHETIC-CEA-RPA-BARTZ-001",
+  "formula_version": "RPA_2012_BASIC_BARTZ",
+  "formula_source": "RPA Thermal Analysis documentation (2012), Basic Bartz equation, page 7",
+  "cea_run_artifact": "../artifacts/phase1/cea_rp1311_example13_rocket_run.json",
+  "chamber_station_index": 0,
+  "transport_basis": "frozen",
+  "geometry": {
+    "throat_diameter_m": 0.1,
+    "throat_diameter_source": "synthetic non-design interface fixture; not SPACE Y geometry",
+    "bartz_curvature_radius_m": 0.15,
+    "bartz_curvature_radius_source": "synthetic non-design interface fixture; not SPACE Y geometry"
+  },
+  "segments": [
+    {
+      "id": "SYN-GAS-01",
+      "cea_station_index": 3,
+      "wall_temperature_K": 900.0,
+      "wall_temperature_source": "synthetic non-design interface fixture; not a material limit or prediction",
+      "gas_heated_area_m2": 0.01,
+      "gas_heated_area_source": "synthetic non-design interface fixture; not SPACE Y geometry",
+      "radiation_definition": "EXPLICIT_NET_RATE_GAS_TO_WALL_POSITIVE",
+      "q_rad_net_W": 0.0,
+      "q_rad_source": "synthetic interface fixture with radiation disabled; not a physical radiation estimate"
+    },
+    {
+      "id": "SYN-GAS-02",
+      "cea_station_index": 4,
+      "wall_temperature_K": 850.0,
+      "wall_temperature_source": "synthetic non-design interface fixture; not a material limit or prediction",
+      "gas_heated_area_m2": 0.012,
+      "gas_heated_area_source": "synthetic non-design interface fixture; not SPACE Y geometry",
+      "radiation_definition": "EXPLICIT_NET_RATE_GAS_TO_WALL_POSITIVE",
+      "q_rad_net_W": 0.0,
+      "q_rad_source": "synthetic interface fixture with radiation disabled; not a physical radiation estimate"
+    },
+    {
+      "id": "SYN-GAS-03",
+      "cea_station_index": 5,
+      "wall_temperature_K": 800.0,
+      "wall_temperature_source": "synthetic non-design interface fixture; not a material limit or prediction",
+      "gas_heated_area_m2": 0.015,
+      "gas_heated_area_source": "synthetic non-design interface fixture; not SPACE Y geometry",
+      "radiation_definition": "EXPLICIT_NET_RATE_GAS_TO_WALL_POSITIVE",
+      "q_rad_net_W": 0.0,
+      "q_rad_source": "synthetic interface fixture with radiation disabled; not a physical radiation estimate"
+    }
+  ]
+}

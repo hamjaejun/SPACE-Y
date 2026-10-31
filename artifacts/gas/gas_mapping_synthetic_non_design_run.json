@@ -1,0 +1,112 @@
+{
+  "run_id": "GAS-SYNTHETIC-CEA-RPA-BARTZ-001",
+  "status": "MODEL_U",
+  "formula_version": "RPA_2012_BASIC_BARTZ",
+  "transport_basis": "frozen",
+  "cea_artifact_sha256": "5b2469ea75b95ead9aee37a67770f761474b569ce47125e1224d0340841e68f0",
+  "chamber_reference": {
+    "station_index": 0,
+    "T0_K": 3002.5400574804275,
+    "p0_Pa_abs": 20684271.240234375,
+    "c_star_m_s": 1946.6824123708707,
+    "viscosity_Pa_s": 7.992036518561244e-05,
+    "cp_J_kgK": 3642.6615839196998,
+    "Pr": 0.47879491138342495
+  },
+  "geometry": {
+    "throat_diameter_m": 0.1,
+    "throat_diameter_source": "synthetic non-design interface fixture; not SPACE Y geometry",
+    "bartz_curvature_radius_m": 0.15,
+    "bartz_curvature_radius_source": "synthetic non-design interface fixture; not SPACE Y geometry"
+  },
+  "gas_boundaries": [
+    {
+      "segment_id": "SYN-GAS-01",
+      "cea_station_index": 3,
+      "cea_station": {
+        "Mach": 2.1037567956327248,
+        "gamma_s": 1.1790641349149722,
+        "Ae_At": 2.4856568126753125,
+        "Pr": 0.4853450214590086
+      },
+      "prescribed_wall_temperature_K": 900.0,
+      "sigma": 1.2135467985483397,
+      "h_g_W_m2K": 30231.548859361494,
+      "adiabatic_wall_temperature_K": 2821.6927044308845,
+      "q_conv_at_prescribed_wall_temperature_W": 580957.4688668081,
+      "q_rad_net_W": 0.0,
+      "q_total_at_prescribed_wall_temperature_W": 580957.4688668081,
+      "gas_boundary": {
+        "h_g_W_m2K": 30231.548859361494,
+        "adiabatic_wall_temperature_K": 2821.6927044308845,
+        "radiation_definition": "EXPLICIT_NET_RATE_GAS_TO_WALL_POSITIVE",
+        "q_rad_net_W": 0.0
+      },
+      "status": "MODEL_U"
+    },
+    {
+      "segment_id": "SYN-GAS-02",
+      "cea_station_index": 4,
+      "cea_station": {
+        "Mach": 2.68431924392023,
+        "gamma_s": 1.1915572259005447,
+        "Ae_At": 5.33859625180863,
+        "Pr": 0.4892136888298684
+      },
+      "prescribed_wall_temperature_K": 850.0,
+      "sigma": 1.1531283017313259,
+      "h_g_W_m2K": 14437.57259765172,
+      "adiabatic_wall_temperature_K": 2744.8661577084563,
+      "q_conv_at_prescribed_wall_temperature_W": 328287.21257699054,
+      "q_rad_net_W": 0.0,
+      "q_total_at_prescribed_wall_temperature_W": 328287.21257699054,
+      "gas_boundary": {
+        "h_g_W_m2K": 14437.57259765172,
+        "adiabatic_wall_temperature_K": 2744.8661577084563,
+        "radiation_definition": "EXPLICIT_NET_RATE_GAS_TO_WALL_POSITIVE",
+        "q_rad_net_W": 0.0
+      },
+      "status": "MODEL_U"
+    },
+    {
+      "segment_id": "SYN-GAS-03",
+      "cea_station_index": 5,
+      "cea_station": {
+        "Mach": 3.883360772152249,
+        "gamma_s": 1.2179536350085085,
+        "Ae_At": 30.00071266942309,
+        "Pr": 0.49203019893929945
+      },
+      "prescribed_wall_temperature_K": 800.0,
+      "sigma": 0.9921701909437167,
+      "h_g_W_m2K": 2627.052062284815,
+      "adiabatic_wall_temperature_K": 2613.0172064072494,
+      "q_conv_at_prescribed_wall_temperature_W": 71443.35886575027,
+      "q_rad_net_W": 0.0,
+      "q_total_at_prescribed_wall_temperature_W": 71443.35886575027,
+      "gas_boundary": {
+        "h_g_W_m2K": 2627.052062284815,
+        "adiabatic_wall_temperature_K": 2613.0172064072494,
+        "radiation_definition": "EXPLICIT_NET_RATE_GAS_TO_WALL_POSITIVE",
+        "q_rad_net_W": 0.0
+      },
+      "status": "MODEL_U"
+    }
+  ],
+  "implemented_models": [
+    "explicit CEA rocket-station mapping without spatial interpolation",
+    "CEA transport conversion to SI with unit provenance",
+    "RPA 2012 basic Bartz heat-transfer coefficient and sigma correction",
+    "Prandtl recovery-temperature relation",
+    "explicit net-radiation pass-through"
+  ],
+  "not_implemented": [
+    "coupled iteration of Bartz sigma with M0-computed wall temperature",
+    "station interpolation from nozzle contour coordinates",
+    "original Bartz correlation validation against reference data",
+    "radiation model calculation",
+    "uncertainty propagation and safety-allowable assessment"
+  ],
+  "physical_validation_v01_v12": "NOT_RUN",
+  "validated_engine_prediction": false
+}

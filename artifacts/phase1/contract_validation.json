@@ -1,0 +1,168 @@
+{
+  "contract_path": "SPACE_Y_M0_model_contract.json",
+  "document_version": "v2.1",
+  "checks": {
+    "json_syntax": "PASS",
+    "json_schema": "PASS",
+    "fixed_id_sets": "PASS",
+    "semantic_consistency": "PASS",
+    "run_readiness": "BLOCKED"
+  },
+  "issues": [
+    {
+      "code": "FLOW_MODE_MISSING",
+      "level": "BLOCKER",
+      "path": "analysis_control.flow_boundary_mode",
+      "message": "select PRESCRIBED_MASS_FLOW or PRESSURE_DRIVEN; no default is assumed",
+      "affects": [
+        "Y02",
+        "Y04",
+        "Y05",
+        "Y01",
+        "Y03"
+      ]
+    }
+  ],
+  "qoi_dependency_status": {
+    "Y01": {
+      "status": "INPUT_U",
+      "blocking_inputs": [
+        "I01",
+        "I02",
+        "I03",
+        "I04",
+        "I05",
+        "I06",
+        "I07",
+        "I08",
+        "I09",
+        "I10",
+        "I11",
+        "I12",
+        "I13",
+        "I14",
+        "I15",
+        "I16",
+        "I17",
+        "I18",
+        "I19",
+        "I20",
+        "I21",
+        "I22",
+        "I23"
+      ],
+      "outside_inputs": [],
+      "reason": "결합 가스-벽-냉각 상태, 형상, 물성, 손실, 공간/시간 및 수치 조건에 의존"
+    },
+    "Y02": {
+      "status": "INPUT_U",
+      "blocking_inputs": [
+        "I01",
+        "I02",
+        "I03",
+        "I04",
+        "I05",
+        "I06",
+        "I09",
+        "I10",
+        "I12",
+        "I13",
+        "I15",
+        "I18",
+        "I19",
+        "I20",
+        "I21",
+        "I22",
+        "I23"
+      ],
+      "outside_inputs": [],
+      "reason": "지정 경로의 국소 상태, 유량/분배, 형상, 거칠기, 마찰/국부손실 및 수치 조건에 의존"
+    },
+    "Y03": {
+      "status": "INPUT_U",
+      "blocking_inputs": [
+        "I01",
+        "I02",
+        "I03",
+        "I04",
+        "I05",
+        "I06",
+        "I07",
+        "I08",
+        "I09",
+        "I10",
+        "I11",
+        "I12",
+        "I13",
+        "I14",
+        "I15",
+        "I16",
+        "I17",
+        "I18",
+        "I19",
+        "I20",
+        "I21",
+        "I22",
+        "I23"
+      ],
+      "outside_inputs": [],
+      "reason": "대류+순복사와 결합 벽온/냉각 상태의 일관된 해에 의존"
+    },
+    "Y04": {
+      "status": "INPUT_U",
+      "blocking_inputs": [
+        "I01",
+        "I02",
+        "I03",
+        "I04",
+        "I05",
+        "I06",
+        "I09",
+        "I10",
+        "I12",
+        "I13",
+        "I15",
+        "I18",
+        "I19",
+        "I20",
+        "I21",
+        "I22",
+        "I23"
+      ],
+      "outside_inputs": [],
+      "reason": "입구 절대압과 경로별 압손/분배/국소 상태에 의존"
+    },
+    "Y05": {
+      "status": "INPUT_U",
+      "blocking_inputs": [
+        "I01",
+        "I02",
+        "I03",
+        "I04",
+        "I05",
+        "I06",
+        "I07",
+        "I08",
+        "I09",
+        "I10",
+        "I11",
+        "I12",
+        "I13",
+        "I14",
+        "I15",
+        "I16",
+        "I17",
+        "I18",
+        "I19",
+        "I20",
+        "I21",
+        "I22",
+        "I23"
+      ],
+      "outside_inputs": [],
+      "reason": "냉각 엔탈피 수지와 결합 열유입, 유량/분배, 국소 물성 및 수치 조건에 의존"
+    }
+  },
+  "physical_validation_v01_v12": "UNCHANGED_NOT_RUN",
+  "validated_engine_prediction": false
+}

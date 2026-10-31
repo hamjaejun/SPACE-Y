@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SPACE Y non-design single-segment GAS-WALL coupling request",
+  "type": "object",
+  "required": [
+    "purpose", "run_id", "case_id", "geometry_version", "segment_id", "spatial_basis",
+    "model_scope", "formula_version", "formula_source", "cea_run_artifact",
+    "chamber_station_index", "cea_station_index", "transport_basis", "geometry",
+    "radiation", "coolant_side_boundary", "numerics"
+  ],
+  "properties": {
+    "purpose": {"const": "NON_DESIGN_INTERFACE_VERIFICATION"},
+    "run_id": {"type": "string", "minLength": 1},
+    "case_id": {"type": "string", "minLength": 1},
+    "geometry_version": {"type": "string", "minLength": 1},
+    "segment_id": {"type": "string", "minLength": 1},
+    "spatial_basis": {"type": "string", "minLength": 1},
+    "model_scope": {"const": "STEADY_SINGLE_SEGMENT_GAS_WALL"},
+    "formula_version": {"const": "RPA_2012_BASIC_BARTZ"},
+    "formula_source": {"type": "string", "minLength": 1},
+    "cea_run_artifact": {"type": "string", "minLength": 1},
+    "chamber_station_index": {"const": 0},
+    "cea_station_index": {"type": "integer", "minimum": 0},
+    "transport_basis": {"enum": ["frozen", "equilibrium"]},
+    "geometry": {
+      "type": "object",
+      "required": [
+        "throat_diameter_m", "throat_diameter_source",
+        "bartz_curvature_radius_m", "bartz_curvature_radius_source",
+        "gas_area_m2", "gas_area_source", "coolant_area_m2", "coolant_area_source",
+        "wall_thickness_m", "wall_thickness_source",
+        "wall_conductivity_W_mK", "wall_conductivity_source",
+        "wall_conduction_area_m2", "wall_conduction_area_source"
+      ],
+      "properties": {
+        "throat_diameter_m": {"type": "number", "exclusiveMinimum": 0},
+        "throat_diameter_source": {"type": "string", "minLength": 1},
+        "bartz_curvature_radius_m": {"type": "number", "exclusiveMinimum": 0},
+        "bartz_curvature_radius_source": {"type": "string", "minLength": 1},
+        "gas_area_m2": {"type": "number", "exclusiveMinimum": 0},
+        "gas_area_source": {"type": "string", "minLength": 1},
+        "coolant_area_m2": {"type": "number", "exclusiveMinimum": 0},
+        "coolant_area_source": {"type": "string", "minLength": 1},
+        "wall_thickness_m": {"type": "number", "exclusiveMinimum": 0},
+        "wall_thickness_source": {"type": "string", "minLength": 1},
+        "wall_conductivity_W_mK": {"type": "number", "exclusiveMinimum": 0},
+        "wall_conductivity_source": {"type": "string", "minLength": 1},
+        "wall_conduction_area_m2": {"type": "number", "exclusiveMinimum": 0},
+        "wall_conduction_area_source": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "radiation": {
+      "type": "object",
+      "required": ["definition", "q_rad_net_W", "source"],
+      "properties": {
+        "definition": {"const": "EXPLICIT_NET_RATE_GAS_TO_WALL_POSITIVE"},
+        "q_rad_net_W": {"type": "number"},
+        "source": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "coolant_side_boundary": {
+      "type": "object",
+      "required": ["mode", "h_c_W_m2K", "h_c_source", "bulk_temperature_K", "bulk_temperature_source"],
+      "properties": {
+        "mode": {"const": "PRESCRIBED_FILM_COEFFICIENT_AND_BULK_TEMPERATURE"},
+        "h_c_W_m2K": {"type": "number", "exclusiveMinimum": 0},
+        "h_c_source": {"type": "string", "minLength": 1},
+        "bulk_temperature_K": {"type": "number", "exclusiveMinimum": 0},
+        "bulk_temperature_source": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "numerics": {
+      "type": "object",
+      "required": [
+        "max_iterations", "relaxation", "wall_temperature_tolerance_K",
+        "energy_residual_tolerance_W", "initial_gas_side_wall_temperature_K",
+        "initial_temperature_source"
+      ],
+      "properties": {
+        "max_iterations": {"type": "integer", "minimum": 1},
+        "relaxation": {"type": "number", "exclusiveMinimum": 0, "maximum": 1},
+        "wall_temperature_tolerance_K": {"type": "number", "exclusiveMinimum": 0},
+        "energy_residual_tolerance_W": {"type": "number", "exclusiveMinimum": 0},
+        "initial_gas_side_wall_temperature_K": {"type": "number", "exclusiveMinimum": 0},
+        "initial_temperature_source": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

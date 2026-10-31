@@ -1,0 +1,210 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SPACE Y non-design single-segment GAS-WALL-COOLANT request",
+  "type": "object",
+  "required": [
+    "purpose", "run_id", "case_id", "geometry_version", "segment_id", "spatial_basis",
+    "model_scope", "flow_boundary_mode", "formula_version", "formula_source",
+    "cea_run_artifact", "chamber_station_index", "cea_station_index", "transport_basis",
+    "coolant_boundary", "coolant_property_model", "single_phase_bulk_domain",
+    "coolant_heat_transfer_closure", "coolant_friction_closure", "geometry", "radiation",
+    "gas_wall_numerics", "coupled_numerics"
+  ],
+  "properties": {
+    "purpose": {"const": "NON_DESIGN_INTERFACE_VERIFICATION"},
+    "run_id": {"type": "string", "minLength": 1},
+    "case_id": {"type": "string", "minLength": 1},
+    "geometry_version": {"type": "string", "minLength": 1},
+    "segment_id": {"type": "string", "minLength": 1},
+    "spatial_basis": {"type": "string", "minLength": 1},
+    "model_scope": {"const": "STEADY_SINGLE_SEGMENT_GAS_WALL_COOLANT"},
+    "flow_boundary_mode": {"const": "PRESCRIBED_MASS_FLOW"},
+    "formula_version": {"const": "RPA_2012_BASIC_BARTZ"},
+    "formula_source": {"type": "string", "minLength": 1},
+    "cea_run_artifact": {"type": "string", "minLength": 1},
+    "chamber_station_index": {"const": 0},
+    "cea_station_index": {"type": "integer", "minimum": 0},
+    "transport_basis": {"enum": ["frozen", "equilibrium"]},
+    "coolant_boundary": {
+      "type": "object",
+      "required": [
+        "mass_flow_kg_s", "mass_flow_source", "inlet_pressure_Pa_abs",
+        "inlet_pressure_source", "inlet_temperature_K", "inlet_temperature_source"
+      ],
+      "properties": {
+        "mass_flow_kg_s": {"type": "number", "exclusiveMinimum": 0},
+        "mass_flow_source": {"type": "string", "minLength": 1},
+        "inlet_pressure_Pa_abs": {"type": "number", "exclusiveMinimum": 0},
+        "inlet_pressure_source": {"type": "string", "minLength": 1},
+        "inlet_temperature_K": {"type": "number", "exclusiveMinimum": 0},
+        "inlet_temperature_source": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "coolant_property_model": {
+      "type": "object",
+      "required": ["model", "source", "pressure_range_Pa_abs", "rows"],
+      "properties": {
+        "model": {"const": "TABULATED_T_PRESSURE_BOUNDED"},
+        "source": {"type": "string", "minLength": 1},
+        "pressure_range_Pa_abs": {
+          "type": "array", "minItems": 2, "maxItems": 2,
+          "items": {"type": "number", "exclusiveMinimum": 0}
+        },
+        "rows": {
+          "type": "array", "minItems": 2,
+          "items": {
+            "type": "object",
+            "required": [
+              "temperature_K", "enthalpy_J_kg", "density_kg_m3", "viscosity_Pa_s",
+              "cp_J_kgK", "conductivity_W_mK"
+            ],
+            "properties": {
+              "temperature_K": {"type": "number", "exclusiveMinimum": 0},
+              "enthalpy_J_kg": {"type": "number"},
+              "density_kg_m3": {"type": "number", "exclusiveMinimum": 0},
+              "viscosity_Pa_s": {"type": "number", "exclusiveMinimum": 0},
+              "cp_J_kgK": {"type": "number", "exclusiveMinimum": 0},
+              "conductivity_W_mK": {"type": "number", "exclusiveMinimum": 0}
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "single_phase_bulk_domain": {
+      "type": "object",
+      "required": ["classification", "source", "temperature_range_K", "pressure_range_Pa_abs"],
+      "properties": {
+        "classification": {"type": "string", "minLength": 1},
+        "source": {"type": "string", "minLength": 1},
+        "temperature_range_K": {
+          "type": "array", "minItems": 2, "maxItems": 2,
+          "items": {"type": "number", "exclusiveMinimum": 0}
+        },
+        "pressure_range_Pa_abs": {
+          "type": "array", "minItems": 2, "maxItems": 2,
+          "items": {"type": "number", "exclusiveMinimum": 0}
+        }
+      },
+      "additionalProperties": false
+    },
+    "coolant_heat_transfer_closure": {
+      "type": "object",
+      "required": [
+        "source", "re_range", "pr_range", "geometry", "fully_developed_required",
+        "thermal_boundary_condition"
+      ],
+      "properties": {
+        "source": {"type": "string", "minLength": 1},
+        "re_range": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"type": "number"}},
+        "pr_range": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"type": "number"}},
+        "geometry": {"type": "string", "minLength": 1},
+        "fully_developed_required": {"type": "boolean"},
+        "thermal_boundary_condition": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "coolant_friction_closure": {
+      "type": "object",
+      "required": ["source", "re_range", "relative_roughness_range", "geometry"],
+      "properties": {
+        "source": {"type": "string", "minLength": 1},
+        "re_range": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"type": "number"}},
+        "relative_roughness_range": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"type": "number"}},
+        "geometry": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "geometry": {
+      "type": "object",
+      "required": [
+        "throat_diameter_m", "throat_diameter_source", "bartz_curvature_radius_m",
+        "bartz_curvature_radius_source", "gas_area_m2", "gas_area_source",
+        "coolant_area_m2", "coolant_area_source", "wall_thickness_m",
+        "wall_thickness_source", "wall_conductivity_W_mK", "wall_conductivity_source",
+        "wall_conduction_area_m2", "wall_conduction_area_source", "length_m",
+        "flow_area_m2", "hydraulic_diameter_m", "flow_geometry_source",
+        "equivalent_sand_roughness_m", "equivalent_sand_roughness_source",
+        "local_loss_coefficient", "local_loss_source", "closure_geometry",
+        "fully_developed", "thermal_boundary_condition"
+      ],
+      "properties": {
+        "throat_diameter_m": {"type": "number", "exclusiveMinimum": 0},
+        "throat_diameter_source": {"type": "string", "minLength": 1},
+        "bartz_curvature_radius_m": {"type": "number", "exclusiveMinimum": 0},
+        "bartz_curvature_radius_source": {"type": "string", "minLength": 1},
+        "gas_area_m2": {"type": "number", "exclusiveMinimum": 0},
+        "gas_area_source": {"type": "string", "minLength": 1},
+        "coolant_area_m2": {"type": "number", "exclusiveMinimum": 0},
+        "coolant_area_source": {"type": "string", "minLength": 1},
+        "wall_thickness_m": {"type": "number", "exclusiveMinimum": 0},
+        "wall_thickness_source": {"type": "string", "minLength": 1},
+        "wall_conductivity_W_mK": {"type": "number", "exclusiveMinimum": 0},
+        "wall_conductivity_source": {"type": "string", "minLength": 1},
+        "wall_conduction_area_m2": {"type": "number", "exclusiveMinimum": 0},
+        "wall_conduction_area_source": {"type": "string", "minLength": 1},
+        "length_m": {"type": "number", "exclusiveMinimum": 0},
+        "flow_area_m2": {"type": "number", "exclusiveMinimum": 0},
+        "hydraulic_diameter_m": {"type": "number", "exclusiveMinimum": 0},
+        "flow_geometry_source": {"type": "string", "minLength": 1},
+        "equivalent_sand_roughness_m": {"type": "number", "minimum": 0},
+        "equivalent_sand_roughness_source": {"type": "string", "minLength": 1},
+        "local_loss_coefficient": {"type": "number", "minimum": 0},
+        "local_loss_source": {"type": "string", "minLength": 1},
+        "closure_geometry": {"type": "string", "minLength": 1},
+        "fully_developed": {"type": "boolean"},
+        "thermal_boundary_condition": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "radiation": {
+      "type": "object",
+      "required": ["definition", "q_rad_net_W", "source"],
+      "properties": {
+        "definition": {"const": "EXPLICIT_NET_RATE_GAS_TO_WALL_POSITIVE"},
+        "q_rad_net_W": {"type": "number"},
+        "source": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "gas_wall_numerics": {
+      "type": "object",
+      "required": [
+        "max_iterations", "relaxation", "wall_temperature_tolerance_K",
+        "energy_residual_tolerance_W", "initial_gas_side_wall_temperature_K",
+        "initial_temperature_source"
+      ],
+      "properties": {
+        "max_iterations": {"type": "integer", "minimum": 1},
+        "relaxation": {"type": "number", "exclusiveMinimum": 0, "maximum": 1},
+        "wall_temperature_tolerance_K": {"type": "number", "exclusiveMinimum": 0},
+        "energy_residual_tolerance_W": {"type": "number", "exclusiveMinimum": 0},
+        "initial_gas_side_wall_temperature_K": {"type": "number", "exclusiveMinimum": 0},
+        "initial_temperature_source": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "coupled_numerics": {
+      "type": "object",
+      "required": [
+        "max_iterations", "relaxation", "outlet_temperature_tolerance_K",
+        "outlet_pressure_tolerance_Pa", "energy_residual_tolerance_W",
+        "initial_outlet_temperature_K", "initial_outlet_pressure_Pa_abs", "initial_state_source"
+      ],
+      "properties": {
+        "max_iterations": {"type": "integer", "minimum": 1},
+        "relaxation": {"type": "number", "exclusiveMinimum": 0, "maximum": 1},
+        "outlet_temperature_tolerance_K": {"type": "number", "exclusiveMinimum": 0},
+        "outlet_pressure_tolerance_Pa": {"type": "number", "exclusiveMinimum": 0},
+        "energy_residual_tolerance_W": {"type": "number", "exclusiveMinimum": 0},
+        "initial_outlet_temperature_K": {"type": "number", "exclusiveMinimum": 0},
+        "initial_outlet_pressure_Pa_abs": {"type": "number", "exclusiveMinimum": 0},
+        "initial_state_source": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

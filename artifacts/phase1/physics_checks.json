@@ -1,0 +1,51 @@
+{
+  "fixture_classification": "NON_DESIGN_ARITHMETIC_CHECK",
+  "checks": [
+    {
+      "id": "P01",
+      "name": "gas heat sum",
+      "pass": true,
+      "value": 120.0
+    },
+    {
+      "id": "P02",
+      "name": "wall energy identity",
+      "pass": true,
+      "value": 0.0
+    },
+    {
+      "id": "P03",
+      "name": "coolant enthalpy identity",
+      "pass": true,
+      "value": 200500.0
+    },
+    {
+      "id": "P04",
+      "name": "Colebrook numerical residual",
+      "pass": true,
+      "value": 0.018513866077451757,
+      "residual": 4.352962434950314e-12
+    },
+    {
+      "id": "P05",
+      "name": "Darcy-Weisbach arithmetic",
+      "pass": true,
+      "value": 6000.0
+    },
+    {
+      "id": "P06",
+      "name": "Gnielinski missing-domain stop rule",
+      "pass": true,
+      "value": null,
+      "applicability": {
+        "status": "INPUT_U",
+        "reasons": [
+          "I18 domain/development evidence missing"
+        ]
+      }
+    }
+  ],
+  "status": "PASS",
+  "physical_validation_v01_v12": "NOT_RUN",
+  "validated_engine_prediction": false
+}

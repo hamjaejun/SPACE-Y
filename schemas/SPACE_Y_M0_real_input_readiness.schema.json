@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SPACE Y M0 actual-property and nozzle-to-CEA input readiness",
+  "type": "object",
+  "required": [
+    "record_id", "purpose", "overall_status", "coolant_identity",
+    "property_model", "phase_equilibrium", "nozzle_cea_mapping",
+    "prohibited_fallbacks", "physical_validation_v01_v12"
+  ],
+  "properties": {
+    "record_id": {"type": "string", "minLength": 1},
+    "purpose": {"const": "ACTUAL_INPUT_READINESS_ONLY_NO_ENGINE_RUN"},
+    "overall_status": {"enum": ["INPUT_U", "OUTSIDE", "MODEL_U", "READY_FOR_REVIEW"]},
+    "coolant_identity": {
+      "type": "object",
+      "required": ["chemical_name", "cas_number", "purity_mass_fraction", "water_mass_fraction", "additives", "source", "status"],
+      "properties": {
+        "chemical_name": {"const": "2-propanol"},
+        "cas_number": {"const": "67-63-0"},
+        "purity_mass_fraction": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+        "water_mass_fraction": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+        "additives": {"type": ["array", "null"], "items": {"type": "object"}},
+        "source": {"type": ["string", "null"]},
+        "status": {"enum": ["INPUT_U", "OUTSIDE", "READY_FOR_REVIEW"]}
+      },
+      "additionalProperties": false
+    },
+    "property_model": {
+      "type": "object",
+      "required": [
+        "provider", "dataset_or_model", "version", "equation_references",
+        "temperature_range_K", "pressure_range_Pa_abs", "phase_scope",
+        "enthalpy_reference_state", "uncertainty", "required_outputs", "status"
+      ],
+      "properties": {
+        "provider": {"type": ["string", "null"]},
+        "dataset_or_model": {"type": ["string", "null"]},
+        "version": {"type": ["string", "null"]},
+        "equation_references": {"type": ["array", "null"], "items": {"type": "string"}},
+        "temperature_range_K": {"$ref": "#/$defs/nullablePositiveRange"},
+        "pressure_range_Pa_abs": {"$ref": "#/$defs/nullablePositiveRange"},
+        "phase_scope": {"type": ["string", "null"]},
+        "enthalpy_reference_state": {
+          "type": ["object", "null"],
+          "properties": {
+            "description": {"type": "string"},
+            "temperature_K": {"type": ["number", "null"]},
+            "pressure_Pa_abs": {"type": ["number", "null"]},
+            "enthalpy_J_kg": {"type": ["number", "null"]}
+          },
+          "required": ["description", "temperature_K", "pressure_Pa_abs", "enthalpy_J_kg"],
+          "additionalProperties": false
+        },
+        "uncertainty": {"type": ["object", "null"]},
+        "required_outputs": {
+          "type": "array",
+          "const": ["h(p,T)", "T(p,h)", "rho(p,T)", "mu(p,T)", "cp(p,T)", "k(p,T)"]
+        },
+        "status": {"enum": ["INPUT_U", "OUTSIDE", "READY_FOR_REVIEW"]}
+      },
+      "additionalProperties": false
+    },
+    "phase_equilibrium": {
+      "type": "object",
+      "required": ["model_source", "version", "valid_domain", "required_outputs", "wall_boiling_evidence", "status"],
+      "properties": {
+        "model_source": {"type": ["string", "null"]},
+        "version": {"type": ["string", "null"]},
+        "valid_domain": {"type": ["object", "null"]},
+        "required_outputs": {
+          "type": "array",
+          "const": ["p_sat(T)", "T_sat(p)", "h_f(p)", "h_g(p)", "phase_or_quality(p,h)"]
+        },
+        "wall_boiling_evidence": {"type": ["object", "null"]},
+        "status": {"enum": ["INPUT_U", "OUTSIDE", "MODEL_U", "READY_FOR_REVIEW"]}
+      },
+      "additionalProperties": false
+    },
+    "nozzle_cea_mapping": {
+      "type": "object",
+      "required": [
+        "geometry_version", "geometry_sha256", "coordinate_definition",
+        "contour_area_source", "cea_artifact_sha256", "cea_case_definition",
+        "station_mapping_policy", "segment_station_mappings", "unresolved_conditions", "status"
+      ],
+      "properties": {
+        "geometry_version": {"type": ["string", "null"]},
+        "geometry_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+        "coordinate_definition": {"type": ["object", "null"]},
+        "contour_area_source": {"type": ["string", "null"]},
+        "cea_artifact_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+        "cea_case_definition": {"type": ["object", "null"]},
+        "station_mapping_policy": {"const": "EXPLICIT_SOURCE_BACKED_NO_INTERPOLATION"},
+        "segment_station_mappings": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/stationMapping"}
+        },
+        "unresolved_conditions": {"type": "array", "items": {"type": "string"}},
+        "status": {"enum": ["INPUT_U", "OUTSIDE", "READY_FOR_REVIEW"]}
+      },
+      "additionalProperties": false
+    },
+    "prohibited_fallbacks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string"}
+    },
+    "physical_validation_v01_v12": {"const": "NOT_RUN"}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "nullablePositiveRange": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "array", "minItems": 2, "maxItems": 2,
+          "items": {"type": "number", "exclusiveMinimum": 0}
+        }
+      ]
+    },
+    "stationMapping": {
+      "type": "object",
+      "required": [
+        "segment_id", "gas_axial_coordinate_m", "area_ratio_A_At",
+        "flow_branch", "cea_station_index", "transport_basis", "source", "status"
+      ],
+      "properties": {
+        "segment_id": {"type": "string", "minLength": 1},
+        "gas_axial_coordinate_m": {"type": "number"},
+        "area_ratio_A_At": {"type": "number", "minimum": 1},
+        "flow_branch": {"enum": ["SUBSONIC", "THROAT", "SUPERSONIC"]},
+        "cea_station_index": {"type": "integer", "minimum": 0},
+        "transport_basis": {"enum": ["frozen", "equilibrium"]},
+        "source": {"type": "string", "minLength": 1},
+        "status": {"enum": ["INPUT_U", "OUTSIDE", "READY_FOR_REVIEW"]}
+      },
+      "additionalProperties": false
+    }
+  }
+}

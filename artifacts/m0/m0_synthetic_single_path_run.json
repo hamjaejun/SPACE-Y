@@ -1,0 +1,132 @@
+{
+  "run_id": "M0-SYNTHETIC-001",
+  "status": "MODEL_U",
+  "numerical_status": "PASS",
+  "model_scope": "STEADY_SINGLE_PATH_1D",
+  "segments": [
+    {
+      "segment_id": "S01",
+      "iterations": 19,
+      "inlet": {
+        "temperature_K": 300.0,
+        "pressure_Pa_abs": 1000000.0,
+        "enthalpy_J_kg": 200000.0
+      },
+      "outlet": {
+        "temperature_K": 318.75282754194643,
+        "pressure_Pa_abs": 999217.3004969513,
+        "enthalpy_J_kg": 237505.65508389287,
+        "density_kg_m3": 800.0,
+        "viscosity_Pa_s": 0.001,
+        "cp_J_kgK": 2000.0,
+        "conductivity_W_mK": 0.15
+      },
+      "Re": 5000.0,
+      "Pr": 13.333333333333334,
+      "darcy_factor": 0.03761596025117339,
+      "Nu": 49.89662485967071,
+      "h_c_W_m2K": 1496.8987457901212,
+      "q_conv_W": 3650.5655083892793,
+      "q_rad_net_W": 100.0,
+      "q_total_W": 3750.5655083892793,
+      "T_wg_K": 634.9434491610721,
+      "T_wc_K": 559.9321389932863,
+      "pressure_drop_Pa": 782.6995030486723,
+      "energy_residual_W": -1.8189894035458565e-12,
+      "wall_residual_W": 0.0,
+      "applicability": {
+        "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+        "reasons": []
+      }
+    },
+    {
+      "segment_id": "S02",
+      "iterations": 18,
+      "inlet": {
+        "temperature_K": 318.75282754194643,
+        "pressure_Pa_abs": 999217.3004969513,
+        "enthalpy_J_kg": 237505.6550838928
+      },
+      "outlet": {
+        "temperature_K": 333.3924528714142,
+        "pressure_Pa_abs": 998434.6009941149,
+        "enthalpy_J_kg": 266784.9057428284,
+        "density_kg_m3": 800.0,
+        "viscosity_Pa_s": 0.001,
+        "cp_J_kgK": 2000.0,
+        "conductivity_W_mK": 0.15
+      },
+      "Re": 5000.0,
+      "Pr": 13.333333333333334,
+      "darcy_factor": 0.03761596025117339,
+      "Nu": 49.89662485967071,
+      "h_c_W_m2K": 1496.8987457901212,
+      "q_conv_W": 2877.925065893557,
+      "q_rad_net_W": 50.0,
+      "q_total_W": 2927.925065893557,
+      "T_wg_K": 580.2305482340493,
+      "T_wc_K": 521.6720469161781,
+      "pressure_drop_Pa": 782.6995028364472,
+      "energy_residual_W": -9.094947017729282e-13,
+      "wall_residual_W": 0.0,
+      "applicability": {
+        "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+        "reasons": []
+      }
+    }
+  ],
+  "qoi": {
+    "Y01": {
+      "value": 634.9434491610721,
+      "unit": "K",
+      "location": "S01",
+      "surface": "gas_side",
+      "status": "MODEL_U"
+    },
+    "Y02": {
+      "value": 1565.3990058851195,
+      "unit": "Pa",
+      "status": "MODEL_U"
+    },
+    "Y03": {
+      "value": 6678.490574282836,
+      "unit": "W",
+      "status": "MODEL_U"
+    },
+    "Y04": {
+      "value": 998434.6009941149,
+      "unit": "Pa(a)",
+      "status": "MODEL_U"
+    },
+    "Y05": {
+      "value": 333.3924528714142,
+      "unit": "K",
+      "status": "MODEL_U"
+    }
+  },
+  "checks": {
+    "closure_applicability": "PASS",
+    "segment_convergence": "PASS",
+    "energy_residual_max_W": 1.8189894035458565e-12,
+    "wall_residual_max_W": 0.0
+  },
+  "implemented_models": [
+    "steady single-path coolant energy",
+    "three-resistance conjugate heat transfer with explicit net radiation",
+    "tabulated temperature interpolation without extrapolation",
+    "conditional Gnielinski displayed form",
+    "Colebrook Darcy friction factor",
+    "Darcy-Weisbach friction and local pressure loss"
+  ],
+  "not_implemented": [
+    "pressure-driven flow solution",
+    "parallel-channel distribution",
+    "transient wall or fluid storage",
+    "axial or multi-zone wall conduction",
+    "boiling or two-phase flow",
+    "Bartz gas-side calculation",
+    "uncertainty propagation and allowables assessment"
+  ],
+  "physical_validation_v01_v12": "NOT_RUN",
+  "validated_engine_prediction": false
+}

@@ -5,6 +5,20 @@
   "solver_run": null,
   "selected_case": null,
   "can_use_as_validated_engine_prediction": false,
+  "analysis_control": {
+    "flow_boundary_mode": null,
+    "boundary_roles": {
+      "I02": null,
+      "I04": null
+    },
+    "pressure_driven": {
+      "outlet_pressure_Pa_abs": null,
+      "outlet_node_id": null,
+      "source": null,
+      "uncertainty_Pa": null
+    },
+    "note": "PRESCRIBED_MASS_FLOW에서는 I02와 I04를 독립 입력으로 사용해 압손을 평가한다. PRESSURE_DRIVEN에서는 I02와 명시적 출구 절대압을 입력하고 I04를 계산한다. 모드를 임의 기본값으로 선택하지 않는다."
+  },
   "inputs": [
     {
       "id": "I01",

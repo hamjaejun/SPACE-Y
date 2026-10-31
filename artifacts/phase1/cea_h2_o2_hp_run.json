@@ -1,0 +1,48 @@
+{
+  "backend": "NASA_CEA_PYTHON",
+  "request_path": "examples/cea_h2_o2_hp_non_design.json",
+  "request_sha256": "90437027c383b37fb39d53bc2112d70822845c77b8a71009d96eba0f13c38073",
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "space_y.cea_worker",
+    "examples/cea_h2_o2_hp_non_design.json"
+  ],
+  "returncode": 0,
+  "stderr": "",
+  "status": "PASS",
+  "validated_engine_prediction": false,
+  "result": {
+    "cea_version": "3.3.4",
+    "mode": "equilibrium_hp",
+    "converged": true,
+    "last_error": 0,
+    "temperature_K": 3074.505189762052,
+    "pressure_bar_abs": 1.01325,
+    "molecular_weight_kg_per_kmol": 14.855891859374266,
+    "initial_enthalpy_J_per_kg": -0.0005062602429105043,
+    "reactant_weight_amounts": [
+      4.03176,
+      31.9988
+    ],
+    "reactant_mass_fractions": [
+      0.11189834407236524,
+      0.8881016559276347
+    ],
+    "product_mole_fractions": {
+      "H": 0.07578609926310553,
+      "H2": 0.14885513914557721,
+      "H2O": 0.5816281122750222,
+      "H2O2": 2.531388039727668e-06,
+      "HO2": 4.0400870174912255e-05,
+      "O": 0.032005568439079445,
+      "O2": 0.049225579783164976,
+      "O3": 1.746419884294019e-08,
+      "OH": 0.11245655137163711,
+      "H2O(L)": 0.0,
+      "H2O(cr)": 0.0
+    },
+    "source_note": "NASA CEA 3.3.4 Quick Start의 H2/O2 HP 예제를 인터페이스 스모크 테스트로 재현. SPACE Y 설계 경계조건이 아님.",
+    "reference_checks": []
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "backend": "RPA_SCRIPTING_UTILITY",
+  "available": true,
+  "executable": "<RPA_EXECUTABLE>",
+  "executable_sha256": "d14f4e24c0feed7632dc7f9ddb402a02ee20727ab17ad75b9caadaa9822b570a",
+  "help_returncode": 0,
+  "help_stdout": "\n\n*********************************************************\n\n RPA - Tool for Rocket Propulsion Analysis\n Copyright 2009-2017 Alexander Ponomarenko\n http://www.rocket-propulsion.com\n contact@propulsion-analysis.com\n\n*********************************************************\n\n\n\nUsage: <RPA_EXECUTABLE> [OPTION]...\n\n\n\nAvailable options:\n\n  -h, --help\t\t print this help and exit\n\n  -r, --resources PATH\t path to directory with thermodynamics database [resources]\n\n -ur, --usr-resources PATH\t path to directory with user-defined thermodynamics database\n\n  -i, --input FILE\t input script file\n\n  -s, --stream\t process input stream as script\n\n  -o, --output PREFIX\t output file name prefix\n\n\n\n",
+  "help_stderr": "",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "status": "PASS_WITH_WARNINGS",
+  "smoke_test": "PASS_WITH_WARNINGS",
+  "validated_engine_prediction": false,
+  "smoke_command": [
+    "<RPA_EXECUTABLE>",
+    "-r",
+    "<RPA_RESOURCES>",
+    "-ur",
+    "<RPA_USER_RESOURCES>",
+    "-i",
+    "<RPA_SMOKE_SCRIPT>",
+    "-o",
+    "artifacts/runs/rpa_performance1"
+  ],
+  "smoke_returncode": 0,
+  "smoke_stdout_sha256": "6306ad6a80712e55c25df1446f218ec25b6e3426a16f36c16405319cae6ea49c",
+  "smoke_stdout_bytes": 13151,
+  "smoke_stderr": "",
+  "error_lines": [],
+  "warning_lines": [
+    "WARNING: Could not find species CCL2F2 defined in properties file",
+    "WARNING: Could not find species CCL3F defined in properties file",
+    "WARNING: Could not find species CCLF3 defined in properties file",
+    "WARNING: Could not find species CHCL2F defined in properties file",
+    "WARNING: Could not find species CHCLF2 defined in properties file"
+  ],
+  "script_sha256": "7e3260881a5f72c6634772e9940b2ea23b8249ed437c6a6cc3c77a677458dbb2",
+  "logs": [
+    {
+      "path": "artifacts/runs/rpa_performance1_info.log",
+      "sha256": "8042d910f5015a05ab5a1d6dbbd68e67109441cc115f36f20a5804d5fc9c77c6",
+      "bytes": 13503
+    },
+    {
+      "path": "artifacts/runs/rpa_performance1_warn.log",
+      "sha256": "4d6718d435442d8720ac8450378354ae7a207d265ff9289d1eb9e3476d320e5f",
+      "bytes": 333
+    }
+  ]
+}

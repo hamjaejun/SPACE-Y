@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SPACE Y CEA-to-GAS non-design mapping request",
+  "type": "object",
+  "required": [
+    "purpose", "run_id", "formula_version", "formula_source", "cea_run_artifact",
+    "chamber_station_index", "transport_basis", "geometry", "segments"
+  ],
+  "properties": {
+    "purpose": {"const": "NON_DESIGN_INTERFACE_VERIFICATION"},
+    "run_id": {"type": "string", "minLength": 1},
+    "formula_version": {"const": "RPA_2012_BASIC_BARTZ"},
+    "formula_source": {"type": "string", "minLength": 1},
+    "cea_run_artifact": {"type": "string", "minLength": 1},
+    "chamber_station_index": {"const": 0},
+    "transport_basis": {"enum": ["frozen", "equilibrium"]},
+    "geometry": {
+      "type": "object",
+      "required": [
+        "throat_diameter_m", "throat_diameter_source",
+        "bartz_curvature_radius_m", "bartz_curvature_radius_source"
+      ],
+      "properties": {
+        "throat_diameter_m": {"type": "number", "exclusiveMinimum": 0},
+        "throat_diameter_source": {"type": "string", "minLength": 1},
+        "bartz_curvature_radius_m": {"type": "number", "exclusiveMinimum": 0},
+        "bartz_curvature_radius_source": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "segments": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id", "cea_station_index", "wall_temperature_K", "wall_temperature_source",
+          "gas_heated_area_m2", "gas_heated_area_source", "radiation_definition",
+          "q_rad_net_W", "q_rad_source"
+        ],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "cea_station_index": {"type": "integer", "minimum": 0},
+          "wall_temperature_K": {"type": "number", "exclusiveMinimum": 0},
+          "wall_temperature_source": {"type": "string", "minLength": 1},
+          "gas_heated_area_m2": {"type": "number", "exclusiveMinimum": 0},
+          "gas_heated_area_source": {"type": "string", "minLength": 1},
+          "radiation_definition": {"const": "EXPLICIT_NET_RATE_GAS_TO_WALL_POSITIVE"},
+          "q_rad_net_W": {"type": "number"},
+          "q_rad_source": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

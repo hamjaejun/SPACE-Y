@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SPACE Y WALL-to-COOLANT interface V1",
+  "type": "object",
+  "required": [
+    "interface_version", "run_id", "case_id", "segment_id", "spatial_basis", "mode",
+    "heat_rate_sign_convention", "coolant_wetted_area_m2", "bulk_temperature_K",
+    "h_c_W_m2K", "wall_temperature_coolant_side_K", "heat_rate_into_coolant_W",
+    "units", "coolant_state_update", "pressure_loss_update", "applicability_status",
+    "reason", "required_before_state_update"
+  ],
+  "properties": {
+    "interface_version": {"const": "SPACE_Y_WALL_COOLANT_V1"},
+    "run_id": {"type": "string", "minLength": 1},
+    "case_id": {"type": "string", "minLength": 1},
+    "segment_id": {"type": "string", "minLength": 1},
+    "spatial_basis": {"type": "string", "minLength": 1},
+    "mode": {"const": "PRESCRIBED_FILM_COEFFICIENT_AND_BULK_TEMPERATURE"},
+    "heat_rate_sign_convention": {"const": "POSITIVE_WALL_TO_COOLANT"},
+    "coolant_wetted_area_m2": {"type": "number", "exclusiveMinimum": 0},
+    "bulk_temperature_K": {"type": "number", "exclusiveMinimum": 0},
+    "h_c_W_m2K": {"type": "number", "exclusiveMinimum": 0},
+    "wall_temperature_coolant_side_K": {"type": "number", "exclusiveMinimum": 0},
+    "heat_rate_into_coolant_W": {"type": "number"},
+    "units": {
+      "type": "object",
+      "required": ["temperature", "heat_rate", "area", "heat_transfer_coefficient"],
+      "properties": {
+        "temperature": {"const": "K"},
+        "heat_rate": {"const": "W"},
+        "area": {"const": "m2"},
+        "heat_transfer_coefficient": {"const": "W/(m2 K)"}
+      },
+      "additionalProperties": false
+    },
+    "coolant_state_update": {"const": "NOT_RUN"},
+    "pressure_loss_update": {"const": "NOT_RUN"},
+    "applicability_status": {"enum": ["INPUT_U", "OUTSIDE", "MODEL_U"]},
+    "reason": {"type": "string", "minLength": 1},
+    "required_before_state_update": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1}
+    }
+  },
+  "additionalProperties": false
+}

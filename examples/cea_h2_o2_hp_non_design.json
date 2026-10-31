@@ -1,0 +1,10 @@
+{
+  "purpose": "NON_DESIGN_INTERFACE_VERIFICATION",
+  "mode": "equilibrium_hp",
+  "source_note": "NASA CEA 3.3.4 Quick Start의 H2/O2 HP 예제를 인터페이스 스모크 테스트로 재현. SPACE Y 설계 경계조건이 아님.",
+  "pressure_bar_abs": 1.01325,
+  "reactants": [
+    {"species": "H2", "moles": 2.0, "temperature_K": 298.15},
+    {"species": "O2", "moles": 1.0, "temperature_K": 298.15}
+  ]
+}

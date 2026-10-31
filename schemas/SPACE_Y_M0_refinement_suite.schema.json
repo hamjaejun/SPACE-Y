@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SPACE Y non-design N/2N/4N M0 grid sensitivity suite",
+  "type": "object",
+  "required": [
+    "purpose", "run_id", "case_id", "geometry_version", "spatial_basis",
+    "model_scope", "gas_state_policy", "gas_axial_coordinate_reference",
+    "manufactured_fixture_source", "normalization", "partition_checks",
+    "base_marching_request", "segment_template", "levels"
+  ],
+  "properties": {
+    "purpose": {"const": "NON_DESIGN_NUMERICAL_VERIFICATION"},
+    "run_id": {"type": "string", "minLength": 1},
+    "case_id": {"type": "string", "minLength": 1},
+    "geometry_version": {"type": "string", "minLength": 1},
+    "spatial_basis": {"type": "string", "minLength": 1},
+    "model_scope": {"const": "N_2N_4N_SINGLE_PATH_GRID_SENSITIVITY"},
+    "gas_state_policy": {"const": "EXPLICIT_PER_CELL_NO_INTERPOLATION"},
+    "gas_axial_coordinate_reference": {"type": "string", "minLength": 1},
+    "manufactured_fixture_source": {"type": "string", "minLength": 1},
+    "normalization": {
+      "type": "object",
+      "required": ["heat_rate_floor_W", "pressure_drop_floor_Pa", "source"],
+      "properties": {
+        "heat_rate_floor_W": {"type": "number", "exclusiveMinimum": 0},
+        "pressure_drop_floor_Pa": {"type": "number", "exclusiveMinimum": 0},
+        "source": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "partition_checks": {
+      "type": "object",
+      "required": ["fraction_sum_tolerance"],
+      "properties": {
+        "fraction_sum_tolerance": {"type": "number", "exclusiveMinimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "base_marching_request": {
+      "type": "object",
+      "required": [
+        "formula_version", "formula_source", "coolant_boundary",
+        "coolant_property_model", "single_phase_bulk_domain",
+        "coolant_heat_transfer_closure", "coolant_friction_closure",
+        "marching_numerics"
+      ],
+      "properties": {
+        "formula_version": {"const": "RPA_2012_BASIC_BARTZ"},
+        "formula_source": {"type": "string", "minLength": 1},
+        "coolant_boundary": {"type": "object"},
+        "coolant_property_model": {"type": "object"},
+        "single_phase_bulk_domain": {"type": "object"},
+        "coolant_heat_transfer_closure": {"type": "object"},
+        "coolant_friction_closure": {"type": "object"},
+        "marching_numerics": {"type": "object"}
+      },
+      "additionalProperties": false
+    },
+    "segment_template": {
+      "type": "object",
+      "required": ["geometry", "radiation", "gas_wall_numerics", "coupled_numerics"],
+      "properties": {
+        "geometry": {"type": "object"},
+        "radiation": {"type": "object"},
+        "gas_wall_numerics": {"type": "object"},
+        "coupled_numerics": {"type": "object"}
+      },
+      "additionalProperties": false
+    },
+    "levels": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "prefixItems": [
+        {"allOf": [{"$ref": "#/$defs/level"}, {"properties": {"label": {"const": "N"}}}]},
+        {"allOf": [{"$ref": "#/$defs/level"}, {"properties": {"label": {"const": "2N"}}}]},
+        {"allOf": [{"$ref": "#/$defs/level"}, {"properties": {"label": {"const": "4N"}}}]}
+      ],
+      "items": false
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "idList": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "ceaMapping": {
+      "type": "object",
+      "required": [
+        "method", "source", "cea_run_artifact", "chamber_station_index",
+        "cea_station_index", "transport_basis"
+      ],
+      "properties": {
+        "method": {"const": "EXPLICIT_NO_INTERPOLATION"},
+        "source": {"type": "string", "minLength": 1},
+        "cea_run_artifact": {"type": "string", "minLength": 1},
+        "chamber_station_index": {"const": 0},
+        "cea_station_index": {"type": "integer", "minimum": 1},
+        "transport_basis": {"enum": ["frozen", "equilibrium"]}
+      },
+      "additionalProperties": false
+    },
+    "segment": {
+      "type": "object",
+      "required": [
+        "segment_id", "gas_axial_coordinate_m", "gas_axial_coordinate_source",
+        "domain_fraction", "partition_source", "cea_station_mapping"
+      ],
+      "properties": {
+        "segment_id": {"type": "string", "minLength": 1},
+        "gas_axial_coordinate_m": {"type": "number"},
+        "gas_axial_coordinate_source": {"type": "string", "minLength": 1},
+        "domain_fraction": {"type": "number", "exclusiveMinimum": 0, "maximum": 1},
+        "partition_source": {"type": "string", "minLength": 1},
+        "cea_station_mapping": {"$ref": "#/$defs/ceaMapping"}
+      },
+      "additionalProperties": false
+    },
+    "level": {
+      "type": "object",
+      "required": [
+        "label", "cell_count", "gas_axial_order_segment_ids",
+        "coolant_flow_direction", "coolant_flow_order_segment_ids", "segments"
+      ],
+      "properties": {
+        "label": {"type": "string"},
+        "cell_count": {"type": "integer", "minimum": 1},
+        "gas_axial_order_segment_ids": {"$ref": "#/$defs/idList"},
+        "coolant_flow_direction": {
+          "enum": [
+            "INCREASING_GAS_AXIAL_COORDINATE",
+            "DECREASING_GAS_AXIAL_COORDINATE"
+          ]
+        },
+        "coolant_flow_order_segment_ids": {"$ref": "#/$defs/idList"},
+        "segments": {
+          "type": "array", "minItems": 1,
+          "items": {"$ref": "#/$defs/segment"}
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

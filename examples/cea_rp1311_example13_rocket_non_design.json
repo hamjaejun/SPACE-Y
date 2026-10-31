@@ -1,0 +1,49 @@
+{
+  "purpose": "NON_DESIGN_INTERFACE_VERIFICATION",
+  "mode": "rocket",
+  "source_note": "NASA RP-1311 Example 13 / CEA 3.3.4 공식 문서의 입력을 사용하고 GAS 인터페이스 검산을 위해 transport 출력을 추가한 RocketSolver 회귀 테스트. SPACE Y 설계 경계조건이 아님.",
+  "chamber_pressure_bar_abs": 206.84271879505095,
+  "chamber_to_exit_pressure_ratios": [3.0, 10.0, 30.0, 300.0],
+  "infinite_area_combustor": true,
+  "transport": true,
+  "ions": false,
+  "trace": 1e-10,
+  "insert_species": ["BeO(L)"],
+  "reference_checks": [
+    {
+      "path": "/stations/T/0",
+      "expected": 3002.540,
+      "absolute_tolerance": 0.01,
+      "source": "NASA CEA 3.3.4 RP-1311 Example 13 published output"
+    },
+    {
+      "path": "/stations/T/5",
+      "expected": 1398.106,
+      "absolute_tolerance": 0.01,
+      "source": "NASA CEA 3.3.4 RP-1311 Example 13 published output"
+    },
+    {
+      "path": "/stations/Mach/1",
+      "expected": 1.0,
+      "absolute_tolerance": 0.0001,
+      "source": "NASA CEA 3.3.4 RP-1311 Example 13 published output"
+    },
+    {
+      "path": "/stations/ae_at/5",
+      "expected": 30.0004,
+      "absolute_tolerance": 0.001,
+      "source": "NASA CEA 3.3.4 RP-1311 Example 13 published output"
+    },
+    {
+      "path": "/stations/Isp/5",
+      "expected": 3575.63,
+      "absolute_tolerance": 0.02,
+      "source": "NASA CEA 3.3.4 RP-1311 Example 13 published output converted from 364.613 s with g0=9.80665 m/s^2"
+    }
+  ],
+  "reactants": [
+    {"species": "N2H4(L)", "mass_fraction": 0.536, "temperature_K": 298.15},
+    {"species": "Be(a)", "mass_fraction": 0.134, "temperature_K": 298.15},
+    {"species": "H2O2(L)", "mass_fraction": 0.33, "temperature_K": 298.15}
+  ]
+}

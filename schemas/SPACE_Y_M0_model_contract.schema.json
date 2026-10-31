@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://space-y.invalid/schemas/SPACE_Y_M0_model_contract.schema.json",
+  "title": "SPACE Y M0 model contract v2.1",
+  "type": "object",
+  "required": [
+    "document_version",
+    "purpose",
+    "solver_run",
+    "selected_case",
+    "can_use_as_validated_engine_prediction",
+    "analysis_control",
+    "inputs",
+    "qoi",
+    "interfaces",
+    "validation",
+    "code_comparison",
+    "historical_cases"
+  ],
+  "properties": {
+    "document_version": {"const": "v2.1"},
+    "purpose": {"type": "string", "minLength": 1},
+    "solver_run": {"type": ["object", "null"]},
+    "selected_case": {"type": ["object", "string", "null"]},
+    "can_use_as_validated_engine_prediction": {"type": "boolean"},
+    "analysis_control": {
+      "type": "object",
+      "required": ["flow_boundary_mode", "boundary_roles", "pressure_driven"],
+      "properties": {
+        "flow_boundary_mode": {
+          "enum": [null, "PRESCRIBED_MASS_FLOW", "PRESSURE_DRIVEN"]
+        },
+        "boundary_roles": {
+          "type": "object",
+          "required": ["I02", "I04"],
+          "properties": {
+            "I02": {"enum": [null, "INPUT"]},
+            "I04": {"enum": [null, "INPUT", "SOLVED", "CHECK_ONLY"]}
+          },
+          "additionalProperties": false
+        },
+        "pressure_driven": {
+          "type": "object",
+          "required": ["outlet_pressure_Pa_abs", "outlet_node_id", "source", "uncertainty_Pa"],
+          "properties": {
+            "outlet_pressure_Pa_abs": {"type": ["number", "null"], "exclusiveMinimum": 0},
+            "outlet_node_id": {"type": ["string", "null"], "minLength": 1},
+            "source": {"type": ["string", "object", "null"]},
+            "uncertainty_Pa": {"type": ["number", "null"], "minimum": 0}
+          },
+          "additionalProperties": false
+        },
+        "note": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "inputs": {
+      "type": "array",
+      "minItems": 25,
+      "maxItems": 25,
+      "items": {"$ref": "#/$defs/input"}
+    },
+    "qoi": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {"$ref": "#/$defs/qoi"}
+    },
+    "interfaces": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {"$ref": "#/$defs/interface"}
+    },
+    "validation": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "items": {"$ref": "#/$defs/validation"}
+    },
+    "code_comparison": {"type": "object"},
+    "historical_cases": {"type": "array"}
+  },
+  "$defs": {
+    "input": {
+      "type": "object",
+      "required": [
+        "id", "key", "name", "value", "unit", "source", "required_source",
+        "classification", "valid_range", "location", "uncertainty", "consumer", "status"
+      ],
+      "properties": {
+        "id": {"pattern": "^I(?:0[1-9]|1[0-9]|2[0-5])$"},
+        "key": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "value": {},
+        "unit": {"type": "string", "minLength": 1},
+        "source": {"type": ["string", "object", "null"]},
+        "required_source": {"type": "string", "minLength": 1},
+        "classification": {"type": "string", "minLength": 1},
+        "valid_range": {"type": ["object", "array", "string", "null"]},
+        "location": {"type": ["object", "array", "string", "null"]},
+        "uncertainty": {"type": ["object", "array", "number", "string", "null"]},
+        "consumer": {"type": "string", "minLength": 1},
+        "status": {"enum": ["MISSING", "PROVIDED", "INVALID", "OUTSIDE"]}
+      },
+      "additionalProperties": true
+    },
+    "qoi": {
+      "type": "object",
+      "required": ["id", "key", "unit", "value", "status", "extent", "location", "time"],
+      "properties": {
+        "id": {"pattern": "^Y0[1-5]$"},
+        "key": {"type": "string", "minLength": 1},
+        "unit": {"type": "string", "minLength": 1},
+        "status": {
+          "enum": ["NOT_RUN", "INPUT_U", "NUM_U", "OUTSIDE", "MODEL_U", "PDR_CONDITIONAL", "HARDWARE_U"]
+        }
+      },
+      "additionalProperties": true
+    },
+    "interface": {
+      "type": "object",
+      "required": ["id", "requires", "returns", "feedback"],
+      "properties": {
+        "id": {"enum": ["GAS", "WALL", "COOLANT", "NETWORK", "ASSESS"]},
+        "requires": {"type": "array", "items": {"type": "string"}},
+        "returns": {"type": "array", "items": {"type": "string"}},
+        "feedback": {"type": "string"}
+      },
+      "additionalProperties": true
+    },
+    "validation": {
+      "type": "object",
+      "required": [
+        "id", "name", "required_evidence", "status", "result", "evidence_path",
+        "compared_run_ids", "tolerance", "reviewer"
+      ],
+      "properties": {
+        "id": {"pattern": "^V(?:0[1-9]|1[0-2])$"},
+        "status": {"enum": ["NOT_RUN", "PASS", "FAIL", "BLOCKED"]},
+        "compared_run_ids": {"type": "array"}
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,81 @@
+{
+  "purpose": "NON_DESIGN_VERIFICATION",
+  "run_id": "M0-SYNTHETIC-001",
+  "model_scope": "STEADY_SINGLE_PATH_1D",
+  "flow_boundary_mode": "PRESCRIBED_MASS_FLOW",
+  "boundary": {
+    "inlet_pressure_Pa_abs": 1000000.0,
+    "inlet_temperature_K": 300.0,
+    "mass_flow_kg_s": 0.1,
+    "flow_direction": "segments listed in coolant-flow order"
+  },
+  "coolant_property_model": {
+    "model": "TABULATED_T_PRESSURE_BOUNDED",
+    "source": "synthetic linear verification table; not a real fluid",
+    "pressure_range_Pa_abs": [100000.0, 2000000.0],
+    "rows": [
+      {"temperature_K": 250.0, "enthalpy_J_kg": 100000.0, "density_kg_m3": 800.0, "viscosity_Pa_s": 0.001, "cp_J_kgK": 2000.0, "conductivity_W_mK": 0.15},
+      {"temperature_K": 500.0, "enthalpy_J_kg": 600000.0, "density_kg_m3": 800.0, "viscosity_Pa_s": 0.001, "cp_J_kgK": 2000.0, "conductivity_W_mK": 0.15}
+    ]
+  },
+  "coolant_closure": {
+    "source": "synthetic verification domain only; not adopted literature limits",
+    "re_range": [4000.0, 1000000.0],
+    "pr_range": [0.5, 100.0],
+    "geometry": "circular_tube",
+    "fully_developed_required": true
+  },
+  "numerics": {
+    "max_segment_iterations": 100,
+    "relaxation": 0.7,
+    "temperature_tolerance_K": 1e-8,
+    "pressure_tolerance_Pa": 1e-5,
+    "energy_residual_tolerance_W": 1e-8
+  },
+  "segments": [
+    {
+      "id": "S01",
+      "geometry": {
+        "length_m": 0.1,
+        "gas_heated_area_m2": 0.01,
+        "coolant_wetted_area_m2": 0.01,
+        "flow_area_m2": 0.0001,
+        "hydraulic_diameter_m": 0.005,
+        "wall_resistance_K_W": 0.02,
+        "surface_efficiency": 1.0,
+        "equivalent_sand_roughness_m": 0.000001,
+        "local_loss_coefficient": 0.5,
+        "closure_geometry": "circular_tube",
+        "fully_developed": true
+      },
+      "gas_boundary": {
+        "h_g_W_m2K": 1000.0,
+        "adiabatic_wall_temperature_K": 1000.0,
+        "radiation_definition": "EXPLICIT_NET_RATE_GAS_TO_WALL_POSITIVE",
+        "q_rad_net_W": 100.0
+      }
+    },
+    {
+      "id": "S02",
+      "geometry": {
+        "length_m": 0.1,
+        "gas_heated_area_m2": 0.01,
+        "coolant_wetted_area_m2": 0.01,
+        "flow_area_m2": 0.0001,
+        "hydraulic_diameter_m": 0.005,
+        "wall_resistance_K_W": 0.02,
+        "surface_efficiency": 1.0,
+        "equivalent_sand_roughness_m": 0.000001,
+        "local_loss_coefficient": 0.5,
+        "closure_geometry": "circular_tube",
+        "fully_developed": true
+      },
+      "gas_boundary": {
+        "h_g_W_m2K": 900.0,
+        "adiabatic_wall_temperature_K": 900.0,
+        "radiation_definition": "EXPLICIT_NET_RATE_GAS_TO_WALL_POSITIVE",
+        "q_rad_net_W": 50.0
+      }
+    }
+  ]
+}

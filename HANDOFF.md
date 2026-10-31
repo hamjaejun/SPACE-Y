@@ -116,7 +116,7 @@ README의 “수식 구분자를 GitHub Markdown용으로 정리했다”는 설
 
 ## 7. 로컬에만 있는 자료와 이관 목록
 
-원래 작업 루트는 `C:/Users/HAMJAEJUN/Documents/ChatGPT/R2S`다. 아래 경로는 그 루트 기준이며 새 환경에서 바로 접근된다고 가정하지 않는다.
+원래 작업 루트는 `<USER_HOME>/Documents/ChatGPT/R2S`다. 아래 경로는 그 루트 기준이며 새 환경에서 바로 접근된다고 가정하지 않는다.
 
 | 로컬 경로 | 내용 | 이관 시 주의 |
 |---|---|---|
@@ -134,12 +134,12 @@ README의 “수식 구분자를 GitHub Markdown용으로 정리했다”는 설
 
 ### 원문 자료의 원래 위치
 
-- `C:/Users/HAMJAEJUN/Desktop/R2S/대회/`: 부트캠프 159쪽 PDF, Airborne ICD, Airborne tips, Cardiff PDR, Protolaunch ICD.
-- `C:/Users/HAMJAEJUN/Desktop/R2S/Rocket Propulsion Elements.pdf`
-- `C:/Users/HAMJAEJUN/Downloads/새로운 노트 (1).txt`: 2026-10-26 회의록으로 제공됨.
-- `C:/Users/HAMJAEJUN/Downloads/2026-10-03 14-18-28.mp4`: 강의 영상.
-- `C:/Users/HAMJAEJUN/Desktop/Parameter.pptx`: 팀장 제공 발표 자료.
-- `C:/Users/HAMJAEJUN/Desktop/test.cfg`: 이전에 제공한 분석 설정 예시.
+- `<USER_HOME>/Desktop/R2S/대회/`: 부트캠프 159쪽 PDF, Airborne ICD, Airborne tips, Cardiff PDR, Protolaunch ICD.
+- `<USER_HOME>/Desktop/R2S/Rocket Propulsion Elements.pdf`
+- `<USER_HOME>/Downloads/새로운 노트 (1).txt`: 2026-10-26 회의록으로 제공됨.
+- `<USER_HOME>/Downloads/2026-10-03 14-18-28.mp4`: 강의 영상.
+- `<USER_HOME>/Desktop/Parameter.pptx`: 팀장 제공 발표 자료.
+- `<USER_HOME>/Desktop/test.cfg`: 이전에 제공한 분석 설정 예시.
 
 위 원문 전체를 이번 인수인계에서 새로 열람하거나 재검증하지 않았다. 파일명에 `(1)`이 붙은 별도 사본이 있으면 같은 문서라고 단정하지 말고 판본·해시를 확인한다. 새 환경에 원문이 없다면 접근한 것처럼 쓰지 않는다. 논문의 본문 확인·초록만 확인·미확보 상태는 기존 기준서의 참고문헌 장을 유지한다.
 
@@ -170,3 +170,26 @@ README의 “수식 구분자를 GitHub Markdown용으로 정리했다”는 설
 ## 10. 새 대화에 붙여 넣을 시작 요청
 
 > 이 저장소의 HANDOFF.md와 연결된 문서 세 개, JSON 양식을 읽고 SPACE Y 작업을 이어가 줘. 현재 완료된 것은 재생냉각 모델링 방법론과 입력·검증 명세이며 M0 열유동 계산은 미실행이다. 과거 CEA 자료는 별도 로컬 산출물이고 저장소에 없을 수 있다. 우선 실제 파일과 문서 상태를 대조하고, 마지막 피드백인 경계조건 독립성·출력 무효화 의존 관계·실제 스키마 검증과 수식 표시 문제를 검토해 줘. 미확인값을 임의로 채우거나 엔진 안전성·최적점을 확정하지 말고, 수행한 검사와 남은 한계를 구분해 정리해 줘.
+
+## 11. 2026-10-31 구현 후속 기록
+
+위 1–10장은 구현 전 인수인계 원문이므로 당시 상태를 보존한다. 이후 같은 날짜에 저장소에서 다음 항목을 구현·실행했다.
+
+- Phase 1: 실제 JSON Schema와 의미 검증, Y01–Y05 의존표, 기본 물리식 검산, NASA CEA 실행 어댑터, RPA 2.3 scripting smoke test
+- M0: 지정 유량·정상·단일경로 1D 합성 검산 코어. 가스 열입력, 벽 저항, 냉각 엔탈피 상승, Gnielinski/Colebrook/Darcy–Weisbach 압손을 연결
+- GAS: CEA rocket station/transport 출력에서 RPA 2012 기본 Bartz 식을 계산해 M0 `gas_boundary` 형식으로 내보내는 비설계 매핑
+- 자동검사: 총 25개 테스트 통과. CEA RP-1311 Example 13 기준값 5개 통과
+
+현재 실행 증거는 `artifacts/phase1/`, `artifacts/m0/`, `artifacts/gas/`에 있다. 모든 합성/공식 예제에는 `validated_engine_prediction: false`를 유지하며 V01–V12는 `NOT_RUN`이다. 실제 SPACE Y 형상·운전조건·허용값은 입력하지 않았다.
+
+다음 우선순위는 M0가 계산한 벽온도로 Bartz `sigma`를 갱신하는 결합 반복, 실제 노즐 좌표–CEA station 매핑, 독립 기준 데이터에 의한 Bartz 검증이다. 그 전에는 GAS 결과를 설계 예측으로 승격하지 않는다. 자세한 구분은 `docs/PHASE1_구현_검증_보고서.md`, `docs/M0_정상_단일경로_구현기록.md`, `docs/GAS_CEA_Bartz_매핑_구현기록.md`를 따른다.
+
+후속 로컬 개발에서 단일 구간 GAS–WALL 고정점 반복과 `SPACE_Y_WALL_COOLANT_V1` 출력 인터페이스를 추가했다. 냉각 측은 처방된 합성 Robin 경계만 사용하며 실제 냉각 상태와 압손 갱신은 `NOT_RUN`이다. 다구간으로 확장하기 전에 `docs/GAS_WALL_단일구간_결합_구현기록.md`의 입력 보호와 미검증 목록을 확인한다.
+
+그 다음 로컬 단계에서 `SPACE_Y_WALL_COOLANT_V1`을 소비하는 단일 구간 가변물성 냉각 엔탈피·압손 반복을 구현했다. 합성 물성/적용영역만 사용하며 벽면 상변화는 `NOT_EVALUATED`, 결과는 `MODEL_U`, V01–V12는 `NOT_RUN`이다. 다구간 확장은 `docs/M0_단일구간_GAS_WALL_COOLANT_결합_구현기록.md`를 기준으로 진행한다.
+
+이후 단일 구간 솔버를 재사용하는 단일 냉각 경로 다구간 marching 계층을 추가했다. 가스 축 좌표 순서와 냉각 진행 순서를 분리하고, 증가/감소 좌표 방향을 검사하며, 구간별 명시 CEA station 매핑만 사용한다. 합성 3구간 역류 문제에서 구간 상태 연속성과 전체 에너지·압력손실 합산을 검산했다. 상류 `INPUT_U`, `OUTSIDE`, `NUM_U`는 후속 구간을 실행하지 않고 `BLOCKED_BY_UPSTREAM`으로 전파한다. 결과는 계속 `MODEL_U`, V01–V12는 `NOT_RUN`이며 세부 내용은 `docs/M0_다구간_축방향_marching_구현기록.md`를 따른다.
+
+다음 로컬 단계에서는 합성 상수 가스장에 대한 N/2N/4N 공간분할 suite와 정규화 잔차/QoI 변화 기록을 추가했다. 보존식 잔차는 작지만 일부 QoI의 refinement 변화가 감소하지 않아 asymptotic regime는 `NOT_ESTABLISHED`다. 실제 IPA 물성과 실제 노즐 좌표–CEA station 연동은 별도 readiness Schema/템플릿에 `INPUT_U`로 남겼다. 자동 테스트 통과와 V01–V12 물리 검증을 분리하며 자세한 내용은 `docs/M0_수치검증_실제입력_연동준비.md`를 따른다.
+
+그 다음 로컬 단계에서 exact 2-propanol(CAS 67-63-0) 자료 후보와 공개/라이선스 범위를 검토하고 Property Adapter 계약을 추가했다. NIST WebBook은 부분 phase-change/증기압 자료만 공개하며, REFPROP 10 공개 fluid list에서는 exact IPA를 확인하지 못했다. DIPPR는 exact compound와 필요한 속성 유형을 포함하지만 licensed record가 없고, CoolProp PC-SAFT는 exact parameter entry가 있으나 p,h 역산·수송물성·적용범위 검증이 부족하다. 따라서 실제 IPA capability는 모두 `INPUT_U`다. 기존 M0는 provider-neutral `state_pt`/`state_ph` 경계를 사용하지만 현재 factory에는 합성 bounded table만 연결한다. `docs/IPA_물성검토_Property_Adapter_구현기록.md`와 `config/SPACE_Y_IPA_property_sources.json`을 확인하며 V01–V12와 N/2N/4N 상태를 승격하지 않는다.

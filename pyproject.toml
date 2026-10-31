@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "space-y-r2s"
+version = "0.1.0"
+description = "Traceable Phase 1 interfaces for the SPACE Y regenerative-cooling analysis"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+validation = ["jsonschema>=4.23"]
+cea = ["cea==3.3.4"]
+test = ["jsonschema>=4.23"]
+
+[project.scripts]
+space-y = "space_y.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
