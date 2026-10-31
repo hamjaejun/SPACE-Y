@@ -196,6 +196,6 @@ README의 “수식 구분자를 GitHub Markdown용으로 정리했다”는 설
 
 ## 12. 현재 공개 구현 스냅샷
 
-2026-10-31 현재 CEA–GAS–Bartz, 단일 구간 GAS–WALL–COOLANT, 단일 냉각 경로 다구간 marching, 합성 N/2N/4N 기록과 Property Adapter 경계까지 구현했다. 전체 자동 테스트 73개와 Python compile/JSON parse 검사가 통과했다. 이는 합성 산술 및 인터페이스 검증이며 실제 IPA 또는 실제 엔진 물리 검증은 아니다. 실제 엔진 예측 검증은 `false`, V01–V12는 `NOT_RUN`, refinement asymptotic regime은 `NOT_ESTABLISHED`를 유지한다.
+2026-10-31 현재 CEA–GAS–Bartz, 단일 구간 GAS–WALL–COOLANT, 단일 냉각 경로 다구간 marching, 합성 N/2N/4N 기록과 Property Adapter 경계까지 구현했다. CoolProp 8.0.0 PC-SAFT exact IPA capability probe를 추가했지만 엔탈피·비열·점도·열전도율과 p,h flash가 지원되지 않아 실제 backend는 구현하지 않았다. 전체 자동 테스트 74개와 Python compile/JSON parse 검사가 통과했다. 이는 합성 산술 및 인터페이스 검증이며 실제 IPA 또는 실제 엔진 물리 검증은 아니다. 실제 엔진 예측 검증은 `false`, V01–V12는 `NOT_RUN`, refinement asymptotic regime은 `NOT_ESTABLISHED`를 유지한다.
 
 현재 공개 트리에서는 로컬 사용자 절대경로를 `<USER_HOME>` 등으로 비식별화했다. RPA 실행 파일·설치 경로·라이선스 자료, REFPROP/DIPPR 유료 데이터와 물성 계수는 포함하지 않는다. 단, 과거 원격 커밋에 이미 포함된 로컬 경로는 일반 후속 커밋으로 삭제해도 Git 이력에는 남는다. 이력 재작성이나 force push는 별도 승인 없이는 수행하지 않는다.

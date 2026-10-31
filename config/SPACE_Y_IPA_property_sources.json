@@ -60,12 +60,12 @@
     {
       "provider": "CoolProp",
       "dataset_or_model": "PC-SAFT parameter entry 2-PROPANOL",
-      "version": "8.0.0 candidate; repository evidence commit 626c95bc670b58ce64603907ed3fc192f946d4f2",
+      "version": "8.0.0 runtime capability probe 2026-10-31; repository evidence commit 626c95bc670b58ce64603907ed3fc192f946d4f2",
       "exact_identity_confirmed": true,
-      "available_scope": ["exact CAS 67-63-0 PC-SAFT parameter entry", "PC-SAFT TP/PQ/DT/QT input-pair documentation"],
-      "unavailable_or_unconfirmed_scope": ["p,h flash", "viscosity", "thermal conductivity", "validated liquid cp and density ranges", "uncertainty for the intended IPA domain", "M0 phase-boundary robustness"],
+      "available_scope": ["exact CAS 67-63-0 PC-SAFT parameter entry", "PC-SAFT TP/PQ/DT/QT input-pair documentation", "local 8.0.0 non-design probe initialized exact 2-PROPANOL and executed p,T density, phase flag, and saturation pressure from T"],
+      "unavailable_or_unconfirmed_scope": ["local 8.0.0 reports enthalpy and cp are not implemented for PC-SAFT", "local 8.0.0 reports viscosity and thermal conductivity are not implemented for PC-SAFT", "local 8.0.0 reports p,h input is unsupported", "saturated liquid and vapor enthalpy", "validated liquid density range", "uncertainty for the intended IPA domain", "M0 phase-boundary robustness"],
       "valid_ranges": [],
-      "uncertainty": "not established for the intended operating domain; runtime package is not installed in the project environment",
+      "uncertainty": "not established for the intended operating domain; one local capability probe is execution evidence only and contains no independent property validation",
       "license_and_publication": "CoolProp source is MIT-licensed; retain upstream citations and review bundled-data provenance before claiming validation",
       "source_urls": [
         "https://github.com/CoolProp/CoolProp/blob/626c95bc670b58ce64603907ed3fc192f946d4f2/dev/pcsaft/all_pcsaft_fluids.json",

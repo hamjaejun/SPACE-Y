@@ -178,6 +178,21 @@ class PropertyAdapterTests(unittest.TestCase):
         self.assertTrue(all(item["m0_status"] == "INPUT_U" for item in record["candidates"]))
         self.assertTrue(all(item["provider"] for item in record["candidates"]))
 
+    def test_coolprop_probe_does_not_enable_real_backend(self) -> None:
+        record = json.loads(
+            (
+                ROOT
+                / "artifacts/property/ipa_coolprop_pcsaft_capability_probe.json"
+            ).read_text(encoding="utf-8")
+        )
+        self.assertEqual(record["fluid_identity"]["cas_number"], "67-63-0")
+        self.assertEqual(record["overall_status"], "INPUT_U")
+        self.assertFalse(record["m0_backend_implemented"])
+        self.assertFalse(record["validated_engine_prediction"])
+        self.assertEqual(record["physical_validation_v01_v12"], "NOT_RUN")
+        for capability in ("enthalpy_pt", "cp_pt", "viscosity_pt", "conductivity_pt", "state_ph"):
+            self.assertEqual(record["capabilities"][capability]["status"], "INPUT_U")
+
 
 if __name__ == "__main__":
     unittest.main()

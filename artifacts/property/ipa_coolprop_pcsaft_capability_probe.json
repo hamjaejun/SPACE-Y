@@ -1,0 +1,43 @@
+{
+  "record_id": "SPACE-Y-IPA-COOLPROP-PCSAFT-CAPABILITY-001",
+  "purpose": "NON_DESIGN_CAPABILITY_ONLY_NO_PROPERTY_VALIDATION",
+  "run_date": "2026-10-31",
+  "fluid_identity": {
+    "backend_name": "2-PROPANOL",
+    "chemical_name": "2-propanol",
+    "cas_number": "67-63-0"
+  },
+  "provider": {
+    "name": "CoolProp",
+    "version": "8.0.0",
+    "backend": "PCSAFT",
+    "installation_scope": "LOCAL_IGNORED_VENV_NOT_PROJECT_DEPENDENCY",
+    "source_urls": [
+      "https://coolprop.org/coolprop/PCSAFT.html",
+      "https://github.com/CoolProp/CoolProp/blob/626c95bc670b58ce64603907ed3fc192f946d4f2/dev/pcsaft/all_pcsaft_fluids.json",
+      "https://pypi.org/project/CoolProp/8.0.0/"
+    ]
+  },
+  "probe_point": {
+    "classification": "NON_DESIGN_CAPABILITY_POINT_NOT_SPACE_Y_INPUT",
+    "temperature_K": 300.0,
+    "pressure_Pa_abs": 101325.0
+  },
+  "capabilities": {
+    "exact_fluid_initialization": {"status": "AVAILABLE", "evidence": "runtime initialization succeeded"},
+    "density_pt": {"status": "AVAILABLE_NOT_VALIDATED", "evidence": "finite output returned; value intentionally not promoted to reference data"},
+    "enthalpy_pt": {"status": "INPUT_U", "evidence": "calc_hmolar is not implemented for this backend"},
+    "cp_pt": {"status": "INPUT_U", "evidence": "calc_cpmolar is not implemented for this backend"},
+    "viscosity_pt": {"status": "INPUT_U", "evidence": "calc_viscosity is not implemented for this backend"},
+    "conductivity_pt": {"status": "INPUT_U", "evidence": "calc_conductivity is not implemented for this backend"},
+    "state_ph": {"status": "INPUT_U", "evidence": "HmolarP input pair is not supported"},
+    "phase_pt": {"status": "AVAILABLE_NOT_VALIDATED", "evidence": "runtime phase flag returned; no independent phase-boundary validation"},
+    "saturation_pressure_at_temperature": {"status": "AVAILABLE_NOT_VALIDATED", "evidence": "finite output returned; no range or uncertainty validation"},
+    "saturated_liquid_enthalpy": {"status": "INPUT_U", "evidence": "enthalpy is not implemented for this backend"},
+    "saturated_vapor_enthalpy": {"status": "INPUT_U", "evidence": "enthalpy is not implemented for this backend"}
+  },
+  "overall_status": "INPUT_U",
+  "m0_backend_implemented": false,
+  "validated_engine_prediction": false,
+  "physical_validation_v01_v12": "NOT_RUN"
+}

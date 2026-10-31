@@ -100,3 +100,24 @@ REFPROP는 후보 제품으로서는 강력하지만 **REFPROP 10의 공개 flui
 6. 실제 형상·경계조건·명시 CEA station mapping이 확보된 후에만 M0 실제 입력 dry run을 검토한다.
 
 비등 상관식, 병렬 채널, 설계 최적화는 이 단계에 포함하지 않았다.
+
+## 8. CoolProp 8.0.0 로컬 capability probe
+
+공개 PyPI wheel을 Git에 포함되지 않는 로컬 `.venv`에 설치해 `PCSAFT::2-PROPANOL`을 비설계 조건 300 K, 101325 Pa에서 실행했다. 이 조건은 SPACE Y 입력이나 운전점이 아니라 API 기능 존재 여부만 확인하기 위한 점이다.
+
+| 기능 | 실행 결과 | M0 판정 |
+|---|---|---|
+| exact `2-PROPANOL` 초기화 | 성공 | 식별자 확인만 `AVAILABLE` |
+| p,T 밀도 | finite output 반환 | 범위·불확실성 독립 검증이 없어 `AVAILABLE_NOT_VALIDATED` |
+| p,T phase flag | 반환 | phase boundary 검증이 없어 `AVAILABLE_NOT_VALIDATED` |
+| T 기반 포화압 | finite output 반환 | 범위·불확실성 검증이 없어 `AVAILABLE_NOT_VALIDATED` |
+| p,T 엔탈피 | `calc_hmolar is not implemented` | `INPUT_U` |
+| p,T 비열 | `calc_cpmolar is not implemented` | `INPUT_U` |
+| 점도 | `calc_viscosity is not implemented` | `INPUT_U` |
+| 열전도율 | `calc_conductivity is not implemented` | `INPUT_U` |
+| p,h flash | `HmolarP_INPUTS` 미지원 | `INPUT_U` |
+| 포화 액/증기 엔탈피 | 엔탈피 미구현으로 계산 불가 | `INPUT_U` |
+
+따라서 CoolProp PC-SAFT 8.0.0 단독으로는 현재 Property Adapter 계약을 만족하지 않는다. 밀도와 포화압 일부가 실행된다는 이유로 다른 데이터셋의 `h`, `cp`, `mu`, `k`를 근거 없이 결합하지 않았고 실제 backend도 구현하지 않았다. 실행 기록은 `artifacts/property/ipa_coolprop_pcsaft_capability_probe.json`에 물성값 없이 capability evidence만 보존한다.
+
+같은 환경에서 REFPROP/DIPPR 설치, 관련 환경변수, 일반 설치 프로그램 항목과 workspace fluid file은 확인되지 않았다. 이는 이 PC에 대한 결과일 뿐 학교 기관 라이선스 부재를 증명하지 않는다. 기관 담당자에게 제품명·판본·좌석/네트워크 라이선스·2-propanol record 접근 여부·공개 가능한 결과 범위를 확인해야 한다.

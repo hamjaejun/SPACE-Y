@@ -93,6 +93,8 @@ refinement fixture는 각 셀에 명시된 동일 CEA station을 사용하는 �
 
 NIST WebBook, REFPROP, DIPPR, CoolProp PC-SAFT와 chemicals/thermo를 검토했으나 현재 확보 자료만으로 M0에 필요한 실제 IPA 물성 전체를 일관되게 제공할 수 없다. 실제 capability는 `INPUT_U`이며 현재 M0 factory에는 합성 bounded table만 연결된다. 1-propanol과 generic propanol은 exact identity 검사에서 거부한다. 테스트 통과는 실제 IPA 또는 엔진 물리 검증을 뜻하지 않는다.
 
+CoolProp 8.0.0의 exact `PCSAFT::2-PROPANOL` 로컬 capability probe에서는 p,T 밀도·phase flag와 T 기반 포화압 경로만 실행됐다. 엔탈피·비열·점도·열전도율은 해당 backend에 구현되지 않았고 p,h flash도 지원되지 않아 실제 M0 backend로 연결하지 않았다. 상세 결과는 `artifacts/property/ipa_coolprop_pcsaft_capability_probe.json`에 기록한다.
+
 로컬 재현 명령:
 
 ```powershell
