@@ -193,3 +193,9 @@ README의 “수식 구분자를 GitHub Markdown용으로 정리했다”는 설
 다음 로컬 단계에서는 합성 상수 가스장에 대한 N/2N/4N 공간분할 suite와 정규화 잔차/QoI 변화 기록을 추가했다. 보존식 잔차는 작지만 일부 QoI의 refinement 변화가 감소하지 않아 asymptotic regime는 `NOT_ESTABLISHED`다. 실제 IPA 물성과 실제 노즐 좌표–CEA station 연동은 별도 readiness Schema/템플릿에 `INPUT_U`로 남겼다. 자동 테스트 통과와 V01–V12 물리 검증을 분리하며 자세한 내용은 `docs/M0_수치검증_실제입력_연동준비.md`를 따른다.
 
 그 다음 로컬 단계에서 exact 2-propanol(CAS 67-63-0) 자료 후보와 공개/라이선스 범위를 검토하고 Property Adapter 계약을 추가했다. NIST WebBook은 부분 phase-change/증기압 자료만 공개하며, REFPROP 10 공개 fluid list에서는 exact IPA를 확인하지 못했다. DIPPR는 exact compound와 필요한 속성 유형을 포함하지만 licensed record가 없고, CoolProp PC-SAFT는 exact parameter entry가 있으나 p,h 역산·수송물성·적용범위 검증이 부족하다. 따라서 실제 IPA capability는 모두 `INPUT_U`다. 기존 M0는 provider-neutral `state_pt`/`state_ph` 경계를 사용하지만 현재 factory에는 합성 bounded table만 연결한다. `docs/IPA_물성검토_Property_Adapter_구현기록.md`와 `config/SPACE_Y_IPA_property_sources.json`을 확인하며 V01–V12와 N/2N/4N 상태를 승격하지 않는다.
+
+## 12. 현재 공개 구현 스냅샷
+
+2026-10-31 현재 CEA–GAS–Bartz, 단일 구간 GAS–WALL–COOLANT, 단일 냉각 경로 다구간 marching, 합성 N/2N/4N 기록과 Property Adapter 경계까지 구현했다. 전체 자동 테스트 73개와 Python compile/JSON parse 검사가 통과했다. 이는 합성 산술 및 인터페이스 검증이며 실제 IPA 또는 실제 엔진 물리 검증은 아니다. 실제 엔진 예측 검증은 `false`, V01–V12는 `NOT_RUN`, refinement asymptotic regime은 `NOT_ESTABLISHED`를 유지한다.
+
+현재 공개 트리에서는 로컬 사용자 절대경로를 `<USER_HOME>` 등으로 비식별화했다. RPA 실행 파일·설치 경로·라이선스 자료, REFPROP/DIPPR 유료 데이터와 물성 계수는 포함하지 않는다. 단, 과거 원격 커밋에 이미 포함된 로컬 경로는 일반 후속 커밋으로 삭제해도 Git 이력에는 남는다. 이력 재작성이나 force push는 별도 승인 없이는 수행하지 않는다.
