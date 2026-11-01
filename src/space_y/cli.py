@@ -6,6 +6,7 @@ from pathlib import Path
 import sys
 
 from .contract import build_validation_report
+from .cooling_hc import solve_cooling_hc_file
 from .design_decision import solve_design_decision_file
 from .design_space import explore_design_space_file
 from .external import probe_cea, probe_rpa, run_cea_request, write_json
@@ -103,6 +104,13 @@ def build_parser() -> argparse.ArgumentParser:
         "--schema", default="schemas/SPACE_Y_design_space.schema.json"
     )
     exploration.add_argument("--output")
+
+    cooling_hc = sub.add_parser("cooling-hc-run")
+    cooling_hc.add_argument("request")
+    cooling_hc.add_argument(
+        "--schema", default="schemas/SPACE_Y_cooling_hc.schema.json"
+    )
+    cooling_hc.add_argument("--output")
     return parser
 
 
@@ -140,6 +148,8 @@ def main(argv: list[str] | None = None) -> int:
         result = solve_design_decision_file(args.request, args.schema)
     elif args.command == "design-space-run":
         result = explore_design_space_file(args.request, args.schema)
+    elif args.command == "cooling-hc-run":
+        result = solve_cooling_hc_file(args.request, args.schema)
     else:
         raise AssertionError(args.command)
     _emit(result, args.output)

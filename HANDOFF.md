@@ -177,6 +177,7 @@ README의 “수식 구분자를 GitHub Markdown용으로 정리했다”는 설
 
 - Phase 1: 실제 JSON Schema와 의미 검증, Y01–Y05 의존표, 기본 물리식 검산, NASA CEA 실행 어댑터, RPA 2.3 scripting smoke test
 - M0: 지정 유량·정상·단일경로 1D 합성 검산 코어. 가스 열입력, 벽 저항, 냉각 엔탈피 상승, Gnielinski/Colebrook/Darcy–Weisbach 압손을 연결
+- 냉각 `h_c` 독립 인터페이스: 직접 유량 또는 `beta * 연료유량`, 상·하류 분기 회계, 직사각 폐채널 `A/D_h`, 균등 채널분배 가정, 기존 Gnielinski/Colebrook/Darcy–Weisbach 폐쇄식을 연결한다. 실제 IPA·채널 입력은 `INPUT_U`, 실제 물리검증은 `NOT_RUN`이다.
 - GAS: CEA rocket station/transport 출력에서 RPA 2012 기본 Bartz 식을 계산해 M0 `gas_boundary` 형식으로 내보내는 비설계 매핑
 - 자동검사: 총 25개 테스트 통과. CEA RP-1311 Example 13 기준값 5개 통과
 
@@ -245,3 +246,13 @@ RPA Standard Edition v.2.3.2 매뉴얼 33–35쪽에서 Chamber Geometry의 Desi
 이 자료는 실제 팀 작업 후보와 과거 RPA 실행의 화면 증거다. 그러나 승인자·승인일·선정 기준, raw RPA project·ASCII·DXF가 없고 L*=1 m와 parabolic nozzle default의 근거도 확인되지 않았다. 현재 열린 RPA는 `product is not activated` 상태다. 따라서 이 안은 `TEAM-PPT-RPA-WORKING-CASE`, `PROVISIONAL`, `team_approved=false`, `team_selected_baseline=false`로 기록한다. 기존 v5도 별도 `PROVISIONAL` 대안으로 유지한다.
 
 PPT 안은 N2O 24 kg를 1.2 kg/s로 10 s씩 두 번 전량 사용하는 가정이라 비연소 소비·잔류량·예비가 0이다. 두 안 모두 10 s N2O 소비가 J1 8 kg를 넘으므로 J2 배정 확인이 필요하다. 실제 Design Decision Engine 입력이나 승인된 RPA 재현 실행은 팀이 후보 ID, 목표 추력, 공통 경계, 시험시간·예비량 기준과 형상 가정을 승인한 뒤 진행한다.
+
+## 18. 2026-11-01 냉각 측 `h_c` 독립 인터페이스
+
+`src/space_y/cooling_hc.py`와 `space-y cooling-hc-run`을 추가했다. 직접 냉각유량 또는 `beta * 연료유량`을 받고, 상류 바이패스는 재생냉각 유량에서 차감하지만 재생냉각 이후 필름 분기는 채널 유량에서 중복 차감하지 않는다. 직접·beta·분기 정의가 함께 있으면 질량유량 일치를 검사한다. 채널별 유량은 `ASSUMED_EQUAL_DISTRIBUTION`이며 매니폴드 해석 결과가 아니다.
+
+직사각 폐채널의 한 채널 면적, 전체 유로면적, 젖은둘레, `D_h`, 내부 젖은면적과 명목 열벽 바닥면적을 분리했다. 기존 `coolant.py`의 Gnielinski/Colebrook/Darcy–Weisbach 폐쇄식을 재사용하며, Property Adapter 상태·독립 단상영역·상관식 범위·형상·열적 경계·완전발달 근거가 있어야 계산한다. 누락은 `INPUT_U`, 범위 이탈은 `OUTSIDE`, 수치 실패는 `NUM_U`, 정상 산술 결과도 실제 물리검증 전에는 `MODEL_U`다.
+
+ODREC의 `N=90, w=1 mm, h=6 mm`, Fagherazzi의 41개 축방향 가변 물냉각 채널, Wadel의 100/200채널 액체수소 연구를 `REFERENCE_PRESET`으로만 기록했다. SPACE Y 기본값은 없다. 팀 IPA 표는 exact CAS와 물성 후보를 제공하지만 검증된 압력 의존 `p,T` 상태·상평형 공급원으로 채택하지 않았다. 실제 냉각유량/분기, 채널 형상, 제작 조도·국부손실, IPA 단상 상태, 상관식 적용 근거는 계속 `INPUT_U`/`MODEL_U`다.
+
+합성 fixture 전용 테스트 18개를 포함해 전체 자동 테스트 137개가 통과했다. 합성 결과는 `V01–V12=NOT_RUN`, `validated_engine_prediction=false`, `safety_approval=false`이며 실제 SPACE Y 냉각 성능이나 안전성을 뜻하지 않는다.

@@ -61,6 +61,7 @@
 
 - [단일 구간 완전 결합 구현 기록](docs/M0_단일구간_GAS_WALL_COOLANT_결합_구현기록.md)
 - `src/space_y/coolant.py`: 단상 벌크영역 및 Gnielinski/Colebrook 공급 영역 검사
+- `src/space_y/cooling_hc.py`: 처방 유량·직사각 채널의 독립 냉각 측 `Re/Pr/f/Nu/h_c/DeltaP` 인터페이스. 균등분배는 명시적 가정이며 실제 매니폴드·IPA 검증을 뜻하지 않음
 - `src/space_y/m0_coupled.py`: GAS–WALL과 가변물성 냉각 엔탈피·압손의 중첩 반복
 - [결합 실행 Schema](schemas/SPACE_Y_M0_coupled_single_segment.schema.json)
 - [비설계 합성 입력](examples/m0_coupled_synthetic_single_segment.json)과 `artifacts/m0_coupled/` 실행 증거
@@ -154,4 +155,15 @@ PDR 합성 분기 실행:
 
 공식 R2S 안내서와 AEL ICD의 대회 상한·시설 능력·권고·인터페이스는 PDR 입력 준비표 V2에 출처와 페이지별로 분리했다. 과거 `3 kN / 25 bar(a) / O/F 2.50 / 10 s` 케이스와 팀 `Parameter.pptx`의 `Pc 3 MPa / O/F 3 / total flow 1.6 kg/s` RPA 작업 케이스는 모두 팀 승인값이 아닌 `PROVISIONAL`이다. PPT에는 RPA 형상 결과 화면이 있지만 raw project·ASCII/DXF·승인 기록이 없고 현재 로컬 RPA는 비활성 상태다. 따라서 실제 후보 판정과 승인된 RPA 재현 실행은 계속 `INPUT_U`다.
 
-2026-11-01 설계 공간 탐색 추가 후 전체 자동 테스트 119개가 통과했다. 이 숫자는 소프트웨어 회귀검사 결과이며 실제 엔진 물리 검증 건수가 아니다.
+## 냉각 측 `h_c` 독립 인터페이스
+
+- [구현·문헌·적용범위 기록](docs/냉각측_대류_hc_독립모델_구현기록.md)
+- [입력 Schema](schemas/SPACE_Y_cooling_hc.schema.json), [실제 입력 준비 상태](config/SPACE_Y_cooling_hc_input_readiness.json), [문헌 형상 프리셋](config/SPACE_Y_cooling_channel_reference_presets.json)
+
+```powershell
+.\.venv\Scripts\space-y.exe cooling-hc-run examples\cooling_hc_rectangular_synthetic.json
+```
+
+직접 냉각유량 또는 `beta * 연료유량`, 상·하류 분기 회계, 직사각 폐채널 기하와 기존 Gnielinski/Colebrook/Darcy–Weisbach 폐쇄식을 연결한다. 균등 채널분배는 `ASSUMED_EQUAL_DISTRIBUTION`이고 실제 매니폴드 해석이 아니다. 합성 fixture 결과는 `MODEL_U`, 실제 입력 준비 상태는 `INPUT_U`다.
+
+2026-11-01 냉각 `h_c` 독립 인터페이스 추가 후 전체 자동 테스트 137개가 통과했다. 이 숫자는 소프트웨어 회귀검사 결과이며 실제 엔진 물리 검증 건수가 아니다.

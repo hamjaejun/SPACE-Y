@@ -68,11 +68,218 @@ class CoolantLocalClosure:
     friction_applicability: dict[str, Any]
 
 
+@dataclass(frozen=True)
+class RectangularChannelGeometry:
+    """Derived geometry for ``N`` identical, closed rectangular channels.
+
+    ``total_internal_wetted_area_m2`` is a hydraulic bookkeeping area.  It is
+    deliberately kept separate from ``nominal_hot_wall_base_area_m2`` and
+    must not be substituted for the effective heated area in the wall model.
+    """
+
+    width_m: float
+    height_m: float
+    channel_count: int
+    length_m: float
+    channel_flow_area_m2: float
+    total_flow_area_m2: float
+    channel_wetted_perimeter_m: float
+    hydraulic_diameter_m: float
+    total_internal_wetted_area_m2: float
+    nominal_hot_wall_base_area_m2: float
+    rib_thickness_m: float | None
+    mean_radius_m: float | None
+    circumferential_pitch_m: float | None
+    layout_check_status: str
+
+
+@dataclass(frozen=True)
+class CoolantFlowAllocation:
+    coolant_mass_flow_kg_s: float
+    channel_count: int
+    channel_mass_flow_kg_s: float
+    fuel_mass_flow_kg_s: float | None
+    regenerative_fraction_beta: float | None
+    upstream_diversion_mass_flow_kg_s: float | None
+    downstream_film_mass_flow_kg_s: float | None
+    post_regen_to_injector_mass_flow_kg_s: float | None
+    resolution_basis: str
+    distribution_status: str
+    branch_accounting_status: str
+    consistency_residuals_kg_s: dict[str, float]
+
+
 def _positive(value: Any, name: str) -> float:
     number = float(value)
     if not math.isfinite(number) or number <= 0:
         raise CoolantStop("INPUT_U", f"{name} must be finite and positive")
     return number
+
+
+def _optional_nonnegative(value: Any, name: str) -> float | None:
+    if value is None:
+        return None
+    number = float(value)
+    if not math.isfinite(number) or number < 0:
+        raise CoolantStop("INPUT_U", f"{name} must be finite and non-negative")
+    return number
+
+
+def _positive_integer(value: Any, name: str) -> int:
+    if isinstance(value, bool):
+        raise CoolantStop("INPUT_U", f"{name} must be a positive integer")
+    try:
+        number = int(value)
+    except (TypeError, ValueError, OverflowError) as error:
+        raise CoolantStop("INPUT_U", f"{name} must be a positive integer") from error
+    if number <= 0 or float(value) != number:
+        raise CoolantStop("INPUT_U", f"{name} must be a positive integer")
+    return number
+
+
+def build_rectangular_channel_geometry(spec: dict[str, Any]) -> RectangularChannelGeometry:
+    """Build the closed-duct area and hydraulic diameter without design defaults."""
+
+    width = _positive(spec.get("width_m"), "channel width")
+    height = _positive(spec.get("height_m"), "channel height")
+    count = _positive_integer(spec.get("channel_count"), "channel count")
+    length = _positive(spec.get("length_m"), "channel length")
+    rib = _optional_nonnegative(spec.get("rib_thickness_m"), "rib thickness")
+    mean_radius = (
+        None
+        if spec.get("mean_radius_m") is None
+        else _positive(spec.get("mean_radius_m"), "mean channel radius")
+    )
+    if (rib is None) != (mean_radius is None):
+        raise CoolantStop(
+            "INPUT_U",
+            "rib thickness and mean radius must be supplied together for a layout check",
+        )
+
+    channel_area = width * height
+    perimeter = 2.0 * (width + height)
+    hydraulic_diameter = 4.0 * channel_area / perimeter
+    pitch = None
+    layout_status = "INPUT_U"
+    if rib is not None and mean_radius is not None:
+        pitch = 2.0 * math.pi * mean_radius / count
+        if width + rib > pitch:
+            raise CoolantStop(
+                "OUTSIDE",
+                "channel width plus rib thickness exceeds the circumferential pitch",
+            )
+        layout_status = "GEOMETRIC_IDENTITY_CHECKED"
+
+    return RectangularChannelGeometry(
+        width_m=width,
+        height_m=height,
+        channel_count=count,
+        length_m=length,
+        channel_flow_area_m2=channel_area,
+        total_flow_area_m2=count * channel_area,
+        channel_wetted_perimeter_m=perimeter,
+        hydraulic_diameter_m=hydraulic_diameter,
+        total_internal_wetted_area_m2=count * perimeter * length,
+        nominal_hot_wall_base_area_m2=count * width * length,
+        rib_thickness_m=rib,
+        mean_radius_m=mean_radius,
+        circumferential_pitch_m=pitch,
+        layout_check_status=layout_status,
+    )
+
+
+def resolve_coolant_flow(
+    spec: dict[str, Any],
+    *,
+    channel_count: int,
+    relative_tolerance: float = 1.0e-9,
+) -> CoolantFlowAllocation:
+    """Resolve the regenerative-path flow without inventing a split fraction.
+
+    An upstream diversion changes the mass that enters the cooling channels.
+    A downstream film split occurs after the regenerative path and therefore
+    never reduces the mass flow used for the channel closure.
+    """
+
+    count = _positive_integer(channel_count, "channel count")
+    if relative_tolerance <= 0 or not math.isfinite(relative_tolerance):
+        raise CoolantStop("INPUT_U", "flow consistency tolerance must be positive")
+
+    direct = (
+        None
+        if spec.get("coolant_mass_flow_kg_s") is None
+        else _positive(spec.get("coolant_mass_flow_kg_s"), "coolant mass flow")
+    )
+    fuel = (
+        None
+        if spec.get("fuel_mass_flow_kg_s") is None
+        else _positive(spec.get("fuel_mass_flow_kg_s"), "fuel mass flow")
+    )
+    beta = spec.get("regenerative_fraction_beta")
+    if beta is not None:
+        beta = float(beta)
+        if not math.isfinite(beta) or not 0.0 < beta <= 1.0:
+            raise CoolantStop("INPUT_U", "regenerative fraction beta must be in (0, 1]")
+        if fuel is None:
+            raise CoolantStop("INPUT_U", "fuel mass flow is required when beta is supplied")
+    upstream = _optional_nonnegative(
+        spec.get("upstream_diversion_mass_flow_kg_s"), "upstream diversion mass flow"
+    )
+    downstream = _optional_nonnegative(
+        spec.get("downstream_film_mass_flow_kg_s"), "downstream film mass flow"
+    )
+
+    candidates: list[tuple[str, float]] = []
+    if direct is not None:
+        candidates.append(("DIRECT_COOLANT_MASS_FLOW", direct))
+    if beta is not None and fuel is not None:
+        candidates.append(("BETA_TIMES_FUEL_MASS_FLOW", beta * fuel))
+    if upstream is not None:
+        if fuel is None:
+            raise CoolantStop(
+                "INPUT_U", "fuel mass flow is required with an upstream diversion"
+            )
+        if upstream >= fuel:
+            raise CoolantStop("INPUT_U", "upstream diversion must be less than fuel flow")
+        candidates.append(("FUEL_MINUS_UPSTREAM_DIVERSION", fuel - upstream))
+    if not candidates:
+        raise CoolantStop(
+            "INPUT_U", "direct coolant flow or a fuel-flow/beta definition is required"
+        )
+
+    coolant = candidates[0][1]
+    residuals = {name: value - coolant for name, value in candidates}
+    scale = max(abs(coolant), *(abs(value) for _, value in candidates), 1.0e-30)
+    if any(abs(value) > relative_tolerance * scale for value in residuals.values()):
+        raise CoolantStop(
+            "INPUT_U", "direct, beta-based, and branch-based coolant flows are inconsistent"
+        )
+
+    post_regen = None
+    if downstream is not None:
+        if downstream > coolant:
+            raise CoolantStop("INPUT_U", "downstream film split exceeds regenerative flow")
+        post_regen = coolant - downstream
+
+    # Missing branch values are not silently interpreted as zero.  A complete
+    # audit therefore requires explicit upstream and downstream values,
+    # including explicit zeros when no branch exists.
+    branch_complete = fuel is not None and upstream is not None and downstream is not None
+
+    return CoolantFlowAllocation(
+        coolant_mass_flow_kg_s=coolant,
+        channel_count=count,
+        channel_mass_flow_kg_s=coolant / count,
+        fuel_mass_flow_kg_s=fuel,
+        regenerative_fraction_beta=beta,
+        upstream_diversion_mass_flow_kg_s=upstream,
+        downstream_film_mass_flow_kg_s=downstream,
+        post_regen_to_injector_mass_flow_kg_s=post_regen,
+        resolution_basis=" + ".join(name for name, _ in candidates),
+        distribution_status="ASSUMED_EQUAL_DISTRIBUTION",
+        branch_accounting_status="CHECKED" if branch_complete else "INPUT_U",
+        consistency_residuals_kg_s=residuals,
+    )
 
 
 def build_single_phase_domain(spec: dict[str, Any]) -> SinglePhaseBulkDomain:

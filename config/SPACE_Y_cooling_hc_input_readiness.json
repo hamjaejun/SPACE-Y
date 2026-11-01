@@ -1,0 +1,21 @@
+{
+  "assessment_id": "SPACE-Y-COOLING-HC-READINESS-2026-11-01",
+  "overall_status": "INPUT_U",
+  "validated_engine_prediction": false,
+  "physical_validation_v01_v12": "NOT_RUN",
+  "items": [
+    {"id": "CHC-I01", "name": "regenerative-path IPA mass flow or beta", "status": "INPUT_U"},
+    {"id": "CHC-I02", "name": "upstream diversion and downstream film branch locations/flows", "status": "INPUT_U"},
+    {"id": "CHC-I03", "name": "section-wise channel width, height, count, and length", "status": "INPUT_U"},
+    {"id": "CHC-I04", "name": "rib thickness and mean channel radius/layout evidence", "status": "INPUT_U"},
+    {"id": "CHC-I05", "name": "as-manufactured equivalent sand roughness", "status": "INPUT_U"},
+    {"id": "CHC-I06", "name": "section local-loss coefficients and their basis", "status": "INPUT_U"},
+    {"id": "CHC-I07", "name": "IPA p,T properties from a qualified Property Adapter", "status": "INPUT_U"},
+    {"id": "CHC-I08", "name": "independent single-phase/phase-boundary evidence over the route", "status": "INPUT_U"},
+    {"id": "CHC-I09", "name": "Gnielinski edition, range, geometry mapping, and thermal-boundary applicability", "status": "MODEL_U"},
+    {"id": "CHC-I10", "name": "Colebrook range and rectangular-channel roughness interpretation", "status": "MODEL_U"},
+    {"id": "CHC-I11", "name": "fully developed condition for every segment", "status": "INPUT_U"},
+    {"id": "CHC-I12", "name": "parallel-manifold distribution evidence", "status": "MODEL_U"}
+  ],
+  "decision": "The independent closure can run synthetic arithmetic fixtures, but no current item set authorizes an actual SPACE Y h_c or pressure-drop prediction."
+}
