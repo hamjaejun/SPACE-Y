@@ -189,3 +189,11 @@ PDR 합성 분기 실행:
 ```
 
 Baseline은 문헌·부트캠프 참고자료이며 자동 추천 후보와 별개다. 추천은 같은 station과 같은 공급 유량·물성에서의 상대 비교만 수행하며 `Preliminary candidate recommendation, not final design optimization.`이다. Gnielinski 실행범위와 팀의 예비 Re 권고를 분리하고, 모든 명시 station의 최소 Re와 거친/매끈 Darcy 계수비 경고를 기록한다. 미계산 연속 위치, 실제 IPA 상태, 비등·상변화와 실제 압력예산은 검증하지 않는다.
+
+80개 템플릿–`h_l` 통합 파이프라인:
+
+```powershell
+.\.venv\Scripts\space-y.exe cooling-channel-pipeline examples\cooling_channel_pipeline_synthetic_80.json --output artifacts\cooling_channel_pipeline\synthetic_80_result.json --geometry-csv-output artifacts\cooling_channel_pipeline\synthetic_80_geometry.csv --csv-output artifacts\cooling_channel_pipeline\synthetic_80_stations.csv --summary-csv-output artifacts\cooling_channel_pipeline\synthetic_80_summary.csv
+```
+
+[통합 파이프라인 기록](docs/냉각채널_80템플릿_hl_통합파이프라인.md)은 템플릿별 인접 정수 N 대응을 유지하고, 동일 `(N,b,h)` 실제 형상만 중복 제거한 뒤 기존 sweep 코어를 호출한다. 실제 반경·제조 제약·IPA 입력이 없으면 [readiness 입력](config/SPACE_Y_cooling_channel_pipeline_readiness.json)은 템플릿만 반환하고 `INPUT_U`를 유지한다. 합성 전 구간 실행은 실제 엔진 계산이나 최종 형상 선정이 아니다.

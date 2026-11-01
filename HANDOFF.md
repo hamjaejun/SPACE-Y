@@ -292,3 +292,21 @@ Colebrook 적용영역은 Gnielinski 범위와 별도로 실행 입력에 요구
 Pareto 태그와 별도로 Re 권고 미달/천이 경고이며 실제 설계 권고 후보는 0개다. 이는
 합성 정책 검산이다. 실제 IPA 물성·유량·반경·조도·가열경계가 없으므로 실제 엔진
 검증은 `false`, V01–V12는 `NOT_RUN`, 최종 설계 선택은 `false`다.
+
+## 22. 2026-11-01 80개 템플릿–`h_l` 통합 파이프라인
+
+`src/space_y/cooling_channel_pipeline.py`와 `space-y cooling-channel-pipeline`을
+추가했다. 80개 `(w_ref,b,h)` 템플릿마다 실제 목 평균 채널 배치반경으로 인접 정수 N을
+만들고, 대응하지 않는 N/b/h Cartesian 조합은 만들지 않는다. 동일 `(N,b,h)` 형상은
+한 번만 계산하면서 모든 template ID, 목표 폭, 실제 목 폭과 차이를 보존한다.
+
+입력이 없으면 `TEMPLATE_ONLY`, 반경만 있거나 coolant/model이 없으면
+`GEOMETRY_ONLY`, 모든 입력이 있을 때만 `FULL_CANDIDATE_EVALUATION`으로 진행한다.
+실제 screening은 팀 형상·제조 증거, exact 2-propanol 식별과 완전한 입력을 요구한다.
+기존 직접 N sweep과 M0 인터페이스는 유지한다.
+
+80개 합성 fixture에서는 raw template–N 연결 160개, 고유 형상 160개, 합성 기하 통과
+156개와 468개 station 계산을 재현했다. 최고 목 `h_l`/최소 목 마찰 구배 태그는 각각
+1개이고 비지배 후보는 58개다. 이는 합성 반경·제약·유량·물성에 대한 통합 코드
+검산이다. 실제 최적 형상, IPA 열유체 성능 또는 안전성을 뜻하지 않으며
+`validated_engine_prediction=false`, V01–V12 `NOT_RUN`, `final_design_selection=false`다.
