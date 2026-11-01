@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import json
+import math
 from pathlib import Path
 from typing import Any
 
@@ -25,6 +26,27 @@ OUTCOME_PRIORITY = {
     "UNKNOWN": 2,
     "EXCLUDED": 3,
 }
+VALIDATION_POLICIES = {
+    "SYNTHETIC_LOGIC_V1": {
+        "purpose": "SYNTHETIC_DECISION_LOGIC_TEST",
+        "accepted_levels": {"SYNTHETIC_ARITHMETIC"},
+    },
+    "PDR_APPROVED_EVIDENCE_V1": {
+        "purpose": "PDR_CANDIDATE_ASSESSMENT",
+        "accepted_levels": {
+            "SOURCE_REVIEWED",
+            "PHYSICAL_BENCHMARK",
+            "TEST_VALIDATED",
+        },
+    },
+}
+COMPARISON_OPERATORS = {
+    "LT": lambda actual, requirement: actual < requirement,
+    "LE": lambda actual, requirement: actual <= requirement,
+    "GT": lambda actual, requirement: actual > requirement,
+    "GE": lambda actual, requirement: actual >= requirement,
+    "EQ": lambda actual, requirement: actual == requirement,
+}
 
 
 class DecisionStop(RuntimeError):
@@ -41,6 +63,7 @@ def _failure(decision_id: Any, status: str, reason: str, **details: Any) -> dict
         "candidates": [],
         "comparison_table": [],
         "priority_candidate_id": None,
+        "co_priority_candidate_ids": [],
         "priority_rationale": None,
         "cad_handoff": None,
         "safe_design_claim": False,
@@ -119,7 +142,107 @@ def _effective_validation_level(
     effective = min(levels, key=lambda item: VALIDATION_RANK[item])
     if VALIDATION_RANK[effective] < VALIDATION_RANK[claimed]:
         downgrades.append(f"claimed {claimed} reduced to {effective} by referenced evidence")
+    criterion["validation_components"] = {
+        "result_validation_level": claimed,
+        "model_validation_levels": {
+            model_id: model_map[model_id]["validation_level"]
+            for model_id in criterion["model_ids"]
+        },
+        "source_validation_levels": {
+            source_id: source_map[source_id]["validation_level"]
+            for source_id in criterion["source_ids"]
+        },
+    }
     return effective, downgrades
+
+
+def _is_finite_number(value: Any) -> bool:
+    return (
+        isinstance(value, (int, float))
+        and not isinstance(value, bool)
+        and math.isfinite(value)
+    )
+
+
+def _validate_assessment(item: dict[str, Any], purpose: str) -> None:
+    method = item.get("assessment_method")
+    operator = item.get("comparison_operator")
+    review_status = item.get("external_review_status")
+    status = item["status"]
+    item["computed_status"] = None
+
+    if method == "SYNTHETIC_ASSERTION":
+        if purpose != "SYNTHETIC_DECISION_LOGIC_TEST":
+            raise DecisionStop(
+                "INPUT_U",
+                f"criterion {item['id']} synthetic assertion is prohibited for actual PDR",
+            )
+        if operator is not None or review_status != "NOT_APPLICABLE":
+            raise DecisionStop(
+                "INPUT_U", f"criterion {item['id']} synthetic assessment metadata is invalid"
+            )
+        return
+
+    if method == "NUMERIC_COMPARISON":
+        if review_status != "NOT_APPLICABLE":
+            raise DecisionStop(
+                "INPUT_U", f"criterion {item['id']} numeric review status must be NOT_APPLICABLE"
+            )
+        if status in {"PASS", "FAIL"}:
+            actual = item.get("actual_value")
+            requirement = item.get("requirement")
+            if not _is_finite_number(actual) or not _is_finite_number(requirement):
+                raise DecisionStop(
+                    "INPUT_U",
+                    f"criterion {item['id']} numeric decision requires finite actual and requirement",
+                )
+            units = (
+                item.get("unit"),
+                item.get("actual_unit"),
+                item.get("requirement_unit"),
+            )
+            if any(not isinstance(unit, str) or not unit.strip() for unit in units):
+                raise DecisionStop(
+                    "INPUT_U", f"criterion {item['id']} numeric decision requires explicit units"
+                )
+            if len(set(units)) != 1:
+                raise DecisionStop(
+                    "INPUT_U",
+                    f"criterion {item['id']} actual and requirement units do not match",
+                )
+            if operator not in COMPARISON_OPERATORS:
+                raise DecisionStop(
+                    "INPUT_U", f"criterion {item['id']} comparison operator is invalid or missing"
+                )
+            computed = (
+                "PASS" if COMPARISON_OPERATORS[operator](actual, requirement) else "FAIL"
+            )
+            item["computed_status"] = computed
+            if status != computed:
+                raise DecisionStop(
+                    "INPUT_U",
+                    f"criterion {item['id']} declared {status} contradicts computed {computed}",
+                )
+        return
+
+    if method == "EXTERNAL_REVIEW":
+        if operator is not None:
+            raise DecisionStop(
+                "INPUT_U", f"criterion {item['id']} external review cannot use a comparator"
+            )
+        if status in {"PASS", "FAIL"} and review_status != "APPROVED":
+            raise DecisionStop(
+                "INPUT_U",
+                f"criterion {item['id']} external {status} requires APPROVED review evidence",
+            )
+        if status in UPSTREAM_UNKNOWN_STATES and review_status == "APPROVED":
+            raise DecisionStop(
+                "INPUT_U",
+                f"criterion {item['id']} approved review conflicts with unknown status",
+            )
+        return
+
+    raise DecisionStop("INPUT_U", f"criterion {item['id']} assessment_method is invalid")
 
 
 def _prepare_criterion(
@@ -129,6 +252,7 @@ def _prepare_criterion(
     source_map: dict[str, dict[str, Any]],
     assumption_map: dict[str, dict[str, Any]],
     accepted_levels: set[str],
+    purpose: str,
 ) -> dict[str, Any]:
     item = copy.deepcopy(criterion)
     item["id"] = _require_text(item.get("id"), "criterion.id")
@@ -142,7 +266,7 @@ def _prepare_criterion(
         item.get("source_ids"),
         source_map,
         f"criterion {item['id']}.source_ids",
-        allow_empty=status != "PASS",
+        allow_empty=status not in {"PASS", "FAIL"},
     )
     item["model_ids"] = _check_references(
         item.get("model_ids"), model_map, f"criterion {item['id']}.model_ids"
@@ -152,6 +276,7 @@ def _prepare_criterion(
         assumption_map,
         f"criterion {item['id']}.assumption_ids",
     )
+    _validate_assessment(item, purpose)
     effective, downgrades = _effective_validation_level(item, model_map, source_map)
     unconfirmed_assumptions = [
         assumption_id
@@ -195,7 +320,10 @@ def _evaluate_constraint_group(
         for item in mandatory
         if item["status"] == "PASS" and not item["evidence_accepted"]
     ]
-    if failed:
+    missing_mandatory = not mandatory
+    if missing_mandatory:
+        status = "UNKNOWN"
+    elif failed:
         status = "VIOLATED"
     elif unknown or missing_inputs:
         status = "UNKNOWN"
@@ -209,6 +337,7 @@ def _evaluate_constraint_group(
         "failed_mandatory_criterion_ids": failed,
         "unknown_mandatory_criterion_ids": sorted(set(unknown)),
         "conditional_mandatory_criterion_ids": conditional,
+        "missing_mandatory_criteria": missing_mandatory,
         "unresolved_risks": unresolved_risks,
         "missing_required_inputs": missing_inputs,
     }
@@ -345,6 +474,17 @@ def solve_design_decision(request: dict[str, Any]) -> dict[str, Any]:
         source_map = _unique_id_map(request.get("sources"), "sources")
         assumption_map = _unique_id_map(request.get("assumptions"), "assumptions")
         candidate_map = _unique_id_map(request.get("candidates"), "candidates")
+        if purpose == "PDR_CANDIDATE_ASSESSMENT":
+            synthetic_sources = [
+                source_id
+                for source_id, source in source_map.items()
+                if str(source.get("type", "")).upper().startswith("SYNTHETIC")
+            ]
+            if synthetic_sources:
+                raise DecisionStop(
+                    "INPUT_U",
+                    f"actual PDR cannot use synthetic evidence sources: {synthetic_sources}",
+                )
         for model_id, model in model_map.items():
             model["source_ids"] = _check_references(
                 model.get("source_ids"),
@@ -360,9 +500,13 @@ def solve_design_decision(request: dict[str, Any]) -> dict[str, Any]:
             )
         if not candidate_map:
             raise DecisionStop("INPUT_U", "at least one candidate is required")
-        accepted_levels = set(request["status_policy"]["accepted_validation_levels"])
-        if not accepted_levels or not accepted_levels <= set(VALIDATION_RANK):
-            raise DecisionStop("INPUT_U", "accepted_validation_levels are invalid")
+        policy_id = request["status_policy"].get("validation_policy_id")
+        policy = VALIDATION_POLICIES.get(policy_id)
+        if policy is None or policy["purpose"] != purpose:
+            raise DecisionStop(
+                "INPUT_U", "validation_policy_id is not approved for this analysis purpose"
+            )
+        accepted_levels = set(policy["accepted_levels"])
         if request["status_policy"].get("safety_is_hard_constraint") is not True:
             raise DecisionStop("INPUT_U", "safety_is_hard_constraint must be true")
         if request["status_policy"].get("allow_weighted_safety_tradeoff") is not False:
@@ -409,13 +553,19 @@ def solve_design_decision(request: dict[str, Any]) -> dict[str, Any]:
                     source_map=source_map,
                     assumption_map=assumption_map,
                     accepted_levels=accepted_levels,
+                    purpose=purpose,
                 )
                 for item in candidate["performance_criteria"]
             ]
             performance = _evaluate_constraint_group(
                 prepared_performance,
                 unresolved_risks=list(candidate["performance_unresolved_risks"]),
-                missing_inputs=list(candidate["performance_missing_inputs"]),
+                missing_inputs=list(candidate["performance_missing_inputs"])
+                + (
+                    list(request["global_missing_inputs"])
+                    if purpose == "PDR_CANDIDATE_ASSESSMENT"
+                    else []
+                ),
             )
             safety_input = candidate.get("safety_assessments")
             if not isinstance(safety_input, dict) or set(safety_input) != set(SAFETY_DOMAINS):
@@ -433,6 +583,7 @@ def solve_design_decision(request: dict[str, Any]) -> dict[str, Any]:
                         source_map=source_map,
                         assumption_map=assumption_map,
                         accepted_levels=accepted_levels,
+                        purpose=purpose,
                     )
                     for item in domain_input["criteria"]
                 ]
@@ -484,7 +635,17 @@ def solve_design_decision(request: dict[str, Any]) -> dict[str, Any]:
             if item["overall_outcome"]
             in {"ELIGIBLE_FOR_PDR_SELECTION", "CONDITIONAL_REVIEW"}
         ]
-        priority = retained[0] if retained else None
+        priority: dict[str, Any] | None = None
+        co_priority: list[dict[str, Any]] = []
+        if retained:
+            best_rank = min(OUTCOME_PRIORITY[item["overall_outcome"]] for item in retained)
+            co_priority = [
+                item
+                for item in retained
+                if OUTCOME_PRIORITY[item["overall_outcome"]] == best_rank
+            ]
+            if len(co_priority) == 1:
+                priority = co_priority[0]
         comparison = [
             {
                 "candidate_id": item["candidate_id"],
@@ -506,6 +667,12 @@ def solve_design_decision(request: dict[str, Any]) -> dict[str, Any]:
                 f"Advantages={priority['declared_advantages']}; "
                 f"limitations={priority['declared_limitations']}."
             )
+        elif co_priority:
+            priority_rationale = (
+                "No automatic priority was assigned because candidates "
+                f"{[item['candidate_id'] for item in co_priority]} share the same decision class "
+                "and no approved objective tie-break metric was supplied."
+            )
         else:
             priority_rationale = "No candidate is retained for priority review."
         cad_handoff = _build_cad_handoff(request, candidate_results)
@@ -519,7 +686,10 @@ def solve_design_decision(request: dict[str, Any]) -> dict[str, Any]:
             "decision_id": decision_id,
             "purpose": purpose,
             "status": overall_status,
-            "status_policy": copy.deepcopy(request["status_policy"]),
+            "status_policy": {
+                **copy.deepcopy(request["status_policy"]),
+                "effective_accepted_validation_levels": sorted(accepted_levels),
+            },
             "evidence_catalog": {
                 "sources": copy.deepcopy(request["sources"]),
                 "models": copy.deepcopy(request["models"]),
@@ -528,8 +698,12 @@ def solve_design_decision(request: dict[str, Any]) -> dict[str, Any]:
             "candidates": candidate_results,
             "comparison_table": comparison,
             "priority_candidate_id": priority["candidate_id"] if priority else None,
+            "co_priority_candidate_ids": [item["candidate_id"] for item in co_priority],
             "priority_rationale": priority_rationale,
             "cad_handoff": cad_handoff,
+            "team_selected_provisional_baseline_candidate_id": cad_handoff[
+                "provisional_baseline_candidate_id"
+            ],
             "decision_method": "HARD_CONSTRAINTS_FIRST_NO_WEIGHTED_SAFETY_SUM",
             "safe_design_claim": False,
             "validated_engine_prediction": False,

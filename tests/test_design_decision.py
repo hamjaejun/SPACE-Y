@@ -25,6 +25,31 @@ def by_id(result: dict, candidate_id: str) -> dict:
     return next(item for item in result["candidates"] if item["candidate_id"] == candidate_id)
 
 
+def actual_pdr_fixture() -> dict:
+    request = fixture()
+    request["purpose"] = "PDR_CANDIDATE_ASSESSMENT"
+    request["status_policy"]["validation_policy_id"] = "PDR_APPROVED_EVIDENCE_V1"
+    request["sources"][0]["validation_level"] = "SOURCE_REVIEWED"
+    request["sources"][0]["type"] = "APPROVED_PDR_SOURCE"
+    for model in request["models"]:
+        model["validation_level"] = "SOURCE_REVIEWED"
+    for candidate in request["candidates"]:
+        criteria = list(candidate["performance_criteria"])
+        criteria.extend(
+            criterion
+            for domain in candidate["safety_assessments"].values()
+            for criterion in domain["criteria"]
+        )
+        for criterion in criteria:
+            criterion["assessment_method"] = "EXTERNAL_REVIEW"
+            criterion["comparison_operator"] = None
+            criterion["external_review_status"] = (
+                "APPROVED" if criterion["status"] in {"PASS", "FAIL"} else "PENDING"
+            )
+            criterion["validation_level"] = "SOURCE_REVIEWED"
+    return request
+
+
 class DesignDecisionTests(unittest.TestCase):
     def test_request_and_generated_handoff_validate(self) -> None:
         request = fixture()
@@ -127,6 +152,150 @@ class DesignDecisionTests(unittest.TestCase):
         result = solve_design_decision(request)
         self.assertEqual(result["status"], "INPUT_U")
         self.assertIn("duplicate criterion", result["reason"])
+
+    def test_numeric_pass_that_contradicts_values_is_rejected(self) -> None:
+        request = fixture()
+        criterion = request["candidates"][0]["performance_criteria"][0]
+        criterion.update(
+            {
+                "assessment_method": "NUMERIC_COMPARISON",
+                "comparison_operator": "GE",
+                "external_review_status": "NOT_APPLICABLE",
+                "actual_value": 4.0,
+                "requirement": 5.0,
+                "unit": "N",
+                "actual_unit": "N",
+                "requirement_unit": "N",
+                "status": "PASS",
+            }
+        )
+        result = solve_design_decision(request)
+        self.assertEqual(result["status"], "INPUT_U")
+        self.assertIn("contradicts computed FAIL", result["reason"])
+
+    def test_numeric_decision_requires_unit_and_valid_operator(self) -> None:
+        for unit, actual_unit, requirement_unit, operator, expected in (
+            (None, "N", "N", "GE", "requires explicit units"),
+            ("N", "N", "kN", "GE", "units do not match"),
+            ("N", "N", "N", "BETTER", "operator is invalid"),
+        ):
+            with self.subTest(unit=unit, operator=operator):
+                request = fixture()
+                criterion = request["candidates"][0]["performance_criteria"][0]
+                criterion.update(
+                    {
+                        "assessment_method": "NUMERIC_COMPARISON",
+                        "comparison_operator": operator,
+                        "external_review_status": "NOT_APPLICABLE",
+                        "actual_value": 6.0,
+                        "requirement": 5.0,
+                        "unit": unit,
+                        "actual_unit": actual_unit,
+                        "requirement_unit": requirement_unit,
+                        "status": "PASS",
+                    }
+                )
+                result = solve_design_decision(request)
+                self.assertEqual(result["status"], "INPUT_U")
+                self.assertIn(expected, result["reason"])
+
+    def test_valid_numeric_comparison_records_computed_status(self) -> None:
+        request = fixture()
+        criterion = request["candidates"][0]["performance_criteria"][0]
+        criterion.update(
+            {
+                "assessment_method": "NUMERIC_COMPARISON",
+                "comparison_operator": "GE",
+                "external_review_status": "NOT_APPLICABLE",
+                "actual_value": 6.0,
+                "requirement": 5.0,
+                "unit": "N",
+                "actual_unit": "N",
+                "requirement_unit": "N",
+                "status": "PASS",
+            }
+        )
+        result = solve_design_decision(request)
+        prepared = by_id(result, "SYN-A")["performance"]["criteria"][0]
+        self.assertEqual(prepared["computed_status"], "PASS")
+        self.assertEqual(
+            prepared["validation_components"]["result_validation_level"],
+            "SYNTHETIC_ARITHMETIC",
+        )
+
+    def test_computed_or_reviewed_fail_requires_source(self) -> None:
+        request = fixture()
+        criterion = request["candidates"][1]["safety_assessments"]["cooling"][
+            "criteria"
+        ][0]
+        criterion["source_ids"] = []
+        result = solve_design_decision(request)
+        self.assertEqual(result["status"], "INPUT_U")
+        self.assertIn("non-empty list", result["reason"])
+
+    def test_external_pass_requires_approved_review(self) -> None:
+        request = fixture()
+        criterion = request["candidates"][0]["performance_criteria"][0]
+        criterion.update(
+            {
+                "assessment_method": "EXTERNAL_REVIEW",
+                "comparison_operator": None,
+                "external_review_status": "PENDING",
+                "status": "PASS",
+            }
+        )
+        result = solve_design_decision(request)
+        self.assertEqual(result["status"], "INPUT_U")
+        self.assertIn("requires APPROVED review", result["reason"])
+
+    def test_actual_pdr_cannot_use_synthetic_validation_policy(self) -> None:
+        request = fixture()
+        request["purpose"] = "PDR_CANDIDATE_ASSESSMENT"
+        request["sources"][0]["type"] = "APPROVED_PDR_SOURCE"
+        result = solve_design_decision(request)
+        self.assertEqual(result["status"], "INPUT_U")
+        self.assertIn("not approved", result["reason"])
+
+    def test_actual_pdr_rejects_synthetic_evidence_source(self) -> None:
+        request = fixture()
+        request["purpose"] = "PDR_CANDIDATE_ASSESSMENT"
+        request["status_policy"]["validation_policy_id"] = "PDR_APPROVED_EVIDENCE_V1"
+        result = solve_design_decision(request)
+        self.assertEqual(result["status"], "INPUT_U")
+        self.assertIn("cannot use synthetic evidence", result["reason"])
+
+    def test_domain_without_mandatory_criterion_is_unknown(self) -> None:
+        request = fixture()
+        domain = request["candidates"][0]["safety_assessments"]["cooling"]
+        for criterion in domain["criteria"]:
+            criterion["mandatory"] = False
+        result = solve_design_decision(request)
+        cooling = by_id(result, "SYN-A")["safety_assessments"]["cooling"]
+        self.assertEqual(cooling["status"], "UNKNOWN")
+        self.assertTrue(cooling["missing_mandatory_criteria"])
+        self.assertEqual(by_id(result, "SYN-A")["overall_outcome"], "UNKNOWN")
+
+    def test_global_missing_inputs_propagate_for_actual_pdr(self) -> None:
+        request = actual_pdr_fixture()
+        result = solve_design_decision(request)
+        candidate = by_id(result, "SYN-A")
+        self.assertEqual(candidate["performance"]["status"], "UNKNOWN")
+        self.assertIn(
+            request["global_missing_inputs"][0],
+            candidate["performance"]["missing_required_inputs"],
+        )
+
+    def test_equal_decision_class_has_no_id_based_priority(self) -> None:
+        request = fixture()
+        peer = copy.deepcopy(request["candidates"][0])
+        peer["id"] = "SYN-Z"
+        peer["label"] = "Peer candidate with same synthetic evidence"
+        peer["parameters"][0]["value"] = "Z"
+        request["candidates"].append(peer)
+        result = solve_design_decision(request)
+        self.assertIsNone(result["priority_candidate_id"])
+        self.assertEqual(result["co_priority_candidate_ids"], ["SYN-A", "SYN-Z"])
+        self.assertIn("no approved objective tie-break", result["priority_rationale"])
 
 
 if __name__ == "__main__":

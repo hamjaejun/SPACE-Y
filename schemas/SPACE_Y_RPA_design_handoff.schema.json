@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SPACE Y RPA preliminary geometry input and result handoff",
+  "type": "object",
+  "required": [
+    "schema_version", "purpose", "status", "source_candidate_id",
+    "team_selected_baseline", "selection_decision_record", "design_requirements",
+    "rpa_direct_inputs", "rpa_geometry_inputs", "rpa_computed_outputs",
+    "rpa_export_capabilities", "separately_decided_design_items", "change_triggers",
+    "rpa_run_completed", "geometry_export_verified", "manufacture_release",
+    "test_safety_approval", "validated_engine_prediction"
+  ],
+  "properties": {
+    "schema_version": {"const": "SPACE_Y_RPA_DESIGN_HANDOFF_V1"},
+    "purpose": {"const": "PDR_PRELIMINARY_RPA_INPUT_PREPARATION"},
+    "status": {"enum": ["INPUT_U", "READY_FOR_RPA_PRELIMINARY_RUN"]},
+    "source_candidate_id": {"type": ["string", "null"]},
+    "team_selected_baseline": {"type": "boolean"},
+    "selection_decision_record": {"type": ["string", "null"]},
+    "design_requirements": {"$ref": "#/$defs/fields"},
+    "rpa_direct_inputs": {"$ref": "#/$defs/fields"},
+    "rpa_geometry_inputs": {"$ref": "#/$defs/fields"},
+    "rpa_computed_outputs": {"$ref": "#/$defs/outputs"},
+    "rpa_export_capabilities": {
+      "type": "array", "items": {"$ref": "#/$defs/capability"}
+    },
+    "separately_decided_design_items": {"$ref": "#/$defs/fields"},
+    "change_triggers": {"type": "array", "items": {"type": "string"}},
+    "rpa_run_completed": {"type": "boolean"},
+    "geometry_export_verified": {"type": "boolean"},
+    "manufacture_release": {"const": false},
+    "test_safety_approval": {"const": false},
+    "validated_engine_prediction": {"const": false}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "field": {
+      "type": "object",
+      "required": [
+        "id", "name", "value", "unit", "status", "source_ids",
+        "selection_reason", "owner", "due_date"
+      ],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "value": {"type": ["number", "string", "boolean", "null"]},
+        "unit": {"type": ["string", "null"]},
+        "status": {"enum": ["DECIDED", "PROVISIONAL", "INPUT_U"]},
+        "source_ids": {"type": "array", "items": {"type": "string"}},
+        "selection_reason": {"type": "string"},
+        "owner": {"type": ["string", "null"]},
+        "due_date": {"type": ["string", "null"], "format": "date"}
+      },
+      "additionalProperties": false
+    },
+    "fields": {"type": "array", "items": {"$ref": "#/$defs/field"}},
+    "output": {
+      "type": "object",
+      "required": ["id", "name", "value", "unit", "status", "producer", "run_artifact"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "value": {"type": ["number", "string", "boolean", "null"]},
+        "unit": {"type": ["string", "null"]},
+        "status": {"enum": ["NOT_RUN", "CALCULATED"]},
+        "producer": {"const": "RPA_2_3_STANDARD"},
+        "run_artifact": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "outputs": {"type": "array", "items": {"$ref": "#/$defs/output"}},
+    "capability": {
+      "type": "object",
+      "required": ["id", "name", "documentation_status", "local_execution_status", "notes"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "documentation_status": {"enum": ["DOCUMENTED", "INPUT_U"]},
+        "local_execution_status": {"enum": ["NOT_RUN", "VERIFIED"]},
+        "notes": {"type": "string"}
+      },
+      "additionalProperties": false
+    }
+  }
+}

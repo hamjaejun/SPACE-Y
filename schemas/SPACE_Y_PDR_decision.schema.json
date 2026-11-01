@@ -17,14 +17,13 @@
       "type": "object",
       "required": [
         "safety_is_hard_constraint", "allow_weighted_safety_tradeoff",
-        "accepted_validation_levels"
+        "validation_policy_id"
       ],
       "properties": {
         "safety_is_hard_constraint": {"const": true},
         "allow_weighted_safety_tradeoff": {"const": false},
-        "accepted_validation_levels": {
-          "type": "array", "minItems": 1, "uniqueItems": true,
-          "items": {"$ref": "#/$defs/validationLevel"}
+        "validation_policy_id": {
+          "enum": ["SYNTHETIC_LOGIC_V1", "PDR_APPROVED_EVIDENCE_V1"]
         }
       },
       "additionalProperties": false
@@ -106,7 +105,9 @@
       "type": "object",
       "required": [
         "id", "name", "mandatory", "status", "actual_value", "requirement",
-        "unit", "equation_or_method", "model_ids", "source_ids", "assumption_ids",
+        "unit", "actual_unit", "requirement_unit", "assessment_method",
+        "comparison_operator", "external_review_status",
+        "equation_or_method", "model_ids", "source_ids", "assumption_ids",
         "validation_level", "uncertainty", "notes"
       ],
       "properties": {
@@ -117,6 +118,18 @@
         "actual_value": {"type": ["number", "string", "boolean", "null"]},
         "requirement": {"type": ["number", "string", "boolean", "null"]},
         "unit": {"type": ["string", "null"]},
+        "actual_unit": {"type": ["string", "null"]},
+        "requirement_unit": {"type": ["string", "null"]},
+        "assessment_method": {
+          "enum": ["NUMERIC_COMPARISON", "EXTERNAL_REVIEW", "SYNTHETIC_ASSERTION"]
+        },
+        "comparison_operator": {
+          "type": ["string", "null"],
+          "enum": ["LT", "LE", "GT", "GE", "EQ", null]
+        },
+        "external_review_status": {
+          "enum": ["APPROVED", "PENDING", "NOT_REVIEWED", "NOT_APPLICABLE"]
+        },
         "equation_or_method": {"type": "string", "minLength": 1},
         "model_ids": {"type": "array", "items": {"type": "string"}},
         "source_ids": {"type": "array", "items": {"type": "string"}},

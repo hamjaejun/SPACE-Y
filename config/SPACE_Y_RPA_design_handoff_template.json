@@ -1,0 +1,55 @@
+{
+  "schema_version": "SPACE_Y_RPA_DESIGN_HANDOFF_V1",
+  "purpose": "PDR_PRELIMINARY_RPA_INPUT_PREPARATION",
+  "status": "INPUT_U",
+  "source_candidate_id": null,
+  "team_selected_baseline": false,
+  "selection_decision_record": null,
+  "design_requirements": [
+    {"id": "RPA-REQ-01", "name": "nominal thrust or alternate sizing basis", "value": null, "unit": "N, kg/s, or m", "status": "INPUT_U", "source_ids": [], "selection_reason": "Team-approved sizing basis required; no value assumed.", "owner": null, "due_date": null},
+    {"id": "RPA-REQ-02", "name": "ambient/back pressure design condition", "value": null, "unit": "Pa_abs", "status": "INPUT_U", "source_ids": [], "selection_reason": "Required to interpret thrust and nozzle design condition.", "owner": null, "due_date": null},
+    {"id": "RPA-REQ-03", "name": "burn duration and duty cycle", "value": null, "unit": "s and cycle definition", "status": "INPUT_U", "source_ids": [], "selection_reason": "Required for thermal and supply review even if not a geometry solver input.", "owner": null, "due_date": null}
+  ],
+  "rpa_direct_inputs": [
+    {"id": "RPA-IN-01", "name": "oxidizer and fuel definitions with inlet states", "value": null, "unit": null, "status": "INPUT_U", "source_ids": [], "selection_reason": "Exact propellant identity and state required.", "owner": null, "due_date": null},
+    {"id": "RPA-IN-02", "name": "chamber pressure", "value": null, "unit": "Pa_abs", "status": "INPUT_U", "source_ids": [], "selection_reason": "Must come from approved candidate comparison and supply feasibility.", "owner": null, "due_date": null},
+    {"id": "RPA-IN-03", "name": "mixture ratio or component mass fractions", "value": null, "unit": "dimensionless", "status": "INPUT_U", "source_ids": [], "selection_reason": "Must come from approved performance/stability trade study.", "owner": null, "due_date": null},
+    {"id": "RPA-IN-04", "name": "nozzle inlet and exit conditions or expansion definition", "value": null, "unit": null, "status": "INPUT_U", "source_ids": [], "selection_reason": "RPA Nozzle Flow Model input; design condition not yet approved.", "owner": null, "due_date": null},
+    {"id": "RPA-IN-05", "name": "sizing control selection", "value": null, "unit": "nominal thrust, mass flow, or throat diameter", "status": "INPUT_U", "source_ids": [], "selection_reason": "RPA documents at least one sizing parameter; selection is a team decision.", "owner": null, "due_date": null},
+    {"id": "RPA-IN-06", "name": "number of chambers", "value": null, "unit": "count", "status": "INPUT_U", "source_ids": [], "selection_reason": "Configuration input; no default adopted.", "owner": null, "due_date": null},
+    {"id": "RPA-IN-07", "name": "nozzle shape selection", "value": null, "unit": "bell or conical", "status": "INPUT_U", "source_ids": [], "selection_reason": "RPA Nozzle Flow Model selection; no default adopted.", "owner": null, "due_date": null}
+  ],
+  "rpa_geometry_inputs": [
+    {"id": "RPA-GEO-01", "name": "chamber length or characteristic length", "value": null, "unit": "m", "status": "INPUT_U", "source_ids": [], "selection_reason": "Combustion/chamber design basis required.", "owner": null, "due_date": null},
+    {"id": "RPA-GEO-02", "name": "contraction angle and contraction radii ratios", "value": null, "unit": "deg and dimensionless", "status": "INPUT_U", "source_ids": [], "selection_reason": "Geometry assumptions require literature or approved design basis.", "owner": null, "due_date": null},
+    {"id": "RPA-GEO-03", "name": "bell contour parameters or conical half-angle", "value": null, "unit": "deg and dimensionless", "status": "INPUT_U", "source_ids": [], "selection_reason": "Nozzle contour assumptions require an approved source.", "owner": null, "due_date": null}
+  ],
+  "rpa_computed_outputs": [
+    {"id": "RPA-OUT-01", "name": "calculated thrust-chamber and nozzle size report", "value": null, "unit": "RPA reported units", "status": "NOT_RUN", "producer": "RPA_2_3_STANDARD", "run_artifact": null},
+    {"id": "RPA-OUT-02", "name": "throat, chamber and exit dimensions", "value": null, "unit": "m after explicit conversion", "status": "NOT_RUN", "producer": "RPA_2_3_STANDARD", "run_artifact": null},
+    {"id": "RPA-OUT-03", "name": "chamber and nozzle axial contour/dimensions", "value": null, "unit": "m after explicit conversion", "status": "NOT_RUN", "producer": "RPA_2_3_STANDARD", "run_artifact": null},
+    {"id": "RPA-OUT-04", "name": "divergence and friction thrust-loss results", "value": null, "unit": "dimensionless or RPA reported units", "status": "NOT_RUN", "producer": "RPA_2_3_STANDARD", "run_artifact": null}
+  ],
+  "rpa_export_capabilities": [
+    {"id": "RPA-EXPORT-ASCII", "name": "size and geometry results Save As ASCII", "documentation_status": "DOCUMENTED", "local_execution_status": "NOT_RUN", "notes": "Documented by the RPA 2.3 user manual; actual SPACE Y export not executed."},
+    {"id": "RPA-EXPORT-DXF", "name": "thrust-chamber contour export to DXF", "documentation_status": "DOCUMENTED", "local_execution_status": "NOT_RUN", "notes": "Standard-edition manual documents units and dimension/contour options; local license/UI execution still needs confirmation."}
+  ],
+  "separately_decided_design_items": [
+    {"id": "EXT-DES-01", "name": "injector element, manifold and face design", "value": null, "unit": null, "status": "INPUT_U", "source_ids": [], "selection_reason": "Not determined by the RPA chamber/nozzle sizing output.", "owner": null, "due_date": null},
+    {"id": "EXT-DES-02", "name": "regenerative channel count, width, height, rib and routing", "value": null, "unit": "m and count", "status": "INPUT_U", "source_ids": [], "selection_reason": "Requires M0/structural/manufacturing review.", "owner": null, "due_date": null},
+    {"id": "EXT-DES-03", "name": "wall thickness, material, joints, seals and ports", "value": null, "unit": "m and material/process specification", "status": "INPUT_U", "source_ids": [], "selection_reason": "Requires structural and manufacturing evidence.", "owner": null, "due_date": null},
+    {"id": "EXT-DES-04", "name": "mounting, instrumentation and facility interfaces", "value": null, "unit": null, "status": "INPUT_U", "source_ids": [], "selection_reason": "Requires system and test-facility integration.", "owner": null, "due_date": null}
+  ],
+  "change_triggers": [
+    "approved thrust, pressure, mixture ratio, ambient condition or duration changes",
+    "propellant identity or inlet-state changes",
+    "supply feasibility or stability evidence changes",
+    "nozzle shape, characteristic length or contraction geometry changes",
+    "new M0, structural or combustion-stability evidence"
+  ],
+  "rpa_run_completed": false,
+  "geometry_export_verified": false,
+  "manufacture_release": false,
+  "test_safety_approval": false,
+  "validated_engine_prediction": false
+}

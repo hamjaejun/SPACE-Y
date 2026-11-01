@@ -211,3 +211,13 @@ README의 “수식 구분자를 GitHub Markdown용으로 정리했다”는 설
 실제 PDR 입력 준비표의 성능·냉각·공급·구조·연소·CAD 항목은 현재 모두 `INPUT_U`다. 자동 테스트는 의사결정 로직과 추적성을 확인할 뿐 실제 엔진 안전성이나 물리 검증이 아니다. V01–V12는 `NOT_RUN`, `validated_engine_prediction=false`를 유지한다.
 
 이번 변경 후 전체 자동 테스트는 89개가 통과했다. Python compile, 전체 JSON 파싱과 `git diff --check`도 별도 실행해 통과시켰다.
+
+## 14. PDR 판정 신뢰성 수정과 RPA 형상 입력 준비
+
+2026-11-01 후속 검토에서 선언형 PASS, 입력자 지정 검증 whitelist, 필수 criterion 없는 그룹의 자동 통과, 동일 등급 후보의 ID 기반 우선순위 문제가 실제 코드에서 확인됐다. 자동 수치 비교는 값·기준·단위·연산자 일관성을 확인하고, 외부 PASS/FAIL은 `APPROVED` 검토 증거를 요구하도록 수정했다. 합성 assertion은 실제 PDR에서 거부한다.
+
+실제 PDR 정책은 코드 소유 `PDR_APPROVED_EVIDENCE_V1`로 고정하고 result/model/source 검증 수준을 분리 기록한다. 필수 criterion이 없는 그룹과 실제 PDR의 `global_missing_inputs`는 `UNKNOWN`으로 전파한다. 동일 최상 등급 후보가 여럿이면 `priority_candidate_id=null`로 두며 팀 지정 잠정 기준 후보와 자동 결과를 구분한다.
+
+RPA Standard Edition v.2.3.2 매뉴얼 33–35쪽에서 Chamber Geometry의 Design Parameters/Size and Geometry, sizing basis, 결과 ASCII 저장과 DXF contour export를 확인했다. 이는 문서 capability이며 실제 SPACE Y 형상 run/export 증거는 아니다. RPA 입력·geometry 가정·RPA 산출·export 상태·별도 상세설계를 구분하는 template을 추가했고 실제 값은 모두 `INPUT_U`/`NOT_RUN`이다. 자동 CAD 생성·승인 기능은 추가하지 않았다.
+
+후속 수정 완료 후 전체 자동 테스트 101개, Python compile, JSON 47개 파싱과 `git diff --check`가 통과했다. 이는 판정 로직과 기존 회귀검사 결과이며 물리 검증 상태는 여전히 `validated_engine_prediction=false`, V01–V12 `NOT_RUN`이다.

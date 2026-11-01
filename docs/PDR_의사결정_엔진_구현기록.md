@@ -42,14 +42,15 @@ CEA/RPA 정상상태 성능이 계산된 사실은 연소 안정성 증거가 �
 `src/space_y/design_decision.py`와 `space-y pdr-decide` 명령은 다음 정책을 강제한다.
 
 1. 후보별 파라미터, 성능 및 네 안정성 영역을 모두 입력한다.
-2. 각 criterion은 식/방법, model ID, source ID, assumption ID, 검증 수준, 불확실성과 주석을 갖는다.
+2. 각 criterion은 자동 수치 비교, 승인된 외부 검토 또는 합성 assertion을 구분하고 식/방법, model ID, source ID, assumption ID, 검증 수준, 불확실성과 주석을 갖는다.
 3. 참조 ID가 없거나 중복되면 `INPUT_U`로 중단한다.
 4. `PASS`라도 출처·모델의 실제 검증 수준 중 가장 낮은 수준으로 하향하고, 미승인 수준이나 미확인 가정이면 `CONDITIONAL_REVIEW` 또는 `UNKNOWN`으로 처리한다.
 5. 필수 성능 또는 안정성 제약의 `FAIL`은 후보를 `EXCLUDED`한다. 장점 수나 가중 점수로 상쇄하지 않는다.
 6. 필수 입력이나 증거가 없으면 `UNKNOWN`, 남은 위험 또는 제한된 증거이면 `CONDITIONAL_REVIEW`다.
-7. 모든 필수 제약에 요청 정책상 승인된 증거가 있어야 실제 PDR 후보가 `ELIGIBLE_FOR_PDR_SELECTION`이 된다. 이 상태도 안전·제작·시험 승인은 아니다.
+7. 실제 PDR은 코드에 고정된 `PDR_APPROVED_EVIDENCE_V1`을 사용하며 입력자가 승인 검증 수준을 낮출 수 없다. 모든 필수 제약에 승인된 증거가 있어야 `ELIGIBLE_FOR_PDR_SELECTION`이 된다. 이 상태도 안전·제작·시험 승인은 아니다.
 8. 합성 입력은 모든 가상 flag가 PASS여도 실제 후보로 승격하지 않는다.
-9. 결과에는 입력과 Schema SHA-256, 정렬된 비교표, 후속 우선 후보, 문장형 이유와 CAD 인계 구조가 포함된다.
+9. 같은 최상 판단 등급 후보가 여러 개면 ID로 우선순위를 정하지 않고 함께 제시한다. 팀 지정 잠정 기준 후보는 자동 결과와 분리한다.
+10. 결과에는 입력과 Schema SHA-256, 정렬된 비교표, 문장형 이유와 RPA/CAD 인계 준비 구조가 포함된다.
 
 안정성은 성능과 가중합하지 않으며 `safety_is_hard_constraint=true`, `allow_weighted_safety_tradeoff=false`가 아니면 입력을 거부한다.
 
@@ -63,7 +64,7 @@ CEA/RPA 정상상태 성능이 계산된 사실은 연소 안정성 증거가 �
 | SYN-B | SATISFIED | VIOLATED | SATISFIED | SATISFIED | SATISFIED | `EXCLUDED`: 필수 냉각 제약 위반은 다른 장점으로 상쇄 불가 |
 | SYN-C | SATISFIED | SATISFIED | UNKNOWN | SATISFIED | SATISFIED | `UNKNOWN`: 필수 공급 입력 누락 |
 
-SYN-A는 알려진 위반이 없는 분기라 후속 검토 우선순위로만 표시된다. 실제 후보 추천, 안전 확보 또는 CAD 기준안은 아니다. 생성 결과는 `artifacts/pdr/pdr_decision_synthetic_candidates_run.json`에 보존한다.
+SYN-A는 알려진 위반이 없는 단일 최상 분기라 후속 검토 우선순위로만 표시된다. 동급 후보가 추가되면 ID로 하나를 고르지 않는다. 실제 후보 추천, 안전 확보 또는 CAD 기준안은 아니다. 생성 결과는 `artifacts/pdr/pdr_decision_synthetic_candidates_run.json`에 보존한다.
 
 ## 6. RPA 2.3 exact IPA 단기 확인
 
@@ -73,7 +74,7 @@ SYN-A는 알려진 위반이 없는 분기라 후속 검토 우선순위로만 �
 
 따라서 RPA gas species를 액체 IPA Property Adapter로 연결하지 않는다. `state_pt`, `state_ph`, `rho`, `cp`, `mu`, `k`, enthalpy reference, saturation/phase, T-p 유효범위와 불확실성은 모두 `INPUT_U`다. 실행 파일·매뉴얼·DB·계수·설치 절대경로는 저장소에 포함하지 않고 해시와 판정만 `artifacts/property/rpa_2_3_ipa_property_audit.json`에 남긴다.
 
-## 7. 실제 후보 입력과 CAD 인계
+## 7. 실제 후보 입력과 RPA 형상 인계
 
 `config/SPACE_Y_PDR_input_readiness.json`은 실제 후보 평가에 필요한 항목을 성능, 냉각, 공급, 구조, 연소 안정성, CAD 인계로 나눈다. 현재 실제 값은 없고 모두 `INPUT_U`다. 핵심 우선 입력은 다음과 같다.
 
@@ -85,7 +86,7 @@ SYN-A는 알려진 위반이 없는 분기라 후속 검토 우선순위로만 �
 - 구조 하중, 온도 의존 재료 allowables, 조인트·구속·margin 정책
 - 분사기, 공급–챔버 동특성, 연소 안정성 기준과 시험/동적 해석 증거
 
-`config/SPACE_Y_CAD_handoff_template.json`은 기준 후보를 `null`로 유지한다. 실제 의사결정 입력에서 승인된 임시 기준안이 있을 때만 `DECIDED`/`PROVISIONAL` 파라미터, 선정 이유, 모델·출처, 미확정 입력, 변경 trigger와 제작·시험 전 위험을 내보낸다. 합성 후보는 CAD 기준안이 될 수 없다.
+`config/SPACE_Y_RPA_design_handoff_template.json`은 기준 후보와 실제 값을 `null`로 유지하면서 RPA 직접 입력, geometry 가정, RPA 계산 출력, ASCII/DXF export 상태와 별도 상세설계 항목을 분리한다. 기존 CAD handoff는 보존하지만 자동 CAD 생성·승인은 확장하지 않는다. 합성 후보는 RPA/CAD 기준안이 될 수 없다.
 
 ## 8. 수치·물리적 한계
 

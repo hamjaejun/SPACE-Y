@@ -6,7 +6,8 @@
   "status_policy": {
     "safety_is_hard_constraint": true,
     "allow_weighted_safety_tradeoff": false,
-    "accepted_validation_levels": [
+    "validation_policy_id": "SYNTHETIC_LOGIC_V1",
+    "effective_accepted_validation_levels": [
       "SYNTHETIC_ARITHMETIC"
     ]
   },
@@ -121,10 +122,15 @@
             "id": "A-PERF-1",
             "name": "Synthetic required performance flag",
             "mandatory": true,
+            "assessment_method": "SYNTHETIC_ASSERTION",
+            "comparison_operator": null,
+            "external_review_status": "NOT_APPLICABLE",
             "status": "PASS",
             "actual_value": "met",
             "requirement": "met",
             "unit": null,
+            "actual_unit": null,
+            "requirement_unit": null,
             "equation_or_method": "direct synthetic flag comparison",
             "model_ids": [
               "MODEL-SYN-PERF"
@@ -138,6 +144,16 @@
             "validation_level": "SYNTHETIC_ARITHMETIC",
             "uncertainty": null,
             "notes": "Not an engine performance calculation.",
+            "computed_status": null,
+            "validation_components": {
+              "result_validation_level": "SYNTHETIC_ARITHMETIC",
+              "model_validation_levels": {
+                "MODEL-SYN-PERF": "SYNTHETIC_ARITHMETIC"
+              },
+              "source_validation_levels": {
+                "SRC-SYN-REQ": "SYNTHETIC_ARITHMETIC"
+              }
+            },
             "effective_validation_level": "SYNTHETIC_ARITHMETIC",
             "validation_downgrades": [],
             "unconfirmed_assumption_ids": [],
@@ -158,6 +174,7 @@
         "failed_mandatory_criterion_ids": [],
         "unknown_mandatory_criterion_ids": [],
         "conditional_mandatory_criterion_ids": [],
+        "missing_mandatory_criteria": false,
         "unresolved_risks": [],
         "missing_required_inputs": []
       },
@@ -169,10 +186,15 @@
               "id": "A-COOL-1",
               "name": "Synthetic cooling constraint",
               "mandatory": true,
+              "assessment_method": "SYNTHETIC_ASSERTION",
+              "comparison_operator": null,
+              "external_review_status": "NOT_APPLICABLE",
               "status": "PASS",
               "actual_value": "met",
               "requirement": "met",
               "unit": null,
+              "actual_unit": null,
+              "requirement_unit": null,
               "equation_or_method": "synthetic state",
               "model_ids": [
                 "MODEL-SYN-COOL"
@@ -186,6 +208,16 @@
               "validation_level": "SYNTHETIC_ARITHMETIC",
               "uncertainty": null,
               "notes": "Does not represent IPA or wall-temperature validation.",
+              "computed_status": null,
+              "validation_components": {
+                "result_validation_level": "SYNTHETIC_ARITHMETIC",
+                "model_validation_levels": {
+                  "MODEL-SYN-COOL": "SYNTHETIC_ARITHMETIC"
+                },
+                "source_validation_levels": {
+                  "SRC-SYN-REQ": "SYNTHETIC_ARITHMETIC"
+                }
+              },
               "effective_validation_level": "SYNTHETIC_ARITHMETIC",
               "validation_downgrades": [],
               "unconfirmed_assumption_ids": [],
@@ -206,6 +238,7 @@
           "failed_mandatory_criterion_ids": [],
           "unknown_mandatory_criterion_ids": [],
           "conditional_mandatory_criterion_ids": [],
+          "missing_mandatory_criteria": false,
           "unresolved_risks": [],
           "missing_required_inputs": []
         },
@@ -216,10 +249,15 @@
               "id": "A-SUP-1",
               "name": "Synthetic supply constraint",
               "mandatory": true,
+              "assessment_method": "SYNTHETIC_ASSERTION",
+              "comparison_operator": null,
+              "external_review_status": "NOT_APPLICABLE",
               "status": "PASS",
               "actual_value": "met",
               "requirement": "met",
               "unit": null,
+              "actual_unit": null,
+              "requirement_unit": null,
               "equation_or_method": "synthetic state",
               "model_ids": [
                 "MODEL-SYN-SUPPLY"
@@ -233,6 +271,16 @@
               "validation_level": "SYNTHETIC_ARITHMETIC",
               "uncertainty": null,
               "notes": "Logic test only.",
+              "computed_status": null,
+              "validation_components": {
+                "result_validation_level": "SYNTHETIC_ARITHMETIC",
+                "model_validation_levels": {
+                  "MODEL-SYN-SUPPLY": "SYNTHETIC_ARITHMETIC"
+                },
+                "source_validation_levels": {
+                  "SRC-SYN-REQ": "SYNTHETIC_ARITHMETIC"
+                }
+              },
               "effective_validation_level": "SYNTHETIC_ARITHMETIC",
               "validation_downgrades": [],
               "unconfirmed_assumption_ids": [],
@@ -253,6 +301,7 @@
           "failed_mandatory_criterion_ids": [],
           "unknown_mandatory_criterion_ids": [],
           "conditional_mandatory_criterion_ids": [],
+          "missing_mandatory_criteria": false,
           "unresolved_risks": [],
           "missing_required_inputs": []
         },
@@ -263,10 +312,15 @@
               "id": "A-STR-1",
               "name": "Synthetic structural constraint",
               "mandatory": true,
+              "assessment_method": "SYNTHETIC_ASSERTION",
+              "comparison_operator": null,
+              "external_review_status": "NOT_APPLICABLE",
               "status": "PASS",
               "actual_value": "met",
               "requirement": "met",
               "unit": null,
+              "actual_unit": null,
+              "requirement_unit": null,
               "equation_or_method": "synthetic state",
               "model_ids": [
                 "MODEL-SYN-STRUCT"
@@ -280,6 +334,16 @@
               "validation_level": "SYNTHETIC_ARITHMETIC",
               "uncertainty": null,
               "notes": "Logic test only.",
+              "computed_status": null,
+              "validation_components": {
+                "result_validation_level": "SYNTHETIC_ARITHMETIC",
+                "model_validation_levels": {
+                  "MODEL-SYN-STRUCT": "SYNTHETIC_ARITHMETIC"
+                },
+                "source_validation_levels": {
+                  "SRC-SYN-REQ": "SYNTHETIC_ARITHMETIC"
+                }
+              },
               "effective_validation_level": "SYNTHETIC_ARITHMETIC",
               "validation_downgrades": [],
               "unconfirmed_assumption_ids": [],
@@ -300,6 +364,7 @@
           "failed_mandatory_criterion_ids": [],
           "unknown_mandatory_criterion_ids": [],
           "conditional_mandatory_criterion_ids": [],
+          "missing_mandatory_criteria": false,
           "unresolved_risks": [],
           "missing_required_inputs": []
         },
@@ -310,10 +375,15 @@
               "id": "A-COMB-1",
               "name": "Synthetic combustion evidence flag",
               "mandatory": true,
+              "assessment_method": "SYNTHETIC_ASSERTION",
+              "comparison_operator": null,
+              "external_review_status": "NOT_APPLICABLE",
               "status": "PASS",
               "actual_value": "met",
               "requirement": "met",
               "unit": null,
+              "actual_unit": null,
+              "requirement_unit": null,
               "equation_or_method": "synthetic state",
               "model_ids": [
                 "MODEL-SYN-COMB"
@@ -327,6 +397,16 @@
               "validation_level": "SYNTHETIC_ARITHMETIC",
               "uncertainty": null,
               "notes": "CEA/RPA steady performance is not used as a combustion-stability pass.",
+              "computed_status": null,
+              "validation_components": {
+                "result_validation_level": "SYNTHETIC_ARITHMETIC",
+                "model_validation_levels": {
+                  "MODEL-SYN-COMB": "SYNTHETIC_ARITHMETIC"
+                },
+                "source_validation_levels": {
+                  "SRC-SYN-REQ": "SYNTHETIC_ARITHMETIC"
+                }
+              },
               "effective_validation_level": "SYNTHETIC_ARITHMETIC",
               "validation_downgrades": [],
               "unconfirmed_assumption_ids": [],
@@ -347,6 +427,7 @@
           "failed_mandatory_criterion_ids": [],
           "unknown_mandatory_criterion_ids": [],
           "conditional_mandatory_criterion_ids": [],
+          "missing_mandatory_criteria": false,
           "unresolved_risks": [],
           "missing_required_inputs": []
         }
@@ -390,10 +471,15 @@
             "id": "C-PERF-1",
             "name": "Synthetic required performance flag",
             "mandatory": true,
+            "assessment_method": "SYNTHETIC_ASSERTION",
+            "comparison_operator": null,
+            "external_review_status": "NOT_APPLICABLE",
             "status": "PASS",
             "actual_value": "met",
             "requirement": "met",
             "unit": null,
+            "actual_unit": null,
+            "requirement_unit": null,
             "equation_or_method": "direct synthetic flag comparison",
             "model_ids": [
               "MODEL-SYN-PERF"
@@ -407,6 +493,16 @@
             "validation_level": "SYNTHETIC_ARITHMETIC",
             "uncertainty": null,
             "notes": "Logic test only.",
+            "computed_status": null,
+            "validation_components": {
+              "result_validation_level": "SYNTHETIC_ARITHMETIC",
+              "model_validation_levels": {
+                "MODEL-SYN-PERF": "SYNTHETIC_ARITHMETIC"
+              },
+              "source_validation_levels": {
+                "SRC-SYN-REQ": "SYNTHETIC_ARITHMETIC"
+              }
+            },
             "effective_validation_level": "SYNTHETIC_ARITHMETIC",
             "validation_downgrades": [],
             "unconfirmed_assumption_ids": [],
@@ -427,6 +523,7 @@
         "failed_mandatory_criterion_ids": [],
         "unknown_mandatory_criterion_ids": [],
         "conditional_mandatory_criterion_ids": [],
+        "missing_mandatory_criteria": false,
         "unresolved_risks": [],
         "missing_required_inputs": []
       },
@@ -438,10 +535,15 @@
               "id": "C-COOL-1",
               "name": "Synthetic cooling constraint",
               "mandatory": true,
+              "assessment_method": "SYNTHETIC_ASSERTION",
+              "comparison_operator": null,
+              "external_review_status": "NOT_APPLICABLE",
               "status": "PASS",
               "actual_value": "met",
               "requirement": "met",
               "unit": null,
+              "actual_unit": null,
+              "requirement_unit": null,
               "equation_or_method": "synthetic state",
               "model_ids": [
                 "MODEL-SYN-COOL"
@@ -455,6 +557,16 @@
               "validation_level": "SYNTHETIC_ARITHMETIC",
               "uncertainty": null,
               "notes": "Logic test only.",
+              "computed_status": null,
+              "validation_components": {
+                "result_validation_level": "SYNTHETIC_ARITHMETIC",
+                "model_validation_levels": {
+                  "MODEL-SYN-COOL": "SYNTHETIC_ARITHMETIC"
+                },
+                "source_validation_levels": {
+                  "SRC-SYN-REQ": "SYNTHETIC_ARITHMETIC"
+                }
+              },
               "effective_validation_level": "SYNTHETIC_ARITHMETIC",
               "validation_downgrades": [],
               "unconfirmed_assumption_ids": [],
@@ -475,6 +587,7 @@
           "failed_mandatory_criterion_ids": [],
           "unknown_mandatory_criterion_ids": [],
           "conditional_mandatory_criterion_ids": [],
+          "missing_mandatory_criteria": false,
           "unresolved_risks": [],
           "missing_required_inputs": []
         },
@@ -485,10 +598,15 @@
               "id": "C-SUP-1",
               "name": "Synthetic supply constraint",
               "mandatory": true,
+              "assessment_method": "SYNTHETIC_ASSERTION",
+              "comparison_operator": null,
+              "external_review_status": "NOT_APPLICABLE",
               "status": "INPUT_U",
               "actual_value": null,
               "requirement": "met",
               "unit": null,
+              "actual_unit": null,
+              "requirement_unit": null,
               "equation_or_method": "not evaluated because input is missing",
               "model_ids": [
                 "MODEL-SYN-SUPPLY"
@@ -500,6 +618,14 @@
               "validation_level": "NOT_VALIDATED",
               "uncertainty": null,
               "notes": "Manufactured missing input used to verify UNKNOWN propagation.",
+              "computed_status": null,
+              "validation_components": {
+                "result_validation_level": "NOT_VALIDATED",
+                "model_validation_levels": {
+                  "MODEL-SYN-SUPPLY": "SYNTHETIC_ARITHMETIC"
+                },
+                "source_validation_levels": {}
+              },
               "effective_validation_level": "NOT_VALIDATED",
               "validation_downgrades": [],
               "unconfirmed_assumption_ids": [],
@@ -520,6 +646,7 @@
             "C-SUP-1"
           ],
           "conditional_mandatory_criterion_ids": [],
+          "missing_mandatory_criteria": false,
           "unresolved_risks": [],
           "missing_required_inputs": [
             "synthetic supply boundary input"
@@ -532,10 +659,15 @@
               "id": "C-STR-1",
               "name": "Synthetic structural constraint",
               "mandatory": true,
+              "assessment_method": "SYNTHETIC_ASSERTION",
+              "comparison_operator": null,
+              "external_review_status": "NOT_APPLICABLE",
               "status": "PASS",
               "actual_value": "met",
               "requirement": "met",
               "unit": null,
+              "actual_unit": null,
+              "requirement_unit": null,
               "equation_or_method": "synthetic state",
               "model_ids": [
                 "MODEL-SYN-STRUCT"
@@ -549,6 +681,16 @@
               "validation_level": "SYNTHETIC_ARITHMETIC",
               "uncertainty": null,
               "notes": "Logic test only.",
+              "computed_status": null,
+              "validation_components": {
+                "result_validation_level": "SYNTHETIC_ARITHMETIC",
+                "model_validation_levels": {
+                  "MODEL-SYN-STRUCT": "SYNTHETIC_ARITHMETIC"
+                },
+                "source_validation_levels": {
+                  "SRC-SYN-REQ": "SYNTHETIC_ARITHMETIC"
+                }
+              },
               "effective_validation_level": "SYNTHETIC_ARITHMETIC",
               "validation_downgrades": [],
               "unconfirmed_assumption_ids": [],
@@ -569,6 +711,7 @@
           "failed_mandatory_criterion_ids": [],
           "unknown_mandatory_criterion_ids": [],
           "conditional_mandatory_criterion_ids": [],
+          "missing_mandatory_criteria": false,
           "unresolved_risks": [],
           "missing_required_inputs": []
         },
@@ -579,10 +722,15 @@
               "id": "C-COMB-1",
               "name": "Synthetic combustion evidence flag",
               "mandatory": true,
+              "assessment_method": "SYNTHETIC_ASSERTION",
+              "comparison_operator": null,
+              "external_review_status": "NOT_APPLICABLE",
               "status": "PASS",
               "actual_value": "met",
               "requirement": "met",
               "unit": null,
+              "actual_unit": null,
+              "requirement_unit": null,
               "equation_or_method": "synthetic state",
               "model_ids": [
                 "MODEL-SYN-COMB"
@@ -596,6 +744,16 @@
               "validation_level": "SYNTHETIC_ARITHMETIC",
               "uncertainty": null,
               "notes": "Logic test only.",
+              "computed_status": null,
+              "validation_components": {
+                "result_validation_level": "SYNTHETIC_ARITHMETIC",
+                "model_validation_levels": {
+                  "MODEL-SYN-COMB": "SYNTHETIC_ARITHMETIC"
+                },
+                "source_validation_levels": {
+                  "SRC-SYN-REQ": "SYNTHETIC_ARITHMETIC"
+                }
+              },
               "effective_validation_level": "SYNTHETIC_ARITHMETIC",
               "validation_downgrades": [],
               "unconfirmed_assumption_ids": [],
@@ -616,6 +774,7 @@
           "failed_mandatory_criterion_ids": [],
           "unknown_mandatory_criterion_ids": [],
           "conditional_mandatory_criterion_ids": [],
+          "missing_mandatory_criteria": false,
           "unresolved_risks": [],
           "missing_required_inputs": []
         }
@@ -659,10 +818,15 @@
             "id": "B-PERF-1",
             "name": "Synthetic required performance flag",
             "mandatory": true,
+            "assessment_method": "SYNTHETIC_ASSERTION",
+            "comparison_operator": null,
+            "external_review_status": "NOT_APPLICABLE",
             "status": "PASS",
             "actual_value": "met",
             "requirement": "met",
             "unit": null,
+            "actual_unit": null,
+            "requirement_unit": null,
             "equation_or_method": "direct synthetic flag comparison",
             "model_ids": [
               "MODEL-SYN-PERF"
@@ -676,6 +840,16 @@
             "validation_level": "SYNTHETIC_ARITHMETIC",
             "uncertainty": null,
             "notes": "Logic test only.",
+            "computed_status": null,
+            "validation_components": {
+              "result_validation_level": "SYNTHETIC_ARITHMETIC",
+              "model_validation_levels": {
+                "MODEL-SYN-PERF": "SYNTHETIC_ARITHMETIC"
+              },
+              "source_validation_levels": {
+                "SRC-SYN-REQ": "SYNTHETIC_ARITHMETIC"
+              }
+            },
             "effective_validation_level": "SYNTHETIC_ARITHMETIC",
             "validation_downgrades": [],
             "unconfirmed_assumption_ids": [],
@@ -696,6 +870,7 @@
         "failed_mandatory_criterion_ids": [],
         "unknown_mandatory_criterion_ids": [],
         "conditional_mandatory_criterion_ids": [],
+        "missing_mandatory_criteria": false,
         "unresolved_risks": [],
         "missing_required_inputs": []
       },
@@ -707,10 +882,15 @@
               "id": "B-COOL-1",
               "name": "Synthetic mandatory cooling constraint",
               "mandatory": true,
+              "assessment_method": "SYNTHETIC_ASSERTION",
+              "comparison_operator": null,
+              "external_review_status": "NOT_APPLICABLE",
               "status": "FAIL",
               "actual_value": "violated",
               "requirement": "met",
               "unit": null,
+              "actual_unit": null,
+              "requirement_unit": null,
               "equation_or_method": "synthetic state",
               "model_ids": [
                 "MODEL-SYN-COOL"
@@ -724,6 +904,16 @@
               "validation_level": "SYNTHETIC_ARITHMETIC",
               "uncertainty": null,
               "notes": "Manufactured failure used to verify exclusion.",
+              "computed_status": null,
+              "validation_components": {
+                "result_validation_level": "SYNTHETIC_ARITHMETIC",
+                "model_validation_levels": {
+                  "MODEL-SYN-COOL": "SYNTHETIC_ARITHMETIC"
+                },
+                "source_validation_levels": {
+                  "SRC-SYN-REQ": "SYNTHETIC_ARITHMETIC"
+                }
+              },
               "effective_validation_level": "SYNTHETIC_ARITHMETIC",
               "validation_downgrades": [],
               "unconfirmed_assumption_ids": [],
@@ -746,6 +936,7 @@
           ],
           "unknown_mandatory_criterion_ids": [],
           "conditional_mandatory_criterion_ids": [],
+          "missing_mandatory_criteria": false,
           "unresolved_risks": [],
           "missing_required_inputs": []
         },
@@ -756,10 +947,15 @@
               "id": "B-SUP-1",
               "name": "Synthetic supply constraint",
               "mandatory": true,
+              "assessment_method": "SYNTHETIC_ASSERTION",
+              "comparison_operator": null,
+              "external_review_status": "NOT_APPLICABLE",
               "status": "PASS",
               "actual_value": "met",
               "requirement": "met",
               "unit": null,
+              "actual_unit": null,
+              "requirement_unit": null,
               "equation_or_method": "synthetic state",
               "model_ids": [
                 "MODEL-SYN-SUPPLY"
@@ -773,6 +969,16 @@
               "validation_level": "SYNTHETIC_ARITHMETIC",
               "uncertainty": null,
               "notes": "Logic test only.",
+              "computed_status": null,
+              "validation_components": {
+                "result_validation_level": "SYNTHETIC_ARITHMETIC",
+                "model_validation_levels": {
+                  "MODEL-SYN-SUPPLY": "SYNTHETIC_ARITHMETIC"
+                },
+                "source_validation_levels": {
+                  "SRC-SYN-REQ": "SYNTHETIC_ARITHMETIC"
+                }
+              },
               "effective_validation_level": "SYNTHETIC_ARITHMETIC",
               "validation_downgrades": [],
               "unconfirmed_assumption_ids": [],
@@ -793,6 +999,7 @@
           "failed_mandatory_criterion_ids": [],
           "unknown_mandatory_criterion_ids": [],
           "conditional_mandatory_criterion_ids": [],
+          "missing_mandatory_criteria": false,
           "unresolved_risks": [],
           "missing_required_inputs": []
         },
@@ -803,10 +1010,15 @@
               "id": "B-STR-1",
               "name": "Synthetic structural constraint",
               "mandatory": true,
+              "assessment_method": "SYNTHETIC_ASSERTION",
+              "comparison_operator": null,
+              "external_review_status": "NOT_APPLICABLE",
               "status": "PASS",
               "actual_value": "met",
               "requirement": "met",
               "unit": null,
+              "actual_unit": null,
+              "requirement_unit": null,
               "equation_or_method": "synthetic state",
               "model_ids": [
                 "MODEL-SYN-STRUCT"
@@ -820,6 +1032,16 @@
               "validation_level": "SYNTHETIC_ARITHMETIC",
               "uncertainty": null,
               "notes": "Logic test only.",
+              "computed_status": null,
+              "validation_components": {
+                "result_validation_level": "SYNTHETIC_ARITHMETIC",
+                "model_validation_levels": {
+                  "MODEL-SYN-STRUCT": "SYNTHETIC_ARITHMETIC"
+                },
+                "source_validation_levels": {
+                  "SRC-SYN-REQ": "SYNTHETIC_ARITHMETIC"
+                }
+              },
               "effective_validation_level": "SYNTHETIC_ARITHMETIC",
               "validation_downgrades": [],
               "unconfirmed_assumption_ids": [],
@@ -840,6 +1062,7 @@
           "failed_mandatory_criterion_ids": [],
           "unknown_mandatory_criterion_ids": [],
           "conditional_mandatory_criterion_ids": [],
+          "missing_mandatory_criteria": false,
           "unresolved_risks": [],
           "missing_required_inputs": []
         },
@@ -850,10 +1073,15 @@
               "id": "B-COMB-1",
               "name": "Synthetic combustion evidence flag",
               "mandatory": true,
+              "assessment_method": "SYNTHETIC_ASSERTION",
+              "comparison_operator": null,
+              "external_review_status": "NOT_APPLICABLE",
               "status": "PASS",
               "actual_value": "met",
               "requirement": "met",
               "unit": null,
+              "actual_unit": null,
+              "requirement_unit": null,
               "equation_or_method": "synthetic state",
               "model_ids": [
                 "MODEL-SYN-COMB"
@@ -867,6 +1095,16 @@
               "validation_level": "SYNTHETIC_ARITHMETIC",
               "uncertainty": null,
               "notes": "Logic test only.",
+              "computed_status": null,
+              "validation_components": {
+                "result_validation_level": "SYNTHETIC_ARITHMETIC",
+                "model_validation_levels": {
+                  "MODEL-SYN-COMB": "SYNTHETIC_ARITHMETIC"
+                },
+                "source_validation_levels": {
+                  "SRC-SYN-REQ": "SYNTHETIC_ARITHMETIC"
+                }
+              },
               "effective_validation_level": "SYNTHETIC_ARITHMETIC",
               "validation_downgrades": [],
               "unconfirmed_assumption_ids": [],
@@ -887,6 +1125,7 @@
           "failed_mandatory_criterion_ids": [],
           "unknown_mandatory_criterion_ids": [],
           "conditional_mandatory_criterion_ids": [],
+          "missing_mandatory_criteria": false,
           "unresolved_risks": [],
           "missing_required_inputs": []
         }
@@ -944,6 +1183,9 @@
     }
   ],
   "priority_candidate_id": "SYN-A",
+  "co_priority_candidate_ids": [
+    "SYN-A"
+  ],
   "priority_rationale": "후보 A (합성 논리 시험) is the highest retained decision class without a known hard-constraint violation; this is a follow-up priority, not a safety approval. Advantages=['No manufactured hard-constraint violation in this logic fixture.']; limitations=['Every result is synthetic and has no physical validation.'].",
   "cad_handoff": {
     "schema_version": "SPACE_Y_CAD_HANDOFF_V1",
@@ -991,10 +1233,11 @@
     "test_safety_approval": false,
     "validated_engine_prediction": false
   },
+  "team_selected_provisional_baseline_candidate_id": null,
   "decision_method": "HARD_CONSTRAINTS_FIRST_NO_WEIGHTED_SAFETY_SUM",
   "safe_design_claim": false,
   "validated_engine_prediction": false,
   "physical_validation_v01_v12": "NOT_RUN",
-  "request_sha256": "8192b44dcfa2951a71df3f988df41569d2d9f6a9b2af451f1fc2ea3e7b695118",
-  "schema_sha256": "d1e85ad88a12527b8cf7bdb5c7b0aeea74bb0edbe528c25f4d092d25a733d66e"
+  "request_sha256": "bc24801fa07b88c305319b49212bfc88ed7d434c390525035958bed9c3edb70c",
+  "schema_sha256": "3e8eb2aced1c77effbecee697621863951bb78565e50a685929e0fff89ebdc50"
 }

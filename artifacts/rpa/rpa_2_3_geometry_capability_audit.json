@@ -1,0 +1,45 @@
+{
+  "record_id": "SPACE-Y-RPA-2.3-GEOMETRY-AUDIT-001",
+  "review_date": "2026-11-01",
+  "purpose": "DOCUMENTED_CAPABILITY_REVIEW_NO_DESIGN_RUN",
+  "product": "RPA Standard Edition v.2.3.2",
+  "manual_findings": [
+    {
+      "printed_pages": "33-34",
+      "finding": "Chamber Geometry contains Design Parameters and Size and Geometry tabs. Sizing requires the determine-size option and at least one sizing basis: nominal thrust, total mass flow, or throat diameter."
+    },
+    {
+      "printed_pages": "33-34",
+      "finding": "Documented configuration inputs include chamber count, nozzle-shape selection, chamber length or characteristic length, contraction angle and normalized contraction radii. Nozzle inlet/exit conditions and nozzle shape are controlled through the Nozzle Flow Model screen."
+    },
+    {
+      "printed_pages": "34-35",
+      "finding": "Size and Geometry displays calculated chamber/nozzle size and thrust-loss information. Results can be saved as ASCII and the chamber contour can be exported to DXF with unit and drawing options."
+    }
+  ],
+  "capability_status": {
+    "size_and_geometry_gui": "DOCUMENTED_NOT_EXECUTED_FOR_SPACE_Y",
+    "ascii_geometry_result_export": "DOCUMENTED_NOT_EXECUTED_FOR_SPACE_Y",
+    "dxf_contour_export": "DOCUMENTED_NOT_EXECUTED_FOR_SPACE_Y",
+    "automatic_cad_approval_or_detailed_design": "OUTSIDE"
+  },
+  "required_before_run": [
+    "team-selected provisional candidate and decision record",
+    "approved sizing basis and ambient condition",
+    "propellant states, chamber pressure and mixture ratio",
+    "approved nozzle-flow and chamber-geometry assumptions",
+    "explicit units and software/run provenance"
+  ],
+  "not_determined_by_rpa_geometry_output": [
+    "injector detail",
+    "regenerative-channel detail",
+    "wall material and manufacturing thickness",
+    "joints, seals, ports, mounts and instrumentation",
+    "cooling, supply, structural or combustion safety approval"
+  ],
+  "local_space_y_geometry_run_completed": false,
+  "local_dxf_export_verified": false,
+  "validated_engine_prediction": false,
+  "physical_validation_v01_v12": "NOT_RUN",
+  "publication_scope": "Findings and capability metadata only; no manual, executable, license file or generated proprietary content is redistributed."
+}
