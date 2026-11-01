@@ -1,0 +1,2534 @@
+{
+  "interface_version": "SPACE_Y_COOLING_CHANNEL_SWEEP_V1",
+  "run_id": "SYNTHETIC-COOLING-CHANNEL-RECOMMENDATION-001",
+  "status": "MODEL_U",
+  "fixture_classification": "SYNTHETIC_NON_DESIGN",
+  "comparison_policy": {
+    "basis": "same supplied coolant flow and property conditions",
+    "ranking_performed": false,
+    "scalar_weighting_performed": false,
+    "pareto_final_design_claim": false,
+    "statement": "High h_l alone is not a final design criterion; pressure-gradient, whole-engine thermal, phase, structural, manufacturing, and supply constraints remain external."
+  },
+  "inputs_consumed": {
+    "coolant_mass_flow_kg_s": 0.6,
+    "coolant_mass_flow_source": "SYNTHETIC_NON_DESIGN_MASS_FLOW",
+    "property_policy": "CONSTANT_SUPPLIED_PROPERTIES",
+    "default_property_source": "SYNTHETIC_ARITHMETIC_FIXTURE_NOT_IPA_DATA",
+    "default_property_version": "TEST-ONLY-V1",
+    "equivalent_sand_roughness_m": 1.2e-05,
+    "roughness_source": "BOOTCAMP_REFERENCE_VALUE_12_UM_NOT_AS_MANUFACTURED_SPACE_Y_DATA",
+    "applicability_policy_id": "SPACE_Y_COOLING_APPLICABILITY_POLICY_V1"
+  },
+  "counts": {
+    "candidate_count": 12,
+    "successful_station_count": 15,
+    "outside_station_count": 0,
+    "input_unknown_station_count": 0
+  },
+  "candidate_recommendation": {
+    "status": "PRELIMINARY_RELATIVE_RECOMMENDATION",
+    "reason": "relative classification completed at one common reference station",
+    "baseline_reference": {
+      "baseline_id": "BOOTCAMP_CONSTANT_RIB_WIDTH_REFERENCE",
+      "source": "User-confirmed bootcamp software input example; primary software project file not committed",
+      "geometry_policy": "CONSTANT_RIB_WIDTH_AXIAL",
+      "settings": {
+        "rib_thickness_m": 0.0009,
+        "channel_height_m": 0.0012,
+        "channel_width_limits_m": [
+          0.0009,
+          0.0027
+        ],
+        "equivalent_sand_roughness_m": 1.2e-05,
+        "path_type": "AXIAL",
+        "circuit_passes": 1,
+        "channel_count": null
+      },
+      "geometric_applicability_status": "INPUT_U_CHANNEL_COUNT_AND_REAL_RADIUS",
+      "candidate_id": null,
+      "design_approved": false,
+      "automatically_selected": false,
+      "limitations": [
+        "The reference does not specify channel count.",
+        "It is not automatically combined with the ODREC channel count.",
+        "It is not a validated SPACE Y optimum or manufacturing constraint."
+      ]
+    },
+    "reference_station_id": "SYN-THROAT",
+    "reference_station_type": "THROAT",
+    "comparison_method": "MAXIMIZE_H_L_AND_MINIMIZE_LOCAL_DARCY_FRICTION_GRADIENT_AT_ONE_COMMON_STATION",
+    "comparison_basis": "same supplied coolant flow and property conditions",
+    "relative_tolerance": 1e-09,
+    "h_l_absolute_tolerance_W_m2K": 1e-09,
+    "friction_gradient_absolute_tolerance_Pa_m": 1e-06,
+    "eligible_candidate_ids": [
+      "CH-0003",
+      "CH-0004",
+      "CH-0005",
+      "CH-0006",
+      "CH-0009"
+    ],
+    "highest_h_l_candidate_ids": [
+      "CH-0004"
+    ],
+    "lowest_friction_gradient_candidate_ids": [
+      "CH-0005"
+    ],
+    "pareto_candidate_ids": [
+      "CH-0003",
+      "CH-0004",
+      "CH-0005",
+      "CH-0006",
+      "CH-0009"
+    ],
+    "design_recommended_candidate_ids": [],
+    "model_warning_candidate_ids": [
+      "CH-0003",
+      "CH-0004",
+      "CH-0005",
+      "CH-0006",
+      "CH-0009"
+    ],
+    "statement": "Preliminary candidate recommendation, not final design optimization.",
+    "final_design_selection": false
+  },
+  "candidates": [
+    {
+      "candidate_id": "CH-0001",
+      "channel_count": 80,
+      "rib_thickness_m": 0.0003,
+      "channel_height_m": 0.0012,
+      "geometry_policy": "CONSTANT_RIB_WIDTH_AXIAL",
+      "path_type": "AXIAL",
+      "circuit_passes": 1,
+      "candidate_range_source": "SYNTHETIC_NON_DESIGN_MULTI_CANDIDATE_FIXTURE_NOT_A_SPACE_Y_DESIGN_RANGE",
+      "assumptions": [
+        "CONSTANT_RIB_WIDTH",
+        "CONSTANT_CHANNEL_HEIGHT",
+        "AXIAL_ONE_PASS",
+        "SYNTHETIC_MEAN_RADIUS_PROFILE",
+        "CONSTANT_SYNTHETIC_FLUID_PROPERTIES",
+        "RECOMMENDATION_IS_RELATIVE_AND_PRELIMINARY"
+      ],
+      "design_approved": false,
+      "geometric_validity_status": "OUTSIDE",
+      "calculation_allowed": false,
+      "stations": [
+        {
+          "station_id": "SYN-INLET",
+          "x_m": -0.1,
+          "mean_channel_radius_m": 0.03,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.002356194490192345,
+          "channel_width_m": 0.002056194490192345,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.0001973946710584651,
+          "hydraulic_diameter_m": 0.001515531947285533,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+        },
+        {
+          "station_id": "SYN-THROAT",
+          "x_m": 0.0,
+          "mean_channel_radius_m": 0.02,
+          "is_throat": true,
+          "circumferential_pitch_m": 0.0015707963267948967,
+          "channel_width_m": 0.0012707963267948967,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.00012199644737231007,
+          "hydraulic_diameter_m": 0.0012343838912307595,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+        },
+        {
+          "station_id": "SYN-EXIT",
+          "x_m": 0.1,
+          "mean_channel_radius_m": 0.04,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.0031415926535897933,
+          "channel_width_m": 0.0028415926535897934,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.00027279289474462014,
+          "hydraulic_diameter_m": 0.00168740963109136,
+          "geometric_validity_status": "OUTSIDE",
+          "geometric_reasons": [
+            "channel width is above the supplied maximum"
+          ],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+        }
+      ],
+      "decision": "EXCLUDE_GEOMETRIC_CONSTRAINT",
+      "summary": {
+        "valid_calculation_station_count": 0,
+        "geometric_validity_status": "OUTSIDE",
+        "correlation_applicability_status": "NOT_RUN",
+        "throat_h_l_W_m2K": null,
+        "minimum_h_l_W_m2K": null,
+        "maximum_h_l_W_m2K": null,
+        "maximum_friction_pressure_gradient_Pa_m": null,
+        "applicability_assessment": {
+          "status": "INPUT_U",
+          "reason": "at least one discrete station lacks an applicable completed calculation",
+          "minimum_reynolds": null,
+          "minimum_reynolds_station_id": null,
+          "minimum_reynolds_x_m": null,
+          "re_design_minimum": null,
+          "re_design_margin": null,
+          "re_design_recommendation_status": "NOT_EVALUATED",
+          "transition_warning_station_ids": [],
+          "maximum_roughness_friction_ratio": null,
+          "maximum_roughness_ratio_station_id": null,
+          "roughness_warning_status": "NOT_EVALUATED",
+          "correlation_domain_status": "NOT_EVALUATED",
+          "continuous_path_claim": false
+        },
+        "limitations": [
+          "At least one station violates supplied channel-width constraints."
+        ]
+      },
+      "recommendation_tags": [
+        "EXCLUDED_GEOMETRY"
+      ],
+      "exclusion_reasons": [
+        "candidate violates at least one supplied geometry constraint"
+      ],
+      "comparison": {
+        "reference_station_id": "SYN-THROAT",
+        "h_l_at_reference_W_m2K": null,
+        "friction_pressure_gradient_at_reference_Pa_m": null,
+        "pareto_status": "NOT_EVALUATED",
+        "model_applicability": "NOT_RUN"
+      }
+    },
+    {
+      "candidate_id": "CH-0002",
+      "channel_count": 80,
+      "rib_thickness_m": 0.0004,
+      "channel_height_m": 0.0012,
+      "geometry_policy": "CONSTANT_RIB_WIDTH_AXIAL",
+      "path_type": "AXIAL",
+      "circuit_passes": 1,
+      "candidate_range_source": "SYNTHETIC_NON_DESIGN_MULTI_CANDIDATE_FIXTURE_NOT_A_SPACE_Y_DESIGN_RANGE",
+      "assumptions": [
+        "CONSTANT_RIB_WIDTH",
+        "CONSTANT_CHANNEL_HEIGHT",
+        "AXIAL_ONE_PASS",
+        "SYNTHETIC_MEAN_RADIUS_PROFILE",
+        "CONSTANT_SYNTHETIC_FLUID_PROPERTIES",
+        "RECOMMENDATION_IS_RELATIVE_AND_PRELIMINARY"
+      ],
+      "design_approved": false,
+      "geometric_validity_status": "OUTSIDE",
+      "calculation_allowed": false,
+      "stations": [
+        {
+          "station_id": "SYN-INLET",
+          "x_m": -0.1,
+          "mean_channel_radius_m": 0.03,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.002356194490192345,
+          "channel_width_m": 0.0019561944901923447,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.00018779467105846506,
+          "hydraulic_diameter_m": 0.0014875087042482964,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+        },
+        {
+          "station_id": "SYN-THROAT",
+          "x_m": 0.0,
+          "mean_channel_radius_m": 0.02,
+          "is_throat": true,
+          "circumferential_pitch_m": 0.0015707963267948967,
+          "channel_width_m": 0.0011707963267948967,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.00011239644737231008,
+          "hydraulic_diameter_m": 0.0011852182967174154,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+        },
+        {
+          "station_id": "SYN-EXIT",
+          "x_m": 0.1,
+          "mean_channel_radius_m": 0.04,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.0031415926535897933,
+          "channel_width_m": 0.002741592653589793,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.0002631928947446201,
+          "hydraulic_diameter_m": 0.0016693308890311004,
+          "geometric_validity_status": "OUTSIDE",
+          "geometric_reasons": [
+            "channel width is above the supplied maximum"
+          ],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+        }
+      ],
+      "decision": "EXCLUDE_GEOMETRIC_CONSTRAINT",
+      "summary": {
+        "valid_calculation_station_count": 0,
+        "geometric_validity_status": "OUTSIDE",
+        "correlation_applicability_status": "NOT_RUN",
+        "throat_h_l_W_m2K": null,
+        "minimum_h_l_W_m2K": null,
+        "maximum_h_l_W_m2K": null,
+        "maximum_friction_pressure_gradient_Pa_m": null,
+        "applicability_assessment": {
+          "status": "INPUT_U",
+          "reason": "at least one discrete station lacks an applicable completed calculation",
+          "minimum_reynolds": null,
+          "minimum_reynolds_station_id": null,
+          "minimum_reynolds_x_m": null,
+          "re_design_minimum": null,
+          "re_design_margin": null,
+          "re_design_recommendation_status": "NOT_EVALUATED",
+          "transition_warning_station_ids": [],
+          "maximum_roughness_friction_ratio": null,
+          "maximum_roughness_ratio_station_id": null,
+          "roughness_warning_status": "NOT_EVALUATED",
+          "correlation_domain_status": "NOT_EVALUATED",
+          "continuous_path_claim": false
+        },
+        "limitations": [
+          "At least one station violates supplied channel-width constraints."
+        ]
+      },
+      "recommendation_tags": [
+        "EXCLUDED_GEOMETRY"
+      ],
+      "exclusion_reasons": [
+        "candidate violates at least one supplied geometry constraint"
+      ],
+      "comparison": {
+        "reference_station_id": "SYN-THROAT",
+        "h_l_at_reference_W_m2K": null,
+        "friction_pressure_gradient_at_reference_Pa_m": null,
+        "pareto_status": "NOT_EVALUATED",
+        "model_applicability": "NOT_RUN"
+      }
+    },
+    {
+      "candidate_id": "CH-0003",
+      "channel_count": 80,
+      "rib_thickness_m": 0.0005,
+      "channel_height_m": 0.0012,
+      "geometry_policy": "CONSTANT_RIB_WIDTH_AXIAL",
+      "path_type": "AXIAL",
+      "circuit_passes": 1,
+      "candidate_range_source": "SYNTHETIC_NON_DESIGN_MULTI_CANDIDATE_FIXTURE_NOT_A_SPACE_Y_DESIGN_RANGE",
+      "assumptions": [
+        "CONSTANT_RIB_WIDTH",
+        "CONSTANT_CHANNEL_HEIGHT",
+        "AXIAL_ONE_PASS",
+        "SYNTHETIC_MEAN_RADIUS_PROFILE",
+        "CONSTANT_SYNTHETIC_FLUID_PROPERTIES",
+        "RECOMMENDATION_IS_RELATIVE_AND_PRELIMINARY"
+      ],
+      "design_approved": false,
+      "geometric_validity_status": "PASS",
+      "calculation_allowed": true,
+      "stations": [
+        {
+          "station_id": "SYN-INLET",
+          "x_m": -0.1,
+          "mean_channel_radius_m": 0.03,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.002356194490192345,
+          "channel_width_m": 0.0018561944901923449,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.0001781946710584651,
+          "hydraulic_diameter_m": 0.001457651596047886,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE",
+          "calculation": {
+            "status": "MODEL_U",
+            "reason": "arithmetic completed within supplied correlation domains",
+            "results": {
+              "Reynolds": 4908.064603917258,
+              "Prandtl": 13.333333333333334,
+              "darcy_factor": 0.04581722299337771,
+              "Nusselt": 54.826798442081646,
+              "h_l_W_m2K": 5641.965328758899,
+              "velocity_m_s": 4.208880072254952,
+              "friction_pressure_gradient_Pa_m": 222724.56734053307,
+              "relative_roughness": 0.008232419895491805,
+              "heat_transfer_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "reasons": []
+              },
+              "friction_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM",
+                "re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "relative_roughness_range": [
+                  0.0,
+                  0.05
+                ]
+              },
+              "smooth_darcy_factor": 0.03759307816734329,
+              "roughness_friction_ratio": 1.2187675292091045,
+              "roughness_assessment": {
+                "status": "MODEL_U",
+                "reason": "rough and smooth Darcy factors evaluated at identical Reynolds number",
+                "darcy_factor_definition": "DARCY_WEISBACH_NOT_FANNING",
+                "reynolds": 4908.064603917258,
+                "relative_roughness": 0.008232419895491805,
+                "rough_darcy_factor": 0.04581722299337771,
+                "smooth_darcy_factor": 0.03759307816734329,
+                "roughness_friction_ratio": 1.2187675292091045,
+                "warning_threshold": 4.0,
+                "roughness_heat_transfer_warning_status": "BELOW_ROUGHNESS_WARNING_THRESHOLD",
+                "arbitrary_friction_cap_applied": false,
+                "arbitrary_heat_transfer_cap_applied": false,
+                "friction_domain_source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM"
+              },
+              "applicability_assessment": {
+                "policy_id": "SPACE_Y_COOLING_APPLICABILITY_POLICY_V1",
+                "correlation_applicability_status": "WITHIN_GNIELINSKI_POLICY_DOMAIN",
+                "gnielinski_re_in_domain": true,
+                "gnielinski_pr_in_domain": true,
+                "gnielinski_re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "gnielinski_pr_range": [
+                  0.5,
+                  2000.0
+                ],
+                "re_design_minimum": 5000.0,
+                "re_design_margin": -91.93539608274205,
+                "re_design_recommendation_status": "BELOW_PRELIMINARY_RE_RECOMMENDATION",
+                "transition_warning_re_threshold": 10000.0,
+                "transition_region_warning": true,
+                "correlation_source": "TEAM_REPORTED_INCROPERA_7E_RANGE_CROSS_CHECKED_NOT_A_PHYSICAL_VALIDATION",
+                "design_recommendation_source": "SPACE_Y_TEAM_PRELIMINARY_RECOMMENDATION_NOT_CORRELATION_LIMIT"
+              },
+              "channel_aspect_ratio_h_over_w": 0.6464839790983605
+            },
+            "property_basis": "CONSTANT_DEFAULT",
+            "property_source": "SYNTHETIC_ARITHMETIC_FIXTURE_NOT_IPA_DATA",
+            "property_version": "TEST-ONLY-V1"
+          }
+        },
+        {
+          "station_id": "SYN-THROAT",
+          "x_m": 0.0,
+          "mean_channel_radius_m": 0.02,
+          "is_throat": true,
+          "circumferential_pitch_m": 0.0015707963267948967,
+          "channel_width_m": 0.0010707963267948966,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.00010279644737231006,
+          "hydraulic_diameter_m": 0.0011317224508351391,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE",
+          "calculation": {
+            "status": "MODEL_U",
+            "reason": "arithmetic completed within supplied correlation domains",
+            "results": {
+              "Reynolds": 6605.612235233651,
+              "Prandtl": 13.333333333333334,
+              "darcy_factor": 0.045909459248791085,
+              "Nusselt": 78.73559434169992,
+              "h_l_W_m2K": 10435.72047416724,
+              "velocity_m_s": 7.295971983191561,
+              "friction_pressure_gradient_Pa_m": 863750.9788618486,
+              "relative_roughness": 0.010603306483091119,
+              "heat_transfer_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "reasons": []
+              },
+              "friction_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM",
+                "re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "relative_roughness_range": [
+                  0.0,
+                  0.05
+                ]
+              },
+              "smooth_darcy_factor": 0.034561007808290724,
+              "roughness_friction_ratio": 1.328359968651667,
+              "roughness_assessment": {
+                "status": "MODEL_U",
+                "reason": "rough and smooth Darcy factors evaluated at identical Reynolds number",
+                "darcy_factor_definition": "DARCY_WEISBACH_NOT_FANNING",
+                "reynolds": 6605.612235233651,
+                "relative_roughness": 0.010603306483091119,
+                "rough_darcy_factor": 0.045909459248791085,
+                "smooth_darcy_factor": 0.034561007808290724,
+                "roughness_friction_ratio": 1.328359968651667,
+                "warning_threshold": 4.0,
+                "roughness_heat_transfer_warning_status": "BELOW_ROUGHNESS_WARNING_THRESHOLD",
+                "arbitrary_friction_cap_applied": false,
+                "arbitrary_heat_transfer_cap_applied": false,
+                "friction_domain_source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM"
+              },
+              "applicability_assessment": {
+                "policy_id": "SPACE_Y_COOLING_APPLICABILITY_POLICY_V1",
+                "correlation_applicability_status": "WITHIN_GNIELINSKI_POLICY_DOMAIN",
+                "gnielinski_re_in_domain": true,
+                "gnielinski_pr_in_domain": true,
+                "gnielinski_re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "gnielinski_pr_range": [
+                  0.5,
+                  2000.0
+                ],
+                "re_design_minimum": 5000.0,
+                "re_design_margin": 1605.6122352336506,
+                "re_design_recommendation_status": "MEETS_RE_MIN_WITH_TRANSITION_WARNING",
+                "transition_warning_re_threshold": 10000.0,
+                "transition_region_warning": true,
+                "correlation_source": "TEAM_REPORTED_INCROPERA_7E_RANGE_CROSS_CHECKED_NOT_A_PHYSICAL_VALIDATION",
+                "design_recommendation_source": "SPACE_Y_TEAM_PRELIMINARY_RECOMMENDATION_NOT_CORRELATION_LIMIT"
+              },
+              "channel_aspect_ratio_h_over_w": 1.1206612966182234
+            },
+            "property_basis": "CONSTANT_DEFAULT",
+            "property_source": "SYNTHETIC_ARITHMETIC_FIXTURE_NOT_IPA_DATA",
+            "property_version": "TEST-ONLY-V1"
+          }
+        },
+        {
+          "station_id": "SYN-EXIT",
+          "x_m": 0.1,
+          "mean_channel_radius_m": 0.04,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.0031415926535897933,
+          "channel_width_m": 0.0026415926535897933,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.0002535928947446201,
+          "hydraulic_diameter_m": 0.0016503109361923703,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE",
+          "calculation": {
+            "status": "MODEL_U",
+            "reason": "arithmetic completed within supplied correlation domains",
+            "results": {
+              "Reynolds": 3904.6305406647384,
+              "Prandtl": 13.333333333333334,
+              "darcy_factor": 0.04697099724891109,
+              "Nusselt": 41.35325631116229,
+              "h_l_W_m2K": 3758.678628759499,
+              "velocity_m_s": 2.957496111061333,
+              "friction_pressure_gradient_Pa_m": 99580.05435675943,
+              "relative_roughness": 0.007271357013295104,
+              "heat_transfer_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "reasons": []
+              },
+              "friction_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM",
+                "re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "relative_roughness_range": [
+                  0.0,
+                  0.05
+                ]
+              },
+              "smooth_darcy_factor": 0.04019324847298219,
+              "roughness_friction_ratio": 1.168629036801663,
+              "roughness_assessment": {
+                "status": "MODEL_U",
+                "reason": "rough and smooth Darcy factors evaluated at identical Reynolds number",
+                "darcy_factor_definition": "DARCY_WEISBACH_NOT_FANNING",
+                "reynolds": 3904.6305406647384,
+                "relative_roughness": 0.007271357013295104,
+                "rough_darcy_factor": 0.04697099724891109,
+                "smooth_darcy_factor": 0.04019324847298219,
+                "roughness_friction_ratio": 1.168629036801663,
+                "warning_threshold": 4.0,
+                "roughness_heat_transfer_warning_status": "BELOW_ROUGHNESS_WARNING_THRESHOLD",
+                "arbitrary_friction_cap_applied": false,
+                "arbitrary_heat_transfer_cap_applied": false,
+                "friction_domain_source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM"
+              },
+              "applicability_assessment": {
+                "policy_id": "SPACE_Y_COOLING_APPLICABILITY_POLICY_V1",
+                "correlation_applicability_status": "WITHIN_GNIELINSKI_POLICY_DOMAIN",
+                "gnielinski_re_in_domain": true,
+                "gnielinski_pr_in_domain": true,
+                "gnielinski_re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "gnielinski_pr_range": [
+                  0.5,
+                  2000.0
+                ],
+                "re_design_minimum": 5000.0,
+                "re_design_margin": -1095.3694593352616,
+                "re_design_recommendation_status": "BELOW_PRELIMINARY_RE_RECOMMENDATION",
+                "transition_warning_re_threshold": 10000.0,
+                "transition_region_warning": true,
+                "correlation_source": "TEAM_REPORTED_INCROPERA_7E_RANGE_CROSS_CHECKED_NOT_A_PHYSICAL_VALIDATION",
+                "design_recommendation_source": "SPACE_Y_TEAM_PRELIMINARY_RECOMMENDATION_NOT_CORRELATION_LIMIT"
+              },
+              "channel_aspect_ratio_h_over_w": 0.45427140265902066
+            },
+            "property_basis": "CONSTANT_DEFAULT",
+            "property_source": "SYNTHETIC_ARITHMETIC_FIXTURE_NOT_IPA_DATA",
+            "property_version": "TEST-ONLY-V1"
+          }
+        }
+      ],
+      "decision": "RETAIN_FOR_INTEGRATION_REVIEW",
+      "summary": {
+        "valid_calculation_station_count": 3,
+        "geometric_validity_status": "PASS",
+        "correlation_applicability_status": "APPLICABLE_TO_SUPPLIED_DOMAINS",
+        "throat_h_l_W_m2K": 10435.72047416724,
+        "minimum_h_l_W_m2K": 3758.678628759499,
+        "maximum_h_l_W_m2K": 10435.72047416724,
+        "maximum_friction_pressure_gradient_Pa_m": 863750.9788618486,
+        "applicability_assessment": {
+          "status": "MODEL_U",
+          "reason": "all supplied discrete stations assessed; unsampled continuous positions are not proven",
+          "minimum_reynolds": 3904.6305406647384,
+          "minimum_reynolds_station_id": "SYN-EXIT",
+          "minimum_reynolds_x_m": 0.1,
+          "re_design_minimum": 5000.0,
+          "re_design_margin": -1095.3694593352616,
+          "re_design_recommendation_status": "BELOW_PRELIMINARY_RE_RECOMMENDATION",
+          "transition_warning_station_ids": [
+            "SYN-INLET",
+            "SYN-THROAT",
+            "SYN-EXIT"
+          ],
+          "maximum_roughness_friction_ratio": 1.328359968651667,
+          "maximum_roughness_ratio_station_id": "SYN-THROAT",
+          "roughness_warning_status": "BELOW_ROUGHNESS_WARNING_THRESHOLD",
+          "correlation_domain_status": "ALL_DISCRETE_STATIONS_WITHIN_GNIELINSKI_POLICY_DOMAIN",
+          "continuous_path_claim": false,
+          "policy_id": "SPACE_Y_COOLING_APPLICABILITY_POLICY_V1"
+        },
+        "limitations": [
+          "No heat-load, wall-temperature, phase-change, manufacturing, structural, or supply-pressure approval is performed.",
+          "No scalar score or final optimum is assigned."
+        ]
+      },
+      "recommendation_tags": [
+        "BELOW_RE_DESIGN_RECOMMENDATION",
+        "TRANSITION_REGION_WARNING",
+        "PARETO_CANDIDATE"
+      ],
+      "exclusion_reasons": [
+        "minimum discrete-station Re is below the preliminary team recommendation"
+      ],
+      "comparison": {
+        "reference_station_id": "SYN-THROAT",
+        "h_l_at_reference_W_m2K": 10435.72047416724,
+        "friction_pressure_gradient_at_reference_Pa_m": 863750.9788618486,
+        "pareto_status": "NON_DOMINATED",
+        "model_applicability": "APPLICABLE_TO_SUPPLIED_DOMAINS"
+      }
+    },
+    {
+      "candidate_id": "CH-0004",
+      "channel_count": 80,
+      "rib_thickness_m": 0.0006,
+      "channel_height_m": 0.0012,
+      "geometry_policy": "CONSTANT_RIB_WIDTH_AXIAL",
+      "path_type": "AXIAL",
+      "circuit_passes": 1,
+      "candidate_range_source": "SYNTHETIC_NON_DESIGN_MULTI_CANDIDATE_FIXTURE_NOT_A_SPACE_Y_DESIGN_RANGE",
+      "assumptions": [
+        "CONSTANT_RIB_WIDTH",
+        "CONSTANT_CHANNEL_HEIGHT",
+        "AXIAL_ONE_PASS",
+        "SYNTHETIC_MEAN_RADIUS_PROFILE",
+        "CONSTANT_SYNTHETIC_FLUID_PROPERTIES",
+        "RECOMMENDATION_IS_RELATIVE_AND_PRELIMINARY"
+      ],
+      "design_approved": false,
+      "geometric_validity_status": "PASS",
+      "calculation_allowed": true,
+      "stations": [
+        {
+          "station_id": "SYN-INLET",
+          "x_m": -0.1,
+          "mean_channel_radius_m": 0.03,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.002356194490192345,
+          "channel_width_m": 0.001756194490192345,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.0001685946710584651,
+          "hydraulic_diameter_m": 0.001425774518708134,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE",
+          "calculation": {
+            "status": "MODEL_U",
+            "reason": "arithmetic completed within supplied correlation domains",
+            "results": {
+              "Reynolds": 5074.091048395137,
+              "Prandtl": 13.333333333333334,
+              "darcy_factor": 0.045721098119212475,
+              "Nusselt": 57.085000021895254,
+              "h_l_W_m2K": 6005.683150406437,
+              "velocity_m_s": 4.448539181525587,
+              "friction_pressure_gradient_Pa_m": 253840.33679972676,
+              "relative_roughness": 0.00841647809141165,
+              "heat_transfer_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "reasons": []
+              },
+              "friction_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM",
+                "re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "relative_roughness_range": [
+                  0.0,
+                  0.05
+                ]
+              },
+              "smooth_darcy_factor": 0.03723500861551086,
+              "roughness_friction_ratio": 1.2279062049193832,
+              "roughness_assessment": {
+                "status": "MODEL_U",
+                "reason": "rough and smooth Darcy factors evaluated at identical Reynolds number",
+                "darcy_factor_definition": "DARCY_WEISBACH_NOT_FANNING",
+                "reynolds": 5074.091048395137,
+                "relative_roughness": 0.00841647809141165,
+                "rough_darcy_factor": 0.045721098119212475,
+                "smooth_darcy_factor": 0.03723500861551086,
+                "roughness_friction_ratio": 1.2279062049193832,
+                "warning_threshold": 4.0,
+                "roughness_heat_transfer_warning_status": "BELOW_ROUGHNESS_WARNING_THRESHOLD",
+                "arbitrary_friction_cap_applied": false,
+                "arbitrary_heat_transfer_cap_applied": false,
+                "friction_domain_source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM"
+              },
+              "applicability_assessment": {
+                "policy_id": "SPACE_Y_COOLING_APPLICABILITY_POLICY_V1",
+                "correlation_applicability_status": "WITHIN_GNIELINSKI_POLICY_DOMAIN",
+                "gnielinski_re_in_domain": true,
+                "gnielinski_pr_in_domain": true,
+                "gnielinski_re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "gnielinski_pr_range": [
+                  0.5,
+                  2000.0
+                ],
+                "re_design_minimum": 5000.0,
+                "re_design_margin": 74.09104839513657,
+                "re_design_recommendation_status": "MEETS_RE_MIN_WITH_TRANSITION_WARNING",
+                "transition_warning_re_threshold": 10000.0,
+                "transition_region_warning": true,
+                "correlation_source": "TEAM_REPORTED_INCROPERA_7E_RANGE_CROSS_CHECKED_NOT_A_PHYSICAL_VALIDATION",
+                "design_recommendation_source": "SPACE_Y_TEAM_PRELIMINARY_RECOMMENDATION_NOT_CORRELATION_LIMIT"
+              },
+              "channel_aspect_ratio_h_over_w": 0.6832956182823301
+            },
+            "property_basis": "CONSTANT_DEFAULT",
+            "property_source": "SYNTHETIC_ARITHMETIC_FIXTURE_NOT_IPA_DATA",
+            "property_version": "TEST-ONLY-V1"
+          }
+        },
+        {
+          "station_id": "SYN-THROAT",
+          "x_m": 0.0,
+          "mean_channel_radius_m": 0.02,
+          "is_throat": true,
+          "circumferential_pitch_m": 0.0015707963267948967,
+          "channel_width_m": 0.0009707963267948967,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 9.319644737231008e-05,
+          "hydraulic_diameter_m": 0.0010732979209282995,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE",
+          "calculation": {
+            "status": "MODEL_U",
+            "reason": "arithmetic completed within supplied correlation domains",
+            "results": {
+              "Reynolds": 6909.906661831773,
+              "Prandtl": 13.333333333333334,
+              "darcy_factor": 0.0461773365825609,
+              "Nusselt": 83.29590798975755,
+              "h_l_W_m2K": 11641.116557513862,
+              "velocity_m_s": 8.04751705828258,
+              "friction_pressure_gradient_Pa_m": 1114531.6224066368,
+              "relative_roughness": 0.01118049310076102,
+              "heat_transfer_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "reasons": []
+              },
+              "friction_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM",
+                "re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "relative_roughness_range": [
+                  0.0,
+                  0.05
+                ]
+              },
+              "smooth_darcy_factor": 0.03413206343182652,
+              "roughness_friction_ratio": 1.3529019912550242,
+              "roughness_assessment": {
+                "status": "MODEL_U",
+                "reason": "rough and smooth Darcy factors evaluated at identical Reynolds number",
+                "darcy_factor_definition": "DARCY_WEISBACH_NOT_FANNING",
+                "reynolds": 6909.906661831773,
+                "relative_roughness": 0.01118049310076102,
+                "rough_darcy_factor": 0.0461773365825609,
+                "smooth_darcy_factor": 0.03413206343182652,
+                "roughness_friction_ratio": 1.3529019912550242,
+                "warning_threshold": 4.0,
+                "roughness_heat_transfer_warning_status": "BELOW_ROUGHNESS_WARNING_THRESHOLD",
+                "arbitrary_friction_cap_applied": false,
+                "arbitrary_heat_transfer_cap_applied": false,
+                "friction_domain_source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM"
+              },
+              "applicability_assessment": {
+                "policy_id": "SPACE_Y_COOLING_APPLICABILITY_POLICY_V1",
+                "correlation_applicability_status": "WITHIN_GNIELINSKI_POLICY_DOMAIN",
+                "gnielinski_re_in_domain": true,
+                "gnielinski_pr_in_domain": true,
+                "gnielinski_re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "gnielinski_pr_range": [
+                  0.5,
+                  2000.0
+                ],
+                "re_design_minimum": 5000.0,
+                "re_design_margin": 1909.906661831773,
+                "re_design_recommendation_status": "MEETS_RE_MIN_WITH_TRANSITION_WARNING",
+                "transition_warning_re_threshold": 10000.0,
+                "transition_region_warning": true,
+                "correlation_source": "TEAM_REPORTED_INCROPERA_7E_RANGE_CROSS_CHECKED_NOT_A_PHYSICAL_VALIDATION",
+                "design_recommendation_source": "SPACE_Y_TEAM_PRELIMINARY_RECOMMENDATION_NOT_CORRELATION_LIMIT"
+              },
+              "channel_aspect_ratio_h_over_w": 1.236098620152204
+            },
+            "property_basis": "CONSTANT_DEFAULT",
+            "property_source": "SYNTHETIC_ARITHMETIC_FIXTURE_NOT_IPA_DATA",
+            "property_version": "TEST-ONLY-V1"
+          }
+        },
+        {
+          "station_id": "SYN-EXIT",
+          "x_m": 0.1,
+          "mean_channel_radius_m": 0.04,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.0031415926535897933,
+          "channel_width_m": 0.0025415926535897935,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.00024399289474462014,
+          "hydraulic_diameter_m": 0.0016302743065210895,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE",
+          "calculation": {
+            "status": "MODEL_U",
+            "reason": "arithmetic completed within supplied correlation domains",
+            "results": {
+              "Reynolds": 4008.9879868693242,
+              "Prandtl": 13.333333333333334,
+              "darcy_factor": 0.04679934995458054,
+              "Nusselt": 42.74640569209255,
+              "h_l_W_m2K": 3933.05643606482,
+              "velocity_m_s": 3.073860002296386,
+              "friction_pressure_gradient_Pa_m": 108494.3933383779,
+              "relative_roughness": 0.007360724481763625,
+              "heat_transfer_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "reasons": []
+              },
+              "friction_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM",
+                "re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "relative_roughness_range": [
+                  0.0,
+                  0.05
+                ]
+              },
+              "smooth_darcy_factor": 0.03988053888984823,
+              "roughness_friction_ratio": 1.1734884045534681,
+              "roughness_assessment": {
+                "status": "MODEL_U",
+                "reason": "rough and smooth Darcy factors evaluated at identical Reynolds number",
+                "darcy_factor_definition": "DARCY_WEISBACH_NOT_FANNING",
+                "reynolds": 4008.9879868693242,
+                "relative_roughness": 0.007360724481763625,
+                "rough_darcy_factor": 0.04679934995458054,
+                "smooth_darcy_factor": 0.03988053888984823,
+                "roughness_friction_ratio": 1.1734884045534681,
+                "warning_threshold": 4.0,
+                "roughness_heat_transfer_warning_status": "BELOW_ROUGHNESS_WARNING_THRESHOLD",
+                "arbitrary_friction_cap_applied": false,
+                "arbitrary_heat_transfer_cap_applied": false,
+                "friction_domain_source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM"
+              },
+              "applicability_assessment": {
+                "policy_id": "SPACE_Y_COOLING_APPLICABILITY_POLICY_V1",
+                "correlation_applicability_status": "WITHIN_GNIELINSKI_POLICY_DOMAIN",
+                "gnielinski_re_in_domain": true,
+                "gnielinski_pr_in_domain": true,
+                "gnielinski_re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "gnielinski_pr_range": [
+                  0.5,
+                  2000.0
+                ],
+                "re_design_minimum": 5000.0,
+                "re_design_margin": -991.0120131306758,
+                "re_design_recommendation_status": "BELOW_PRELIMINARY_RE_RECOMMENDATION",
+                "transition_warning_re_threshold": 10000.0,
+                "transition_region_warning": true,
+                "correlation_source": "TEAM_REPORTED_INCROPERA_7E_RANGE_CROSS_CHECKED_NOT_A_PHYSICAL_VALIDATION",
+                "design_recommendation_source": "SPACE_Y_TEAM_PRELIMINARY_RECOMMENDATION_NOT_CORRELATION_LIMIT"
+              },
+              "channel_aspect_ratio_h_over_w": 0.47214489635272483
+            },
+            "property_basis": "CONSTANT_DEFAULT",
+            "property_source": "SYNTHETIC_ARITHMETIC_FIXTURE_NOT_IPA_DATA",
+            "property_version": "TEST-ONLY-V1"
+          }
+        }
+      ],
+      "decision": "RETAIN_FOR_INTEGRATION_REVIEW",
+      "summary": {
+        "valid_calculation_station_count": 3,
+        "geometric_validity_status": "PASS",
+        "correlation_applicability_status": "APPLICABLE_TO_SUPPLIED_DOMAINS",
+        "throat_h_l_W_m2K": 11641.116557513862,
+        "minimum_h_l_W_m2K": 3933.05643606482,
+        "maximum_h_l_W_m2K": 11641.116557513862,
+        "maximum_friction_pressure_gradient_Pa_m": 1114531.6224066368,
+        "applicability_assessment": {
+          "status": "MODEL_U",
+          "reason": "all supplied discrete stations assessed; unsampled continuous positions are not proven",
+          "minimum_reynolds": 4008.9879868693242,
+          "minimum_reynolds_station_id": "SYN-EXIT",
+          "minimum_reynolds_x_m": 0.1,
+          "re_design_minimum": 5000.0,
+          "re_design_margin": -991.0120131306758,
+          "re_design_recommendation_status": "BELOW_PRELIMINARY_RE_RECOMMENDATION",
+          "transition_warning_station_ids": [
+            "SYN-INLET",
+            "SYN-THROAT",
+            "SYN-EXIT"
+          ],
+          "maximum_roughness_friction_ratio": 1.3529019912550242,
+          "maximum_roughness_ratio_station_id": "SYN-THROAT",
+          "roughness_warning_status": "BELOW_ROUGHNESS_WARNING_THRESHOLD",
+          "correlation_domain_status": "ALL_DISCRETE_STATIONS_WITHIN_GNIELINSKI_POLICY_DOMAIN",
+          "continuous_path_claim": false,
+          "policy_id": "SPACE_Y_COOLING_APPLICABILITY_POLICY_V1"
+        },
+        "limitations": [
+          "No heat-load, wall-temperature, phase-change, manufacturing, structural, or supply-pressure approval is performed.",
+          "No scalar score or final optimum is assigned."
+        ]
+      },
+      "recommendation_tags": [
+        "BELOW_RE_DESIGN_RECOMMENDATION",
+        "TRANSITION_REGION_WARNING",
+        "HIGHEST_HL_AT_REFERENCE",
+        "PARETO_CANDIDATE"
+      ],
+      "exclusion_reasons": [
+        "minimum discrete-station Re is below the preliminary team recommendation"
+      ],
+      "comparison": {
+        "reference_station_id": "SYN-THROAT",
+        "h_l_at_reference_W_m2K": 11641.116557513862,
+        "friction_pressure_gradient_at_reference_Pa_m": 1114531.6224066368,
+        "pareto_status": "NON_DOMINATED",
+        "model_applicability": "APPLICABLE_TO_SUPPLIED_DOMAINS"
+      }
+    },
+    {
+      "candidate_id": "CH-0005",
+      "channel_count": 90,
+      "rib_thickness_m": 0.0003,
+      "channel_height_m": 0.0012,
+      "geometry_policy": "CONSTANT_RIB_WIDTH_AXIAL",
+      "path_type": "AXIAL",
+      "circuit_passes": 1,
+      "candidate_range_source": "SYNTHETIC_NON_DESIGN_MULTI_CANDIDATE_FIXTURE_NOT_A_SPACE_Y_DESIGN_RANGE",
+      "assumptions": [
+        "CONSTANT_RIB_WIDTH",
+        "CONSTANT_CHANNEL_HEIGHT",
+        "AXIAL_ONE_PASS",
+        "SYNTHETIC_MEAN_RADIUS_PROFILE",
+        "CONSTANT_SYNTHETIC_FLUID_PROPERTIES",
+        "RECOMMENDATION_IS_RELATIVE_AND_PRELIMINARY"
+      ],
+      "design_approved": false,
+      "geometric_validity_status": "PASS",
+      "calculation_allowed": true,
+      "stations": [
+        {
+          "station_id": "SYN-INLET",
+          "x_m": -0.1,
+          "mean_channel_radius_m": 0.03,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.0020943951023931952,
+          "channel_width_m": 0.0017943951023931953,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.00019379467105846507,
+          "hydraulic_diameter_m": 0.0014382030755733498,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE",
+          "calculation": {
+            "status": "MODEL_U",
+            "reason": "arithmetic completed within supplied correlation domains",
+            "results": {
+              "Reynolds": 4452.7635390122705,
+              "Prandtl": 13.333333333333334,
+              "darcy_factor": 0.0467248068325379,
+              "Nusselt": 49.00459072692138,
+              "h_l_W_m2K": 5111.022729601522,
+              "velocity_m_s": 3.8700754561704938,
+              "friction_pressure_gradient_Pa_m": 194637.3388644605,
+              "relative_roughness": 0.008343745194131306,
+              "heat_transfer_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "reasons": []
+              },
+              "friction_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM",
+                "re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "relative_roughness_range": [
+                  0.0,
+                  0.05
+                ]
+              },
+              "smooth_darcy_factor": 0.0386696245288827,
+              "roughness_friction_ratio": 1.208307745466696,
+              "roughness_assessment": {
+                "status": "MODEL_U",
+                "reason": "rough and smooth Darcy factors evaluated at identical Reynolds number",
+                "darcy_factor_definition": "DARCY_WEISBACH_NOT_FANNING",
+                "reynolds": 4452.7635390122705,
+                "relative_roughness": 0.008343745194131306,
+                "rough_darcy_factor": 0.0467248068325379,
+                "smooth_darcy_factor": 0.0386696245288827,
+                "roughness_friction_ratio": 1.208307745466696,
+                "warning_threshold": 4.0,
+                "roughness_heat_transfer_warning_status": "BELOW_ROUGHNESS_WARNING_THRESHOLD",
+                "arbitrary_friction_cap_applied": false,
+                "arbitrary_heat_transfer_cap_applied": false,
+                "friction_domain_source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM"
+              },
+              "applicability_assessment": {
+                "policy_id": "SPACE_Y_COOLING_APPLICABILITY_POLICY_V1",
+                "correlation_applicability_status": "WITHIN_GNIELINSKI_POLICY_DOMAIN",
+                "gnielinski_re_in_domain": true,
+                "gnielinski_pr_in_domain": true,
+                "gnielinski_re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "gnielinski_pr_range": [
+                  0.5,
+                  2000.0
+                ],
+                "re_design_minimum": 5000.0,
+                "re_design_margin": -547.2364609877295,
+                "re_design_recommendation_status": "BELOW_PRELIMINARY_RE_RECOMMENDATION",
+                "transition_warning_re_threshold": 10000.0,
+                "transition_region_warning": true,
+                "correlation_source": "TEAM_REPORTED_INCROPERA_7E_RANGE_CROSS_CHECKED_NOT_A_PHYSICAL_VALIDATION",
+                "design_recommendation_source": "SPACE_Y_TEAM_PRELIMINARY_RECOMMENDATION_NOT_CORRELATION_LIMIT"
+              },
+              "channel_aspect_ratio_h_over_w": 0.6687490388262611
+            },
+            "property_basis": "CONSTANT_DEFAULT",
+            "property_source": "SYNTHETIC_ARITHMETIC_FIXTURE_NOT_IPA_DATA",
+            "property_version": "TEST-ONLY-V1"
+          }
+        },
+        {
+          "station_id": "SYN-THROAT",
+          "x_m": 0.0,
+          "mean_channel_radius_m": 0.02,
+          "is_throat": true,
+          "circumferential_pitch_m": 0.0013962634015954637,
+          "channel_width_m": 0.0010962634015954638,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.00011839644737231008,
+          "hydraulic_diameter_m": 0.001145788484892913,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE",
+          "calculation": {
+            "status": "MODEL_U",
+            "reason": "arithmetic completed within supplied correlation domains",
+            "results": {
+              "Reynolds": 5806.53479216244,
+              "Prandtl": 13.333333333333334,
+              "darcy_factor": 0.046615887401311465,
+              "Nusselt": 68.124422646325,
+              "h_l_W_m2K": 8918.455309754489,
+              "velocity_m_s": 6.334649532528169,
+              "friction_pressure_gradient_Pa_m": 653032.3241683485,
+              "relative_roughness": 0.010473137196104338,
+              "heat_transfer_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "reasons": []
+              },
+              "friction_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM",
+                "re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "relative_roughness_range": [
+                  0.0,
+                  0.05
+                ]
+              },
+              "smooth_darcy_factor": 0.0358325365119241,
+              "roughness_friction_ratio": 1.3009374144026604,
+              "roughness_assessment": {
+                "status": "MODEL_U",
+                "reason": "rough and smooth Darcy factors evaluated at identical Reynolds number",
+                "darcy_factor_definition": "DARCY_WEISBACH_NOT_FANNING",
+                "reynolds": 5806.53479216244,
+                "relative_roughness": 0.010473137196104338,
+                "rough_darcy_factor": 0.046615887401311465,
+                "smooth_darcy_factor": 0.0358325365119241,
+                "roughness_friction_ratio": 1.3009374144026604,
+                "warning_threshold": 4.0,
+                "roughness_heat_transfer_warning_status": "BELOW_ROUGHNESS_WARNING_THRESHOLD",
+                "arbitrary_friction_cap_applied": false,
+                "arbitrary_heat_transfer_cap_applied": false,
+                "friction_domain_source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM"
+              },
+              "applicability_assessment": {
+                "policy_id": "SPACE_Y_COOLING_APPLICABILITY_POLICY_V1",
+                "correlation_applicability_status": "WITHIN_GNIELINSKI_POLICY_DOMAIN",
+                "gnielinski_re_in_domain": true,
+                "gnielinski_pr_in_domain": true,
+                "gnielinski_re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "gnielinski_pr_range": [
+                  0.5,
+                  2000.0
+                ],
+                "re_design_minimum": 5000.0,
+                "re_design_margin": 806.5347921624398,
+                "re_design_recommendation_status": "MEETS_RE_MIN_WITH_TRANSITION_WARNING",
+                "transition_warning_re_threshold": 10000.0,
+                "transition_region_warning": true,
+                "correlation_source": "TEAM_REPORTED_INCROPERA_7E_RANGE_CROSS_CHECKED_NOT_A_PHYSICAL_VALIDATION",
+                "design_recommendation_source": "SPACE_Y_TEAM_PRELIMINARY_RECOMMENDATION_NOT_CORRELATION_LIMIT"
+              },
+              "channel_aspect_ratio_h_over_w": 1.0946274392208675
+            },
+            "property_basis": "CONSTANT_DEFAULT",
+            "property_source": "SYNTHETIC_ARITHMETIC_FIXTURE_NOT_IPA_DATA",
+            "property_version": "TEST-ONLY-V1"
+          }
+        },
+        {
+          "station_id": "SYN-EXIT",
+          "x_m": 0.1,
+          "mean_channel_radius_m": 0.04,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.0027925268031909274,
+          "channel_width_m": 0.0024925268031909275,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.00026919289474462016,
+          "hydraulic_diameter_m": 0.0016200462844274482,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE",
+          "calculation": {
+            "status": "MODEL_U",
+            "reason": "arithmetic completed within supplied correlation domains",
+            "results": {
+              "Reynolds": 3610.896831354405,
+              "Prandtl": 13.333333333333334,
+              "darcy_factor": 0.04785204417156801,
+              "Nusselt": 37.58157468951538,
+              "h_l_W_m2K": 3479.6760176636567,
+              "velocity_m_s": 2.7861062258404528,
+              "friction_pressure_gradient_Pa_m": 91712.47323435245,
+              "relative_roughness": 0.007407195779126153,
+              "heat_transfer_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "reasons": []
+              },
+              "friction_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM",
+                "re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "relative_roughness_range": [
+                  0.0,
+                  0.05
+                ]
+              },
+              "smooth_darcy_factor": 0.04114128659445283,
+              "roughness_friction_ratio": 1.1631149177045914,
+              "roughness_assessment": {
+                "status": "MODEL_U",
+                "reason": "rough and smooth Darcy factors evaluated at identical Reynolds number",
+                "darcy_factor_definition": "DARCY_WEISBACH_NOT_FANNING",
+                "reynolds": 3610.896831354405,
+                "relative_roughness": 0.007407195779126153,
+                "rough_darcy_factor": 0.04785204417156801,
+                "smooth_darcy_factor": 0.04114128659445283,
+                "roughness_friction_ratio": 1.1631149177045914,
+                "warning_threshold": 4.0,
+                "roughness_heat_transfer_warning_status": "BELOW_ROUGHNESS_WARNING_THRESHOLD",
+                "arbitrary_friction_cap_applied": false,
+                "arbitrary_heat_transfer_cap_applied": false,
+                "friction_domain_source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM"
+              },
+              "applicability_assessment": {
+                "policy_id": "SPACE_Y_COOLING_APPLICABILITY_POLICY_V1",
+                "correlation_applicability_status": "WITHIN_GNIELINSKI_POLICY_DOMAIN",
+                "gnielinski_re_in_domain": true,
+                "gnielinski_pr_in_domain": true,
+                "gnielinski_re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "gnielinski_pr_range": [
+                  0.5,
+                  2000.0
+                ],
+                "re_design_minimum": 5000.0,
+                "re_design_margin": -1389.103168645595,
+                "re_design_recommendation_status": "BELOW_PRELIMINARY_RE_RECOMMENDATION",
+                "transition_warning_re_threshold": 10000.0,
+                "transition_region_warning": true,
+                "correlation_source": "TEAM_REPORTED_INCROPERA_7E_RANGE_CROSS_CHECKED_NOT_A_PHYSICAL_VALIDATION",
+                "design_recommendation_source": "SPACE_Y_TEAM_PRELIMINARY_RECOMMENDATION_NOT_CORRELATION_LIMIT"
+              },
+              "channel_aspect_ratio_h_over_w": 0.4814391558252302
+            },
+            "property_basis": "CONSTANT_DEFAULT",
+            "property_source": "SYNTHETIC_ARITHMETIC_FIXTURE_NOT_IPA_DATA",
+            "property_version": "TEST-ONLY-V1"
+          }
+        }
+      ],
+      "decision": "RETAIN_FOR_INTEGRATION_REVIEW",
+      "summary": {
+        "valid_calculation_station_count": 3,
+        "geometric_validity_status": "PASS",
+        "correlation_applicability_status": "APPLICABLE_TO_SUPPLIED_DOMAINS",
+        "throat_h_l_W_m2K": 8918.455309754489,
+        "minimum_h_l_W_m2K": 3479.6760176636567,
+        "maximum_h_l_W_m2K": 8918.455309754489,
+        "maximum_friction_pressure_gradient_Pa_m": 653032.3241683485,
+        "applicability_assessment": {
+          "status": "MODEL_U",
+          "reason": "all supplied discrete stations assessed; unsampled continuous positions are not proven",
+          "minimum_reynolds": 3610.896831354405,
+          "minimum_reynolds_station_id": "SYN-EXIT",
+          "minimum_reynolds_x_m": 0.1,
+          "re_design_minimum": 5000.0,
+          "re_design_margin": -1389.103168645595,
+          "re_design_recommendation_status": "BELOW_PRELIMINARY_RE_RECOMMENDATION",
+          "transition_warning_station_ids": [
+            "SYN-INLET",
+            "SYN-THROAT",
+            "SYN-EXIT"
+          ],
+          "maximum_roughness_friction_ratio": 1.3009374144026604,
+          "maximum_roughness_ratio_station_id": "SYN-THROAT",
+          "roughness_warning_status": "BELOW_ROUGHNESS_WARNING_THRESHOLD",
+          "correlation_domain_status": "ALL_DISCRETE_STATIONS_WITHIN_GNIELINSKI_POLICY_DOMAIN",
+          "continuous_path_claim": false,
+          "policy_id": "SPACE_Y_COOLING_APPLICABILITY_POLICY_V1"
+        },
+        "limitations": [
+          "No heat-load, wall-temperature, phase-change, manufacturing, structural, or supply-pressure approval is performed.",
+          "No scalar score or final optimum is assigned."
+        ]
+      },
+      "recommendation_tags": [
+        "BELOW_RE_DESIGN_RECOMMENDATION",
+        "TRANSITION_REGION_WARNING",
+        "LOWEST_FRICTION_GRADIENT_AT_REFERENCE",
+        "PARETO_CANDIDATE"
+      ],
+      "exclusion_reasons": [
+        "minimum discrete-station Re is below the preliminary team recommendation"
+      ],
+      "comparison": {
+        "reference_station_id": "SYN-THROAT",
+        "h_l_at_reference_W_m2K": 8918.455309754489,
+        "friction_pressure_gradient_at_reference_Pa_m": 653032.3241683485,
+        "pareto_status": "NON_DOMINATED",
+        "model_applicability": "APPLICABLE_TO_SUPPLIED_DOMAINS"
+      }
+    },
+    {
+      "candidate_id": "CH-0006",
+      "channel_count": 90,
+      "rib_thickness_m": 0.0004,
+      "channel_height_m": 0.0012,
+      "geometry_policy": "CONSTANT_RIB_WIDTH_AXIAL",
+      "path_type": "AXIAL",
+      "circuit_passes": 1,
+      "candidate_range_source": "SYNTHETIC_NON_DESIGN_MULTI_CANDIDATE_FIXTURE_NOT_A_SPACE_Y_DESIGN_RANGE",
+      "assumptions": [
+        "CONSTANT_RIB_WIDTH",
+        "CONSTANT_CHANNEL_HEIGHT",
+        "AXIAL_ONE_PASS",
+        "SYNTHETIC_MEAN_RADIUS_PROFILE",
+        "CONSTANT_SYNTHETIC_FLUID_PROPERTIES",
+        "RECOMMENDATION_IS_RELATIVE_AND_PRELIMINARY"
+      ],
+      "design_approved": false,
+      "geometric_validity_status": "PASS",
+      "calculation_allowed": true,
+      "stations": [
+        {
+          "station_id": "SYN-INLET",
+          "x_m": -0.1,
+          "mean_channel_radius_m": 0.03,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.0020943951023931952,
+          "channel_width_m": 0.0016943951023931953,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.00018299467105846508,
+          "hydraulic_diameter_m": 0.0014049734406962244,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE",
+          "calculation": {
+            "status": "MODEL_U",
+            "reason": "arithmetic completed within supplied correlation domains",
+            "results": {
+              "Reynolds": 4606.604441221182,
+              "Prandtl": 13.333333333333334,
+              "darcy_factor": 0.04661370205499901,
+              "Nusselt": 51.11604223414345,
+              "h_l_W_m2K": 5457.331870502825,
+              "velocity_m_s": 4.098480003061849,
+              "friction_pressure_gradient_Pa_m": 222921.067273788,
+              "relative_roughness": 0.008541086722645438,
+              "heat_transfer_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "reasons": []
+              },
+              "friction_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM",
+                "re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "relative_roughness_range": [
+                  0.0,
+                  0.05
+                ]
+              },
+              "smooth_darcy_factor": 0.038289087271363965,
+              "roughness_friction_ratio": 1.2174148139034107,
+              "roughness_assessment": {
+                "status": "MODEL_U",
+                "reason": "rough and smooth Darcy factors evaluated at identical Reynolds number",
+                "darcy_factor_definition": "DARCY_WEISBACH_NOT_FANNING",
+                "reynolds": 4606.604441221182,
+                "relative_roughness": 0.008541086722645438,
+                "rough_darcy_factor": 0.04661370205499901,
+                "smooth_darcy_factor": 0.038289087271363965,
+                "roughness_friction_ratio": 1.2174148139034107,
+                "warning_threshold": 4.0,
+                "roughness_heat_transfer_warning_status": "BELOW_ROUGHNESS_WARNING_THRESHOLD",
+                "arbitrary_friction_cap_applied": false,
+                "arbitrary_heat_transfer_cap_applied": false,
+                "friction_domain_source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM"
+              },
+              "applicability_assessment": {
+                "policy_id": "SPACE_Y_COOLING_APPLICABILITY_POLICY_V1",
+                "correlation_applicability_status": "WITHIN_GNIELINSKI_POLICY_DOMAIN",
+                "gnielinski_re_in_domain": true,
+                "gnielinski_pr_in_domain": true,
+                "gnielinski_re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "gnielinski_pr_range": [
+                  0.5,
+                  2000.0
+                ],
+                "re_design_minimum": 5000.0,
+                "re_design_margin": -393.39555877881776,
+                "re_design_recommendation_status": "BELOW_PRELIMINARY_RE_RECOMMENDATION",
+                "transition_warning_re_threshold": 10000.0,
+                "transition_region_warning": true,
+                "correlation_source": "TEAM_REPORTED_INCROPERA_7E_RANGE_CROSS_CHECKED_NOT_A_PHYSICAL_VALIDATION",
+                "design_recommendation_source": "SPACE_Y_TEAM_PRELIMINARY_RECOMMENDATION_NOT_CORRELATION_LIMIT"
+              },
+              "channel_aspect_ratio_h_over_w": 0.7082173445290874
+            },
+            "property_basis": "CONSTANT_DEFAULT",
+            "property_source": "SYNTHETIC_ARITHMETIC_FIXTURE_NOT_IPA_DATA",
+            "property_version": "TEST-ONLY-V1"
+          }
+        },
+        {
+          "station_id": "SYN-THROAT",
+          "x_m": 0.0,
+          "mean_channel_radius_m": 0.02,
+          "is_throat": true,
+          "circumferential_pitch_m": 0.0013962634015954637,
+          "channel_width_m": 0.0009962634015954638,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.00010759644737231007,
+          "hydraulic_diameter_m": 0.0010886818776346043,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE",
+          "calculation": {
+            "status": "MODEL_U",
+            "reason": "arithmetic completed within supplied correlation domains",
+            "results": {
+              "Reynolds": 6070.917233173126,
+              "Prandtl": 13.333333333333334,
+              "darcy_factor": 0.04682183473369183,
+              "Nusselt": 72.05912267413048,
+              "h_l_W_m2K": 9928.399308532778,
+              "velocity_m_s": 6.97049036763097,
+              "friction_pressure_gradient_Pa_m": 835861.050021847,
+              "relative_roughness": 0.01102250367763316,
+              "heat_transfer_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "reasons": []
+              },
+              "friction_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM",
+                "re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "relative_roughness_range": [
+                  0.0,
+                  0.05
+                ]
+              },
+              "smooth_darcy_factor": 0.035385984768160475,
+              "roughness_friction_ratio": 1.3231745573976814,
+              "roughness_assessment": {
+                "status": "MODEL_U",
+                "reason": "rough and smooth Darcy factors evaluated at identical Reynolds number",
+                "darcy_factor_definition": "DARCY_WEISBACH_NOT_FANNING",
+                "reynolds": 6070.917233173126,
+                "relative_roughness": 0.01102250367763316,
+                "rough_darcy_factor": 0.04682183473369183,
+                "smooth_darcy_factor": 0.035385984768160475,
+                "roughness_friction_ratio": 1.3231745573976814,
+                "warning_threshold": 4.0,
+                "roughness_heat_transfer_warning_status": "BELOW_ROUGHNESS_WARNING_THRESHOLD",
+                "arbitrary_friction_cap_applied": false,
+                "arbitrary_heat_transfer_cap_applied": false,
+                "friction_domain_source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM"
+              },
+              "applicability_assessment": {
+                "policy_id": "SPACE_Y_COOLING_APPLICABILITY_POLICY_V1",
+                "correlation_applicability_status": "WITHIN_GNIELINSKI_POLICY_DOMAIN",
+                "gnielinski_re_in_domain": true,
+                "gnielinski_pr_in_domain": true,
+                "gnielinski_re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "gnielinski_pr_range": [
+                  0.5,
+                  2000.0
+                ],
+                "re_design_minimum": 5000.0,
+                "re_design_margin": 1070.917233173126,
+                "re_design_recommendation_status": "MEETS_RE_MIN_WITH_TRANSITION_WARNING",
+                "transition_warning_re_threshold": 10000.0,
+                "transition_region_warning": true,
+                "correlation_source": "TEAM_REPORTED_INCROPERA_7E_RANGE_CROSS_CHECKED_NOT_A_PHYSICAL_VALIDATION",
+                "design_recommendation_source": "SPACE_Y_TEAM_PRELIMINARY_RECOMMENDATION_NOT_CORRELATION_LIMIT"
+              },
+              "channel_aspect_ratio_h_over_w": 1.2045007355266315
+            },
+            "property_basis": "CONSTANT_DEFAULT",
+            "property_source": "SYNTHETIC_ARITHMETIC_FIXTURE_NOT_IPA_DATA",
+            "property_version": "TEST-ONLY-V1"
+          }
+        },
+        {
+          "station_id": "SYN-EXIT",
+          "x_m": 0.1,
+          "mean_channel_radius_m": 0.04,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.0027925268031909274,
+          "channel_width_m": 0.0023925268031909273,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.0002583928947446201,
+          "hydraulic_diameter_m": 0.0015983358349777796,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE",
+          "calculation": {
+            "status": "MODEL_U",
+            "reason": "arithmetic completed within supplied correlation domains",
+            "results": {
+              "Reynolds": 3711.408171399166,
+              "Prandtl": 13.333333333333334,
+              "darcy_factor": 0.047666125908499106,
+              "Nusselt": 38.93876343948671,
+              "h_l_W_m2K": 3654.3099316822904,
+              "velocity_m_s": 2.90255659212787,
+              "friction_pressure_gradient_Pa_m": 100499.3384096336,
+              "relative_roughness": 0.007507808895598481,
+              "heat_transfer_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "reasons": []
+              },
+              "friction_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM",
+                "re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "relative_roughness_range": [
+                  0.0,
+                  0.05
+                ]
+              },
+              "smooth_darcy_factor": 0.040804873922806476,
+              "roughness_friction_ratio": 1.1681478540694075,
+              "roughness_assessment": {
+                "status": "MODEL_U",
+                "reason": "rough and smooth Darcy factors evaluated at identical Reynolds number",
+                "darcy_factor_definition": "DARCY_WEISBACH_NOT_FANNING",
+                "reynolds": 3711.408171399166,
+                "relative_roughness": 0.007507808895598481,
+                "rough_darcy_factor": 0.047666125908499106,
+                "smooth_darcy_factor": 0.040804873922806476,
+                "roughness_friction_ratio": 1.1681478540694075,
+                "warning_threshold": 4.0,
+                "roughness_heat_transfer_warning_status": "BELOW_ROUGHNESS_WARNING_THRESHOLD",
+                "arbitrary_friction_cap_applied": false,
+                "arbitrary_heat_transfer_cap_applied": false,
+                "friction_domain_source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM"
+              },
+              "applicability_assessment": {
+                "policy_id": "SPACE_Y_COOLING_APPLICABILITY_POLICY_V1",
+                "correlation_applicability_status": "WITHIN_GNIELINSKI_POLICY_DOMAIN",
+                "gnielinski_re_in_domain": true,
+                "gnielinski_pr_in_domain": true,
+                "gnielinski_re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "gnielinski_pr_range": [
+                  0.5,
+                  2000.0
+                ],
+                "re_design_minimum": 5000.0,
+                "re_design_margin": -1288.591828600834,
+                "re_design_recommendation_status": "BELOW_PRELIMINARY_RE_RECOMMENDATION",
+                "transition_warning_re_threshold": 10000.0,
+                "transition_region_warning": true,
+                "correlation_source": "TEAM_REPORTED_INCROPERA_7E_RANGE_CROSS_CHECKED_NOT_A_PHYSICAL_VALIDATION",
+                "design_recommendation_source": "SPACE_Y_TEAM_PRELIMINARY_RECOMMENDATION_NOT_CORRELATION_LIMIT"
+              },
+              "channel_aspect_ratio_h_over_w": 0.5015617791196959
+            },
+            "property_basis": "CONSTANT_DEFAULT",
+            "property_source": "SYNTHETIC_ARITHMETIC_FIXTURE_NOT_IPA_DATA",
+            "property_version": "TEST-ONLY-V1"
+          }
+        }
+      ],
+      "decision": "RETAIN_FOR_INTEGRATION_REVIEW",
+      "summary": {
+        "valid_calculation_station_count": 3,
+        "geometric_validity_status": "PASS",
+        "correlation_applicability_status": "APPLICABLE_TO_SUPPLIED_DOMAINS",
+        "throat_h_l_W_m2K": 9928.399308532778,
+        "minimum_h_l_W_m2K": 3654.3099316822904,
+        "maximum_h_l_W_m2K": 9928.399308532778,
+        "maximum_friction_pressure_gradient_Pa_m": 835861.050021847,
+        "applicability_assessment": {
+          "status": "MODEL_U",
+          "reason": "all supplied discrete stations assessed; unsampled continuous positions are not proven",
+          "minimum_reynolds": 3711.408171399166,
+          "minimum_reynolds_station_id": "SYN-EXIT",
+          "minimum_reynolds_x_m": 0.1,
+          "re_design_minimum": 5000.0,
+          "re_design_margin": -1288.591828600834,
+          "re_design_recommendation_status": "BELOW_PRELIMINARY_RE_RECOMMENDATION",
+          "transition_warning_station_ids": [
+            "SYN-INLET",
+            "SYN-THROAT",
+            "SYN-EXIT"
+          ],
+          "maximum_roughness_friction_ratio": 1.3231745573976814,
+          "maximum_roughness_ratio_station_id": "SYN-THROAT",
+          "roughness_warning_status": "BELOW_ROUGHNESS_WARNING_THRESHOLD",
+          "correlation_domain_status": "ALL_DISCRETE_STATIONS_WITHIN_GNIELINSKI_POLICY_DOMAIN",
+          "continuous_path_claim": false,
+          "policy_id": "SPACE_Y_COOLING_APPLICABILITY_POLICY_V1"
+        },
+        "limitations": [
+          "No heat-load, wall-temperature, phase-change, manufacturing, structural, or supply-pressure approval is performed.",
+          "No scalar score or final optimum is assigned."
+        ]
+      },
+      "recommendation_tags": [
+        "BELOW_RE_DESIGN_RECOMMENDATION",
+        "TRANSITION_REGION_WARNING",
+        "PARETO_CANDIDATE"
+      ],
+      "exclusion_reasons": [
+        "minimum discrete-station Re is below the preliminary team recommendation"
+      ],
+      "comparison": {
+        "reference_station_id": "SYN-THROAT",
+        "h_l_at_reference_W_m2K": 9928.399308532778,
+        "friction_pressure_gradient_at_reference_Pa_m": 835861.050021847,
+        "pareto_status": "NON_DOMINATED",
+        "model_applicability": "APPLICABLE_TO_SUPPLIED_DOMAINS"
+      }
+    },
+    {
+      "candidate_id": "CH-0007",
+      "channel_count": 90,
+      "rib_thickness_m": 0.0005,
+      "channel_height_m": 0.0012,
+      "geometry_policy": "CONSTANT_RIB_WIDTH_AXIAL",
+      "path_type": "AXIAL",
+      "circuit_passes": 1,
+      "candidate_range_source": "SYNTHETIC_NON_DESIGN_MULTI_CANDIDATE_FIXTURE_NOT_A_SPACE_Y_DESIGN_RANGE",
+      "assumptions": [
+        "CONSTANT_RIB_WIDTH",
+        "CONSTANT_CHANNEL_HEIGHT",
+        "AXIAL_ONE_PASS",
+        "SYNTHETIC_MEAN_RADIUS_PROFILE",
+        "CONSTANT_SYNTHETIC_FLUID_PROPERTIES",
+        "RECOMMENDATION_IS_RELATIVE_AND_PRELIMINARY"
+      ],
+      "design_approved": false,
+      "geometric_validity_status": "OUTSIDE",
+      "calculation_allowed": false,
+      "stations": [
+        {
+          "station_id": "SYN-INLET",
+          "x_m": -0.1,
+          "mean_channel_radius_m": 0.03,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.0020943951023931952,
+          "channel_width_m": 0.0015943951023931952,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.00017219467105846506,
+          "hydraulic_diameter_m": 0.001369365499698489,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+        },
+        {
+          "station_id": "SYN-THROAT",
+          "x_m": 0.0,
+          "mean_channel_radius_m": 0.02,
+          "is_throat": true,
+          "circumferential_pitch_m": 0.0013962634015954637,
+          "channel_width_m": 0.0008962634015954637,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 9.679644737231008e-05,
+          "hydraulic_diameter_m": 0.001026126851326014,
+          "geometric_validity_status": "OUTSIDE",
+          "geometric_reasons": [
+            "channel width is below the supplied minimum"
+          ],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+        },
+        {
+          "station_id": "SYN-EXIT",
+          "x_m": 0.1,
+          "mean_channel_radius_m": 0.04,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.0027925268031909274,
+          "channel_width_m": 0.0022925268031909274,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.0002475928947446201,
+          "hydraulic_diameter_m": 0.001575382133826803,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+        }
+      ],
+      "decision": "EXCLUDE_GEOMETRIC_CONSTRAINT",
+      "summary": {
+        "valid_calculation_station_count": 0,
+        "geometric_validity_status": "OUTSIDE",
+        "correlation_applicability_status": "NOT_RUN",
+        "throat_h_l_W_m2K": null,
+        "minimum_h_l_W_m2K": null,
+        "maximum_h_l_W_m2K": null,
+        "maximum_friction_pressure_gradient_Pa_m": null,
+        "applicability_assessment": {
+          "status": "INPUT_U",
+          "reason": "at least one discrete station lacks an applicable completed calculation",
+          "minimum_reynolds": null,
+          "minimum_reynolds_station_id": null,
+          "minimum_reynolds_x_m": null,
+          "re_design_minimum": null,
+          "re_design_margin": null,
+          "re_design_recommendation_status": "NOT_EVALUATED",
+          "transition_warning_station_ids": [],
+          "maximum_roughness_friction_ratio": null,
+          "maximum_roughness_ratio_station_id": null,
+          "roughness_warning_status": "NOT_EVALUATED",
+          "correlation_domain_status": "NOT_EVALUATED",
+          "continuous_path_claim": false
+        },
+        "limitations": [
+          "At least one station violates supplied channel-width constraints."
+        ]
+      },
+      "recommendation_tags": [
+        "EXCLUDED_GEOMETRY"
+      ],
+      "exclusion_reasons": [
+        "candidate violates at least one supplied geometry constraint"
+      ],
+      "comparison": {
+        "reference_station_id": "SYN-THROAT",
+        "h_l_at_reference_W_m2K": null,
+        "friction_pressure_gradient_at_reference_Pa_m": null,
+        "pareto_status": "NOT_EVALUATED",
+        "model_applicability": "NOT_RUN"
+      }
+    },
+    {
+      "candidate_id": "CH-0008",
+      "channel_count": 90,
+      "rib_thickness_m": 0.0006,
+      "channel_height_m": 0.0012,
+      "geometry_policy": "CONSTANT_RIB_WIDTH_AXIAL",
+      "path_type": "AXIAL",
+      "circuit_passes": 1,
+      "candidate_range_source": "SYNTHETIC_NON_DESIGN_MULTI_CANDIDATE_FIXTURE_NOT_A_SPACE_Y_DESIGN_RANGE",
+      "assumptions": [
+        "CONSTANT_RIB_WIDTH",
+        "CONSTANT_CHANNEL_HEIGHT",
+        "AXIAL_ONE_PASS",
+        "SYNTHETIC_MEAN_RADIUS_PROFILE",
+        "CONSTANT_SYNTHETIC_FLUID_PROPERTIES",
+        "RECOMMENDATION_IS_RELATIVE_AND_PRELIMINARY"
+      ],
+      "design_approved": false,
+      "geometric_validity_status": "OUTSIDE",
+      "calculation_allowed": false,
+      "stations": [
+        {
+          "station_id": "SYN-INLET",
+          "x_m": -0.1,
+          "mean_channel_radius_m": 0.03,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.0020943951023931952,
+          "channel_width_m": 0.0014943951023931954,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.0001613946710584651,
+          "hydraulic_diameter_m": 0.00133111444663704,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+        },
+        {
+          "station_id": "SYN-THROAT",
+          "x_m": 0.0,
+          "mean_channel_radius_m": 0.02,
+          "is_throat": true,
+          "circumferential_pitch_m": 0.0013962634015954637,
+          "channel_width_m": 0.0007962634015954638,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 8.599644737231009e-05,
+          "hydraulic_diameter_m": 0.0009573046133600246,
+          "geometric_validity_status": "OUTSIDE",
+          "geometric_reasons": [
+            "channel width is below the supplied minimum"
+          ],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+        },
+        {
+          "station_id": "SYN-EXIT",
+          "x_m": 0.1,
+          "mean_channel_radius_m": 0.04,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.0027925268031909274,
+          "channel_width_m": 0.0021925268031909276,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.00023679289474462016,
+          "hydraulic_diameter_m": 0.0015510752406462513,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+        }
+      ],
+      "decision": "EXCLUDE_GEOMETRIC_CONSTRAINT",
+      "summary": {
+        "valid_calculation_station_count": 0,
+        "geometric_validity_status": "OUTSIDE",
+        "correlation_applicability_status": "NOT_RUN",
+        "throat_h_l_W_m2K": null,
+        "minimum_h_l_W_m2K": null,
+        "maximum_h_l_W_m2K": null,
+        "maximum_friction_pressure_gradient_Pa_m": null,
+        "applicability_assessment": {
+          "status": "INPUT_U",
+          "reason": "at least one discrete station lacks an applicable completed calculation",
+          "minimum_reynolds": null,
+          "minimum_reynolds_station_id": null,
+          "minimum_reynolds_x_m": null,
+          "re_design_minimum": null,
+          "re_design_margin": null,
+          "re_design_recommendation_status": "NOT_EVALUATED",
+          "transition_warning_station_ids": [],
+          "maximum_roughness_friction_ratio": null,
+          "maximum_roughness_ratio_station_id": null,
+          "roughness_warning_status": "NOT_EVALUATED",
+          "correlation_domain_status": "NOT_EVALUATED",
+          "continuous_path_claim": false
+        },
+        "limitations": [
+          "At least one station violates supplied channel-width constraints."
+        ]
+      },
+      "recommendation_tags": [
+        "EXCLUDED_GEOMETRY"
+      ],
+      "exclusion_reasons": [
+        "candidate violates at least one supplied geometry constraint"
+      ],
+      "comparison": {
+        "reference_station_id": "SYN-THROAT",
+        "h_l_at_reference_W_m2K": null,
+        "friction_pressure_gradient_at_reference_Pa_m": null,
+        "pareto_status": "NOT_EVALUATED",
+        "model_applicability": "NOT_RUN"
+      }
+    },
+    {
+      "candidate_id": "CH-0009",
+      "channel_count": 100,
+      "rib_thickness_m": 0.0003,
+      "channel_height_m": 0.0012,
+      "geometry_policy": "CONSTANT_RIB_WIDTH_AXIAL",
+      "path_type": "AXIAL",
+      "circuit_passes": 1,
+      "candidate_range_source": "SYNTHETIC_NON_DESIGN_MULTI_CANDIDATE_FIXTURE_NOT_A_SPACE_Y_DESIGN_RANGE",
+      "assumptions": [
+        "CONSTANT_RIB_WIDTH",
+        "CONSTANT_CHANNEL_HEIGHT",
+        "AXIAL_ONE_PASS",
+        "SYNTHETIC_MEAN_RADIUS_PROFILE",
+        "CONSTANT_SYNTHETIC_FLUID_PROPERTIES",
+        "RECOMMENDATION_IS_RELATIVE_AND_PRELIMINARY"
+      ],
+      "design_approved": false,
+      "geometric_validity_status": "PASS",
+      "calculation_allowed": true,
+      "stations": [
+        {
+          "station_id": "SYN-INLET",
+          "x_m": -0.1,
+          "mean_channel_radius_m": 0.03,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.0018849555921538759,
+          "channel_width_m": 0.001584955592153876,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.0001901946710584651,
+          "hydraulic_diameter_m": 0.0013658721998606026,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE",
+          "calculation": {
+            "status": "MODEL_U",
+            "reason": "arithmetic completed within supplied correlation domains",
+            "results": {
+              "Reynolds": 4308.865833914155,
+              "Prandtl": 13.333333333333334,
+              "darcy_factor": 0.047395309196770104,
+              "Nusselt": 47.35929688885809,
+              "h_l_W_m2K": 5200.995037495981,
+              "velocity_m_s": 3.9433281480817772,
+              "friction_pressure_gradient_Pa_m": 215829.65877066986,
+              "relative_roughness": 0.008785595022158508,
+              "heat_transfer_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "reasons": []
+              },
+              "friction_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM",
+                "re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "relative_roughness_range": [
+                  0.0,
+                  0.05
+                ]
+              },
+              "smooth_darcy_factor": 0.039042814784914635,
+              "roughness_friction_ratio": 1.2139316659894794,
+              "roughness_assessment": {
+                "status": "MODEL_U",
+                "reason": "rough and smooth Darcy factors evaluated at identical Reynolds number",
+                "darcy_factor_definition": "DARCY_WEISBACH_NOT_FANNING",
+                "reynolds": 4308.865833914155,
+                "relative_roughness": 0.008785595022158508,
+                "rough_darcy_factor": 0.047395309196770104,
+                "smooth_darcy_factor": 0.039042814784914635,
+                "roughness_friction_ratio": 1.2139316659894794,
+                "warning_threshold": 4.0,
+                "roughness_heat_transfer_warning_status": "BELOW_ROUGHNESS_WARNING_THRESHOLD",
+                "arbitrary_friction_cap_applied": false,
+                "arbitrary_heat_transfer_cap_applied": false,
+                "friction_domain_source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM"
+              },
+              "applicability_assessment": {
+                "policy_id": "SPACE_Y_COOLING_APPLICABILITY_POLICY_V1",
+                "correlation_applicability_status": "WITHIN_GNIELINSKI_POLICY_DOMAIN",
+                "gnielinski_re_in_domain": true,
+                "gnielinski_pr_in_domain": true,
+                "gnielinski_re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "gnielinski_pr_range": [
+                  0.5,
+                  2000.0
+                ],
+                "re_design_minimum": 5000.0,
+                "re_design_margin": -691.1341660858452,
+                "re_design_recommendation_status": "BELOW_PRELIMINARY_RE_RECOMMENDATION",
+                "transition_warning_re_threshold": 10000.0,
+                "transition_region_warning": true,
+                "correlation_source": "TEAM_REPORTED_INCROPERA_7E_RANGE_CROSS_CHECKED_NOT_A_PHYSICAL_VALIDATION",
+                "design_recommendation_source": "SPACE_Y_TEAM_PRELIMINARY_RECOMMENDATION_NOT_CORRELATION_LIMIT"
+              },
+              "channel_aspect_ratio_h_over_w": 0.7571190044317011
+            },
+            "property_basis": "CONSTANT_DEFAULT",
+            "property_source": "SYNTHETIC_ARITHMETIC_FIXTURE_NOT_IPA_DATA",
+            "property_version": "TEST-ONLY-V1"
+          }
+        },
+        {
+          "station_id": "SYN-THROAT",
+          "x_m": 0.0,
+          "mean_channel_radius_m": 0.02,
+          "is_throat": true,
+          "circumferential_pitch_m": 0.0012566370614359175,
+          "channel_width_m": 0.0009566370614359175,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.00011479644737231009,
+          "hydraulic_diameter_m": 0.0010645875416411244,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE",
+          "calculation": {
+            "status": "MODEL_U",
+            "reason": "arithmetic completed within supplied correlation domains",
+            "results": {
+              "Reynolds": 5564.218576495316,
+              "Prandtl": 13.333333333333334,
+              "darcy_factor": 0.04761981763880008,
+              "Nusselt": 65.50952698735045,
+              "h_l_W_m2K": 9230.268685048248,
+              "velocity_m_s": 6.533303226428126,
+              "friction_pressure_gradient_Pa_m": 763716.1426403066,
+              "relative_roughness": 0.011271971097371,
+              "heat_transfer_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "reasons": []
+              },
+              "friction_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM",
+                "re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "relative_roughness_range": [
+                  0.0,
+                  0.05
+                ]
+              },
+              "smooth_darcy_factor": 0.03626763567572687,
+              "roughness_friction_ratio": 1.3130113598960347,
+              "roughness_assessment": {
+                "status": "MODEL_U",
+                "reason": "rough and smooth Darcy factors evaluated at identical Reynolds number",
+                "darcy_factor_definition": "DARCY_WEISBACH_NOT_FANNING",
+                "reynolds": 5564.218576495316,
+                "relative_roughness": 0.011271971097371,
+                "rough_darcy_factor": 0.04761981763880008,
+                "smooth_darcy_factor": 0.03626763567572687,
+                "roughness_friction_ratio": 1.3130113598960347,
+                "warning_threshold": 4.0,
+                "roughness_heat_transfer_warning_status": "BELOW_ROUGHNESS_WARNING_THRESHOLD",
+                "arbitrary_friction_cap_applied": false,
+                "arbitrary_heat_transfer_cap_applied": false,
+                "friction_domain_source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM"
+              },
+              "applicability_assessment": {
+                "policy_id": "SPACE_Y_COOLING_APPLICABILITY_POLICY_V1",
+                "correlation_applicability_status": "WITHIN_GNIELINSKI_POLICY_DOMAIN",
+                "gnielinski_re_in_domain": true,
+                "gnielinski_pr_in_domain": true,
+                "gnielinski_re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "gnielinski_pr_range": [
+                  0.5,
+                  2000.0
+                ],
+                "re_design_minimum": 5000.0,
+                "re_design_margin": 564.2185764953156,
+                "re_design_recommendation_status": "MEETS_RE_MIN_WITH_TRANSITION_WARNING",
+                "transition_warning_re_threshold": 10000.0,
+                "transition_region_warning": true,
+                "correlation_source": "TEAM_REPORTED_INCROPERA_7E_RANGE_CROSS_CHECKED_NOT_A_PHYSICAL_VALIDATION",
+                "design_recommendation_source": "SPACE_Y_TEAM_PRELIMINARY_RECOMMENDATION_NOT_CORRELATION_LIMIT"
+              },
+              "channel_aspect_ratio_h_over_w": 1.2543942194741997
+            },
+            "property_basis": "CONSTANT_DEFAULT",
+            "property_source": "SYNTHETIC_ARITHMETIC_FIXTURE_NOT_IPA_DATA",
+            "property_version": "TEST-ONLY-V1"
+          }
+        },
+        {
+          "station_id": "SYN-EXIT",
+          "x_m": 0.1,
+          "mean_channel_radius_m": 0.04,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.002513274122871835,
+          "channel_width_m": 0.002213274122871835,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.0002655928947446202,
+          "hydraulic_diameter_m": 0.0015562353633710357,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE",
+          "calculation": {
+            "status": "MODEL_U",
+            "reason": "arithmetic completed within supplied correlation domains",
+            "results": {
+              "Reynolds": 3515.6859859540164,
+              "Prandtl": 13.333333333333334,
+              "darcy_factor": 0.04837679381570799,
+              "Nusselt": 36.444875300893436,
+              "h_l_W_m2K": 3512.7921031766477,
+              "velocity_m_s": 2.823870724106379,
+              "friction_pressure_gradient_Pa_m": 99154.26861451386,
+              "relative_roughness": 0.007710915895142125,
+              "heat_transfer_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "reasons": []
+              },
+              "friction_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM",
+                "re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "relative_roughness_range": [
+                  0.0,
+                  0.05
+                ]
+              },
+              "smooth_darcy_factor": 0.04147251763858563,
+              "roughness_friction_ratio": 1.1664783468727418,
+              "roughness_assessment": {
+                "status": "MODEL_U",
+                "reason": "rough and smooth Darcy factors evaluated at identical Reynolds number",
+                "darcy_factor_definition": "DARCY_WEISBACH_NOT_FANNING",
+                "reynolds": 3515.6859859540164,
+                "relative_roughness": 0.007710915895142125,
+                "rough_darcy_factor": 0.04837679381570799,
+                "smooth_darcy_factor": 0.04147251763858563,
+                "roughness_friction_ratio": 1.1664783468727418,
+                "warning_threshold": 4.0,
+                "roughness_heat_transfer_warning_status": "BELOW_ROUGHNESS_WARNING_THRESHOLD",
+                "arbitrary_friction_cap_applied": false,
+                "arbitrary_heat_transfer_cap_applied": false,
+                "friction_domain_source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM"
+              },
+              "applicability_assessment": {
+                "policy_id": "SPACE_Y_COOLING_APPLICABILITY_POLICY_V1",
+                "correlation_applicability_status": "WITHIN_GNIELINSKI_POLICY_DOMAIN",
+                "gnielinski_re_in_domain": true,
+                "gnielinski_pr_in_domain": true,
+                "gnielinski_re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "gnielinski_pr_range": [
+                  0.5,
+                  2000.0
+                ],
+                "re_design_minimum": 5000.0,
+                "re_design_margin": -1484.3140140459836,
+                "re_design_recommendation_status": "BELOW_PRELIMINARY_RE_RECOMMENDATION",
+                "transition_warning_re_threshold": 10000.0,
+                "transition_region_warning": true,
+                "correlation_source": "TEAM_REPORTED_INCROPERA_7E_RANGE_CROSS_CHECKED_NOT_A_PHYSICAL_VALIDATION",
+                "design_recommendation_source": "SPACE_Y_TEAM_PRELIMINARY_RECOMMENDATION_NOT_CORRELATION_LIMIT"
+              },
+              "channel_aspect_ratio_h_over_w": 0.5421831790284247
+            },
+            "property_basis": "CONSTANT_DEFAULT",
+            "property_source": "SYNTHETIC_ARITHMETIC_FIXTURE_NOT_IPA_DATA",
+            "property_version": "TEST-ONLY-V1"
+          }
+        }
+      ],
+      "decision": "RETAIN_FOR_INTEGRATION_REVIEW",
+      "summary": {
+        "valid_calculation_station_count": 3,
+        "geometric_validity_status": "PASS",
+        "correlation_applicability_status": "APPLICABLE_TO_SUPPLIED_DOMAINS",
+        "throat_h_l_W_m2K": 9230.268685048248,
+        "minimum_h_l_W_m2K": 3512.7921031766477,
+        "maximum_h_l_W_m2K": 9230.268685048248,
+        "maximum_friction_pressure_gradient_Pa_m": 763716.1426403066,
+        "applicability_assessment": {
+          "status": "MODEL_U",
+          "reason": "all supplied discrete stations assessed; unsampled continuous positions are not proven",
+          "minimum_reynolds": 3515.6859859540164,
+          "minimum_reynolds_station_id": "SYN-EXIT",
+          "minimum_reynolds_x_m": 0.1,
+          "re_design_minimum": 5000.0,
+          "re_design_margin": -1484.3140140459836,
+          "re_design_recommendation_status": "BELOW_PRELIMINARY_RE_RECOMMENDATION",
+          "transition_warning_station_ids": [
+            "SYN-INLET",
+            "SYN-THROAT",
+            "SYN-EXIT"
+          ],
+          "maximum_roughness_friction_ratio": 1.3130113598960347,
+          "maximum_roughness_ratio_station_id": "SYN-THROAT",
+          "roughness_warning_status": "BELOW_ROUGHNESS_WARNING_THRESHOLD",
+          "correlation_domain_status": "ALL_DISCRETE_STATIONS_WITHIN_GNIELINSKI_POLICY_DOMAIN",
+          "continuous_path_claim": false,
+          "policy_id": "SPACE_Y_COOLING_APPLICABILITY_POLICY_V1"
+        },
+        "limitations": [
+          "No heat-load, wall-temperature, phase-change, manufacturing, structural, or supply-pressure approval is performed.",
+          "No scalar score or final optimum is assigned."
+        ]
+      },
+      "recommendation_tags": [
+        "BELOW_RE_DESIGN_RECOMMENDATION",
+        "TRANSITION_REGION_WARNING",
+        "PARETO_CANDIDATE"
+      ],
+      "exclusion_reasons": [
+        "minimum discrete-station Re is below the preliminary team recommendation"
+      ],
+      "comparison": {
+        "reference_station_id": "SYN-THROAT",
+        "h_l_at_reference_W_m2K": 9230.268685048248,
+        "friction_pressure_gradient_at_reference_Pa_m": 763716.1426403066,
+        "pareto_status": "NON_DOMINATED",
+        "model_applicability": "APPLICABLE_TO_SUPPLIED_DOMAINS"
+      }
+    },
+    {
+      "candidate_id": "CH-0010",
+      "channel_count": 100,
+      "rib_thickness_m": 0.0004,
+      "channel_height_m": 0.0012,
+      "geometry_policy": "CONSTANT_RIB_WIDTH_AXIAL",
+      "path_type": "AXIAL",
+      "circuit_passes": 1,
+      "candidate_range_source": "SYNTHETIC_NON_DESIGN_MULTI_CANDIDATE_FIXTURE_NOT_A_SPACE_Y_DESIGN_RANGE",
+      "assumptions": [
+        "CONSTANT_RIB_WIDTH",
+        "CONSTANT_CHANNEL_HEIGHT",
+        "AXIAL_ONE_PASS",
+        "SYNTHETIC_MEAN_RADIUS_PROFILE",
+        "CONSTANT_SYNTHETIC_FLUID_PROPERTIES",
+        "RECOMMENDATION_IS_RELATIVE_AND_PRELIMINARY"
+      ],
+      "design_approved": false,
+      "geometric_validity_status": "OUTSIDE",
+      "calculation_allowed": false,
+      "stations": [
+        {
+          "station_id": "SYN-INLET",
+          "x_m": -0.1,
+          "mean_channel_radius_m": 0.03,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.0018849555921538759,
+          "channel_width_m": 0.0014849555921538759,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.0001781946710584651,
+          "hydraulic_diameter_m": 0.001327356560974009,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+        },
+        {
+          "station_id": "SYN-THROAT",
+          "x_m": 0.0,
+          "mean_channel_radius_m": 0.02,
+          "is_throat": true,
+          "circumferential_pitch_m": 0.0012566370614359175,
+          "channel_width_m": 0.0008566370614359175,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.00010279644737231009,
+          "hydraulic_diameter_m": 0.0009996556932659665,
+          "geometric_validity_status": "OUTSIDE",
+          "geometric_reasons": [
+            "channel width is below the supplied minimum"
+          ],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+        },
+        {
+          "station_id": "SYN-EXIT",
+          "x_m": 0.1,
+          "mean_channel_radius_m": 0.04,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.002513274122871835,
+          "channel_width_m": 0.0021132741228718347,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.00025359289474462016,
+          "hydraulic_diameter_m": 0.001530769174781194,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+        }
+      ],
+      "decision": "EXCLUDE_GEOMETRIC_CONSTRAINT",
+      "summary": {
+        "valid_calculation_station_count": 0,
+        "geometric_validity_status": "OUTSIDE",
+        "correlation_applicability_status": "NOT_RUN",
+        "throat_h_l_W_m2K": null,
+        "minimum_h_l_W_m2K": null,
+        "maximum_h_l_W_m2K": null,
+        "maximum_friction_pressure_gradient_Pa_m": null,
+        "applicability_assessment": {
+          "status": "INPUT_U",
+          "reason": "at least one discrete station lacks an applicable completed calculation",
+          "minimum_reynolds": null,
+          "minimum_reynolds_station_id": null,
+          "minimum_reynolds_x_m": null,
+          "re_design_minimum": null,
+          "re_design_margin": null,
+          "re_design_recommendation_status": "NOT_EVALUATED",
+          "transition_warning_station_ids": [],
+          "maximum_roughness_friction_ratio": null,
+          "maximum_roughness_ratio_station_id": null,
+          "roughness_warning_status": "NOT_EVALUATED",
+          "correlation_domain_status": "NOT_EVALUATED",
+          "continuous_path_claim": false
+        },
+        "limitations": [
+          "At least one station violates supplied channel-width constraints."
+        ]
+      },
+      "recommendation_tags": [
+        "EXCLUDED_GEOMETRY"
+      ],
+      "exclusion_reasons": [
+        "candidate violates at least one supplied geometry constraint"
+      ],
+      "comparison": {
+        "reference_station_id": "SYN-THROAT",
+        "h_l_at_reference_W_m2K": null,
+        "friction_pressure_gradient_at_reference_Pa_m": null,
+        "pareto_status": "NOT_EVALUATED",
+        "model_applicability": "NOT_RUN"
+      }
+    },
+    {
+      "candidate_id": "CH-0011",
+      "channel_count": 100,
+      "rib_thickness_m": 0.0005,
+      "channel_height_m": 0.0012,
+      "geometry_policy": "CONSTANT_RIB_WIDTH_AXIAL",
+      "path_type": "AXIAL",
+      "circuit_passes": 1,
+      "candidate_range_source": "SYNTHETIC_NON_DESIGN_MULTI_CANDIDATE_FIXTURE_NOT_A_SPACE_Y_DESIGN_RANGE",
+      "assumptions": [
+        "CONSTANT_RIB_WIDTH",
+        "CONSTANT_CHANNEL_HEIGHT",
+        "AXIAL_ONE_PASS",
+        "SYNTHETIC_MEAN_RADIUS_PROFILE",
+        "CONSTANT_SYNTHETIC_FLUID_PROPERTIES",
+        "RECOMMENDATION_IS_RELATIVE_AND_PRELIMINARY"
+      ],
+      "design_approved": false,
+      "geometric_validity_status": "OUTSIDE",
+      "calculation_allowed": false,
+      "stations": [
+        {
+          "station_id": "SYN-INLET",
+          "x_m": -0.1,
+          "mean_channel_radius_m": 0.03,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.0018849555921538759,
+          "channel_width_m": 0.0013849555921538758,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.00016619467105846508,
+          "hydraulic_diameter_m": 0.00128586093751797,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+        },
+        {
+          "station_id": "SYN-THROAT",
+          "x_m": 0.0,
+          "mean_channel_radius_m": 0.02,
+          "is_throat": true,
+          "circumferential_pitch_m": 0.0012566370614359175,
+          "channel_width_m": 0.0007566370614359174,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 9.079644737231008e-05,
+          "hydraulic_diameter_m": 0.0009280867582634594,
+          "geometric_validity_status": "OUTSIDE",
+          "geometric_reasons": [
+            "channel width is below the supplied minimum"
+          ],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+        },
+        {
+          "station_id": "SYN-EXIT",
+          "x_m": 0.1,
+          "mean_channel_radius_m": 0.04,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.002513274122871835,
+          "channel_width_m": 0.002013274122871835,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.0002415928947446202,
+          "hydraulic_diameter_m": 0.0015037179244993808,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+        }
+      ],
+      "decision": "EXCLUDE_GEOMETRIC_CONSTRAINT",
+      "summary": {
+        "valid_calculation_station_count": 0,
+        "geometric_validity_status": "OUTSIDE",
+        "correlation_applicability_status": "NOT_RUN",
+        "throat_h_l_W_m2K": null,
+        "minimum_h_l_W_m2K": null,
+        "maximum_h_l_W_m2K": null,
+        "maximum_friction_pressure_gradient_Pa_m": null,
+        "applicability_assessment": {
+          "status": "INPUT_U",
+          "reason": "at least one discrete station lacks an applicable completed calculation",
+          "minimum_reynolds": null,
+          "minimum_reynolds_station_id": null,
+          "minimum_reynolds_x_m": null,
+          "re_design_minimum": null,
+          "re_design_margin": null,
+          "re_design_recommendation_status": "NOT_EVALUATED",
+          "transition_warning_station_ids": [],
+          "maximum_roughness_friction_ratio": null,
+          "maximum_roughness_ratio_station_id": null,
+          "roughness_warning_status": "NOT_EVALUATED",
+          "correlation_domain_status": "NOT_EVALUATED",
+          "continuous_path_claim": false
+        },
+        "limitations": [
+          "At least one station violates supplied channel-width constraints."
+        ]
+      },
+      "recommendation_tags": [
+        "EXCLUDED_GEOMETRY"
+      ],
+      "exclusion_reasons": [
+        "candidate violates at least one supplied geometry constraint"
+      ],
+      "comparison": {
+        "reference_station_id": "SYN-THROAT",
+        "h_l_at_reference_W_m2K": null,
+        "friction_pressure_gradient_at_reference_Pa_m": null,
+        "pareto_status": "NOT_EVALUATED",
+        "model_applicability": "NOT_RUN"
+      }
+    },
+    {
+      "candidate_id": "CH-0012",
+      "channel_count": 100,
+      "rib_thickness_m": 0.0006,
+      "channel_height_m": 0.0012,
+      "geometry_policy": "CONSTANT_RIB_WIDTH_AXIAL",
+      "path_type": "AXIAL",
+      "circuit_passes": 1,
+      "candidate_range_source": "SYNTHETIC_NON_DESIGN_MULTI_CANDIDATE_FIXTURE_NOT_A_SPACE_Y_DESIGN_RANGE",
+      "assumptions": [
+        "CONSTANT_RIB_WIDTH",
+        "CONSTANT_CHANNEL_HEIGHT",
+        "AXIAL_ONE_PASS",
+        "SYNTHETIC_MEAN_RADIUS_PROFILE",
+        "CONSTANT_SYNTHETIC_FLUID_PROPERTIES",
+        "RECOMMENDATION_IS_RELATIVE_AND_PRELIMINARY"
+      ],
+      "design_approved": false,
+      "geometric_validity_status": "OUTSIDE",
+      "calculation_allowed": false,
+      "stations": [
+        {
+          "station_id": "SYN-INLET",
+          "x_m": -0.1,
+          "mean_channel_radius_m": 0.03,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.0018849555921538759,
+          "channel_width_m": 0.0012849555921538758,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.00015419467105846508,
+          "hydraulic_diameter_m": 0.0012410255663749252,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+        },
+        {
+          "station_id": "SYN-THROAT",
+          "x_m": 0.0,
+          "mean_channel_radius_m": 0.02,
+          "is_throat": true,
+          "circumferential_pitch_m": 0.0012566370614359175,
+          "channel_width_m": 0.0006566370614359175,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 7.879644737231009e-05,
+          "hydraulic_diameter_m": 0.0008488082997909043,
+          "geometric_validity_status": "OUTSIDE",
+          "geometric_reasons": [
+            "channel width is below the supplied minimum"
+          ],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+        },
+        {
+          "station_id": "SYN-EXIT",
+          "x_m": 0.1,
+          "mean_channel_radius_m": 0.04,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.002513274122871835,
+          "channel_width_m": 0.001913274122871835,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.00022959289474462017,
+          "hydraulic_diameter_m": 0.0014749288734834088,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+        }
+      ],
+      "decision": "EXCLUDE_GEOMETRIC_CONSTRAINT",
+      "summary": {
+        "valid_calculation_station_count": 0,
+        "geometric_validity_status": "OUTSIDE",
+        "correlation_applicability_status": "NOT_RUN",
+        "throat_h_l_W_m2K": null,
+        "minimum_h_l_W_m2K": null,
+        "maximum_h_l_W_m2K": null,
+        "maximum_friction_pressure_gradient_Pa_m": null,
+        "applicability_assessment": {
+          "status": "INPUT_U",
+          "reason": "at least one discrete station lacks an applicable completed calculation",
+          "minimum_reynolds": null,
+          "minimum_reynolds_station_id": null,
+          "minimum_reynolds_x_m": null,
+          "re_design_minimum": null,
+          "re_design_margin": null,
+          "re_design_recommendation_status": "NOT_EVALUATED",
+          "transition_warning_station_ids": [],
+          "maximum_roughness_friction_ratio": null,
+          "maximum_roughness_ratio_station_id": null,
+          "roughness_warning_status": "NOT_EVALUATED",
+          "correlation_domain_status": "NOT_EVALUATED",
+          "continuous_path_claim": false
+        },
+        "limitations": [
+          "At least one station violates supplied channel-width constraints."
+        ]
+      },
+      "recommendation_tags": [
+        "EXCLUDED_GEOMETRY"
+      ],
+      "exclusion_reasons": [
+        "candidate violates at least one supplied geometry constraint"
+      ],
+      "comparison": {
+        "reference_station_id": "SYN-THROAT",
+        "h_l_at_reference_W_m2K": null,
+        "friction_pressure_gradient_at_reference_Pa_m": null,
+        "pareto_status": "NOT_EVALUATED",
+        "model_applicability": "NOT_RUN"
+      }
+    }
+  ],
+  "not_implemented": [
+    "helical channels",
+    "coolant axial energy/state marching",
+    "wall temperature or heat-load calculation",
+    "minor, manifold, inlet, or outlet losses",
+    "full-path pressure-loss integration",
+    "automatic optimum or final design selection"
+  ],
+  "validated_engine_prediction": false,
+  "physical_validation_v01_v12": "NOT_RUN",
+  "safety_approval": false,
+  "final_design_selection": false,
+  "provenance": {
+    "request_sha256": "05a785531b9e0b0310a884e16d562f96a10c3464de2563b30dabedafbc25ae34",
+    "schema_sha256": "215045bcc1ef24bb6e88c1e81e07fea278c359d8b13cae988509b3f683029e6a"
+  }
+}

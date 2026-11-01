@@ -1,0 +1,214 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://space-y.example/schemas/SPACE_Y_cooling_hc.schema.json",
+  "title": "SPACE Y independent coolant-side h_c request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "purpose",
+    "run_id",
+    "input_evidence_complete",
+    "fluid_state",
+    "flow_conditions",
+    "channel_geometry",
+    "model_conditions"
+  ],
+  "properties": {
+    "purpose": {
+      "enum": ["NON_DESIGN_ARITHMETIC_VERIFICATION", "ENGINE_ANALYSIS"]
+    },
+    "run_id": {"type": "string", "minLength": 1},
+    "input_evidence_complete": {"type": "boolean"},
+    "fluid_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "canonical_name", "cas_number", "temperature_K", "pressure_Pa_abs",
+        "enthalpy_J_kg", "density_kg_m3", "viscosity_Pa_s", "cp_J_kgK",
+        "conductivity_W_mK", "property_source", "property_version"
+      ],
+      "properties": {
+        "canonical_name": {"type": "string", "minLength": 1},
+        "cas_number": {"type": "string", "minLength": 1},
+        "temperature_K": {"type": "number", "exclusiveMinimum": 0},
+        "pressure_Pa_abs": {"type": "number", "exclusiveMinimum": 0},
+        "enthalpy_J_kg": {"type": "number"},
+        "density_kg_m3": {"type": "number", "exclusiveMinimum": 0},
+        "viscosity_Pa_s": {"type": "number", "exclusiveMinimum": 0},
+        "cp_J_kgK": {"type": "number", "exclusiveMinimum": 0},
+        "conductivity_W_mK": {"type": "number", "exclusiveMinimum": 0},
+        "property_source": {"type": "string", "minLength": 1},
+        "property_version": {"type": "string", "minLength": 1}
+      }
+    },
+    "flow_conditions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["coolant_mass_flow_source"],
+      "properties": {
+        "coolant_mass_flow_kg_s": {"type": "number", "exclusiveMinimum": 0},
+        "fuel_mass_flow_kg_s": {"type": "number", "exclusiveMinimum": 0},
+        "regenerative_fraction_beta": {
+          "type": "number", "exclusiveMinimum": 0, "maximum": 1
+        },
+        "upstream_diversion_mass_flow_kg_s": {"type": "number", "minimum": 0},
+        "downstream_film_mass_flow_kg_s": {"type": "number", "minimum": 0},
+        "coolant_mass_flow_source": {"type": "string", "minLength": 1},
+        "consistency_relative_tolerance": {"type": "number", "exclusiveMinimum": 0}
+      },
+      "anyOf": [
+        {"required": ["coolant_mass_flow_kg_s"]},
+        {"required": ["fuel_mass_flow_kg_s", "regenerative_fraction_beta"]}
+      ]
+    },
+    "channel_geometry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "width_m", "height_m", "channel_count", "length_m",
+        "equivalent_sand_roughness_m", "local_loss_coefficient",
+        "geometry_source", "roughness_source", "local_loss_source"
+      ],
+      "properties": {
+        "width_m": {"type": "number", "exclusiveMinimum": 0},
+        "height_m": {"type": "number", "exclusiveMinimum": 0},
+        "channel_count": {"type": "integer", "minimum": 1},
+        "length_m": {"type": "number", "exclusiveMinimum": 0},
+        "rib_thickness_m": {"type": "number", "minimum": 0},
+        "mean_radius_m": {"type": "number", "exclusiveMinimum": 0},
+        "equivalent_sand_roughness_m": {"type": "number", "minimum": 0},
+        "local_loss_coefficient": {"type": "number", "minimum": 0},
+        "geometry_source": {"type": "string", "minLength": 1},
+        "roughness_source": {"type": "string", "minLength": 1},
+        "local_loss_source": {"type": "string", "minLength": 1}
+      },
+      "dependentRequired": {
+        "rib_thickness_m": ["mean_radius_m"],
+        "mean_radius_m": ["rib_thickness_m"]
+      }
+    },
+    "model_conditions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "single_phase_domain", "closure_geometry", "fully_developed",
+        "fully_developed_evidence_source", "thermal_boundary_condition",
+        "thermal_boundary_condition_source", "heat_transfer_thermal_boundary_condition",
+        "heat_transfer_domain", "friction_domain"
+      ],
+      "properties": {
+        "single_phase_domain": {"$ref": "#/$defs/singlePhaseDomain"},
+        "closure_geometry": {"type": "string", "minLength": 1},
+        "fully_developed": {"type": "boolean"},
+        "fully_developed_evidence_source": {"type": "string", "minLength": 1},
+        "thermal_boundary_condition": {"type": "string", "minLength": 1},
+        "thermal_boundary_condition_source": {"type": "string", "minLength": 1},
+        "heat_transfer_thermal_boundary_condition": {"type": "string", "minLength": 1},
+        "heat_transfer_domain": {"$ref": "#/$defs/heatDomain"},
+        "friction_domain": {"$ref": "#/$defs/frictionDomain"},
+        "applicability_policy": {"$ref": "#/$defs/applicabilityPolicy"}
+      }
+    }
+  },
+  "$defs": {
+    "singlePhaseDomain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["classification", "source", "temperature_range_K", "pressure_range_Pa_abs"],
+      "properties": {
+        "classification": {"type": "string", "pattern": "^SINGLE_PHASE_"},
+        "source": {"type": "string", "minLength": 1},
+        "temperature_range_K": {
+          "type": "array", "prefixItems": [{"type": "number"}, {"type": "number"}],
+          "minItems": 2, "maxItems": 2
+        },
+        "pressure_range_Pa_abs": {
+          "type": "array", "prefixItems": [{"type": "number"}, {"type": "number"}],
+          "minItems": 2, "maxItems": 2
+        }
+      }
+    },
+    "heatDomain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "re_range", "pr_range", "geometry", "fully_developed_required"],
+      "properties": {
+        "source": {"type": "string", "minLength": 1},
+        "re_range": {"$ref": "#/$defs/positiveRange"},
+        "pr_range": {"$ref": "#/$defs/positiveRange"},
+        "geometry": {"type": "string", "minLength": 1},
+        "fully_developed_required": {"type": "boolean"}
+      }
+    },
+    "frictionDomain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "re_range", "relative_roughness_range", "geometry"],
+      "properties": {
+        "source": {"type": "string", "minLength": 1},
+        "re_range": {"$ref": "#/$defs/positiveRange"},
+        "relative_roughness_range": {
+          "type": "array", "prefixItems": [{"type": "number", "minimum": 0}, {"type": "number", "minimum": 0}],
+          "minItems": 2, "maxItems": 2
+        },
+        "geometry": {"type": "string", "minLength": 1}
+      }
+    },
+    "applicabilityPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_id", "classification", "heat_transfer_correlation",
+        "design_recommendation", "roughness_assessment"
+      ],
+      "properties": {
+        "policy_id": {"type": "string", "minLength": 1},
+        "classification": {"type": "string", "minLength": 1},
+        "heat_transfer_correlation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["source", "re_range", "pr_range"],
+          "properties": {
+            "source": {"type": "string", "minLength": 1},
+            "re_range": {"$ref": "#/$defs/positiveRange"},
+            "pr_range": {"$ref": "#/$defs/positiveRange"}
+          }
+        },
+        "design_recommendation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "recommended_re_min", "transition_warning_re_threshold",
+            "evaluate_minimum_re_over_all_stations", "source"
+          ],
+          "properties": {
+            "recommended_re_min": {"type": "number", "exclusiveMinimum": 0},
+            "transition_warning_re_threshold": {"type": "number", "exclusiveMinimum": 0},
+            "evaluate_minimum_re_over_all_stations": {"type": "boolean"},
+            "source": {"type": "string", "minLength": 1}
+          }
+        },
+        "roughness_assessment": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "compare_rough_to_smooth_friction",
+            "roughness_friction_ratio_warning_threshold",
+            "apply_arbitrary_friction_cap", "source"
+          ],
+          "properties": {
+            "compare_rough_to_smooth_friction": {"type": "boolean"},
+            "roughness_friction_ratio_warning_threshold": {"type": "number", "exclusiveMinimum": 0},
+            "apply_arbitrary_friction_cap": {"const": false},
+            "apply_arbitrary_heat_transfer_cap": {"const": false},
+            "source": {"type": "string", "minLength": 1}
+          }
+        }
+      }
+    },
+    "positiveRange": {
+      "type": "array", "prefixItems": [{"type": "number", "exclusiveMinimum": 0}, {"type": "number", "exclusiveMinimum": 0}],
+      "minItems": 2, "maxItems": 2
+    }
+  }
+}

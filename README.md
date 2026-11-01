@@ -61,6 +61,9 @@
 
 - [단일 구간 완전 결합 구현 기록](docs/M0_단일구간_GAS_WALL_COOLANT_결합_구현기록.md)
 - `src/space_y/coolant.py`: 단상 벌크영역 및 Gnielinski/Colebrook 공급 영역 검사
+- `src/space_y/cooling_hc.py`: 외부 제공 냉각유량·물성과 직사각 채널의 독립 냉각 측 `Re/Pr/f/Nu/h_l(=h_c)` 인터페이스. `evaluate_rectangular_cooling_hl()`은 비엔탈피·길이 없이 국소 `h_l`을 계산하고, 기존 통합 API는 압손 기능을 유지함. 균등분배는 명시적 가정이며 실제 매니폴드·IPA 검증을 뜻하지 않음
+- `src/space_y/cooling_channel_candidates.py`: Axial 직사각 채널의 `N/b/h` 조합과 명시적 `r_m(x)`에서 Constant-rib-width 후보를 생성하고 위치별 `h_l`과 Darcy 마찰 압력손실 구배를 계산함
+- `src/space_y/cooling_channel_recommendation.py`: 동일 기준 station의 최고 `h_l`, 최소 국소 마찰 구배와 2목적 Pareto 후보를 상대 분류함. Baseline·안전 승인·최종 설계 선정과 분리됨
 - `src/space_y/m0_coupled.py`: GAS–WALL과 가변물성 냉각 엔탈피·압손의 중첩 반복
 - [결합 실행 Schema](schemas/SPACE_Y_M0_coupled_single_segment.schema.json)
 - [비설계 합성 입력](examples/m0_coupled_synthetic_single_segment.json)과 `artifacts/m0_coupled/` 실행 증거
@@ -154,4 +157,43 @@ PDR 합성 분기 실행:
 
 공식 R2S 안내서와 AEL ICD의 대회 상한·시설 능력·권고·인터페이스는 PDR 입력 준비표 V2에 출처와 페이지별로 분리했다. 과거 `3 kN / 25 bar(a) / O/F 2.50 / 10 s` 케이스와 팀 `Parameter.pptx`의 `Pc 3 MPa / O/F 3 / total flow 1.6 kg/s` RPA 작업 케이스는 모두 팀 승인값이 아닌 `PROVISIONAL`이다. PPT에는 RPA 형상 결과 화면이 있지만 raw project·ASCII/DXF·승인 기록이 없고 현재 로컬 RPA는 비활성 상태다. 따라서 실제 후보 판정과 승인된 RPA 재현 실행은 계속 `INPUT_U`다.
 
-2026-11-01 설계 공간 탐색 추가 후 전체 자동 테스트 119개가 통과했다. 이 숫자는 소프트웨어 회귀검사 결과이며 실제 엔진 물리 검증 건수가 아니다.
+## 냉각 측 `h_l` (`h_c`) 독립 인터페이스
+
+- [구현·문헌·적용범위 기록](docs/냉각측_대류_hc_독립모델_구현기록.md)
+- [상관식 적용성·거칠기 경고 기록](docs/냉각측_hl_상관식_적용성_검증기록.md)
+- [입력 Schema](schemas/SPACE_Y_cooling_hc.schema.json), [실제 입력 준비 상태](config/SPACE_Y_cooling_hc_input_readiness.json), [문헌 형상 프리셋](config/SPACE_Y_cooling_channel_reference_presets.json)
+- [적용성 정책](config/SPACE_Y_cooling_correlation_policy.json), [80개 비설계 참고 템플릿](config/SPACE_Y_cooling_channel_template_grid.json)
+
+```powershell
+.\.venv\Scripts\space-y.exe cooling-hc-run examples\cooling_hc_rectangular_synthetic.json
+```
+
+직접 냉각유량 또는 `beta * 연료유량`, 상·하류 분기 회계, 직사각 폐채널 기하와 기존 Gnielinski/Colebrook/Darcy–Weisbach 폐쇄식을 연결한다. 균등 채널분배는 `ASSUMED_EQUAL_DISTRIBUTION`이고 실제 매니폴드 해석이 아니다. 합성 fixture 결과는 `MODEL_U`, 실제 입력 준비 상태는 `INPUT_U`다.
+
+냉각유체 측 계수는 이번 업무 정의에서 `h_l`, 기존 M0 호환 출력에서는 `h_c_W_m2K`로 표기하며 둘은 같은 양이다. 실제 재생냉각 통과유량 `coolant_mass_flow_kg_s`가 기본 입력이고 `beta` 및 분기 입력은 선택적인 질량회계 검증 경로다. 전체 IPA/N2O 유량 결정은 이 모듈의 책임이 아니다.
+
+2026-11-01 냉각 `h_l` 독립 인터페이스 추가 후 전체 자동 테스트를 재실행했다. 테스트 수는 소프트웨어 회귀검사 결과이며 실제 엔진 물리 검증 건수가 아니다.
+
+후보 생성 합성 예제:
+
+```powershell
+.\.venv\Scripts\space-y.exe cooling-channel-sweep examples\cooling_channel_sweep_synthetic_axial.json --output artifacts\cooling_channel_sweep\synthetic_axial_result.json --csv-output artifacts\cooling_channel_sweep\synthetic_axial_stations.csv
+```
+
+[후보 생성 구현 기록](docs/냉각채널_후보생성_hl_구현기록.md)의 탐색 범위와 반경은 합성·참고 입력이며 실제 SPACE Y 승인 설계범위가 아니다. 높은 `h_l`은 최종 형상 선정 기준이 아니며 전체 벽온도·상변화·압력예산·제작·구조 검토가 남아 있다.
+
+다중 후보 예비 추천 합성 예제:
+
+```powershell
+.\.venv\Scripts\space-y.exe cooling-channel-sweep examples\cooling_channel_recommendation_synthetic_multi.json --output artifacts\cooling_channel_sweep\synthetic_recommendation_result.json --csv-output artifacts\cooling_channel_sweep\synthetic_recommendation_stations.csv --summary-csv-output artifacts\cooling_channel_sweep\synthetic_recommendation_summary.csv
+```
+
+Baseline은 문헌·부트캠프 참고자료이며 자동 추천 후보와 별개다. 추천은 같은 station과 같은 공급 유량·물성에서의 상대 비교만 수행하며 `Preliminary candidate recommendation, not final design optimization.`이다. Gnielinski 실행범위와 팀의 예비 Re 권고를 분리하고, 모든 명시 station의 최소 Re와 거친/매끈 Darcy 계수비 경고를 기록한다. 미계산 연속 위치, 실제 IPA 상태, 비등·상변화와 실제 압력예산은 검증하지 않는다.
+
+80개 템플릿–`h_l` 통합 파이프라인:
+
+```powershell
+.\.venv\Scripts\space-y.exe cooling-channel-pipeline examples\cooling_channel_pipeline_synthetic_80.json --output artifacts\cooling_channel_pipeline\synthetic_80_result.json --geometry-csv-output artifacts\cooling_channel_pipeline\synthetic_80_geometry.csv --csv-output artifacts\cooling_channel_pipeline\synthetic_80_stations.csv --summary-csv-output artifacts\cooling_channel_pipeline\synthetic_80_summary.csv
+```
+
+[통합 파이프라인 기록](docs/냉각채널_80템플릿_hl_통합파이프라인.md)은 템플릿별 인접 정수 N 대응을 유지하고, 동일 `(N,b,h)` 실제 형상만 중복 제거한 뒤 기존 sweep 코어를 호출한다. 실제 반경·제조 제약·IPA 입력이 없으면 [readiness 입력](config/SPACE_Y_cooling_channel_pipeline_readiness.json)은 템플릿만 반환하고 `INPUT_U`를 유지한다. 합성 전 구간 실행은 실제 엔진 계산이나 최종 형상 선정이 아니다.

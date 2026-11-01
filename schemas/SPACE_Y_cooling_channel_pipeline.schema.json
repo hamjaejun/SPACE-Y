@@ -1,0 +1,237 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://space-y.example/schemas/SPACE_Y_cooling_channel_pipeline.schema.json",
+  "title": "SPACE Y cooling-channel template-to-h_l pipeline",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "purpose", "run_id", "input_evidence_complete", "template_grid"],
+  "properties": {
+    "schema_version": {"const": "SPACE_Y_COOLING_CHANNEL_PIPELINE_V1"},
+    "purpose": {"enum": ["NON_DESIGN_ARITHMETIC_VERIFICATION", "ENGINE_CANDIDATE_SCREENING"]},
+    "run_id": {"type": "string", "minLength": 1},
+    "input_evidence_complete": {"type": "boolean"},
+    "template_grid": {"$ref": "#/$defs/templateGrid"},
+    "geometry_input": {"$ref": "#/$defs/geometryInput"},
+    "manufacturing_constraints": {"$ref": "#/$defs/manufacturingConstraints"},
+    "coolant_conditions": {"$ref": "#/$defs/coolantConditions"},
+    "model_conditions": {"$ref": "#/$defs/modelConditions"},
+    "comparison": {"$ref": "#/$defs/comparison"},
+    "baseline_reference": {"$ref": "#/$defs/baselineReference"}
+  },
+  "$defs": {
+    "positiveRange": {
+      "type": "array",
+      "prefixItems": [{"type": "number", "exclusiveMinimum": 0}, {"type": "number", "exclusiveMinimum": 0}],
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "positiveArray": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "number", "exclusiveMinimum": 0}
+    },
+    "templateGrid": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["classification", "source", "reference_width_candidates_m", "rib_thickness_candidates_m", "channel_height_candidates_m", "expected_template_count", "channel_count_policy", "design_approved"],
+      "properties": {
+        "classification": {"const": "REFERENCE_GRID_NOT_APPROVED_DESIGN_RANGE"},
+        "source": {"type": "string", "minLength": 1},
+        "reference_width_candidates_m": {"$ref": "#/$defs/positiveArray"},
+        "rib_thickness_candidates_m": {"$ref": "#/$defs/positiveArray"},
+        "channel_height_candidates_m": {"$ref": "#/$defs/positiveArray"},
+        "expected_template_count": {"type": "integer", "minimum": 1},
+        "channel_count_policy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["formula", "integer_candidates", "requires_actual_throat_mean_channel_radius", "selection_performed"],
+          "properties": {
+            "formula": {"const": "N_ideal=2*pi*r_m_throat/(w_ref+b)"},
+            "integer_candidates": {"const": "distinct floor and ceil of N_ideal"},
+            "requires_actual_throat_mean_channel_radius": {"const": true},
+            "selection_performed": {"const": false}
+          }
+        },
+        "design_approved": {"const": false}
+      }
+    },
+    "geometryStation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["station_id", "x_m", "mean_channel_radius_m", "geometry_source"],
+      "properties": {
+        "station_id": {"type": "string", "minLength": 1},
+        "x_m": {"type": "number"},
+        "mean_channel_radius_m": {"type": "number", "exclusiveMinimum": 0},
+        "geometry_source": {"type": "string", "minLength": 1}
+      }
+    },
+    "geometryInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["classification", "geometry_policy", "path_type", "circuit_passes", "throat_station_id", "mean_channel_radius_definition", "geometry_source", "mean_radius_profile"],
+      "properties": {
+        "classification": {"enum": ["SYNTHETIC_NON_DESIGN_GEOMETRY", "TEAM_GEOMETRY_EVIDENCE"]},
+        "geometry_policy": {"const": "CONSTANT_RIB_WIDTH_AXIAL"},
+        "path_type": {"const": "AXIAL"},
+        "circuit_passes": {"const": 1},
+        "throat_station_id": {"type": "string", "minLength": 1},
+        "mean_channel_radius_definition": {"type": "string", "minLength": 1},
+        "geometry_source": {"type": "string", "minLength": 1},
+        "mean_radius_profile": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/geometryStation"}}
+      }
+    },
+    "manufacturingConstraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["classification", "channel_width_limits_m", "minimum_rib_thickness_m", "allowed_channel_heights_m", "equivalent_sand_roughness_m", "constraints_source", "roughness_source"],
+      "properties": {
+        "classification": {"enum": ["SYNTHETIC_NON_DESIGN_CONSTRAINTS", "TEAM_APPROVED_MANUFACTURING_CONSTRAINTS"]},
+        "channel_width_limits_m": {"$ref": "#/$defs/positiveRange"},
+        "minimum_rib_thickness_m": {"type": "number", "exclusiveMinimum": 0},
+        "allowed_channel_heights_m": {"$ref": "#/$defs/positiveArray"},
+        "equivalent_sand_roughness_m": {"type": "number", "minimum": 0},
+        "constraints_source": {"type": "string", "minLength": 1},
+        "roughness_source": {"type": "string", "minLength": 1}
+      }
+    },
+    "fluidProperties": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["density_kg_m3", "viscosity_Pa_s", "cp_J_kgK", "conductivity_W_mK", "property_source", "property_version"],
+      "properties": {
+        "density_kg_m3": {"type": "number", "exclusiveMinimum": 0},
+        "viscosity_Pa_s": {"type": "number", "exclusiveMinimum": 0},
+        "cp_J_kgK": {"type": "number", "exclusiveMinimum": 0},
+        "conductivity_W_mK": {"type": "number", "exclusiveMinimum": 0},
+        "property_source": {"type": "string", "minLength": 1},
+        "property_version": {"type": "string", "minLength": 1}
+      }
+    },
+    "stationFluidProperties": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["station_id", "density_kg_m3", "viscosity_Pa_s", "cp_J_kgK", "conductivity_W_mK", "property_source", "property_version"],
+      "properties": {
+        "station_id": {"type": "string", "minLength": 1},
+        "density_kg_m3": {"type": "number", "exclusiveMinimum": 0},
+        "viscosity_Pa_s": {"type": "number", "exclusiveMinimum": 0},
+        "cp_J_kgK": {"type": "number", "exclusiveMinimum": 0},
+        "conductivity_W_mK": {"type": "number", "exclusiveMinimum": 0},
+        "property_source": {"type": "string", "minLength": 1},
+        "property_version": {"type": "string", "minLength": 1}
+      }
+    },
+    "fluidIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["classification", "canonical_name", "cas_number"],
+      "properties": {
+        "classification": {"enum": ["SYNTHETIC_TEST_FLUID_NOT_IPA", "EXACT_2_PROPANOL"]},
+        "canonical_name": {"type": "string", "minLength": 1},
+        "cas_number": {"type": ["string", "null"]}
+      }
+    },
+    "coolantConditions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fluid_identity", "coolant_mass_flow_kg_s", "coolant_mass_flow_source", "property_policy", "default_fluid_properties"],
+      "properties": {
+        "fluid_identity": {"$ref": "#/$defs/fluidIdentity"},
+        "coolant_mass_flow_kg_s": {"type": "number", "exclusiveMinimum": 0},
+        "coolant_mass_flow_source": {"type": "string", "minLength": 1},
+        "property_policy": {"enum": ["CONSTANT_SUPPLIED_PROPERTIES", "EXPLICIT_BY_STATION_WITH_DEFAULT"]},
+        "default_fluid_properties": {"$ref": "#/$defs/fluidProperties"},
+        "station_fluid_properties": {"type": "array", "items": {"$ref": "#/$defs/stationFluidProperties"}}
+      }
+    },
+    "heatDomain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "re_range", "pr_range", "geometry", "fully_developed_required"],
+      "properties": {
+        "source": {"type": "string", "minLength": 1},
+        "re_range": {"$ref": "#/$defs/positiveRange"},
+        "pr_range": {"$ref": "#/$defs/positiveRange"},
+        "geometry": {"type": "string", "minLength": 1},
+        "fully_developed_required": {"type": "boolean"}
+      }
+    },
+    "frictionDomain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "re_range", "relative_roughness_range", "geometry"],
+      "properties": {
+        "source": {"type": "string", "minLength": 1},
+        "re_range": {"$ref": "#/$defs/positiveRange"},
+        "relative_roughness_range": {"type": "array", "prefixItems": [{"type": "number", "minimum": 0}, {"type": "number", "minimum": 0}], "minItems": 2, "maxItems": 2},
+        "geometry": {"type": "string", "minLength": 1}
+      }
+    },
+    "applicabilityPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["policy_id", "classification", "heat_transfer_correlation", "design_recommendation", "roughness_assessment"],
+      "properties": {
+        "policy_id": {"type": "string", "minLength": 1},
+        "classification": {"type": "string", "minLength": 1},
+        "heat_transfer_correlation": {
+          "type": "object", "additionalProperties": false,
+          "required": ["source", "re_range", "pr_range"],
+          "properties": {"source": {"type": "string", "minLength": 1}, "re_range": {"$ref": "#/$defs/positiveRange"}, "pr_range": {"$ref": "#/$defs/positiveRange"}}
+        },
+        "design_recommendation": {
+          "type": "object", "additionalProperties": false,
+          "required": ["recommended_re_min", "transition_warning_re_threshold", "evaluate_minimum_re_over_all_stations", "source"],
+          "properties": {"recommended_re_min": {"type": "number", "exclusiveMinimum": 0}, "transition_warning_re_threshold": {"type": "number", "exclusiveMinimum": 0}, "evaluate_minimum_re_over_all_stations": {"type": "boolean"}, "source": {"type": "string", "minLength": 1}}
+        },
+        "roughness_assessment": {
+          "type": "object", "additionalProperties": false,
+          "required": ["compare_rough_to_smooth_friction", "roughness_friction_ratio_warning_threshold", "apply_arbitrary_friction_cap", "source"],
+          "properties": {"compare_rough_to_smooth_friction": {"type": "boolean"}, "roughness_friction_ratio_warning_threshold": {"type": "number", "exclusiveMinimum": 0}, "apply_arbitrary_friction_cap": {"const": false}, "apply_arbitrary_heat_transfer_cap": {"const": false}, "source": {"type": "string", "minLength": 1}}
+        }
+      }
+    },
+    "modelConditions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["closure_geometry", "fully_developed", "thermal_boundary_condition", "heat_transfer_thermal_boundary_condition", "heat_transfer_domain", "friction_domain"],
+      "properties": {
+        "closure_geometry": {"type": "string", "minLength": 1},
+        "fully_developed": {"type": "boolean"},
+        "thermal_boundary_condition": {"type": "string", "minLength": 1},
+        "heat_transfer_thermal_boundary_condition": {"type": "string", "minLength": 1},
+        "heat_transfer_domain": {"$ref": "#/$defs/heatDomain"},
+        "friction_domain": {"$ref": "#/$defs/frictionDomain"},
+        "applicability_policy": {"$ref": "#/$defs/applicabilityPolicy"}
+      }
+    },
+    "comparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reference_station_type", "relative_tolerance", "h_l_absolute_tolerance_W_m2K", "friction_gradient_absolute_tolerance_Pa_m"],
+      "properties": {
+        "reference_station_type": {"enum": ["THROAT", "STATION_ID"]},
+        "reference_station_id": {"type": "string", "minLength": 1},
+        "relative_tolerance": {"type": "number", "minimum": 0},
+        "h_l_absolute_tolerance_W_m2K": {"type": "number", "minimum": 0},
+        "friction_gradient_absolute_tolerance_Pa_m": {"type": "number", "minimum": 0}
+      }
+    },
+    "baselineReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["baseline_id", "source", "geometry_policy", "settings", "geometric_applicability_status", "design_approved", "limitations"],
+      "properties": {
+        "baseline_id": {"type": "string", "minLength": 1},
+        "source": {"type": "string", "minLength": 1},
+        "geometry_policy": {"type": "string", "minLength": 1},
+        "settings": {"type": "object"},
+        "geometric_applicability_status": {"type": "string", "minLength": 1},
+        "candidate_id": {"type": "string", "minLength": 1},
+        "design_approved": {"const": false},
+        "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}}
+      }
+    }
+  }
+}
