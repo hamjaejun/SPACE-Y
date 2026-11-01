@@ -69,6 +69,36 @@ class CoolantLocalClosure:
 
 
 @dataclass(frozen=True)
+class CoolantHeatTransferClosure:
+    """Local coolant-side heat-transfer result without a pressure-drop model.
+
+    ``h_l_W_m2K`` is the liquid/coolant-side coefficient called
+    ``h_c_W_m2K`` by the existing coupled M0 interface.
+    """
+
+    Reynolds: float
+    Prandtl: float
+    darcy_factor: float
+    Nusselt: float
+    h_l_W_m2K: float
+    velocity_m_s: float | None
+    relative_roughness: float
+    heat_transfer_applicability: dict[str, Any]
+    friction_applicability: dict[str, Any]
+
+
+@dataclass(frozen=True)
+class RectangularChannelCrossSection:
+    width_m: float
+    height_m: float
+    channel_count: int
+    channel_flow_area_m2: float
+    total_flow_area_m2: float
+    channel_wetted_perimeter_m: float
+    hydraulic_diameter_m: float
+
+
+@dataclass(frozen=True)
 class RectangularChannelGeometry:
     """Derived geometry for ``N`` identical, closed rectangular channels.
 
@@ -137,12 +167,46 @@ def _positive_integer(value: Any, name: str) -> int:
     return number
 
 
-def build_rectangular_channel_geometry(spec: dict[str, Any]) -> RectangularChannelGeometry:
-    """Build the closed-duct area and hydraulic diameter without design defaults."""
+def _required_bool(value: Any, name: str) -> bool:
+    if not isinstance(value, bool):
+        raise CoolantStop("INPUT_U", f"{name} must be an explicit boolean")
+    return value
+
+
+def _required_text(value: Any, name: str) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise CoolantStop("INPUT_U", f"{name} must be explicit")
+    return value.strip()
+
+
+def build_rectangular_channel_cross_section(
+    spec: dict[str, Any],
+) -> RectangularChannelCrossSection:
+    """Build only the geometry required by a local rectangular-channel h_l model."""
 
     width = _positive(spec.get("width_m"), "channel width")
     height = _positive(spec.get("height_m"), "channel height")
     count = _positive_integer(spec.get("channel_count"), "channel count")
+    channel_area = width * height
+    perimeter = 2.0 * (width + height)
+    return RectangularChannelCrossSection(
+        width_m=width,
+        height_m=height,
+        channel_count=count,
+        channel_flow_area_m2=channel_area,
+        total_flow_area_m2=count * channel_area,
+        channel_wetted_perimeter_m=perimeter,
+        hydraulic_diameter_m=4.0 * channel_area / perimeter,
+    )
+
+
+def build_rectangular_channel_geometry(spec: dict[str, Any]) -> RectangularChannelGeometry:
+    """Build the closed-duct area and hydraulic diameter without design defaults."""
+
+    cross_section = build_rectangular_channel_cross_section(spec)
+    width = cross_section.width_m
+    height = cross_section.height_m
+    count = cross_section.channel_count
     length = _positive(spec.get("length_m"), "channel length")
     rib = _optional_nonnegative(spec.get("rib_thickness_m"), "rib thickness")
     mean_radius = (
@@ -156,9 +220,6 @@ def build_rectangular_channel_geometry(spec: dict[str, Any]) -> RectangularChann
             "rib thickness and mean radius must be supplied together for a layout check",
         )
 
-    channel_area = width * height
-    perimeter = 2.0 * (width + height)
-    hydraulic_diameter = 4.0 * channel_area / perimeter
     pitch = None
     layout_status = "INPUT_U"
     if rib is not None and mean_radius is not None:
@@ -175,11 +236,13 @@ def build_rectangular_channel_geometry(spec: dict[str, Any]) -> RectangularChann
         height_m=height,
         channel_count=count,
         length_m=length,
-        channel_flow_area_m2=channel_area,
-        total_flow_area_m2=count * channel_area,
-        channel_wetted_perimeter_m=perimeter,
-        hydraulic_diameter_m=hydraulic_diameter,
-        total_internal_wetted_area_m2=count * perimeter * length,
+        channel_flow_area_m2=cross_section.channel_flow_area_m2,
+        total_flow_area_m2=cross_section.total_flow_area_m2,
+        channel_wetted_perimeter_m=cross_section.channel_wetted_perimeter_m,
+        hydraulic_diameter_m=cross_section.hydraulic_diameter_m,
+        total_internal_wetted_area_m2=(
+            count * cross_section.channel_wetted_perimeter_m * length
+        ),
         nominal_hot_wall_base_area_m2=count * width * length,
         rib_thickness_m=rib,
         mean_radius_m=mean_radius,
@@ -314,8 +377,7 @@ def build_heat_transfer_domain(spec: dict[str, Any]) -> CorrelationDomain:
     geometry = spec.get("geometry")
     if re_min <= 0 or re_max <= re_min or pr_min <= 0 or pr_max <= pr_min:
         raise CoolantStop("INPUT_U", "invalid coolant heat-transfer closure domain")
-    if not isinstance(geometry, str) or not geometry.strip():
-        raise CoolantStop("INPUT_U", "coolant heat-transfer closure geometry is required")
+    geometry = _required_text(geometry, "coolant heat-transfer closure geometry")
     return CorrelationDomain(
         source=source,
         re_min=re_min,
@@ -323,7 +385,10 @@ def build_heat_transfer_domain(spec: dict[str, Any]) -> CorrelationDomain:
         pr_min=pr_min,
         pr_max=pr_max,
         geometry=geometry,
-        fully_developed_required=bool(spec["fully_developed_required"]),
+        fully_developed_required=_required_bool(
+            spec.get("fully_developed_required"),
+            "heat-transfer fully-developed requirement",
+        ),
     )
 
 
@@ -335,38 +400,62 @@ def build_friction_domain(spec: dict[str, Any]) -> FrictionDomain:
     rr_min, rr_max = map(float, spec["relative_roughness_range"])
     if re_min <= 0 or re_max <= re_min or rr_min < 0 or rr_max < rr_min:
         raise CoolantStop("INPUT_U", "invalid friction closure domain")
-    return FrictionDomain(source, re_min, re_max, rr_min, rr_max, str(spec["geometry"]))
+    geometry = _required_text(spec.get("geometry"), "friction closure geometry")
+    return FrictionDomain(source, re_min, re_max, rr_min, rr_max, geometry)
 
 
-def evaluate_local_coolant_closures(
+def evaluate_local_coolant_heat_transfer(
     *,
-    state: FluidState,
     mass_flow_kg_s: float,
-    geometry: CoolantGeometry,
+    flow_area_m2: float,
+    hydraulic_diameter_m: float,
+    viscosity_Pa_s: float,
+    cp_J_kgK: float,
+    conductivity_W_mK: float,
+    equivalent_sand_roughness_m: float,
+    closure_geometry: str,
+    fully_developed: bool,
+    thermal_boundary_condition: str,
     heat_transfer_domain: CorrelationDomain,
     heat_transfer_thermal_boundary_condition: str,
     friction_domain: FrictionDomain,
-) -> CoolantLocalClosure:
-    mass_flow = _positive(mass_flow_kg_s, "mass flow")
-    if geometry.thermal_boundary_condition != heat_transfer_thermal_boundary_condition:
-        raise CoolantStop("OUTSIDE", "thermal boundary condition differs from supplied Gnielinski domain")
-    if geometry.closure_geometry != friction_domain.geometry:
-        raise CoolantStop("OUTSIDE", "geometry differs from supplied friction domain")
-    if geometry.equivalent_sand_roughness_m < 0 or geometry.local_loss_coefficient < 0:
-        raise CoolantStop("INPUT_U", "roughness and local-loss coefficient must be non-negative")
+    density_kg_m3: float | None = None,
+) -> CoolantHeatTransferClosure:
+    """Evaluate local h_l without requiring p, T, h, length, or local losses."""
 
-    re = reynolds_number(
-        mass_flow,
-        _positive(geometry.flow_area_m2, "flow area"),
-        _positive(geometry.hydraulic_diameter_m, "hydraulic diameter"),
-        state.viscosity_Pa_s,
+    mass_flow = _positive(mass_flow_kg_s, "mass flow")
+    area = _positive(flow_area_m2, "flow area")
+    hydraulic_diameter = _positive(hydraulic_diameter_m, "hydraulic diameter")
+    fully_developed = _required_bool(fully_developed, "fully developed condition")
+    closure_geometry = _required_text(closure_geometry, "closure geometry")
+    thermal_boundary_condition = _required_text(
+        thermal_boundary_condition, "thermal boundary condition"
     )
-    pr = prandtl_number(state.cp_J_kgK, state.viscosity_Pa_s, state.conductivity_W_mK)
-    relative_roughness = geometry.equivalent_sand_roughness_m / geometry.hydraulic_diameter_m
+    heat_transfer_thermal_boundary_condition = _required_text(
+        heat_transfer_thermal_boundary_condition,
+        "heat-transfer correlation thermal boundary condition",
+    )
+    if thermal_boundary_condition != heat_transfer_thermal_boundary_condition:
+        raise CoolantStop(
+            "OUTSIDE", "thermal boundary condition differs from supplied Gnielinski domain"
+        )
+    if closure_geometry != friction_domain.geometry:
+        raise CoolantStop("OUTSIDE", "geometry differs from supplied friction domain")
+    roughness = float(equivalent_sand_roughness_m)
+    if not math.isfinite(roughness) or roughness < 0:
+        raise CoolantStop("INPUT_U", "roughness must be finite and non-negative")
+
+    re = reynolds_number(mass_flow, area, hydraulic_diameter, viscosity_Pa_s)
+    pr = prandtl_number(cp_J_kgK, viscosity_Pa_s, conductivity_W_mK)
+    relative_roughness = roughness / hydraulic_diameter
     friction_reasons = []
     if not friction_domain.re_min <= re <= friction_domain.re_max:
         friction_reasons.append("Re outside supplied Colebrook domain")
-    if not friction_domain.relative_roughness_min <= relative_roughness <= friction_domain.relative_roughness_max:
+    if not (
+        friction_domain.relative_roughness_min
+        <= relative_roughness
+        <= friction_domain.relative_roughness_max
+    ):
         friction_reasons.append("relative roughness outside supplied Colebrook domain")
     if friction_reasons:
         raise CoolantStop("OUTSIDE", "; ".join(friction_reasons))
@@ -377,31 +466,24 @@ def evaluate_local_coolant_closures(
         pr,
         factor,
         domain=heat_transfer_domain,
-        geometry=geometry.closure_geometry,
-        fully_developed=geometry.fully_developed,
+        geometry=closure_geometry,
+        fully_developed=fully_developed,
     )
     if nu is None:
         raise CoolantStop(heat_applicability.status, "; ".join(heat_applicability.reasons))
     if not math.isfinite(nu) or nu <= 0:
         raise CoolantStop("OUTSIDE", "Gnielinski displayed form returned non-positive Nusselt number")
-    h_c = nu * state.conductivity_W_mK / geometry.hydraulic_diameter_m
-    velocity = mass_flow / (state.density_kg_m3 * geometry.flow_area_m2)
-    pressure_drop = darcy_weisbach_pressure_drop_Pa(
-        factor,
-        _positive(geometry.length_m, "segment length"),
-        geometry.hydraulic_diameter_m,
-        state.density_kg_m3,
-        velocity,
-        geometry.local_loss_coefficient,
-    )
-    return CoolantLocalClosure(
+
+    velocity = None
+    if density_kg_m3 is not None:
+        velocity = mass_flow / (_positive(density_kg_m3, "density") * area)
+    return CoolantHeatTransferClosure(
         Reynolds=re,
         Prandtl=pr,
         darcy_factor=factor,
         Nusselt=nu,
-        h_c_W_m2K=h_c,
+        h_l_W_m2K=nu * conductivity_W_mK / hydraulic_diameter,
         velocity_m_s=velocity,
-        pressure_drop_Pa=pressure_drop,
         relative_roughness=relative_roughness,
         heat_transfer_applicability=asdict(heat_applicability),
         friction_applicability={
@@ -413,4 +495,98 @@ def evaluate_local_coolant_closures(
                 friction_domain.relative_roughness_max,
             ],
         },
+    )
+
+
+def evaluate_rectangular_cooling_hl(
+    *,
+    coolant_mass_flow_kg_s: float,
+    width_m: float,
+    height_m: float,
+    channel_count: int,
+    viscosity_Pa_s: float,
+    cp_J_kgK: float,
+    conductivity_W_mK: float,
+    equivalent_sand_roughness_m: float,
+    closure_geometry: str,
+    fully_developed: bool,
+    thermal_boundary_condition: str,
+    heat_transfer_domain: CorrelationDomain,
+    heat_transfer_thermal_boundary_condition: str,
+    friction_domain: FrictionDomain,
+    density_kg_m3: float | None = None,
+) -> CoolantHeatTransferClosure:
+    """Independent rectangular-channel h_l entry point using only local inputs."""
+
+    cross_section = build_rectangular_channel_cross_section(
+        {"width_m": width_m, "height_m": height_m, "channel_count": channel_count}
+    )
+    return evaluate_local_coolant_heat_transfer(
+        mass_flow_kg_s=coolant_mass_flow_kg_s,
+        flow_area_m2=cross_section.total_flow_area_m2,
+        hydraulic_diameter_m=cross_section.hydraulic_diameter_m,
+        viscosity_Pa_s=viscosity_Pa_s,
+        cp_J_kgK=cp_J_kgK,
+        conductivity_W_mK=conductivity_W_mK,
+        equivalent_sand_roughness_m=equivalent_sand_roughness_m,
+        closure_geometry=closure_geometry,
+        fully_developed=fully_developed,
+        thermal_boundary_condition=thermal_boundary_condition,
+        heat_transfer_domain=heat_transfer_domain,
+        heat_transfer_thermal_boundary_condition=(
+            heat_transfer_thermal_boundary_condition
+        ),
+        friction_domain=friction_domain,
+        density_kg_m3=density_kg_m3,
+    )
+
+
+def evaluate_local_coolant_closures(
+    *,
+    state: FluidState,
+    mass_flow_kg_s: float,
+    geometry: CoolantGeometry,
+    heat_transfer_domain: CorrelationDomain,
+    heat_transfer_thermal_boundary_condition: str,
+    friction_domain: FrictionDomain,
+) -> CoolantLocalClosure:
+    if geometry.local_loss_coefficient < 0:
+        raise CoolantStop("INPUT_U", "local-loss coefficient must be non-negative")
+    heat_transfer = evaluate_local_coolant_heat_transfer(
+        mass_flow_kg_s=mass_flow_kg_s,
+        flow_area_m2=geometry.flow_area_m2,
+        hydraulic_diameter_m=geometry.hydraulic_diameter_m,
+        viscosity_Pa_s=state.viscosity_Pa_s,
+        cp_J_kgK=state.cp_J_kgK,
+        conductivity_W_mK=state.conductivity_W_mK,
+        equivalent_sand_roughness_m=geometry.equivalent_sand_roughness_m,
+        closure_geometry=geometry.closure_geometry,
+        fully_developed=geometry.fully_developed,
+        thermal_boundary_condition=geometry.thermal_boundary_condition,
+        heat_transfer_domain=heat_transfer_domain,
+        heat_transfer_thermal_boundary_condition=heat_transfer_thermal_boundary_condition,
+        friction_domain=friction_domain,
+        density_kg_m3=state.density_kg_m3,
+    )
+    if heat_transfer.velocity_m_s is None:  # density was supplied above
+        raise RuntimeError("coolant velocity was not evaluated")
+    pressure_drop = darcy_weisbach_pressure_drop_Pa(
+        heat_transfer.darcy_factor,
+        _positive(geometry.length_m, "segment length"),
+        geometry.hydraulic_diameter_m,
+        state.density_kg_m3,
+        heat_transfer.velocity_m_s,
+        geometry.local_loss_coefficient,
+    )
+    return CoolantLocalClosure(
+        Reynolds=heat_transfer.Reynolds,
+        Prandtl=heat_transfer.Prandtl,
+        darcy_factor=heat_transfer.darcy_factor,
+        Nusselt=heat_transfer.Nusselt,
+        h_c_W_m2K=heat_transfer.h_l_W_m2K,
+        velocity_m_s=heat_transfer.velocity_m_s,
+        pressure_drop_Pa=pressure_drop,
+        relative_roughness=heat_transfer.relative_roughness,
+        heat_transfer_applicability=heat_transfer.heat_transfer_applicability,
+        friction_applicability=heat_transfer.friction_applicability,
     )

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import json
+import math
 from pathlib import Path
 import unittest
 
@@ -9,10 +10,14 @@ import jsonschema
 
 from space_y.coolant import (
     CoolantStop,
+    build_friction_domain,
+    build_heat_transfer_domain,
     build_rectangular_channel_geometry,
+    evaluate_rectangular_cooling_hl,
     resolve_coolant_flow,
 )
 from space_y.cooling_hc import solve_cooling_hc, solve_cooling_hc_file
+from space_y.physics import colebrook_residual
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -118,6 +123,99 @@ class CoolingHCTests(unittest.TestCase):
         self.assertFalse(result["validated_engine_prediction"])
         self.assertFalse(result["safety_approval"])
 
+    def test_minimal_hl_path_matches_integrated_synthetic_closure(self) -> None:
+        model = self.request["model_conditions"]
+        fluid = self.request["fluid_state"]
+        geometry = self.request["channel_geometry"]
+        local = evaluate_rectangular_cooling_hl(
+            coolant_mass_flow_kg_s=self.request["flow_conditions"][
+                "coolant_mass_flow_kg_s"
+            ],
+            width_m=geometry["width_m"],
+            height_m=geometry["height_m"],
+            channel_count=geometry["channel_count"],
+            viscosity_Pa_s=fluid["viscosity_Pa_s"],
+            cp_J_kgK=fluid["cp_J_kgK"],
+            conductivity_W_mK=fluid["conductivity_W_mK"],
+            equivalent_sand_roughness_m=geometry[
+                "equivalent_sand_roughness_m"
+            ],
+            closure_geometry=model["closure_geometry"],
+            fully_developed=model["fully_developed"],
+            thermal_boundary_condition=model["thermal_boundary_condition"],
+            heat_transfer_domain=build_heat_transfer_domain(
+                model["heat_transfer_domain"]
+            ),
+            heat_transfer_thermal_boundary_condition=model[
+                "heat_transfer_thermal_boundary_condition"
+            ],
+            friction_domain=build_friction_domain(model["friction_domain"]),
+            density_kg_m3=fluid["density_kg_m3"],
+        )
+        integrated = solve_cooling_hc(self.request)["results"]
+        self.assertAlmostEqual(local.Reynolds, 10000.0)
+        self.assertAlmostEqual(local.Prandtl, 40.0 / 3.0)
+        self.assertAlmostEqual(local.h_l_W_m2K, integrated["h_c_W_m2K"])
+        self.assertAlmostEqual(local.velocity_m_s, integrated["velocity_m_s"])
+
+    def test_odrec_reference_geometry_runs_only_as_synthetic_hl_check(self) -> None:
+        presets = json.loads(
+            (
+                ROOT / "config/SPACE_Y_cooling_channel_reference_presets.json"
+            ).read_text(encoding="utf-8")
+        )["presets"]
+        odrec = next(item for item in presets if item["id"] == "ODREC_2024_TABLE1")
+        model = self.request["model_conditions"]
+        local = evaluate_rectangular_cooling_hl(
+            coolant_mass_flow_kg_s=3.15,
+            width_m=odrec["width_m"],
+            height_m=odrec["height_m"],
+            channel_count=odrec["channel_count"],
+            viscosity_Pa_s=0.001,
+            cp_J_kgK=2000.0,
+            conductivity_W_mK=0.15,
+            equivalent_sand_roughness_m=odrec[
+                "equivalent_sand_roughness_m"
+            ],
+            closure_geometry=model["closure_geometry"],
+            fully_developed=True,
+            thermal_boundary_condition=model["thermal_boundary_condition"],
+            heat_transfer_domain=build_heat_transfer_domain(
+                model["heat_transfer_domain"]
+            ),
+            heat_transfer_thermal_boundary_condition=model[
+                "heat_transfer_thermal_boundary_condition"
+            ],
+            friction_domain=build_friction_domain(model["friction_domain"]),
+            density_kg_m3=800.0,
+        )
+        prandtl = 0.001 * 2000.0 / 0.15
+        expected_nusselt = (
+            (local.darcy_factor / 8.0)
+            * (10000.0 - 1000.0)
+            * prandtl
+            / (
+                1.0
+                + 12.7
+                * math.sqrt(local.darcy_factor / 8.0)
+                * (prandtl ** (2.0 / 3.0) - 1.0)
+            )
+        )
+        expected_dh = 2.0 * 0.001 * 0.006 / (0.001 + 0.006)
+        self.assertAlmostEqual(local.Reynolds, 10000.0)
+        self.assertAlmostEqual(local.velocity_m_s, 3.15 / (800.0 * 90 * 0.001 * 0.006))
+        self.assertAlmostEqual(
+            colebrook_residual(
+                local.darcy_factor, local.Reynolds, 6.3e-6 / expected_dh
+            ),
+            0.0,
+            places=9,
+        )
+        self.assertAlmostEqual(local.Nusselt, expected_nusselt)
+        self.assertAlmostEqual(
+            local.h_l_W_m2K, expected_nusselt * 0.15 / expected_dh
+        )
+
     def test_flow_change_propagates_consistently(self) -> None:
         base = solve_cooling_hc(self.request)
         changed_request = copy.deepcopy(self.request)
@@ -181,6 +279,20 @@ class CoolingHCTests(unittest.TestCase):
         result = solve_cooling_hc(request)
         self.assertEqual(result["status"], "INPUT_U")
         self.assertIsNone(result["results"])
+
+    def test_nested_domain_and_evidence_flags_require_booleans(self) -> None:
+        bad_domain = copy.deepcopy(
+            self.request["model_conditions"]["heat_transfer_domain"]
+        )
+        bad_domain["fully_developed_required"] = "false"
+        with self.assertRaises(CoolantStop) as caught:
+            build_heat_transfer_domain(bad_domain)
+        self.assertEqual(caught.exception.status, "INPUT_U")
+
+        request = copy.deepcopy(self.request)
+        request["input_evidence_complete"] = "false"
+        result = solve_cooling_hc(request)
+        self.assertEqual(result["status"], "INPUT_U")
 
     def test_exact_ipa_identity_is_enforced(self) -> None:
         request = copy.deepcopy(self.request)

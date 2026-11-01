@@ -99,7 +99,12 @@ def solve_cooling_hc(request: dict[str, Any]) -> dict[str, Any]:
             "ENGINE_ANALYSIS",
         }:
             raise CoolantStop("INPUT_U", "unsupported or missing run purpose")
-        if purpose == "ENGINE_ANALYSIS" and not request.get("input_evidence_complete"):
+        input_evidence_complete = request.get("input_evidence_complete")
+        if not isinstance(input_evidence_complete, bool):
+            raise CoolantStop(
+                "INPUT_U", "input_evidence_complete must be an explicit boolean"
+            )
+        if purpose == "ENGINE_ANALYSIS" and not input_evidence_complete:
             raise CoolantStop(
                 "INPUT_U", "engine analysis requires input_evidence_complete=true"
             )
