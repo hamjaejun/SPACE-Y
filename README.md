@@ -117,7 +117,7 @@ RPA 검사는 설치 위치와 라이선스 상태에 의존하므로 보고서�
 ## PDR 후보 의사결정과 RPA 형상 입력 준비
 
 - [PDR 의사결정 엔진 구현 기록](docs/PDR_의사결정_엔진_구현기록.md)
-- [판정 신뢰성 검토 및 RPA 입력 준비](docs/PDR_판정신뢰성검토_RPA입력준비.md)
+- [판정 신뢰성·R2S 실제 요구조건 및 RPA 입력 준비](docs/PDR_판정신뢰성검토_RPA입력준비.md)
 - `src/space_y/design_decision.py`: 요구 성능과 냉각·공급·구조·연소 안정성을 hard constraint로 비교하고 출처·모델·가정·검증 수준을 추적
 - [PDR 입력 Schema](schemas/SPACE_Y_PDR_decision.schema.json), [실제 입력 준비표](config/SPACE_Y_PDR_input_readiness.json), [CAD 인계 Schema](schemas/SPACE_Y_CAD_handoff.schema.json)
 - [RPA 형상 입력·결과 템플릿](config/SPACE_Y_RPA_design_handoff_template.json)과 [Schema](schemas/SPACE_Y_RPA_design_handoff.schema.json)
@@ -137,4 +137,6 @@ PDR 합성 분기 실행:
 
 이 기능은 PDR 후보 선정 근거를 기록하는 도구다. 실제 IPA 물성 및 실제 엔진 조건 검증은 미완료이며 결과는 안전성 승인, 제작 승인 또는 실험 검증을 의미하지 않는다.
 
-2026-11-01 최신 기준 전체 자동 테스트 101개와 Python compile, 47개 JSON 파싱, `git diff --check`가 통과했다. 이 숫자는 소프트웨어 회귀검사 결과이며 실제 엔진 물리 검증 건수가 아니다.
+공식 R2S 안내서와 AEL ICD의 대회 상한·시설 능력·권고·인터페이스는 PDR 입력 준비표 V2에 출처와 페이지별로 분리했다. 과거 `3 kN / 25 bar(a) / O/F 2.50 / 10 s` 케이스는 팀 승인값이 아닌 `PROVISIONAL` 이력이며 RPA 기준안으로 승격하지 않았다. 현재 팀 승인 실제 후보가 없으므로 실제 후보 비교와 SPACE Y RPA 형상 실행은 `INPUT_U`/`NOT_RUN`이다.
+
+2026-11-01 최신 기준 전체 자동 테스트 103개와 Python compile, 56개 JSON 파싱, `git diff --check`가 통과했다. 이 숫자는 소프트웨어 회귀검사 결과이며 실제 엔진 물리 검증 건수가 아니다.

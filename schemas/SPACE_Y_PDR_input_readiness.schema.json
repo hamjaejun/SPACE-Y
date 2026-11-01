@@ -4,15 +4,93 @@
   "type": "object",
   "required": [
     "schema_version", "record_date", "purpose", "overall_status",
-    "actual_design_values_present", "available_analysis_assets", "categories",
+    "actual_design_values_present", "source_register",
+    "confirmed_external_constraints", "historical_provisional_cases",
+    "team_decision_gates", "available_analysis_assets", "categories",
     "validated_engine_prediction", "physical_validation_v01_v12"
   ],
   "properties": {
-    "schema_version": {"const": "SPACE_Y_PDR_INPUT_READINESS_V1"},
+    "schema_version": {"const": "SPACE_Y_PDR_INPUT_READINESS_V2"},
     "record_date": {"type": "string", "format": "date"},
     "purpose": {"const": "ACTUAL_CANDIDATE_INPUT_REQUIREMENTS_NO_ASSUMED_VALUES"},
     "overall_status": {"const": "INPUT_U"},
     "actual_design_values_present": {"const": false},
+    "source_register": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id", "title", "revision", "source_type", "locator",
+          "sha256", "review_status", "publication_scope"
+        ],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "title": {"type": "string", "minLength": 1},
+          "revision": {"type": "string", "minLength": 1},
+          "source_type": {"enum": ["COMPETITION", "FACILITY_ICD", "TEAM_DISCUSSION", "HISTORICAL_ANALYSIS", "SOFTWARE_MANUAL"]},
+          "locator": {"type": "string", "minLength": 1},
+          "sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+          "review_status": {"enum": ["CONFIRMED", "PROVISIONAL", "SOURCE_NOT_FOUND"]},
+          "publication_scope": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "confirmed_external_constraints": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id", "category", "item", "value", "unit", "status",
+          "source_ids", "source_locator", "requirement_type", "interpretation"
+        ],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "category": {"enum": ["COMPETITION", "FACILITY", "INTERFACE", "DOCUMENTATION"]},
+          "item": {"type": "string", "minLength": 1},
+          "value": {"type": ["number", "string", "array", "object"]},
+          "unit": {"type": ["string", "null"]},
+          "status": {"const": "CONFIRMED"},
+          "source_ids": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+          "source_locator": {"type": "string", "minLength": 1},
+          "requirement_type": {"enum": ["MANDATORY_LIMIT", "MANDATORY_DELIVERABLE", "FACILITY_CAPABILITY", "RECOMMENDATION", "INTERFACE_CONSTRAINT"]},
+          "interpretation": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "historical_provisional_cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id", "status", "values", "source_ids", "team_approved",
+          "adopted_as_rpa_baseline", "interpretation"
+        ],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "status": {"const": "PROVISIONAL"},
+          "values": {"type": "object"},
+          "source_ids": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+          "team_approved": {"const": false},
+          "adopted_as_rpa_baseline": {"const": false},
+          "interpretation": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "team_decision_gates": {
+      "type": "object",
+      "required": ["immediate", "provisional_possible", "followup_required"],
+      "properties": {
+        "immediate": {"$ref": "#/$defs/decision_items"},
+        "provisional_possible": {"$ref": "#/$defs/decision_items"},
+        "followup_required": {"$ref": "#/$defs/decision_items"}
+      },
+      "additionalProperties": false
+    },
     "available_analysis_assets": {
       "type": "array",
       "minItems": 1,
@@ -52,6 +130,22 @@
   },
   "additionalProperties": false,
   "$defs": {
+    "decision_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "item", "status", "owner", "due_date", "reason"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "item": {"type": "string", "minLength": 1},
+          "status": {"enum": ["CONFIRMED", "PROVISIONAL", "INPUT_U", "SOURCE_NOT_FOUND"]},
+          "owner": {"type": ["string", "null"]},
+          "due_date": {"type": ["string", "null"], "format": "date"},
+          "reason": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
     "items": {
       "type": "array",
       "minItems": 1,

@@ -1,9 +1,263 @@
 {
-  "schema_version": "SPACE_Y_PDR_INPUT_READINESS_V1",
+  "schema_version": "SPACE_Y_PDR_INPUT_READINESS_V2",
   "record_date": "2026-11-01",
   "purpose": "ACTUAL_CANDIDATE_INPUT_REQUIREMENTS_NO_ASSUMED_VALUES",
   "overall_status": "INPUT_U",
   "actual_design_values_present": false,
+  "source_register": [
+    {
+      "id": "GUIDE-R2SK-PDR-2026-01",
+      "title": "Race 2 Space Korea 2026 Rapid Season 통합 안내서",
+      "revision": "R2SK-PDR-2026-01 v1.0, 2026-10-06",
+      "source_type": "COMPETITION",
+      "locator": "official guide, PDF pages 2-8",
+      "sha256": "b1adad9b3320383d38a8f8b83f5af024c85b4510a265db19d5ad90143546bf07",
+      "review_status": "CONFIRMED",
+      "publication_scope": "Requirement metadata and page-level findings only; source PDF is not redistributed by this record."
+    },
+    {
+      "id": "AEL-AEDN-1904-I1",
+      "title": "AEL Race2Space Interface Control Document",
+      "revision": "AEDN-1904 Issue 1, 2025-11-17",
+      "source_type": "FACILITY_ICD",
+      "locator": "AEL ICD, PDF pages 1-7",
+      "sha256": "f2c42cc2349773347a8915e089af7c031e3c1f9adb913cc3420e3524fd3458f7",
+      "review_status": "CONFIRMED",
+      "publication_scope": "Interface metadata and page-level findings only; source PDF is not copied into the repository."
+    },
+    {
+      "id": "RPA-USER-MANUAL-2.3",
+      "title": "RPA User Manual",
+      "revision": "local RPA Standard Edition v.2.3.2 manual",
+      "source_type": "SOFTWARE_MANUAL",
+      "locator": "printed pages 33-35",
+      "sha256": "31be9c22fc37d709cd7439e4de5827dacb558995d9f38e26bae915fe65d5acf0",
+      "review_status": "CONFIRMED",
+      "publication_scope": "Capability findings and hash only; manual, executable and licensed resources are not redistributed."
+    },
+    {
+      "id": "MEET-2026-10-26",
+      "title": "SPACE Y 설계 방향 회의 전사",
+      "revision": "2026-10-26 meeting transcript",
+      "source_type": "TEAM_DISCUSSION",
+      "locator": "timestamps 15:21, 37:43-38:09, 45:29",
+      "sha256": "49235da6041ce3a7ba3e37b81689e9a6581dbea4c6c18972d403c557927dc828",
+      "review_status": "PROVISIONAL",
+      "publication_scope": "Discussion finding only; not treated as a signed or approved design decision record."
+    },
+    {
+      "id": "HIST-SY-V5-2026-10-29",
+      "title": "SPACE Y v5 initial design proposal and CEA calculation basis",
+      "revision": "2026-10-29 personal review case",
+      "source_type": "HISTORICAL_ANALYSIS",
+      "locator": "local workspace calculation_basis.json and initial proposal",
+      "sha256": "60ad6cc1d30600781e021a8aa4c0e98fc82e4c5ba593c4d4194759745d6c6c44",
+      "review_status": "PROVISIONAL",
+      "publication_scope": "Logical source and hash only; the local calculation package is not added to this repository."
+    }
+  ],
+  "confirmed_external_constraints": [
+    {
+      "id": "EXT-COMP-01",
+      "category": "COMPETITION",
+      "item": "liquid bipropellant test categories",
+      "value": ["N2O/IPA", "LOX/IPA"],
+      "unit": null,
+      "status": "CONFIRMED",
+      "source_ids": ["GUIDE-R2SK-PDR-2026-01"],
+      "source_locator": "PDF page 3, section 02 시험 분야",
+      "requirement_type": "FACILITY_CAPABILITY",
+      "interpretation": "These are supported competition categories, not a record that SPACE Y selected one or received a facility-bay assignment."
+    },
+    {
+      "id": "EXT-COMP-02",
+      "category": "COMPETITION",
+      "item": "maximum chamber pressure for engine design",
+      "value": 50,
+      "unit": "bar(a)",
+      "status": "CONFIRMED",
+      "source_ids": ["GUIDE-R2SK-PDR-2026-01"],
+      "source_locator": "PDF page 3, 압력 기준",
+      "requirement_type": "MANDATORY_LIMIT",
+      "interpretation": "Hard upper limit for engine design; it is not a recommended target or evidence that transient pressure is acceptable."
+    },
+    {
+      "id": "EXT-COMP-03",
+      "category": "COMPETITION",
+      "item": "supply-pressure planning recommendation",
+      "value": "less than 70",
+      "unit": "bar(g)",
+      "status": "CONFIRMED",
+      "source_ids": ["GUIDE-R2SK-PDR-2026-01"],
+      "source_locator": "PDF page 3, 압력 기준",
+      "requirement_type": "RECOMMENDATION",
+      "interpretation": "The guide says recommended below 70 bar(g), while the applicable ICD equipment limit must also be met. This is not converted into a team operating setpoint."
+    },
+    {
+      "id": "EXT-DOC-01",
+      "category": "DOCUMENTATION",
+      "item": "PDR Part A language and length",
+      "value": "English PDF, 8-12 pages",
+      "unit": "pages",
+      "status": "CONFIRMED",
+      "source_ids": ["GUIDE-R2SK-PDR-2026-01"],
+      "source_locator": "PDF page 4, section 03 PDR 문서 구성",
+      "requirement_type": "MANDATORY_DELIVERABLE",
+      "interpretation": "Part A is the scored main body; Part B is an unscored optional appendix."
+    },
+    {
+      "id": "EXT-DOC-02",
+      "category": "DOCUMENTATION",
+      "item": "engine parameter table contents",
+      "value": ["propellant", "cooling method", "fuel target mass flow", "oxidizer target mass flow", "injector port connection", "cooling port connection", "target thrust", "target maximum burn duration", "fuel target supply pressure", "oxidizer target supply pressure", "target chamber pressure", "ignition method"],
+      "unit": null,
+      "status": "CONFIRMED",
+      "source_ids": ["GUIDE-R2SK-PDR-2026-01"],
+      "source_locator": "PDF page 5, section 04 엔진 제원표",
+      "requirement_type": "MANDATORY_DELIVERABLE",
+      "interpretation": "The guide requires these fields to be stated; it does not provide SPACE Y values for them. Supply pressure is at the injector inlet."
+    },
+    {
+      "id": "EXT-DOC-03",
+      "category": "DOCUMENTATION",
+      "item": "final English PDR submission date",
+      "value": "2026-12-31",
+      "unit": "date",
+      "status": "CONFIRMED",
+      "source_ids": ["GUIDE-R2SK-PDR-2026-01"],
+      "source_locator": "PDF pages 2 and 8",
+      "requirement_type": "MANDATORY_DELIVERABLE",
+      "interpretation": "The exact closing time and presentation-material schedule are to be confirmed by later notice."
+    },
+    {
+      "id": "EXT-FAC-01",
+      "category": "FACILITY",
+      "item": "AEL maximum thrust",
+      "value": 10,
+      "unit": "kN",
+      "status": "CONFIRMED",
+      "source_ids": ["GUIDE-R2SK-PDR-2026-01", "AEL-AEDN-1904-I1"],
+      "source_locator": "guide PDF page 3; AEL ICD PDF page 1",
+      "requirement_type": "FACILITY_CAPABILITY",
+      "interpretation": "Facility envelope only; not a target thrust and not confirmation of test allocation."
+    },
+    {
+      "id": "EXT-FAC-02",
+      "category": "FACILITY",
+      "item": "AEL suggested general delivery-pressure range",
+      "value": "20-60",
+      "unit": "bar(g)",
+      "status": "CONFIRMED",
+      "source_ids": ["AEL-AEDN-1904-I1"],
+      "source_locator": "PDF page 4, section 3 Fluid interfaces",
+      "requirement_type": "RECOMMENDATION",
+      "interpretation": "AEL notes that higher delivery pressure reduces achievable maximum mass flow; this range is not a verified simultaneous pressure-flow envelope."
+    },
+    {
+      "id": "EXT-FAC-03",
+      "category": "FACILITY",
+      "item": "AEL N2O delivery capability",
+      "value": {"maximum_delivery_pressure": 90, "maximum_mass_flow": 2.6, "typical_temperature": 10, "tank_capacity_J1": 8, "tank_capacity_J2": 32},
+      "unit": "bar(g), kg/s, degC, kg, kg",
+      "status": "CONFIRMED",
+      "source_ids": ["AEL-AEDN-1904-I1"],
+      "source_locator": "PDF page 4, section 3.1 Nitrous oxide",
+      "requirement_type": "FACILITY_CAPABILITY",
+      "interpretation": "Individual nominal limits/capacities; usable mass, simultaneous pressure-flow capability and assigned bay remain unconfirmed."
+    },
+    {
+      "id": "EXT-FAC-04",
+      "category": "FACILITY",
+      "item": "AEL IPA delivery capability",
+      "value": {"maximum_delivery_pressure": 90, "maximum_mass_flow": 2.0, "typical_temperature": 20, "tank_capacity_J1": 9, "tank_capacity_J2": 14},
+      "unit": "bar(g), kg/s, degC, kg, kg",
+      "status": "CONFIRMED",
+      "source_ids": ["AEL-AEDN-1904-I1"],
+      "source_locator": "PDF page 5, section 3.3 Isopropyl alcohol",
+      "requirement_type": "FACILITY_CAPABILITY",
+      "interpretation": "Individual nominal limits/capacities; exact composition, usable mass and simultaneous pressure-flow capability remain unconfirmed."
+    },
+    {
+      "id": "EXT-IF-01",
+      "category": "INTERFACE",
+      "item": "AEL mounting interface",
+      "value": "M10 threaded holes on 135 x 50 mm pitch; team provides mount; thrust axis aligned with plate centreline",
+      "unit": "mm",
+      "status": "CONFIRMED",
+      "source_ids": ["AEL-AEDN-1904-I1"],
+      "source_locator": "PDF pages 2-3, section 2 Mechanical interfaces",
+      "requirement_type": "INTERFACE_CONSTRAINT",
+      "interpretation": "AEL recommends 12 mm holes in the team bracket; final mount design and rear-clearance verification remain team work."
+    },
+    {
+      "id": "EXT-IF-02",
+      "category": "INTERFACE",
+      "item": "AEL IPA and N2O fluid-port guidance",
+      "value": "IPA delivery 1/2 inch tube and suggested 1/4-1/2 inch BSPP female engine port; N2O delivery 3/4 inch tube and suggested 1/2 or 3/4 inch BSPP female engine port",
+      "unit": "inch",
+      "status": "CONFIRMED",
+      "source_ids": ["AEL-AEDN-1904-I1"],
+      "source_locator": "PDF pages 4-5, sections 3.1 and 3.3",
+      "requirement_type": "INTERFACE_CONSTRAINT",
+      "interpretation": "Port selection must still be checked against required flow and sealing; the suggested sizes are not an injector design."
+    },
+    {
+      "id": "EXT-IF-03",
+      "category": "INTERFACE",
+      "item": "AEL instrumentation capability",
+      "value": "10 kHz, 16-bit acquisition; delivered propellant pressure/temperature/mass flow and thrust; up to 8 pressure transducers and 16 thermocouples",
+      "unit": null,
+      "status": "CONFIRMED",
+      "source_ids": ["AEL-AEDN-1904-I1"],
+      "source_locator": "PDF page 6, section 4 Instrumentation interfaces",
+      "requirement_type": "FACILITY_CAPABILITY",
+      "interpretation": "AEL recommends at least one chamber-pressure tapping; sensor selection, range, location and abort criteria remain team decisions."
+    },
+    {
+      "id": "EXT-IF-04",
+      "category": "INTERFACE",
+      "item": "AEL safety and ignition interfaces",
+      "value": "AEL ASI required by guide; facility or team igniter permitted; facility torch igniter uses 1/4 inch BSPP interface",
+      "unit": null,
+      "status": "CONFIRMED",
+      "source_ids": ["GUIDE-R2SK-PDR-2026-01", "AEL-AEDN-1904-I1"],
+      "source_locator": "guide PDF page 4; AEL ICD PDF page 7, section 5 Ignition",
+      "requirement_type": "INTERFACE_CONSTRAINT",
+      "interpretation": "Ignition method and interface implementation are not yet selected by SPACE Y."
+    }
+  ],
+  "historical_provisional_cases": [
+    {
+      "id": "SY-V5-PROPOSAL",
+      "status": "PROVISIONAL",
+      "values": {"propellants": "N2O/IPA", "cooling": "IPA regenerative", "thrust_N": 3000, "chamber_pressure_bar_abs": 25, "mixture_ratio_oxidizer_to_fuel": 2.5, "burn_duration_s": 10, "fuel_temperature_K": 293, "oxidizer_temperature_K": 283},
+      "source_ids": ["HIST-SY-V5-2026-10-29"],
+      "team_approved": false,
+      "adopted_as_rpa_baseline": false,
+      "interpretation": "A personal review case with CEA output, not an approved team requirement, optimum, actual facility state, or safe design."
+    }
+  ],
+  "team_decision_gates": {
+    "immediate": [
+      {"id": "DEC-NOW-01", "item": "select propellant pair and intended AEL bay/assignment basis", "status": "INPUT_U", "owner": null, "due_date": null, "reason": "Required to establish facility envelope and exact fluid definitions; the competition options do not select a SPACE Y configuration."},
+      {"id": "DEC-NOW-02", "item": "approve target thrust, ambient/back-pressure condition, and tolerance", "status": "SOURCE_NOT_FOUND", "owner": null, "due_date": null, "reason": "Blocks sizing basis, performance comparison and RPA preliminary geometry."},
+      {"id": "DEC-NOW-03", "item": "approve chamber-pressure and mixture-ratio candidate set", "status": "SOURCE_NOT_FOUND", "owner": null, "due_date": null, "reason": "Blocks CEA/RPA candidate comparison; historical 25 bar(a) and O/F 2.50 are not team-approved."},
+      {"id": "DEC-NOW-04", "item": "approve burn duration and duty-cycle definition", "status": "SOURCE_NOT_FOUND", "owner": null, "due_date": null, "reason": "Required for propellant inventory, cooling duration, supply and test planning."},
+      {"id": "DEC-NOW-05", "item": "define 2-3 actual candidate IDs and approve one comparison input sheet", "status": "INPUT_U", "owner": null, "due_date": null, "reason": "The Decision Engine cannot compare actual candidates without an approved candidate set."},
+      {"id": "DEC-NOW-06", "item": "select RPA sizing control, chamber count, nozzle design condition and nozzle shape", "status": "INPUT_U", "owner": null, "due_date": null, "reason": "Required for a reproducible conditional preliminary geometry run."}
+    ],
+    "provisional_possible": [
+      {"id": "DEC-PROV-01", "item": "chamber characteristic length or chamber length basis", "status": "INPUT_U", "owner": null, "due_date": null, "reason": "May be adopted provisionally only with a literature/source range, sensitivity case and change trigger."},
+      {"id": "DEC-PROV-02", "item": "contraction angle/radii and nozzle-contour assumptions", "status": "INPUT_U", "owner": null, "due_date": null, "reason": "May support preliminary RPA geometry if explicitly labeled provisional and traced to a source."},
+      {"id": "DEC-PROV-03", "item": "facility typical inlet temperatures as preliminary run cases", "status": "PROVISIONAL", "owner": null, "due_date": null, "reason": "AEL publishes typical N2O 10 degC and IPA 20 degC, but these are not guaranteed actual inlet states or team-approved values."}
+    ],
+    "followup_required": [
+      {"id": "DEC-LATER-01", "item": "facility pressure-flow envelope, usable inventory and transient supply evidence", "status": "INPUT_U", "owner": null, "due_date": null, "reason": "Needed before supply feasibility or test readiness can be claimed."},
+      {"id": "DEC-LATER-02", "item": "validated exact-IPA property backend and coolant inlet state", "status": "INPUT_U", "owner": null, "due_date": null, "reason": "Needed before M0 output can be used as actual cooling evidence."},
+      {"id": "DEC-LATER-03", "item": "cooling-channel, wall/material, injector, joint/seal and mounting detail", "status": "INPUT_U", "owner": null, "due_date": null, "reason": "RPA geometry does not complete regenerative, structural, combustion-stability or facility-interface design."},
+      {"id": "DEC-LATER-04", "item": "approved acceptance limits, margins, instrumentation and abort criteria", "status": "INPUT_U", "owner": null, "due_date": null, "reason": "Required before manufacturing/test release; no safety limit is invented by the software."}
+    ]
+  },
   "available_analysis_assets": [
     {
       "id": "ASSET-CEA",

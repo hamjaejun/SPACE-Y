@@ -221,3 +221,11 @@ README의 “수식 구분자를 GitHub Markdown용으로 정리했다”는 설
 RPA Standard Edition v.2.3.2 매뉴얼 33–35쪽에서 Chamber Geometry의 Design Parameters/Size and Geometry, sizing basis, 결과 ASCII 저장과 DXF contour export를 확인했다. 이는 문서 capability이며 실제 SPACE Y 형상 run/export 증거는 아니다. RPA 입력·geometry 가정·RPA 산출·export 상태·별도 상세설계를 구분하는 template을 추가했고 실제 값은 모두 `INPUT_U`/`NOT_RUN`이다. 자동 CAD 생성·승인 기능은 추가하지 않았다.
 
 후속 수정 완료 후 전체 자동 테스트 101개, Python compile, JSON 47개 파싱과 `git diff --check`가 통과했다. 이는 판정 로직과 기존 회귀검사 결과이며 물리 검증 상태는 여전히 `validated_engine_prediction=false`, V01–V12 `NOT_RUN`이다.
+
+## 15. 실제 R2S 요구조건과 RPA 설계 착수 게이트
+
+2026-11-01 공식 R2S 통합 안내서와 AEL ICD를 다시 대조해 대회 상한, 시설 능력, 권고와 인터페이스를 팀 설계값과 분리했다. 연소실 압력 최대 50 bar(a)는 강제 상한이고 공급압력 70 bar(g) 미만은 안내서의 권고다. AEL의 10 kN, N2O/IPA 최대 전달압력·유량과 탱크 용량은 시설 능력/명목값이며 SPACE Y 목표나 동시 압력–유량 포락선으로 승격하지 않는다.
+
+과거 `3 kN / 25 bar(a) / O/F 2.50 / 10 s` v5 계산은 `PROVISIONAL`, `team_approved=false`, `adopted_as_rpa_baseline=false`로 보존했다. 저장소와 workspace에서 팀 승인 실제 후보 기록을 찾지 못했으므로 목표 추력·ambient, Pc/O/F 후보, 연소시간/duty, 후보 ID와 RPA sizing/nozzle 선택은 `INPUT_U` 또는 `SOURCE_NOT_FOUND`다. 실제 후보 비교와 RPA SPACE Y 형상 실행은 아직 시작할 수 없다.
+
+기존 PDR 준비 문서에 요구조건 표, 파라미터 선정 근거, 후보 비교 준비, RPA 입력 분류와 팀 결정 게이트를 추가했고 PDR readiness Schema/JSON을 V2로 갱신했다. 새 물리 모델·최적화·임의 설계값은 추가하지 않았다. 전체 자동 테스트 103개, Python compile, JSON 56개 파싱과 `git diff --check`가 통과했다. 실제 엔진 예측은 계속 `false`, V01–V12는 `NOT_RUN`이다.

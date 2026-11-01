@@ -51,6 +51,7 @@ class RealInputReadinessTests(unittest.TestCase):
             )
         )
         jsonschema.Draft202012Validator(schema).validate(record)
+        self.assertEqual(record["schema_version"], "SPACE_Y_PDR_INPUT_READINESS_V2")
         self.assertFalse(record["actual_design_values_present"])
         self.assertEqual(record["physical_validation_v01_v12"], "NOT_RUN")
         self.assertTrue(record["available_analysis_assets"])
@@ -66,6 +67,46 @@ class RealInputReadinessTests(unittest.TestCase):
             self.assertTrue(all(item["current_value"] is None for item in items))
             self.assertTrue(all(item["owner"] is None for item in items))
             self.assertTrue(all(item["due_date"] is None for item in items))
+
+    def test_pdr_external_constraints_do_not_become_team_design_values(self) -> None:
+        record = json.loads(
+            (ROOT / "config/SPACE_Y_PDR_input_readiness.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        constraints = {
+            item["id"]: item for item in record["confirmed_external_constraints"]
+        }
+        self.assertEqual(constraints["EXT-COMP-02"]["value"], 50)
+        self.assertEqual(constraints["EXT-COMP-02"]["unit"], "bar(a)")
+        self.assertEqual(
+            constraints["EXT-COMP-02"]["requirement_type"], "MANDATORY_LIMIT"
+        )
+        self.assertEqual(
+            constraints["EXT-COMP-03"]["requirement_type"], "RECOMMENDATION"
+        )
+        self.assertEqual(
+            constraints["EXT-FAC-01"]["requirement_type"], "FACILITY_CAPABILITY"
+        )
+        self.assertFalse(record["actual_design_values_present"])
+
+    def test_historical_v5_case_is_not_promoted_to_rpa_baseline(self) -> None:
+        record = json.loads(
+            (ROOT / "config/SPACE_Y_PDR_input_readiness.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        historical = record["historical_provisional_cases"]
+        self.assertEqual(len(historical), 1)
+        self.assertEqual(historical[0]["status"], "PROVISIONAL")
+        self.assertFalse(historical[0]["team_approved"])
+        self.assertFalse(historical[0]["adopted_as_rpa_baseline"])
+        self.assertTrue(
+            any(
+                item["status"] == "SOURCE_NOT_FOUND"
+                for item in record["team_decision_gates"]["immediate"]
+            )
+        )
 
     def test_cad_handoff_template_contains_no_released_baseline(self) -> None:
         record = json.loads(
@@ -126,6 +167,13 @@ class RealInputReadinessTests(unittest.TestCase):
             all(item["status"] == "NOT_RUN" for item in record["rpa_computed_outputs"])
         )
         self.assertTrue(record["separately_decided_design_items"])
+        self.assertTrue(
+            any(
+                "PROVISIONAL_NOT_APPROVED" in source_id
+                for item in record["rpa_direct_inputs"]
+                for source_id in item["source_ids"]
+            )
+        )
         self.assertFalse(record["rpa_run_completed"])
         self.assertFalse(record["geometry_export_verified"])
 
