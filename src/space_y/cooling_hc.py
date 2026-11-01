@@ -144,8 +144,11 @@ def solve_cooling_hc(request: dict[str, Any]) -> dict[str, Any]:
             model_spec.get("thermal_boundary_condition_source"),
             "thermal boundary condition",
         )
-        if model_spec.get("fully_developed") is None:
-            raise CoolantStop("INPUT_U", "fully developed condition must be explicit")
+        fully_developed = model_spec.get("fully_developed")
+        if not isinstance(fully_developed, bool):
+            raise CoolantStop(
+                "INPUT_U", "fully developed condition must be an explicit boolean"
+            )
         _source(
             model_spec.get("fully_developed_evidence_source"),
             "fully developed condition",
@@ -169,7 +172,7 @@ def solve_cooling_hc(request: dict[str, Any]) -> dict[str, Any]:
             equivalent_sand_roughness_m=roughness,
             local_loss_coefficient=local_k,
             closure_geometry=closure_geometry,
-            fully_developed=bool(model_spec["fully_developed"]),
+            fully_developed=fully_developed,
             thermal_boundary_condition=thermal_boundary,
         )
         local = evaluate_local_coolant_closures(

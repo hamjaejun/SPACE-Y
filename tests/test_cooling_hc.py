@@ -175,6 +175,13 @@ class CoolingHCTests(unittest.TestCase):
         result = solve_cooling_hc(request)
         self.assertEqual(result["status"], "INPUT_U")
 
+    def test_fully_developed_requires_boolean_in_direct_api(self) -> None:
+        request = copy.deepcopy(self.request)
+        request["model_conditions"]["fully_developed"] = "false"
+        result = solve_cooling_hc(request)
+        self.assertEqual(result["status"], "INPUT_U")
+        self.assertIsNone(result["results"])
+
     def test_exact_ipa_identity_is_enforced(self) -> None:
         request = copy.deepcopy(self.request)
         request["fluid_state"]["canonical_name"] = "2-propanol"
