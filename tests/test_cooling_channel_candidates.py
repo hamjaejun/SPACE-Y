@@ -71,6 +71,10 @@ class CoolingChannelCandidateTests(unittest.TestCase):
             ROOT / "artifacts/cooling_channel_sweep/synthetic_axial_stations.csv"
         ).read_text(encoding="utf-8")
         self.assertEqual(regenerated_text, saved_text)
+        header = saved_text.splitlines()[0].split(",")
+        self.assertIn("roughness_friction_ratio", header)
+        self.assertIn("re_design_recommendation_status", header)
+        self.assertIn("channel_aspect_ratio_h_over_w", header)
 
     def test_cartesian_candidate_generation_is_deterministic(self) -> None:
         candidates = generate_channel_geometry_candidates(

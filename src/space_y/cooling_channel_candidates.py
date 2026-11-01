@@ -9,6 +9,10 @@ import math
 from pathlib import Path
 from typing import Any
 
+from .cooling_applicability import (
+    assess_candidate_station_path,
+    build_cooling_applicability_policy,
+)
 from .coolant import (
     CoolantStop,
     build_friction_domain,
@@ -421,6 +425,11 @@ def solve_cooling_channel_candidates(request: dict[str, Any]) -> dict[str, Any]:
         )
         heat_domain = build_heat_transfer_domain(model.get("heat_transfer_domain"))
         friction_domain = build_friction_domain(model.get("friction_domain"))
+        applicability_policy = (
+            build_cooling_applicability_policy(model["applicability_policy"])
+            if model.get("applicability_policy") is not None
+            else None
+        )
 
         successful_station_count = 0
         outside_station_count = 0
@@ -436,6 +445,9 @@ def solve_cooling_channel_candidates(request: dict[str, Any]) -> dict[str, Any]:
                     "minimum_h_l_W_m2K": None,
                     "maximum_h_l_W_m2K": None,
                     "maximum_friction_pressure_gradient_Pa_m": None,
+                    "applicability_assessment": assess_candidate_station_path(
+                        candidate["stations"], applicability_policy
+                    ),
                     "limitations": [
                         "At least one station violates supplied channel-width constraints."
                     ],
@@ -473,6 +485,7 @@ def solve_cooling_channel_candidates(request: dict[str, Any]) -> dict[str, Any]:
                         heat_transfer_thermal_boundary_condition=correlation_boundary,
                         friction_domain=friction_domain,
                         density_kg_m3=fluid["density_kg_m3"],
+                        applicability_policy=applicability_policy,
                     )
                 except CoolantStop as error:
                     station["calculation"] = {
@@ -519,6 +532,9 @@ def solve_cooling_channel_candidates(request: dict[str, Any]) -> dict[str, Any]:
                     throat_h = local.h_l_W_m2K
 
             valid_count = candidate_station_statuses.count("MODEL_U")
+            path_assessment = assess_candidate_station_path(
+                candidate["stations"], applicability_policy
+            )
             if valid_count == len(candidate["stations"]):
                 applicability = "APPLICABLE_TO_SUPPLIED_DOMAINS"
                 decision = (
@@ -548,6 +564,7 @@ def solve_cooling_channel_candidates(request: dict[str, Any]) -> dict[str, Any]:
                 "maximum_friction_pressure_gradient_Pa_m": (
                     max(gradient_values) if gradient_values else None
                 ),
+                "applicability_assessment": path_assessment,
                 "limitations": [
                     "No heat-load, wall-temperature, phase-change, manufacturing, structural, or supply-pressure approval is performed.",
                     "No scalar score or final optimum is assigned.",
@@ -597,6 +614,11 @@ def solve_cooling_channel_candidates(request: dict[str, Any]) -> dict[str, Any]:
                 "default_property_version": default_fluid["property_version"],
                 "equivalent_sand_roughness_m": roughness,
                 "roughness_source": roughness_source,
+                "applicability_policy_id": (
+                    applicability_policy.policy_id
+                    if applicability_policy is not None
+                    else None
+                ),
             },
             "counts": {
                 "candidate_count": len(candidates),
@@ -700,9 +722,16 @@ def write_candidate_results_csv(path: str | Path, result: dict[str, Any]) -> Non
         "Reynolds",
         "Prandtl",
         "darcy_factor",
+        "smooth_darcy_factor",
+        "roughness_friction_ratio",
+        "roughness_warning_status",
         "Nusselt",
         "h_l_W_m2K",
         "friction_pressure_gradient_Pa_m",
+        "channel_aspect_ratio_h_over_w",
+        "gnielinski_correlation_status",
+        "re_design_recommendation_status",
+        "transition_region_warning",
     ]
     with output.open("w", encoding="utf-8", newline="") as stream:
         writer = csv.DictWriter(stream, fieldnames=fieldnames)
@@ -739,11 +768,32 @@ def write_candidate_results_csv(path: str | Path, result: dict[str, Any]) -> Non
                         "Reynolds": values.get("Reynolds"),
                         "Prandtl": values.get("Prandtl"),
                         "darcy_factor": values.get("darcy_factor"),
+                        "smooth_darcy_factor": values.get(
+                            "smooth_darcy_factor"
+                        ),
+                        "roughness_friction_ratio": values.get(
+                            "roughness_friction_ratio"
+                        ),
+                        "roughness_warning_status": (
+                            values.get("roughness_assessment") or {}
+                        ).get("roughness_heat_transfer_warning_status"),
                         "Nusselt": values.get("Nusselt"),
                         "h_l_W_m2K": values.get("h_l_W_m2K"),
                         "friction_pressure_gradient_Pa_m": values.get(
                             "friction_pressure_gradient_Pa_m"
                         ),
+                        "channel_aspect_ratio_h_over_w": values.get(
+                            "channel_aspect_ratio_h_over_w"
+                        ),
+                        "gnielinski_correlation_status": (
+                            values.get("applicability_assessment") or {}
+                        ).get("correlation_applicability_status"),
+                        "re_design_recommendation_status": (
+                            values.get("applicability_assessment") or {}
+                        ).get("re_design_recommendation_status"),
+                        "transition_region_warning": (
+                            values.get("applicability_assessment") or {}
+                        ).get("transition_region_warning"),
                     }
                 )
 
@@ -767,6 +817,18 @@ def write_candidate_summary_csv(path: str | Path, result: dict[str, Any]) -> Non
         "minimum_h_l_W_m2K",
         "maximum_h_l_W_m2K",
         "maximum_friction_pressure_gradient_Pa_m",
+        "minimum_reynolds",
+        "minimum_reynolds_station_id",
+        "minimum_reynolds_x_m",
+        "re_design_minimum",
+        "re_design_margin",
+        "re_design_recommendation_status",
+        "transition_warning_station_ids",
+        "maximum_roughness_friction_ratio",
+        "maximum_roughness_ratio_station_id",
+        "roughness_warning_status",
+        "gnielinski_correlation_domain_status",
+        "continuous_path_claim",
         "pareto_status",
         "recommendation_tags",
         "exclusion_reasons",
@@ -778,6 +840,7 @@ def write_candidate_summary_csv(path: str | Path, result: dict[str, Any]) -> Non
         for candidate in result.get("candidates", []):
             comparison = candidate.get("comparison") or {}
             summary = candidate.get("summary") or {}
+            applicability = summary.get("applicability_assessment") or {}
             writer.writerow(
                 {
                     "candidate_id": candidate.get("candidate_id"),
@@ -804,6 +867,38 @@ def write_candidate_summary_csv(path: str | Path, result: dict[str, Any]) -> Non
                     "maximum_h_l_W_m2K": summary.get("maximum_h_l_W_m2K"),
                     "maximum_friction_pressure_gradient_Pa_m": summary.get(
                         "maximum_friction_pressure_gradient_Pa_m"
+                    ),
+                    "minimum_reynolds": applicability.get("minimum_reynolds"),
+                    "minimum_reynolds_station_id": applicability.get(
+                        "minimum_reynolds_station_id"
+                    ),
+                    "minimum_reynolds_x_m": applicability.get(
+                        "minimum_reynolds_x_m"
+                    ),
+                    "re_design_minimum": applicability.get(
+                        "re_design_minimum"
+                    ),
+                    "re_design_margin": applicability.get("re_design_margin"),
+                    "re_design_recommendation_status": applicability.get(
+                        "re_design_recommendation_status"
+                    ),
+                    "transition_warning_station_ids": "|".join(
+                        applicability.get("transition_warning_station_ids", [])
+                    ),
+                    "maximum_roughness_friction_ratio": applicability.get(
+                        "maximum_roughness_friction_ratio"
+                    ),
+                    "maximum_roughness_ratio_station_id": applicability.get(
+                        "maximum_roughness_ratio_station_id"
+                    ),
+                    "roughness_warning_status": applicability.get(
+                        "roughness_warning_status"
+                    ),
+                    "gnielinski_correlation_domain_status": applicability.get(
+                        "correlation_domain_status"
+                    ),
+                    "continuous_path_claim": applicability.get(
+                        "continuous_path_claim", False
                     ),
                     "pareto_status": comparison.get("pareto_status"),
                     "recommendation_tags": "|".join(

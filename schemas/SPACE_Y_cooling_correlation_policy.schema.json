@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "SPACE_Y_cooling_correlation_policy.schema.json",
+  "title": "SPACE Y cooling correlation applicability policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "policy_id",
+    "classification",
+    "heat_transfer_correlation",
+    "design_recommendation",
+    "roughness_assessment",
+    "colebrook_policy",
+    "rectangular_channel_policy",
+    "validated_engine_prediction",
+    "physical_validation_v01_v12",
+    "safety_approval"
+  ],
+  "properties": {
+    "policy_id": {"type": "string", "minLength": 1},
+    "classification": {"const": "PRELIMINARY_MODEL_POLICY_NOT_DESIGN_APPROVAL"},
+    "heat_transfer_correlation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model", "re_range", "pr_range", "source", "fully_developed_required", "geometry_application"],
+      "properties": {
+        "model": {"const": "GNIELINSKI_DISPLAYED_COMMON_FORM"},
+        "re_range": {"type": "array", "prefixItems": [{"type": "number", "minimum": 0}, {"type": "number", "minimum": 0}], "minItems": 2, "maxItems": 2},
+        "pr_range": {"type": "array", "prefixItems": [{"type": "number", "exclusiveMinimum": 0}, {"type": "number", "exclusiveMinimum": 0}], "minItems": 2, "maxItems": 2},
+        "source": {"type": "string", "minLength": 1},
+        "fully_developed_required": {"const": true},
+        "geometry_application": {"type": "string", "minLength": 1}
+      }
+    },
+    "design_recommendation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["recommended_re_min", "transition_warning_re_threshold", "evaluate_minimum_re_over_all_stations", "source"],
+      "properties": {
+        "recommended_re_min": {"type": "number", "minimum": 0},
+        "transition_warning_re_threshold": {"type": "number", "minimum": 0},
+        "evaluate_minimum_re_over_all_stations": {"const": true},
+        "source": {"type": "string", "minLength": 1}
+      }
+    },
+    "roughness_assessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["compare_rough_to_smooth_friction", "roughness_friction_ratio_warning_threshold", "apply_arbitrary_friction_cap", "apply_arbitrary_heat_transfer_cap", "source"],
+      "properties": {
+        "compare_rough_to_smooth_friction": {"const": true},
+        "roughness_friction_ratio_warning_threshold": {"type": "number", "exclusiveMinimum": 0},
+        "apply_arbitrary_friction_cap": {"const": false},
+        "apply_arbitrary_heat_transfer_cap": {"const": false},
+        "source": {"type": "string", "minLength": 1}
+      }
+    },
+    "colebrook_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "flow_regime", "darcy_factor_definition", "fixed_re_range", "fixed_relative_roughness_range", "domain_policy"],
+      "properties": {
+        "source": {"type": "string", "minLength": 1},
+        "flow_regime": {"const": "TURBULENT_PIPE_FLOW"},
+        "darcy_factor_definition": {"const": "DARCY_WEISBACH_NOT_FANNING"},
+        "fixed_re_range": {"type": "null"},
+        "fixed_relative_roughness_range": {"type": "null"},
+        "domain_policy": {"type": "string", "minLength": 1}
+      }
+    },
+    "rectangular_channel_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["hydraulic_diameter_definition", "specific_rectangular_form", "status", "limitations"],
+      "properties": {
+        "hydraulic_diameter_definition": {"const": "4A/P_w"},
+        "specific_rectangular_form": {"const": "2wh/(w+h)"},
+        "status": {"const": "MODEL_APPROXIMATION"},
+        "limitations": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "validated_engine_prediction": {"const": false},
+    "physical_validation_v01_v12": {"const": "NOT_RUN"},
+    "safety_approval": {"const": false}
+  }
+}

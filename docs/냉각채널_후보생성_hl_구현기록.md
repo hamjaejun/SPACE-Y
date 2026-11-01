@@ -190,3 +190,24 @@ optimization.`을 기록하고 `final_design_selection=false`를 유지한다.
   --csv-output artifacts\cooling_channel_sweep\synthetic_recommendation_stations.csv `
   --summary-csv-output artifacts\cooling_channel_sweep\synthetic_recommendation_summary.csv
 ```
+
+## 9. 상관식 적용성 정책과 참고 형상 템플릿
+
+Gnielinski 실행범위 `Re=[3000,5e6]`, `Pr=[0.5,2000]`와 팀 예비 설계 권고
+`min(Re)>=5000`, `Re<10000` 천이 경고를 별도로 판정한다. 경로 판정은 공급된 모든
+이산 station이 계산된 경우에만 수행하며 최소 Re station/좌표/여유를 기록한다.
+연속 위치의 만족 여부는 주장하지 않는다.
+
+같은 Re의 거친/매끈 Colebrook Darcy 계수비를 계산해 4 이상일 때 과대예측 가능성
+경고를 남기지만 마찰계수나 `h_l`을 제한하지 않는다. Colebrook 적용영역은 실행별
+`friction_domain`이며 Gnielinski 범위를 자동 복사하지 않는다. 상세 근거와 URL은
+`docs/냉각측_hl_상관식_적용성_검증기록.md`에 기록했다.
+
+별도 참고 grid는 `w_ref` 5개, `b` 4개, `h` 4개의 80개 비설계 템플릿이다. 실제 목
+평균 채널 배치반경이 없으면 채널수를 만들지 않는다. 반경이 공급돼도 인접 floor/ceil
+정수 후보와 재계산 폭만 제시하고 자동 선택하지 않는다.
+
+현재 다중 합성 fixture의 비교 가능 후보 5개는 모두 출구 station에서 최소 Re가
+발생하고 `min(Re)<5000`이다. 따라서 Pareto 태그와 별도로
+`BELOW_RE_DESIGN_RECOMMENDATION`, `TRANSITION_REGION_WARNING`을 기록하며 설계 권고
+후보 목록은 비어 있다. 이는 정책 분기 검산이지 실제 SPACE Y 후보 배제가 아니다.

@@ -160,7 +160,9 @@ PDR 합성 분기 실행:
 ## 냉각 측 `h_l` (`h_c`) 독립 인터페이스
 
 - [구현·문헌·적용범위 기록](docs/냉각측_대류_hc_독립모델_구현기록.md)
+- [상관식 적용성·거칠기 경고 기록](docs/냉각측_hl_상관식_적용성_검증기록.md)
 - [입력 Schema](schemas/SPACE_Y_cooling_hc.schema.json), [실제 입력 준비 상태](config/SPACE_Y_cooling_hc_input_readiness.json), [문헌 형상 프리셋](config/SPACE_Y_cooling_channel_reference_presets.json)
+- [적용성 정책](config/SPACE_Y_cooling_correlation_policy.json), [80개 비설계 참고 템플릿](config/SPACE_Y_cooling_channel_template_grid.json)
 
 ```powershell
 .\.venv\Scripts\space-y.exe cooling-hc-run examples\cooling_hc_rectangular_synthetic.json
@@ -186,4 +188,4 @@ PDR 합성 분기 실행:
 .\.venv\Scripts\space-y.exe cooling-channel-sweep examples\cooling_channel_recommendation_synthetic_multi.json --output artifacts\cooling_channel_sweep\synthetic_recommendation_result.json --csv-output artifacts\cooling_channel_sweep\synthetic_recommendation_stations.csv --summary-csv-output artifacts\cooling_channel_sweep\synthetic_recommendation_summary.csv
 ```
 
-Baseline은 문헌·부트캠프 참고자료이며 자동 추천 후보와 별개다. 추천은 같은 station과 같은 공급 유량·물성에서의 상대 비교만 수행하며 `Preliminary candidate recommendation, not final design optimization.`이다.
+Baseline은 문헌·부트캠프 참고자료이며 자동 추천 후보와 별개다. 추천은 같은 station과 같은 공급 유량·물성에서의 상대 비교만 수행하며 `Preliminary candidate recommendation, not final design optimization.`이다. Gnielinski 실행범위와 팀의 예비 Re 권고를 분리하고, 모든 명시 station의 최소 Re와 거친/매끈 Darcy 계수비 경고를 기록한다. 미계산 연속 위치, 실제 IPA 상태, 비등·상변화와 실제 압력예산은 검증하지 않는다.

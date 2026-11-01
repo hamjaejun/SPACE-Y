@@ -1,9 +1,13 @@
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, replace
 import math
 from typing import Any
 
+from .cooling_applicability import (
+    CoolingApplicabilityPolicy,
+    assess_local_reynolds_prandtl,
+)
 from .m0 import FluidState
 from .physics import (
     CorrelationDomain,
@@ -66,6 +70,11 @@ class CoolantLocalClosure:
     relative_roughness: float
     heat_transfer_applicability: dict[str, Any]
     friction_applicability: dict[str, Any]
+    smooth_darcy_factor: float | None
+    roughness_friction_ratio: float | None
+    roughness_assessment: dict[str, Any]
+    applicability_assessment: dict[str, Any]
+    channel_aspect_ratio_h_over_w: float | None
 
 
 @dataclass(frozen=True)
@@ -86,6 +95,11 @@ class CoolantHeatTransferClosure:
     relative_roughness: float
     heat_transfer_applicability: dict[str, Any]
     friction_applicability: dict[str, Any]
+    smooth_darcy_factor: float | None
+    roughness_friction_ratio: float | None
+    roughness_assessment: dict[str, Any]
+    applicability_assessment: dict[str, Any]
+    channel_aspect_ratio_h_over_w: float | None
 
 
 @dataclass(frozen=True)
@@ -405,6 +419,119 @@ def build_friction_domain(spec: dict[str, Any]) -> FrictionDomain:
     return FrictionDomain(source, re_min, re_max, rr_min, rr_max, geometry)
 
 
+def evaluate_roughness_friction_ratio(
+    *,
+    reynolds: float,
+    relative_roughness: float,
+    friction_domain: FrictionDomain,
+    warning_threshold: float | None,
+) -> dict[str, Any]:
+    """Compare Darcy factors at the same Re without clipping either result."""
+
+    re_value = float(reynolds)
+    roughness_value = float(relative_roughness)
+    if (
+        not math.isfinite(re_value)
+        or re_value <= 0
+        or not math.isfinite(roughness_value)
+        or roughness_value < 0
+    ):
+        return {
+            "status": "INPUT_U",
+            "reason": "Reynolds number and relative roughness must be valid",
+            "smooth_darcy_factor": None,
+            "roughness_friction_ratio": None,
+            "roughness_heat_transfer_warning_status": "NOT_EVALUATED",
+            "arbitrary_friction_cap_applied": False,
+            "arbitrary_heat_transfer_cap_applied": False,
+        }
+    if not friction_domain.re_min <= re_value <= friction_domain.re_max:
+        return {
+            "status": "OUTSIDE",
+            "reason": "Re outside supplied Colebrook domain",
+            "smooth_darcy_factor": None,
+            "roughness_friction_ratio": None,
+            "roughness_heat_transfer_warning_status": "NOT_EVALUATED",
+            "arbitrary_friction_cap_applied": False,
+            "arbitrary_heat_transfer_cap_applied": False,
+        }
+    if not (
+        friction_domain.relative_roughness_min <= 0.0
+        <= friction_domain.relative_roughness_max
+        and friction_domain.relative_roughness_min
+        <= roughness_value
+        <= friction_domain.relative_roughness_max
+    ):
+        return {
+            "status": "OUTSIDE",
+            "reason": "rough or smooth reference lies outside supplied Colebrook domain",
+            "smooth_darcy_factor": None,
+            "roughness_friction_ratio": None,
+            "roughness_heat_transfer_warning_status": "NOT_EVALUATED",
+            "arbitrary_friction_cap_applied": False,
+            "arbitrary_heat_transfer_cap_applied": False,
+        }
+    if warning_threshold is not None:
+        threshold = float(warning_threshold)
+        if not math.isfinite(threshold) or threshold <= 0:
+            return {
+                "status": "INPUT_U",
+                "reason": "roughness warning threshold must be finite and positive",
+                "smooth_darcy_factor": None,
+                "roughness_friction_ratio": None,
+                "roughness_heat_transfer_warning_status": "NOT_EVALUATED",
+                "arbitrary_friction_cap_applied": False,
+                "arbitrary_heat_transfer_cap_applied": False,
+            }
+    else:
+        threshold = None
+    try:
+        rough_factor = colebrook_darcy_friction_factor(re_value, roughness_value)
+        smooth_factor = colebrook_darcy_friction_factor(re_value, 0.0)
+    except RuntimeError as error:
+        return {
+            "status": "NUM_U",
+            "reason": str(error),
+            "smooth_darcy_factor": None,
+            "roughness_friction_ratio": None,
+            "roughness_heat_transfer_warning_status": "NOT_EVALUATED",
+            "arbitrary_friction_cap_applied": False,
+            "arbitrary_heat_transfer_cap_applied": False,
+        }
+    if smooth_factor <= 0 or not math.isfinite(smooth_factor):
+        return {
+            "status": "NUM_U",
+            "reason": "smooth Darcy factor is non-positive or non-finite",
+            "smooth_darcy_factor": smooth_factor,
+            "roughness_friction_ratio": None,
+            "roughness_heat_transfer_warning_status": "NOT_EVALUATED",
+            "arbitrary_friction_cap_applied": False,
+            "arbitrary_heat_transfer_cap_applied": False,
+        }
+    ratio = rough_factor / smooth_factor
+    if threshold is None:
+        warning_status = "NOT_EVALUATED_NO_THRESHOLD"
+    elif ratio >= threshold:
+        warning_status = "ROUGHNESS_HEAT_TRANSFER_OVERPREDICTION_WARNING"
+    else:
+        warning_status = "BELOW_ROUGHNESS_WARNING_THRESHOLD"
+    return {
+        "status": "MODEL_U",
+        "reason": "rough and smooth Darcy factors evaluated at identical Reynolds number",
+        "darcy_factor_definition": "DARCY_WEISBACH_NOT_FANNING",
+        "reynolds": re_value,
+        "relative_roughness": roughness_value,
+        "rough_darcy_factor": rough_factor,
+        "smooth_darcy_factor": smooth_factor,
+        "roughness_friction_ratio": ratio,
+        "warning_threshold": threshold,
+        "roughness_heat_transfer_warning_status": warning_status,
+        "arbitrary_friction_cap_applied": False,
+        "arbitrary_heat_transfer_cap_applied": False,
+        "friction_domain_source": friction_domain.source,
+    }
+
+
 def evaluate_local_coolant_heat_transfer(
     *,
     mass_flow_kg_s: float,
@@ -421,6 +548,7 @@ def evaluate_local_coolant_heat_transfer(
     heat_transfer_thermal_boundary_condition: str,
     friction_domain: FrictionDomain,
     density_kg_m3: float | None = None,
+    applicability_policy: CoolingApplicabilityPolicy | None = None,
 ) -> CoolantHeatTransferClosure:
     """Evaluate local h_l without requiring p, T, h, length, or local losses."""
 
@@ -462,6 +590,27 @@ def evaluate_local_coolant_heat_transfer(
         raise CoolantStop("OUTSIDE", "; ".join(friction_reasons))
 
     factor = colebrook_darcy_friction_factor(re, relative_roughness)
+    warning_threshold = (
+        applicability_policy.roughness_friction_ratio_warning_threshold
+        if applicability_policy is not None
+        and applicability_policy.compare_rough_to_smooth_friction
+        else None
+    )
+    roughness_assessment = evaluate_roughness_friction_ratio(
+        reynolds=re,
+        relative_roughness=relative_roughness,
+        friction_domain=friction_domain,
+        warning_threshold=warning_threshold,
+    )
+    applicability_assessment = (
+        assess_local_reynolds_prandtl(re, pr, applicability_policy)
+        if applicability_policy is not None
+        else {
+            "correlation_applicability_status": "NOT_EVALUATED",
+            "re_design_recommendation_status": "NOT_EVALUATED",
+            "transition_region_warning": None,
+        }
+    )
     nu, heat_applicability = gnielinski_common_form(
         re,
         pr,
@@ -502,6 +651,13 @@ def evaluate_local_coolant_heat_transfer(
                 friction_domain.relative_roughness_max,
             ],
         },
+        smooth_darcy_factor=roughness_assessment.get("smooth_darcy_factor"),
+        roughness_friction_ratio=roughness_assessment.get(
+            "roughness_friction_ratio"
+        ),
+        roughness_assessment=roughness_assessment,
+        applicability_assessment=applicability_assessment,
+        channel_aspect_ratio_h_over_w=None,
     )
 
 
@@ -522,13 +678,14 @@ def evaluate_rectangular_cooling_hl(
     heat_transfer_thermal_boundary_condition: str,
     friction_domain: FrictionDomain,
     density_kg_m3: float | None = None,
+    applicability_policy: CoolingApplicabilityPolicy | None = None,
 ) -> CoolantHeatTransferClosure:
     """Independent rectangular-channel h_l entry point using only local inputs."""
 
     cross_section = build_rectangular_channel_cross_section(
         {"width_m": width_m, "height_m": height_m, "channel_count": channel_count}
     )
-    return evaluate_local_coolant_heat_transfer(
+    result = evaluate_local_coolant_heat_transfer(
         mass_flow_kg_s=coolant_mass_flow_kg_s,
         flow_area_m2=cross_section.total_flow_area_m2,
         hydraulic_diameter_m=cross_section.hydraulic_diameter_m,
@@ -545,6 +702,13 @@ def evaluate_rectangular_cooling_hl(
         ),
         friction_domain=friction_domain,
         density_kg_m3=density_kg_m3,
+        applicability_policy=applicability_policy,
+    )
+    return replace(
+        result,
+        channel_aspect_ratio_h_over_w=(
+            cross_section.height_m / cross_section.width_m
+        ),
     )
 
 
@@ -556,6 +720,7 @@ def evaluate_local_coolant_closures(
     heat_transfer_domain: CorrelationDomain,
     heat_transfer_thermal_boundary_condition: str,
     friction_domain: FrictionDomain,
+    applicability_policy: CoolingApplicabilityPolicy | None = None,
 ) -> CoolantLocalClosure:
     if geometry.local_loss_coefficient < 0:
         raise CoolantStop("INPUT_U", "local-loss coefficient must be non-negative")
@@ -574,6 +739,7 @@ def evaluate_local_coolant_closures(
         heat_transfer_thermal_boundary_condition=heat_transfer_thermal_boundary_condition,
         friction_domain=friction_domain,
         density_kg_m3=state.density_kg_m3,
+        applicability_policy=applicability_policy,
     )
     if heat_transfer.velocity_m_s is None:  # density was supplied above
         raise RuntimeError("coolant velocity was not evaluated")
@@ -596,4 +762,11 @@ def evaluate_local_coolant_closures(
         relative_roughness=heat_transfer.relative_roughness,
         heat_transfer_applicability=heat_transfer.heat_transfer_applicability,
         friction_applicability=heat_transfer.friction_applicability,
+        smooth_darcy_factor=heat_transfer.smooth_darcy_factor,
+        roughness_friction_ratio=heat_transfer.roughness_friction_ratio,
+        roughness_assessment=heat_transfer.roughness_assessment,
+        applicability_assessment=heat_transfer.applicability_assessment,
+        channel_aspect_ratio_h_over_w=(
+            heat_transfer.channel_aspect_ratio_h_over_w
+        ),
     )

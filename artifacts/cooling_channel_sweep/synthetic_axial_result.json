@@ -17,7 +17,8 @@
     "default_property_source": "SYNTHETIC_ARITHMETIC_FIXTURE_NOT_IPA_DATA",
     "default_property_version": "TEST-ONLY-V1",
     "equivalent_sand_roughness_m": 1.2e-05,
-    "roughness_source": "BOOTCAMP_REFERENCE_VALUE_12_UM_NOT_AS_MANUFACTURED_SPACE_Y_DATA"
+    "roughness_source": "BOOTCAMP_REFERENCE_VALUE_12_UM_NOT_AS_MANUFACTURED_SPACE_Y_DATA",
+    "applicability_policy_id": null
   },
   "counts": {
     "candidate_count": 4,
@@ -113,6 +114,22 @@
         "minimum_h_l_W_m2K": null,
         "maximum_h_l_W_m2K": null,
         "maximum_friction_pressure_gradient_Pa_m": null,
+        "applicability_assessment": {
+          "status": "NOT_EVALUATED",
+          "reason": "cooling applicability policy was not supplied",
+          "minimum_reynolds": null,
+          "minimum_reynolds_station_id": null,
+          "minimum_reynolds_x_m": null,
+          "re_design_minimum": null,
+          "re_design_margin": null,
+          "re_design_recommendation_status": "NOT_EVALUATED",
+          "transition_warning_station_ids": [],
+          "maximum_roughness_friction_ratio": null,
+          "maximum_roughness_ratio_station_id": null,
+          "roughness_warning_status": "NOT_EVALUATED",
+          "correlation_domain_status": "NOT_EVALUATED",
+          "continuous_path_claim": false
+        },
         "limitations": [
           "At least one station violates supplied channel-width constraints."
         ]
@@ -205,6 +222,22 @@
         "minimum_h_l_W_m2K": null,
         "maximum_h_l_W_m2K": null,
         "maximum_friction_pressure_gradient_Pa_m": null,
+        "applicability_assessment": {
+          "status": "NOT_EVALUATED",
+          "reason": "cooling applicability policy was not supplied",
+          "minimum_reynolds": null,
+          "minimum_reynolds_station_id": null,
+          "minimum_reynolds_x_m": null,
+          "re_design_minimum": null,
+          "re_design_margin": null,
+          "re_design_recommendation_status": "NOT_EVALUATED",
+          "transition_warning_station_ids": [],
+          "maximum_roughness_friction_ratio": null,
+          "maximum_roughness_ratio_station_id": null,
+          "roughness_warning_status": "NOT_EVALUATED",
+          "correlation_domain_status": "NOT_EVALUATED",
+          "continuous_path_claim": false
+        },
         "limitations": [
           "At least one station violates supplied channel-width constraints."
         ]
@@ -283,7 +316,30 @@
                   0.0,
                   0.05
                 ]
-              }
+              },
+              "smooth_darcy_factor": 0.03723500861551086,
+              "roughness_friction_ratio": 1.2279062049193832,
+              "roughness_assessment": {
+                "status": "MODEL_U",
+                "reason": "rough and smooth Darcy factors evaluated at identical Reynolds number",
+                "darcy_factor_definition": "DARCY_WEISBACH_NOT_FANNING",
+                "reynolds": 5074.091048395137,
+                "relative_roughness": 0.00841647809141165,
+                "rough_darcy_factor": 0.045721098119212475,
+                "smooth_darcy_factor": 0.03723500861551086,
+                "roughness_friction_ratio": 1.2279062049193832,
+                "warning_threshold": null,
+                "roughness_heat_transfer_warning_status": "NOT_EVALUATED_NO_THRESHOLD",
+                "arbitrary_friction_cap_applied": false,
+                "arbitrary_heat_transfer_cap_applied": false,
+                "friction_domain_source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM"
+              },
+              "applicability_assessment": {
+                "correlation_applicability_status": "NOT_EVALUATED",
+                "re_design_recommendation_status": "NOT_EVALUATED",
+                "transition_region_warning": null
+              },
+              "channel_aspect_ratio_h_over_w": 0.6832956182823301
             },
             "property_basis": "CONSTANT_DEFAULT",
             "property_source": "SYNTHETIC_ARITHMETIC_FIXTURE_NOT_IPA_DATA",
@@ -330,7 +386,30 @@
                   0.0,
                   0.05
                 ]
-              }
+              },
+              "smooth_darcy_factor": 0.03413206343182652,
+              "roughness_friction_ratio": 1.3529019912550242,
+              "roughness_assessment": {
+                "status": "MODEL_U",
+                "reason": "rough and smooth Darcy factors evaluated at identical Reynolds number",
+                "darcy_factor_definition": "DARCY_WEISBACH_NOT_FANNING",
+                "reynolds": 6909.906661831773,
+                "relative_roughness": 0.01118049310076102,
+                "rough_darcy_factor": 0.0461773365825609,
+                "smooth_darcy_factor": 0.03413206343182652,
+                "roughness_friction_ratio": 1.3529019912550242,
+                "warning_threshold": null,
+                "roughness_heat_transfer_warning_status": "NOT_EVALUATED_NO_THRESHOLD",
+                "arbitrary_friction_cap_applied": false,
+                "arbitrary_heat_transfer_cap_applied": false,
+                "friction_domain_source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM"
+              },
+              "applicability_assessment": {
+                "correlation_applicability_status": "NOT_EVALUATED",
+                "re_design_recommendation_status": "NOT_EVALUATED",
+                "transition_region_warning": null
+              },
+              "channel_aspect_ratio_h_over_w": 1.236098620152204
             },
             "property_basis": "CONSTANT_DEFAULT",
             "property_source": "SYNTHETIC_ARITHMETIC_FIXTURE_NOT_IPA_DATA",
@@ -377,7 +456,30 @@
                   0.0,
                   0.05
                 ]
-              }
+              },
+              "smooth_darcy_factor": 0.03988053888984823,
+              "roughness_friction_ratio": 1.1734884045534681,
+              "roughness_assessment": {
+                "status": "MODEL_U",
+                "reason": "rough and smooth Darcy factors evaluated at identical Reynolds number",
+                "darcy_factor_definition": "DARCY_WEISBACH_NOT_FANNING",
+                "reynolds": 4008.9879868693242,
+                "relative_roughness": 0.007360724481763625,
+                "rough_darcy_factor": 0.04679934995458054,
+                "smooth_darcy_factor": 0.03988053888984823,
+                "roughness_friction_ratio": 1.1734884045534681,
+                "warning_threshold": null,
+                "roughness_heat_transfer_warning_status": "NOT_EVALUATED_NO_THRESHOLD",
+                "arbitrary_friction_cap_applied": false,
+                "arbitrary_heat_transfer_cap_applied": false,
+                "friction_domain_source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM"
+              },
+              "applicability_assessment": {
+                "correlation_applicability_status": "NOT_EVALUATED",
+                "re_design_recommendation_status": "NOT_EVALUATED",
+                "transition_region_warning": null
+              },
+              "channel_aspect_ratio_h_over_w": 0.47214489635272483
             },
             "property_basis": "CONSTANT_DEFAULT",
             "property_source": "SYNTHETIC_ARITHMETIC_FIXTURE_NOT_IPA_DATA",
@@ -394,6 +496,22 @@
         "minimum_h_l_W_m2K": 3933.05643606482,
         "maximum_h_l_W_m2K": 11641.116557513862,
         "maximum_friction_pressure_gradient_Pa_m": 1114531.6224066368,
+        "applicability_assessment": {
+          "status": "NOT_EVALUATED",
+          "reason": "cooling applicability policy was not supplied",
+          "minimum_reynolds": null,
+          "minimum_reynolds_station_id": null,
+          "minimum_reynolds_x_m": null,
+          "re_design_minimum": null,
+          "re_design_margin": null,
+          "re_design_recommendation_status": "NOT_EVALUATED",
+          "transition_warning_station_ids": [],
+          "maximum_roughness_friction_ratio": null,
+          "maximum_roughness_ratio_station_id": null,
+          "roughness_warning_status": "NOT_EVALUATED",
+          "correlation_domain_status": "NOT_EVALUATED",
+          "continuous_path_claim": false
+        },
         "limitations": [
           "No heat-load, wall-temperature, phase-change, manufacturing, structural, or supply-pressure approval is performed.",
           "No scalar score or final optimum is assigned."
@@ -483,6 +601,22 @@
         "minimum_h_l_W_m2K": null,
         "maximum_h_l_W_m2K": null,
         "maximum_friction_pressure_gradient_Pa_m": null,
+        "applicability_assessment": {
+          "status": "NOT_EVALUATED",
+          "reason": "cooling applicability policy was not supplied",
+          "minimum_reynolds": null,
+          "minimum_reynolds_station_id": null,
+          "minimum_reynolds_x_m": null,
+          "re_design_minimum": null,
+          "re_design_margin": null,
+          "re_design_recommendation_status": "NOT_EVALUATED",
+          "transition_warning_station_ids": [],
+          "maximum_roughness_friction_ratio": null,
+          "maximum_roughness_ratio_station_id": null,
+          "roughness_warning_status": "NOT_EVALUATED",
+          "correlation_domain_status": "NOT_EVALUATED",
+          "continuous_path_claim": false
+        },
         "limitations": [
           "At least one station violates supplied channel-width constraints."
         ]
@@ -516,6 +650,6 @@
   "final_design_selection": false,
   "provenance": {
     "request_sha256": "894288b66098fbf5ce817b914a27532ea010eb7354b42d54f6c9df0674fbc3eb",
-    "schema_sha256": "7ec8f185bf49ccd20381f6548b688a7fede8f597d3a3f9957b957f2028efc7a1"
+    "schema_sha256": "215045bcc1ef24bb6e88c1e81e07fea278c359d8b13cae988509b3f683029e6a"
   }
 }

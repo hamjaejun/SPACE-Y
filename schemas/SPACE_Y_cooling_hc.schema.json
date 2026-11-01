@@ -105,7 +105,8 @@
         "thermal_boundary_condition_source": {"type": "string", "minLength": 1},
         "heat_transfer_thermal_boundary_condition": {"type": "string", "minLength": 1},
         "heat_transfer_domain": {"$ref": "#/$defs/heatDomain"},
-        "friction_domain": {"$ref": "#/$defs/frictionDomain"}
+        "friction_domain": {"$ref": "#/$defs/frictionDomain"},
+        "applicability_policy": {"$ref": "#/$defs/applicabilityPolicy"}
       }
     }
   },
@@ -151,6 +152,58 @@
           "minItems": 2, "maxItems": 2
         },
         "geometry": {"type": "string", "minLength": 1}
+      }
+    },
+    "applicabilityPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_id", "classification", "heat_transfer_correlation",
+        "design_recommendation", "roughness_assessment"
+      ],
+      "properties": {
+        "policy_id": {"type": "string", "minLength": 1},
+        "classification": {"type": "string", "minLength": 1},
+        "heat_transfer_correlation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["source", "re_range", "pr_range"],
+          "properties": {
+            "source": {"type": "string", "minLength": 1},
+            "re_range": {"$ref": "#/$defs/positiveRange"},
+            "pr_range": {"$ref": "#/$defs/positiveRange"}
+          }
+        },
+        "design_recommendation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "recommended_re_min", "transition_warning_re_threshold",
+            "evaluate_minimum_re_over_all_stations", "source"
+          ],
+          "properties": {
+            "recommended_re_min": {"type": "number", "exclusiveMinimum": 0},
+            "transition_warning_re_threshold": {"type": "number", "exclusiveMinimum": 0},
+            "evaluate_minimum_re_over_all_stations": {"type": "boolean"},
+            "source": {"type": "string", "minLength": 1}
+          }
+        },
+        "roughness_assessment": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "compare_rough_to_smooth_friction",
+            "roughness_friction_ratio_warning_threshold",
+            "apply_arbitrary_friction_cap", "source"
+          ],
+          "properties": {
+            "compare_rough_to_smooth_friction": {"type": "boolean"},
+            "roughness_friction_ratio_warning_threshold": {"type": "number", "exclusiveMinimum": 0},
+            "apply_arbitrary_friction_cap": {"const": false},
+            "apply_arbitrary_heat_transfer_cap": {"const": false},
+            "source": {"type": "string", "minLength": 1}
+          }
+        }
       }
     },
     "positiveRange": {

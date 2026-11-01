@@ -6,6 +6,7 @@ import math
 from pathlib import Path
 from typing import Any
 
+from .cooling_applicability import build_cooling_applicability_policy
 from .coolant import (
     CoolantGeometry,
     CoolantStop,
@@ -142,6 +143,11 @@ def solve_cooling_hc(request: dict[str, Any]) -> dict[str, Any]:
 
         heat_domain = build_heat_transfer_domain(model_spec["heat_transfer_domain"])
         friction_domain = build_friction_domain(model_spec["friction_domain"])
+        applicability_policy = (
+            build_cooling_applicability_policy(model_spec["applicability_policy"])
+            if model_spec.get("applicability_policy") is not None
+            else None
+        )
         thermal_boundary = str(model_spec.get("thermal_boundary_condition", ""))
         if not thermal_boundary:
             raise CoolantStop("INPUT_U", "thermal boundary condition is required")
@@ -187,6 +193,12 @@ def solve_cooling_hc(request: dict[str, Any]) -> dict[str, Any]:
             heat_transfer_domain=heat_domain,
             heat_transfer_thermal_boundary_condition=heat_transfer_boundary,
             friction_domain=friction_domain,
+            applicability_policy=applicability_policy,
+        )
+
+        local_results = asdict(local)
+        local_results["channel_aspect_ratio_h_over_w"] = (
+            derived_geometry.height_m / derived_geometry.width_m
         )
 
         return {
@@ -216,9 +228,14 @@ def solve_cooling_hc(request: dict[str, Any]) -> dict[str, Any]:
                     "friction_domain": asdict(friction_domain),
                     "thermal_boundary_condition": thermal_boundary,
                     "fully_developed": geometry.fully_developed,
+                    "applicability_policy": (
+                        asdict(applicability_policy)
+                        if applicability_policy is not None
+                        else None
+                    ),
                 },
             },
-            "results": asdict(local),
+            "results": local_results,
             "checks": {
                 "mass_distribution": flow.distribution_status,
                 "branch_accounting": flow.branch_accounting_status,
@@ -226,6 +243,12 @@ def solve_cooling_hc(request: dict[str, Any]) -> dict[str, Any]:
                 "geometry_layout": derived_geometry.layout_check_status,
                 "heat_transfer_correlation": local.heat_transfer_applicability["status"],
                 "friction_correlation": local.friction_applicability["status"],
+                "re_design_recommendation": local.applicability_assessment.get(
+                    "re_design_recommendation_status", "NOT_EVALUATED"
+                ),
+                "roughness_heat_transfer_warning": local.roughness_assessment.get(
+                    "roughness_heat_transfer_warning_status", "NOT_EVALUATED"
+                ),
             },
             "assumptions": [
                 "ASSUMED_EQUAL_DISTRIBUTION",

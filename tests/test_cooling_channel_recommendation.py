@@ -232,10 +232,15 @@ class CoolingChannelRecommendationTests(unittest.TestCase):
                 rows = list(csv.DictReader(stream))
         self.assertEqual(len(rows), 12)
         self.assertIn("pareto_status", rows[0])
+        self.assertIn("minimum_reynolds_station_id", rows[0])
+        self.assertIn("maximum_roughness_friction_ratio", rows[0])
+        self.assertIn("continuous_path_claim", rows[0])
         by_id = {row["candidate_id"]: row for row in rows}
         self.assertIn(
             "HIGHEST_HL_AT_REFERENCE", by_id["CH-0004"]["recommendation_tags"]
         )
+        self.assertEqual(by_id["CH-0004"]["minimum_reynolds_station_id"], "SYN-EXIT")
+        self.assertEqual(by_id["CH-0004"]["continuous_path_claim"], "False")
 
     def test_saved_multi_candidate_artifacts_are_reproducible(self) -> None:
         result = solve_cooling_channel_candidates_file(

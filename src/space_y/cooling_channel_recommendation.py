@@ -66,7 +66,22 @@ def _base_tags(candidate: dict[str, Any]) -> tuple[list[str], list[str]]:
         return ["UNVERIFIED_INPUT"], [
             "candidate contains an unresolved numerical calculation"
         ]
-    return [], []
+    tags: list[str] = []
+    reasons: list[str] = []
+    assessment = candidate.get("summary", {}).get("applicability_assessment") or {}
+    design_status = assessment.get("re_design_recommendation_status")
+    if design_status == "BELOW_PRELIMINARY_RE_RECOMMENDATION":
+        tags.append("BELOW_RE_DESIGN_RECOMMENDATION")
+        reasons.append("minimum discrete-station Re is below the preliminary team recommendation")
+    if assessment.get("transition_warning_station_ids"):
+        tags.append("TRANSITION_REGION_WARNING")
+    if (
+        assessment.get("roughness_warning_status")
+        == "ROUGHNESS_HEAT_TRANSFER_OVERPREDICTION_WARNING"
+    ):
+        tags.append("ROUGHNESS_HEAT_TRANSFER_OVERPREDICTION_WARNING")
+        reasons.append("rough/smooth Darcy-factor ratio reaches the warning threshold")
+    return tags, reasons
 
 
 def _resolve_reference_station(
@@ -254,6 +269,19 @@ def classify_cooling_channel_candidates(
                     "full-path model applicability is not established"
                 )
             continue
+        path_assessment = candidate.get("summary", {}).get(
+            "applicability_assessment"
+        ) or {}
+        if path_assessment.get("correlation_domain_status") not in {
+            None,
+            "NOT_EVALUATED",
+            "ALL_DISCRETE_STATIONS_WITHIN_GNIELINSKI_POLICY_DOMAIN",
+        }:
+            candidate["recommendation_tags"].append("EXCLUDED_CORRELATION")
+            candidate["exclusion_reasons"].append(
+                "at least one discrete station is outside the supplied Gnielinski policy domain"
+            )
+            continue
         stations = candidate.get("stations", [])
         if not stations or any(
             (station.get("calculation") or {}).get("status") != "MODEL_U"
@@ -367,6 +395,30 @@ def classify_cooling_channel_candidates(
         for item in eligible
         if "PARETO_CANDIDATE" in item["recommendation_tags"]
     ]
+    design_recommended_ids = [
+        item["candidate_id"]
+        for item in eligible
+        if (item.get("summary", {}).get("applicability_assessment") or {}).get(
+            "re_design_recommendation_status"
+        )
+        in {
+            "MEETS_RE_MIN_WITH_TRANSITION_WARNING",
+            "MEETS_PRELIMINARY_RE_RECOMMENDATION",
+        }
+    ]
+    model_warning_ids = [
+        item["candidate_id"]
+        for item in eligible
+        if any(
+            tag
+            in {
+                "BELOW_RE_DESIGN_RECOMMENDATION",
+                "TRANSITION_REGION_WARNING",
+                "ROUGHNESS_HEAT_TRANSFER_OVERPREDICTION_WARNING",
+            }
+            for tag in item["recommendation_tags"]
+        )
+    ]
     if not eligible:
         status = "NO_VALID_CANDIDATES"
         reason = "no candidate passed geometry and full-path applicability checks"
@@ -395,6 +447,8 @@ def classify_cooling_channel_candidates(
         "highest_h_l_candidate_ids": highest_ids,
         "lowest_friction_gradient_candidate_ids": lowest_ids,
         "pareto_candidate_ids": pareto_ids,
+        "design_recommended_candidate_ids": design_recommended_ids,
+        "model_warning_candidate_ids": model_warning_ids,
         "statement": PRELIMINARY_STATEMENT,
         "final_design_selection": False,
     }
