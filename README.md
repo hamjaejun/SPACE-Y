@@ -137,6 +137,21 @@ PDR 합성 분기 실행:
 
 이 기능은 PDR 후보 선정 근거를 기록하는 도구다. 실제 IPA 물성 및 실제 엔진 조건 검증은 미완료이며 결과는 안전성 승인, 제작 승인 또는 실험 검증을 의미하지 않는다.
 
+## PDR 설계 공간 탐색
+
+- [설계 공간 탐색 구현 기록](docs/PDR_설계공간_탐색_구현기록.md)
+- `src/space_y/design_space.py`: 승인된 이산 범위의 결정론적 grid 생성, 동등 계산경계 결과 연결, hard constraint와 제한적 Pareto 비교
+- [탐색 입력 Schema](schemas/SPACE_Y_design_space.schema.json), [실제 입력 준비 파일](config/SPACE_Y_design_space_readiness.json), [비설계 합성 2×2 fixture](examples/design_space_synthetic_grid.json)
+
+탐색기는 기존 `Design Decision Engine` 앞단의 경량 기능이다. 미승인 범위에서는 후보를 만들지 않고, 단위나 `comparison_basis_id`가 다른 결과를 비교하지 않으며, 합성 결과를 실제 탐색에 사용할 수 없다. 팀 PPT의 `30 bar(a), O/F 3.0`과 기존 v5의 `25 bar(a), O/F 2.5`는 `REFERENCE_POINT_NOT_RANGE_BOUND`이다. 현재 실제 Pc/O/F grid와 공통 계산경계가 승인되지 않아 실제 결과는 후보 0개, `BLOCKED_BY_INPUT`, Pareto `NOT_RUN`이다.
+
+```powershell
+.\.venv\Scripts\space-y.exe design-space-run examples\design_space_synthetic_grid.json
+.\.venv\Scripts\space-y.exe design-space-run config\SPACE_Y_design_space_readiness.json
+```
+
+합성 grid의 상대 shortlist는 논리 검산일 뿐 실제 유망 엔진이나 안전 설계가 아니다. 실제 후보는 동일 조건 CEA/RPA/M0 결과와 승인 제약을 연결한 뒤 기존 PDR 증거 정책을 별도로 통과해야 한다.
+
 공식 R2S 안내서와 AEL ICD의 대회 상한·시설 능력·권고·인터페이스는 PDR 입력 준비표 V2에 출처와 페이지별로 분리했다. 과거 `3 kN / 25 bar(a) / O/F 2.50 / 10 s` 케이스와 팀 `Parameter.pptx`의 `Pc 3 MPa / O/F 3 / total flow 1.6 kg/s` RPA 작업 케이스는 모두 팀 승인값이 아닌 `PROVISIONAL`이다. PPT에는 RPA 형상 결과 화면이 있지만 raw project·ASCII/DXF·승인 기록이 없고 현재 로컬 RPA는 비활성 상태다. 따라서 실제 후보 판정과 승인된 RPA 재현 실행은 계속 `INPUT_U`다.
 
-2026-11-01 최신 기준 전체 자동 테스트 103개와 Python compile, 56개 JSON 파싱, `git diff --check`가 통과했다. 이 숫자는 소프트웨어 회귀검사 결과이며 실제 엔진 물리 검증 건수가 아니다.
+2026-11-01 설계 공간 탐색 추가 후 전체 자동 테스트 119개가 통과했다. 이 숫자는 소프트웨어 회귀검사 결과이며 실제 엔진 물리 검증 건수가 아니다.

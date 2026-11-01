@@ -1,0 +1,130 @@
+{
+  "schema_version": "SPACE_Y_DESIGN_SPACE_V1",
+  "purpose": "SYNTHETIC_EXPLORATION_TEST",
+  "exploration_id": "SYNTHETIC-DSE-2X2",
+  "sources": [
+    {
+      "id": "SRC-SYN-DSE",
+      "type": "SYNTHETIC_LOGIC_FIXTURE",
+      "title": "Non-design 2x2 exploration fixture",
+      "status": "AVAILABLE",
+      "reference": "examples/design_space_synthetic_grid.json",
+      "version_or_date": "2026-11-01",
+      "license_or_distribution": "Repository test fixture; contains no engine design data"
+    }
+  ],
+  "comparison_basis": {
+    "id": "BASIS-SYN-1",
+    "approval_status": "APPROVED_FOR_SYNTHETIC_TEST",
+    "performance_target_and_tolerance": "Synthetic scalar target only",
+    "propellant_and_inlet_state": "No propellant; abstract fixture",
+    "ambient_condition": "Abstract fixed boundary",
+    "sizing_basis": "No physical sizing",
+    "program_and_version": "Hand-calculated fixture v1",
+    "thermochemistry_and_loss_model": "None; abstract arithmetic",
+    "common_geometry_assumptions": "No geometry",
+    "source_ids": ["SRC-SYN-DSE"]
+  },
+  "fixed_conditions": [
+    {
+      "id": "SYN-FIXED",
+      "name": "Synthetic fixed condition",
+      "value": 1.0,
+      "unit": "1",
+      "approval_status": "APPROVED_FOR_SYNTHETIC_TEST",
+      "source_ids": ["SRC-SYN-DSE"]
+    }
+  ],
+  "design_variables": [
+    {
+      "id": "SYN-X",
+      "name": "Synthetic variable X",
+      "unit": "1",
+      "grid_values": [1.0, 2.0],
+      "range_approval_status": "APPROVED_FOR_SYNTHETIC_TEST",
+      "source_ids": ["SRC-SYN-DSE"],
+      "dependency_note": "Abstract independent axis; not a physical engine parameter."
+    },
+    {
+      "id": "SYN-Y",
+      "name": "Synthetic variable Y",
+      "unit": "1",
+      "grid_values": [10.0, 20.0],
+      "range_approval_status": "APPROVED_FOR_SYNTHETIC_TEST",
+      "source_ids": ["SRC-SYN-DSE"],
+      "dependency_note": "Abstract independent axis; not a physical engine parameter."
+    }
+  ],
+  "constraints": [
+    {"id": "C-PERF", "name": "Synthetic performance floor", "metric_id": "M-PERF", "domain": "performance", "mandatory": true, "operator": "GE", "limit": 90.0, "unit": "u_perf", "approval_status": "APPROVED_FOR_SYNTHETIC_TEST", "source_ids": ["SRC-SYN-DSE"]},
+    {"id": "C-SUP", "name": "Synthetic supply ceiling", "metric_id": "M-SUP", "domain": "supply", "mandatory": true, "operator": "LE", "limit": 8.0, "unit": "u_supply", "approval_status": "APPROVED_FOR_SYNTHETIC_TEST", "source_ids": ["SRC-SYN-DSE"]},
+    {"id": "C-COOL", "name": "Synthetic cooling ceiling", "metric_id": "M-COOL", "domain": "cooling", "mandatory": true, "operator": "LE", "limit": 350.0, "unit": "u_cooling", "approval_status": "APPROVED_FOR_SYNTHETIC_TEST", "source_ids": ["SRC-SYN-DSE"]},
+    {"id": "C-STR", "name": "Synthetic structural ceiling", "metric_id": "M-STR", "domain": "structural", "mandatory": true, "operator": "LE", "limit": 70.0, "unit": "u_structural", "approval_status": "APPROVED_FOR_SYNTHETIC_TEST", "source_ids": ["SRC-SYN-DSE"]},
+    {"id": "C-COMB", "name": "Synthetic combustion flag", "metric_id": "M-COMB", "domain": "combustion", "mandatory": true, "operator": "GE", "limit": 1.0, "unit": "flag", "approval_status": "APPROVED_FOR_SYNTHETIC_TEST", "source_ids": ["SRC-SYN-DSE"]},
+    {"id": "C-OPS", "name": "Synthetic operations ceiling", "metric_id": "M-OPS", "domain": "operations", "mandatory": true, "operator": "LE", "limit": 20.0, "unit": "u_operations", "approval_status": "APPROVED_FOR_SYNTHETIC_TEST", "source_ids": ["SRC-SYN-DSE"]}
+  ],
+  "result_records": [
+    {
+      "id": "SYN-R-1-10", "result_class": "SYNTHETIC_RESULT", "comparison_basis_id": "BASIS-SYN-1",
+      "candidate_parameters": {"SYN-X": {"value": 1.0, "unit": "1"}, "SYN-Y": {"value": 10.0, "unit": "1"}},
+      "program_and_version": "Hand-calculated fixture v1", "model_ids": ["SYN-ARITHMETIC"], "source_ids": ["SRC-SYN-DSE"],
+      "metrics": [
+        {"id": "M-PERF", "name": "Synthetic performance", "domain": "performance", "status": "AVAILABLE", "value": 100.0, "unit": "u_perf", "method": "fixture lookup", "source_ids": ["SRC-SYN-DSE"], "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null},
+        {"id": "M-SUP", "name": "Synthetic supply load", "domain": "supply", "status": "AVAILABLE", "value": 5.0, "unit": "u_supply", "method": "fixture lookup", "source_ids": ["SRC-SYN-DSE"], "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null},
+        {"id": "M-COOL", "name": "Synthetic cooling load", "domain": "cooling", "status": "AVAILABLE", "value": 300.0, "unit": "u_cooling", "method": "fixture lookup", "source_ids": ["SRC-SYN-DSE"], "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null},
+        {"id": "M-STR", "name": "Synthetic structural load", "domain": "structural", "status": "AVAILABLE", "value": 50.0, "unit": "u_structural", "method": "fixture lookup", "source_ids": ["SRC-SYN-DSE"], "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null},
+        {"id": "M-COMB", "name": "Synthetic combustion flag", "domain": "combustion", "status": "AVAILABLE", "value": 1.0, "unit": "flag", "method": "fixture lookup", "source_ids": ["SRC-SYN-DSE"], "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null},
+        {"id": "M-OPS", "name": "Synthetic operations load", "domain": "operations", "status": "AVAILABLE", "value": 10.0, "unit": "u_operations", "method": "fixture lookup", "source_ids": ["SRC-SYN-DSE"], "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null}
+      ],
+      "notes": "Non-design synthetic arithmetic only."
+    },
+    {
+      "id": "SYN-R-1-20", "result_class": "SYNTHETIC_RESULT", "comparison_basis_id": "BASIS-SYN-1",
+      "candidate_parameters": {"SYN-X": {"value": 1.0, "unit": "1"}, "SYN-Y": {"value": 20.0, "unit": "1"}},
+      "program_and_version": "Hand-calculated fixture v1", "model_ids": ["SYN-ARITHMETIC"], "source_ids": ["SRC-SYN-DSE"],
+      "metrics": [
+        {"id": "M-PERF", "name": "Synthetic performance", "domain": "performance", "status": "AVAILABLE", "value": 110.0, "unit": "u_perf", "method": "fixture lookup", "source_ids": ["SRC-SYN-DSE"], "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null},
+        {"id": "M-SUP", "name": "Synthetic supply load", "domain": "supply", "status": "AVAILABLE", "value": 6.0, "unit": "u_supply", "method": "fixture lookup", "source_ids": ["SRC-SYN-DSE"], "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null},
+        {"id": "M-COOL", "name": "Synthetic cooling load", "domain": "cooling", "status": "AVAILABLE", "value": 320.0, "unit": "u_cooling", "method": "fixture lookup", "source_ids": ["SRC-SYN-DSE"], "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null},
+        {"id": "M-STR", "name": "Synthetic structural load", "domain": "structural", "status": "AVAILABLE", "value": 55.0, "unit": "u_structural", "method": "fixture lookup", "source_ids": ["SRC-SYN-DSE"], "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null},
+        {"id": "M-COMB", "name": "Synthetic combustion flag", "domain": "combustion", "status": "AVAILABLE", "value": 1.0, "unit": "flag", "method": "fixture lookup", "source_ids": ["SRC-SYN-DSE"], "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null},
+        {"id": "M-OPS", "name": "Synthetic operations load", "domain": "operations", "status": "AVAILABLE", "value": 12.0, "unit": "u_operations", "method": "fixture lookup", "source_ids": ["SRC-SYN-DSE"], "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null}
+      ],
+      "notes": "Non-design synthetic arithmetic only."
+    },
+    {
+      "id": "SYN-R-2-10", "result_class": "SYNTHETIC_RESULT", "comparison_basis_id": "BASIS-SYN-1",
+      "candidate_parameters": {"SYN-X": {"value": 2.0, "unit": "1"}, "SYN-Y": {"value": 10.0, "unit": "1"}},
+      "program_and_version": "Hand-calculated fixture v1", "model_ids": ["SYN-ARITHMETIC"], "source_ids": ["SRC-SYN-DSE"],
+      "metrics": [
+        {"id": "M-PERF", "name": "Synthetic performance", "domain": "performance", "status": "AVAILABLE", "value": 120.0, "unit": "u_perf", "method": "fixture lookup", "source_ids": ["SRC-SYN-DSE"], "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null},
+        {"id": "M-SUP", "name": "Synthetic supply load", "domain": "supply", "status": "AVAILABLE", "value": 7.0, "unit": "u_supply", "method": "fixture lookup", "source_ids": ["SRC-SYN-DSE"], "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null},
+        {"id": "M-COOL", "name": "Synthetic cooling load", "domain": "cooling", "status": "AVAILABLE", "value": 340.0, "unit": "u_cooling", "method": "fixture lookup", "source_ids": ["SRC-SYN-DSE"], "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null},
+        {"id": "M-STR", "name": "Synthetic structural load", "domain": "structural", "status": "AVAILABLE", "value": 60.0, "unit": "u_structural", "method": "fixture lookup", "source_ids": ["SRC-SYN-DSE"], "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null},
+        {"id": "M-COMB", "name": "Synthetic combustion flag", "domain": "combustion", "status": "AVAILABLE", "value": 1.0, "unit": "flag", "method": "fixture lookup", "source_ids": ["SRC-SYN-DSE"], "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null},
+        {"id": "M-OPS", "name": "Synthetic operations load", "domain": "operations", "status": "AVAILABLE", "value": 14.0, "unit": "u_operations", "method": "fixture lookup", "source_ids": ["SRC-SYN-DSE"], "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null}
+      ],
+      "notes": "Non-design synthetic arithmetic only."
+    },
+    {
+      "id": "SYN-R-2-20", "result_class": "SYNTHETIC_RESULT", "comparison_basis_id": "BASIS-SYN-1",
+      "candidate_parameters": {"SYN-X": {"value": 2.0, "unit": "1"}, "SYN-Y": {"value": 20.0, "unit": "1"}},
+      "program_and_version": "Hand-calculated fixture v1", "model_ids": ["SYN-ARITHMETIC"], "source_ids": ["SRC-SYN-DSE"],
+      "metrics": [
+        {"id": "M-PERF", "name": "Synthetic performance", "domain": "performance", "status": "AVAILABLE", "value": 130.0, "unit": "u_perf", "method": "fixture lookup", "source_ids": ["SRC-SYN-DSE"], "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null},
+        {"id": "M-SUP", "name": "Synthetic supply load", "domain": "supply", "status": "AVAILABLE", "value": 9.0, "unit": "u_supply", "method": "fixture lookup", "source_ids": ["SRC-SYN-DSE"], "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null},
+        {"id": "M-COOL", "name": "Synthetic cooling load", "domain": "cooling", "status": "AVAILABLE", "value": 360.0, "unit": "u_cooling", "method": "fixture lookup", "source_ids": ["SRC-SYN-DSE"], "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null},
+        {"id": "M-STR", "name": "Synthetic structural load", "domain": "structural", "status": "AVAILABLE", "value": 65.0, "unit": "u_structural", "method": "fixture lookup", "source_ids": ["SRC-SYN-DSE"], "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null},
+        {"id": "M-COMB", "name": "Synthetic combustion flag", "domain": "combustion", "status": "AVAILABLE", "value": 1.0, "unit": "flag", "method": "fixture lookup", "source_ids": ["SRC-SYN-DSE"], "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null},
+        {"id": "M-OPS", "name": "Synthetic operations load", "domain": "operations", "status": "AVAILABLE", "value": 16.0, "unit": "u_operations", "method": "fixture lookup", "source_ids": ["SRC-SYN-DSE"], "validation_level": "SYNTHETIC_ARITHMETIC", "uncertainty": null}
+      ],
+      "notes": "Non-design synthetic arithmetic only; mandatory ceilings are deliberately violated."
+    }
+  ],
+  "pareto_objectives": [
+    {"metric_id": "M-PERF", "direction": "MAX"},
+    {"metric_id": "M-COOL", "direction": "MIN"}
+  ],
+  "reference_points": [],
+  "max_candidates": 16
+}

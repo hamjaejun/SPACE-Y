@@ -230,7 +230,15 @@ RPA Standard Edition v.2.3.2 매뉴얼 33–35쪽에서 Chamber Geometry의 Desi
 
 기존 PDR 준비 문서에 요구조건 표, 파라미터 선정 근거, 후보 비교 준비, RPA 입력 분류와 팀 결정 게이트를 추가했고 PDR readiness Schema/JSON을 V2로 갱신했다. 새 물리 모델·최적화·임의 설계값은 추가하지 않았다. 전체 자동 테스트 103개, Python compile, JSON 56개 파싱과 `git diff --check`가 통과했다. 실제 엔진 예측은 계속 `false`, V01–V12는 `NOT_RUN`이다.
 
-## 16. 팀 Parameter PPT 후보와 RPA 작업 화면
+## 16. 2026-11-01 PDR 설계 공간 탐색 전단
+
+`src/space_y/design_space.py`와 `space-y design-space-run`을 추가했다. 기존 `Design Decision Engine`은 후보 증거 판정기로 유지하고, 새 전단은 승인된 이산 범위의 결정론적 grid 생성, 정확한 값·단위 파라미터 서명, 동일 `comparison_basis_id` 결과 연결, hard constraint screening과 제한적인 상대 Pareto만 수행한다. 탐색 후보는 PDR 후보·팀 기준안·검증 설계로 자동 승격하지 않는다.
+
+실제 준비 파일은 Pc와 O/F의 승인 grid, 공통 목표·sizing basis·입구/ambient·프로그램/손실/형상 가정과 필수 constraint가 없어 후보 0개, `BLOCKED_BY_INPUT`이다. 팀 PPT 작업안과 v5는 서로 다른 경계의 `REFERENCE_POINT_NOT_RANGE_BOUND`로 보존한다. 비설계 합성 2×2 fixture에서만 조합 생성, 위반 제외와 상대 Pareto 분기를 검산했다. 실제 CEA/RPA 재실행·실제 트레이드오프·유망 후보 선정은 `NOT_RUN`이며 RPA 라이선스 우회는 하지 않았다. 상세 기준은 `docs/PDR_설계공간_탐색_구현기록.md`를 따른다.
+
+이 단계 반영 후 전체 자동 테스트 119개, Python compile, JSON 파싱과 `git diff --check`를 실행한다. 테스트 통과는 실제 엔진 물리 검증이 아니며 `validated_engine_prediction=false`, V01–V12 `NOT_RUN`을 유지한다.
+
+## 17. 팀 Parameter PPT 후보와 RPA 작업 화면
 
 2026-11-01 후속 조사에서 동일 SHA-256의 `Parameter.pptx` 사본을 확인했다. 슬라이드 5–10에는 N2O(L)/IPA, Pc 3 MPa, O/F 3, total/oxidizer/fuel flow 1.6/1.2/0.4 kg/s, 추진제 온도 288.15/298.15 K, Ac/At 4, exit 1 atm과 RPA 입력·결과 화면이 있다. RPA 화면은 opt thrust 3.14030 kN, opt Isp 200.13844 s, Dc/Dt/De 61.89/30.95/64.05 mm, Ae/At 4.28을 보여준다.
 

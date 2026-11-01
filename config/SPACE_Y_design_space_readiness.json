@@ -1,0 +1,111 @@
+{
+  "schema_version": "SPACE_Y_DESIGN_SPACE_V1",
+  "purpose": "PDR_DESIGN_SPACE_EXPLORATION",
+  "exploration_id": "SPACE-Y-PDR-DSE-READINESS",
+  "sources": [
+    {
+      "id": "SRC-R2S-OFFICIAL-GUIDE",
+      "type": "PUBLIC_REQUIREMENT_DOCUMENT",
+      "title": "R2S official competition guide reviewed in PDR readiness record",
+      "status": "AVAILABLE",
+      "reference": "config/SPACE_Y_PDR_input_readiness.json",
+      "version_or_date": "reviewed 2026-11-01",
+      "license_or_distribution": "Only derived requirements and citations are recorded; source PDF is not redistributed"
+    },
+    {
+      "id": "SRC-AEL-ICD",
+      "type": "PUBLIC_FACILITY_INTERFACE_DOCUMENT",
+      "title": "AEL facility ICD reviewed in PDR readiness record",
+      "status": "AVAILABLE",
+      "reference": "config/SPACE_Y_PDR_input_readiness.json",
+      "version_or_date": "reviewed 2026-11-01",
+      "license_or_distribution": "Only derived interface constraints and citations are recorded; source PDF is not redistributed"
+    },
+    {
+      "id": "SRC-TEAM-PPT-WORKING-CASE",
+      "type": "TEAM_WORKING_DOCUMENT_AUDIT",
+      "title": "Parameter.pptx RPA working case audit",
+      "status": "AVAILABLE",
+      "reference": "SHA256 45E6182B...D964B8; summarized in docs/PDR_판정신뢰성검토_RPA입력준비.md",
+      "version_or_date": "reviewed 2026-11-01",
+      "license_or_distribution": "Raw presentation is not committed"
+    },
+    {
+      "id": "SRC-HISTORICAL-V5",
+      "type": "HISTORICAL_REPOSITORY_CASE",
+      "title": "Historical v5 proposal case",
+      "status": "AVAILABLE",
+      "reference": "summarized in docs/PDR_판정신뢰성검토_RPA입력준비.md",
+      "version_or_date": "historical; reviewed 2026-11-01",
+      "license_or_distribution": "Repository-derived summary"
+    }
+  ],
+  "comparison_basis": {
+    "id": "SPACE-Y-COMMON-BASIS-INPUT-U",
+    "approval_status": "INPUT_U",
+    "performance_target_and_tolerance": null,
+    "propellant_and_inlet_state": null,
+    "ambient_condition": null,
+    "sizing_basis": null,
+    "program_and_version": null,
+    "thermochemistry_and_loss_model": null,
+    "common_geometry_assumptions": null,
+    "source_ids": ["SRC-R2S-OFFICIAL-GUIDE", "SRC-AEL-ICD"]
+  },
+  "fixed_conditions": [
+    {
+      "id": "PROPELLANT-PAIR",
+      "name": "Oxidizer and fuel identity",
+      "value": "N2O / exact 2-propanol (CAS 67-63-0)",
+      "unit": "identity",
+      "approval_status": "PROVISIONAL",
+      "source_ids": ["SRC-TEAM-PPT-WORKING-CASE", "SRC-HISTORICAL-V5"]
+    }
+  ],
+  "design_variables": [
+    {
+      "id": "PC",
+      "name": "Chamber pressure",
+      "unit": "bar(a)",
+      "grid_values": [],
+      "range_approval_status": "INPUT_U",
+      "source_ids": [],
+      "dependency_note": "Must be selected with injector/supply pressure budget and common sizing basis; facility maximum is not an approved sweep range."
+    },
+    {
+      "id": "OF",
+      "name": "Oxidizer-to-fuel mass ratio",
+      "unit": "1",
+      "grid_values": [],
+      "range_approval_status": "INPUT_U",
+      "source_ids": [],
+      "dependency_note": "Must be selected from approved performance, thermal, combustion and operating constraints; the two historical points are not range bounds."
+    }
+  ],
+  "constraints": [],
+  "result_records": [],
+  "pareto_objectives": [],
+  "reference_points": [
+    {
+      "id": "TEAM-PPT-RPA-WORKING-CASE",
+      "status": "PROVISIONAL",
+      "role": "REFERENCE_POINT_NOT_RANGE_BOUND",
+      "parameters": [{"value": 30.0, "unit": "bar(a)"}, {"value": 3.0, "unit": "O/F"}],
+      "result_class": "HISTORICAL_RESULT",
+      "comparison_basis_id": "TEAM-PPT-RPA-BASIS-NOT-REPRODUCED",
+      "source_ids": ["SRC-TEAM-PPT-WORKING-CASE"],
+      "notes": "RPA screenshot working case; no raw project, no approved range, no reproduced run, and no safety evidence."
+    },
+    {
+      "id": "SY-V5-PROPOSAL",
+      "status": "PROVISIONAL",
+      "role": "REFERENCE_POINT_NOT_RANGE_BOUND",
+      "parameters": [{"value": 25.0, "unit": "bar(a)"}, {"value": 2.5, "unit": "O/F"}],
+      "result_class": "HISTORICAL_RESULT",
+      "comparison_basis_id": "HISTORICAL-CEA-V5-BASIS",
+      "source_ids": ["SRC-HISTORICAL-V5"],
+      "notes": "Historical CEA case; not directly comparable with the team RPA case and not an approved range endpoint."
+    }
+  ],
+  "max_candidates": 100
+}

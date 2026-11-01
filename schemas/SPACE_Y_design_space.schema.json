@@ -1,0 +1,194 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://space-y.local/schemas/SPACE_Y_design_space.schema.json",
+  "title": "SPACE Y bounded design-space exploration input",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "purpose", "exploration_id", "sources", "comparison_basis",
+    "fixed_conditions", "design_variables", "constraints", "result_records",
+    "pareto_objectives", "reference_points", "max_candidates"
+  ],
+  "$defs": {
+    "sourceRefs": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "approval": {
+      "enum": ["APPROVED_FOR_EXPLORATION", "APPROVED_FOR_SYNTHETIC_TEST", "PROVISIONAL", "INPUT_U", "NOT_APPROVED"]
+    },
+    "parameterValue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "unit"],
+      "properties": {
+        "value": {"type": ["number", "string", "boolean"]},
+        "unit": {"type": "string", "minLength": 1}
+      }
+    },
+    "metric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "domain", "status", "value", "unit", "method", "source_ids", "validation_level", "uncertainty"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "domain": {"enum": ["performance", "supply", "cooling", "structural", "combustion", "operations"]},
+        "status": {"enum": ["AVAILABLE", "NOT_RUN", "INPUT_U", "OUTSIDE", "NUM_U", "MODEL_U"]},
+        "value": {"type": ["number", "null"]},
+        "unit": {"type": ["string", "null"]},
+        "method": {"type": "string", "minLength": 1},
+        "source_ids": {"$ref": "#/$defs/sourceRefs"},
+        "validation_level": {"type": "string", "minLength": 1},
+        "uncertainty": {"type": ["string", "number", "null"]}
+      }
+    }
+  },
+  "properties": {
+    "schema_version": {"const": "SPACE_Y_DESIGN_SPACE_V1"},
+    "purpose": {"enum": ["SYNTHETIC_EXPLORATION_TEST", "PDR_DESIGN_SPACE_EXPLORATION"]},
+    "exploration_id": {"type": "string", "minLength": 1},
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "type", "title", "status", "reference", "version_or_date", "license_or_distribution"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "type": {"type": "string", "minLength": 1},
+          "title": {"type": "string", "minLength": 1},
+          "status": {"enum": ["AVAILABLE", "INPUT_U", "RESTRICTED"]},
+          "reference": {"type": ["string", "null"]},
+          "version_or_date": {"type": ["string", "null"]},
+          "license_or_distribution": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "comparison_basis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id", "approval_status", "performance_target_and_tolerance", "propellant_and_inlet_state",
+        "ambient_condition", "sizing_basis", "program_and_version", "thermochemistry_and_loss_model",
+        "common_geometry_assumptions", "source_ids"
+      ],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "approval_status": {"$ref": "#/$defs/approval"},
+        "performance_target_and_tolerance": {"type": ["string", "null"]},
+        "propellant_and_inlet_state": {"type": ["string", "null"]},
+        "ambient_condition": {"type": ["string", "null"]},
+        "sizing_basis": {"type": ["string", "null"]},
+        "program_and_version": {"type": ["string", "null"]},
+        "thermochemistry_and_loss_model": {"type": ["string", "null"]},
+        "common_geometry_assumptions": {"type": ["string", "null"]},
+        "source_ids": {"$ref": "#/$defs/sourceRefs"}
+      }
+    },
+    "fixed_conditions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "value", "unit", "approval_status", "source_ids"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "name": {"type": "string", "minLength": 1},
+          "value": {"type": ["number", "string", "boolean", "null"]},
+          "unit": {"type": ["string", "null"]},
+          "approval_status": {"$ref": "#/$defs/approval"},
+          "source_ids": {"$ref": "#/$defs/sourceRefs"}
+        }
+      }
+    },
+    "design_variables": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "unit", "grid_values", "range_approval_status", "source_ids", "dependency_note"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "name": {"type": "string", "minLength": 1},
+          "unit": {"type": "string", "minLength": 1},
+          "grid_values": {"type": "array", "items": {"type": ["number", "string", "boolean"]}, "uniqueItems": true},
+          "range_approval_status": {"$ref": "#/$defs/approval"},
+          "source_ids": {"$ref": "#/$defs/sourceRefs"},
+          "dependency_note": {"type": "string"}
+        }
+      }
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "metric_id", "domain", "mandatory", "operator", "limit", "unit", "approval_status", "source_ids"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "name": {"type": "string", "minLength": 1},
+          "metric_id": {"type": "string", "minLength": 1},
+          "domain": {"enum": ["performance", "supply", "cooling", "structural", "combustion", "operations"]},
+          "mandatory": {"type": "boolean"},
+          "operator": {"enum": ["LT", "LE", "GT", "GE", "EQ"]},
+          "limit": {"type": "number"},
+          "unit": {"type": "string", "minLength": 1},
+          "approval_status": {"$ref": "#/$defs/approval"},
+          "source_ids": {"$ref": "#/$defs/sourceRefs"}
+        }
+      }
+    },
+    "result_records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "result_class", "comparison_basis_id", "candidate_parameters", "program_and_version", "model_ids", "source_ids", "metrics", "notes"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "result_class": {"enum": ["HISTORICAL_RESULT", "REPRODUCED_RESULT", "SYNTHETIC_RESULT", "NOT_RUN"]},
+          "comparison_basis_id": {"type": ["string", "null"]},
+          "candidate_parameters": {"type": "object", "additionalProperties": {"$ref": "#/$defs/parameterValue"}},
+          "program_and_version": {"type": ["string", "null"]},
+          "model_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "source_ids": {"$ref": "#/$defs/sourceRefs"},
+          "metrics": {"type": "array", "items": {"$ref": "#/$defs/metric"}},
+          "notes": {"type": "string"}
+        }
+      }
+    },
+    "pareto_objectives": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["metric_id", "direction"],
+        "properties": {
+          "metric_id": {"type": "string", "minLength": 1},
+          "direction": {"enum": ["MIN", "MAX"]}
+        }
+      }
+    },
+    "reference_points": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "status", "role", "parameters", "result_class", "comparison_basis_id", "source_ids", "notes"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "status": {"enum": ["PROVISIONAL", "INPUT_U"]},
+          "role": {"const": "REFERENCE_POINT_NOT_RANGE_BOUND"},
+          "parameters": {"type": "array", "items": {"$ref": "#/$defs/parameterValue"}},
+          "result_class": {"enum": ["HISTORICAL_RESULT", "NOT_RUN"]},
+          "comparison_basis_id": {"type": ["string", "null"]},
+          "source_ids": {"$ref": "#/$defs/sourceRefs"},
+          "notes": {"type": "string"}
+        }
+      }
+    },
+    "max_candidates": {"type": "integer", "minimum": 1, "maximum": 10000}
+  }
+}
