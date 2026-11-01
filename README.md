@@ -62,7 +62,8 @@
 - [단일 구간 완전 결합 구현 기록](docs/M0_단일구간_GAS_WALL_COOLANT_결합_구현기록.md)
 - `src/space_y/coolant.py`: 단상 벌크영역 및 Gnielinski/Colebrook 공급 영역 검사
 - `src/space_y/cooling_hc.py`: 외부 제공 냉각유량·물성과 직사각 채널의 독립 냉각 측 `Re/Pr/f/Nu/h_l(=h_c)` 인터페이스. `evaluate_rectangular_cooling_hl()`은 비엔탈피·길이 없이 국소 `h_l`을 계산하고, 기존 통합 API는 압손 기능을 유지함. 균등분배는 명시적 가정이며 실제 매니폴드·IPA 검증을 뜻하지 않음
-- `src/space_y/cooling_channel_candidates.py`: Axial 직사각 채널의 `N/b/h` 조합과 명시적 `r_m(x)`에서 Constant-rib-width 후보를 생성하고 위치별 `h_l`과 Darcy 마찰 압력손실 구배를 계산함. 점수·순위·최종 최적화는 수행하지 않음
+- `src/space_y/cooling_channel_candidates.py`: Axial 직사각 채널의 `N/b/h` 조합과 명시적 `r_m(x)`에서 Constant-rib-width 후보를 생성하고 위치별 `h_l`과 Darcy 마찰 압력손실 구배를 계산함
+- `src/space_y/cooling_channel_recommendation.py`: 동일 기준 station의 최고 `h_l`, 최소 국소 마찰 구배와 2목적 Pareto 후보를 상대 분류함. Baseline·안전 승인·최종 설계 선정과 분리됨
 - `src/space_y/m0_coupled.py`: GAS–WALL과 가변물성 냉각 엔탈피·압손의 중첩 반복
 - [결합 실행 Schema](schemas/SPACE_Y_M0_coupled_single_segment.schema.json)
 - [비설계 합성 입력](examples/m0_coupled_synthetic_single_segment.json)과 `artifacts/m0_coupled/` 실행 증거
@@ -178,3 +179,11 @@ PDR 합성 분기 실행:
 ```
 
 [후보 생성 구현 기록](docs/냉각채널_후보생성_hl_구현기록.md)의 탐색 범위와 반경은 합성·참고 입력이며 실제 SPACE Y 승인 설계범위가 아니다. 높은 `h_l`은 최종 형상 선정 기준이 아니며 전체 벽온도·상변화·압력예산·제작·구조 검토가 남아 있다.
+
+다중 후보 예비 추천 합성 예제:
+
+```powershell
+.\.venv\Scripts\space-y.exe cooling-channel-sweep examples\cooling_channel_recommendation_synthetic_multi.json --output artifacts\cooling_channel_sweep\synthetic_recommendation_result.json --csv-output artifacts\cooling_channel_sweep\synthetic_recommendation_stations.csv --summary-csv-output artifacts\cooling_channel_sweep\synthetic_recommendation_summary.csv
+```
+
+Baseline은 문헌·부트캠프 참고자료이며 자동 추천 후보와 별개다. 추천은 같은 station과 같은 공급 유량·물성에서의 상대 비교만 수행하며 `Preliminary candidate recommendation, not final design optimization.`이다.

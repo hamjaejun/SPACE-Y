@@ -25,7 +25,9 @@
     "input_evidence_complete": {"type": "boolean"},
     "candidate_space": {"$ref": "#/$defs/candidateSpace"},
     "coolant_conditions": {"$ref": "#/$defs/coolantConditions"},
-    "model_conditions": {"$ref": "#/$defs/modelConditions"}
+    "model_conditions": {"$ref": "#/$defs/modelConditions"},
+    "baseline_reference": {"$ref": "#/$defs/baselineReference"},
+    "comparison": {"$ref": "#/$defs/comparison"}
   },
   "$defs": {
     "positiveArray": {
@@ -192,6 +194,68 @@
         },
         "geometry": {"type": "string", "minLength": 1}
       }
+    },
+    "baselineReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "baseline_id",
+        "source",
+        "geometry_policy",
+        "settings",
+        "geometric_applicability_status",
+        "design_approved",
+        "limitations"
+      ],
+      "properties": {
+        "baseline_id": {"type": "string", "minLength": 1},
+        "source": {"type": "string", "minLength": 1},
+        "geometry_policy": {"type": "string", "minLength": 1},
+        "settings": {"type": "object"},
+        "geometric_applicability_status": {
+          "type": "string",
+          "minLength": 1
+        },
+        "candidate_id": {"type": "string", "minLength": 1},
+        "design_approved": {"const": false},
+        "limitations": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "comparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reference_station_type",
+        "relative_tolerance",
+        "h_l_absolute_tolerance_W_m2K",
+        "friction_gradient_absolute_tolerance_Pa_m"
+      ],
+      "properties": {
+        "reference_station_type": {"enum": ["THROAT", "STATION_ID"]},
+        "reference_station_id": {"type": "string", "minLength": 1},
+        "relative_tolerance": {"type": "number", "minimum": 0},
+        "h_l_absolute_tolerance_W_m2K": {
+          "type": "number",
+          "minimum": 0
+        },
+        "friction_gradient_absolute_tolerance_Pa_m": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "reference_station_type": {"const": "STATION_ID"}
+            }
+          },
+          "then": {"required": ["reference_station_id"]}
+        }
+      ]
     },
     "modelConditions": {
       "type": "object",

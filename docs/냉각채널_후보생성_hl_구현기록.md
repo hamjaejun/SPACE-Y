@@ -78,6 +78,10 @@ from space_y.cooling_channel_candidates import (
     solve_cooling_channel_candidates,
     solve_cooling_channel_candidates_file,
     write_candidate_results_csv,
+    write_candidate_summary_csv,
+)
+from space_y.cooling_channel_recommendation import (
+    classify_cooling_channel_candidates,
 )
 ```
 
@@ -137,3 +141,52 @@ CH-0003 결과:
 챔버·노즐 형상 담당의 평균 채널 배치반경 정의와 프로파일, 재료·가공 담당의 실제
 조도·폭·리브 제약이 필요하다. ⑦은 노즐 기본 형상 담당이며 전체 축방향 열해석
 담당으로 지정하지 않는다.
+
+## 8. Baseline 및 예비 추천 계층
+
+`classify_cooling_channel_candidates()`는 물리 계산이 끝난 후보 목록을 받아 별도 비교
+계층으로 동작한다. Baseline은 `baseline_reference` 입력에 출처·정책·설정·기하 상태를
+명시한 경우에만 기록한다. 추천 결과가 Baseline을 바꾸지 않으며
+`automatically_selected=false`, `design_approved=false`를 강제한다. ODREC의 일정 폭 문헌
+형상과 채널 개수가 빠진 부트캠프 Constant-rib 설정을 자동 결합하지 않는다.
+
+비교 위치는 `THROAT` 또는 명시적 `STATION_ID`다. 모든 후보는 같은 station에서만
+비교한다. 기준 위치가 없거나, 경로 중 한 위치라도 기하·계산·상관식 조건을 만족하지
+않으면 추천 대상에서 제외한다. 위치별 최대값끼리 비교하거나 전체 분포를 평균·가중합하지
+않는다.
+
+유효 후보에는 다음 상대 태그를 중복 부여할 수 있다.
+
+- `HIGHEST_HL_AT_REFERENCE`
+- `LOWEST_FRICTION_GRADIENT_AT_REFERENCE`
+- `PARETO_CANDIDATE`
+
+기하·상관식·입력 문제는 각각 `EXCLUDED_GEOMETRY`, `EXCLUDED_CORRELATION`,
+`UNVERIFIED_INPUT`으로 구분한다. Pareto 지배는 같은 기준 위치에서 `h_l` 최대화와 국소
+Darcy 마찰 구배 최소화만 사용한다. `h_l`과 압력구배는 단위가 다르므로 별도 절대
+허용오차와 공통 상대 허용오차를 입력한다. 유효 후보가 하나뿐이면
+`SINGLE_VALID_CANDIDATE_NO_TRADEOFF`, 없으면 `NO_VALID_CANDIDATES`다.
+
+다중 후보 합성 fixture는 기존 반경 `[30,20,40] mm`와 폭 제한 `[0.9,2.7] mm`를
+유지하고, 합성 탐색 배열만 별도로 정의했다. 목 `SYN-THROAT` 비교 결과는 다음과 같다.
+
+| 후보 | N | b (mm) | h_l (W/m2K) | dP_f/ds (Pa/m) | 상대 태그 |
+|---|---:|---:|---:|---:|---|
+| CH-0003 | 80 | 0.5 | 10435.72 | 863751 | Pareto |
+| CH-0004 | 80 | 0.6 | 11641.12 | 1114532 | 최고 h_l, Pareto |
+| CH-0005 | 90 | 0.3 | 8918.46 | 653032 | 최소 마찰 구배, Pareto |
+| CH-0006 | 90 | 0.4 | 9928.40 | 835861 | Pareto |
+| CH-0009 | 100 | 0.3 | 9230.27 | 763716 | Pareto |
+
+이 다섯 후보는 두 국소 지표 사이에서 서로 지배하지 않는다. 이는 Pareto 구현과
+열전달–유동저항 상충을 확인하는 합성 결과일 뿐 제조 가능 후보, SPACE Y Baseline 또는
+최종 설계가 아니다. 모든 출력은 `Preliminary candidate recommendation, not final design
+optimization.`을 기록하고 `final_design_selection=false`를 유지한다.
+
+```powershell
+.\.venv\Scripts\space-y.exe cooling-channel-sweep `
+  examples\cooling_channel_recommendation_synthetic_multi.json `
+  --output artifacts\cooling_channel_sweep\synthetic_recommendation_result.json `
+  --csv-output artifacts\cooling_channel_sweep\synthetic_recommendation_stations.csv `
+  --summary-csv-output artifacts\cooling_channel_sweep\synthetic_recommendation_summary.csv
+```

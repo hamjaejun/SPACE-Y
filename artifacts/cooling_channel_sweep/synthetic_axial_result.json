@@ -25,6 +25,19 @@
     "outside_station_count": 0,
     "input_unknown_station_count": 0
   },
+  "candidate_recommendation": {
+    "status": "NOT_RUN",
+    "reason": "comparison input was not supplied",
+    "baseline_reference": null,
+    "reference_station_id": null,
+    "reference_station_type": null,
+    "eligible_candidate_ids": [],
+    "highest_h_l_candidate_ids": [],
+    "lowest_friction_gradient_candidate_ids": [],
+    "pareto_candidate_ids": [],
+    "statement": "Preliminary candidate recommendation, not final design optimization.",
+    "final_design_selection": false
+  },
   "candidates": [
     {
       "candidate_id": "CH-0001",
@@ -103,6 +116,19 @@
         "limitations": [
           "At least one station violates supplied channel-width constraints."
         ]
+      },
+      "recommendation_tags": [
+        "EXCLUDED_GEOMETRY"
+      ],
+      "exclusion_reasons": [
+        "candidate violates at least one supplied geometry constraint"
+      ],
+      "comparison": {
+        "reference_station_id": null,
+        "h_l_at_reference_W_m2K": null,
+        "friction_pressure_gradient_at_reference_Pa_m": null,
+        "pareto_status": "NOT_EVALUATED",
+        "model_applicability": "NOT_RUN"
       }
     },
     {
@@ -182,6 +208,19 @@
         "limitations": [
           "At least one station violates supplied channel-width constraints."
         ]
+      },
+      "recommendation_tags": [
+        "EXCLUDED_GEOMETRY"
+      ],
+      "exclusion_reasons": [
+        "candidate violates at least one supplied geometry constraint"
+      ],
+      "comparison": {
+        "reference_station_id": null,
+        "h_l_at_reference_W_m2K": null,
+        "friction_pressure_gradient_at_reference_Pa_m": null,
+        "pareto_status": "NOT_EVALUATED",
+        "model_applicability": "NOT_RUN"
       }
     },
     {
@@ -359,6 +398,15 @@
           "No heat-load, wall-temperature, phase-change, manufacturing, structural, or supply-pressure approval is performed.",
           "No scalar score or final optimum is assigned."
         ]
+      },
+      "recommendation_tags": [],
+      "exclusion_reasons": [],
+      "comparison": {
+        "reference_station_id": null,
+        "h_l_at_reference_W_m2K": null,
+        "friction_pressure_gradient_at_reference_Pa_m": null,
+        "pareto_status": "NOT_EVALUATED",
+        "model_applicability": "APPLICABLE_TO_SUPPLIED_DOMAINS"
       }
     },
     {
@@ -438,6 +486,19 @@
         "limitations": [
           "At least one station violates supplied channel-width constraints."
         ]
+      },
+      "recommendation_tags": [
+        "EXCLUDED_GEOMETRY"
+      ],
+      "exclusion_reasons": [
+        "candidate violates at least one supplied geometry constraint"
+      ],
+      "comparison": {
+        "reference_station_id": null,
+        "h_l_at_reference_W_m2K": null,
+        "friction_pressure_gradient_at_reference_Pa_m": null,
+        "pareto_status": "NOT_EVALUATED",
+        "model_applicability": "NOT_RUN"
       }
     }
   ],
@@ -455,6 +516,6 @@
   "final_design_selection": false,
   "provenance": {
     "request_sha256": "894288b66098fbf5ce817b914a27532ea010eb7354b42d54f6c9df0674fbc3eb",
-    "schema_sha256": "8f749f4546b9e549e49ce88212aa09ed2706b1aaeaea7f3f865f175c2d714d5e"
+    "schema_sha256": "7ec8f185bf49ccd20381f6548b688a7fede8f597d3a3f9957b957f2028efc7a1"
   }
 }

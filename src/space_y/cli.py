@@ -9,6 +9,7 @@ from .contract import build_validation_report
 from .cooling_channel_candidates import (
     solve_cooling_channel_candidates_file,
     write_candidate_results_csv,
+    write_candidate_summary_csv,
 )
 from .cooling_hc import solve_cooling_hc_file
 from .design_decision import solve_design_decision_file
@@ -123,6 +124,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     cooling_sweep.add_argument("--output")
     cooling_sweep.add_argument("--csv-output")
+    cooling_sweep.add_argument("--summary-csv-output")
     return parser
 
 
@@ -166,6 +168,8 @@ def main(argv: list[str] | None = None) -> int:
         result = solve_cooling_channel_candidates_file(args.request, args.schema)
         if args.csv_output:
             write_candidate_results_csv(args.csv_output, result)
+        if args.summary_csv_output:
+            write_candidate_summary_csv(args.summary_csv_output, result)
     else:
         raise AssertionError(args.command)
     _emit(result, args.output)

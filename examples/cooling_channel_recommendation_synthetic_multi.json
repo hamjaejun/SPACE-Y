@@ -1,0 +1,109 @@
+{
+  "schema_version": "SPACE_Y_COOLING_CHANNEL_SWEEP_V1",
+  "purpose": "NON_DESIGN_ARITHMETIC_VERIFICATION",
+  "run_id": "SYNTHETIC-COOLING-CHANNEL-RECOMMENDATION-001",
+  "input_evidence_complete": false,
+  "baseline_reference": {
+    "baseline_id": "BOOTCAMP_CONSTANT_RIB_WIDTH_REFERENCE",
+    "source": "User-confirmed bootcamp software input example; primary software project file not committed",
+    "geometry_policy": "CONSTANT_RIB_WIDTH_AXIAL",
+    "settings": {
+      "rib_thickness_m": 0.0009,
+      "channel_height_m": 0.0012,
+      "channel_width_limits_m": [0.0009, 0.0027],
+      "equivalent_sand_roughness_m": 0.000012,
+      "path_type": "AXIAL",
+      "circuit_passes": 1,
+      "channel_count": null
+    },
+    "geometric_applicability_status": "INPUT_U_CHANNEL_COUNT_AND_REAL_RADIUS",
+    "design_approved": false,
+    "limitations": [
+      "The reference does not specify channel count.",
+      "It is not automatically combined with the ODREC channel count.",
+      "It is not a validated SPACE Y optimum or manufacturing constraint."
+    ]
+  },
+  "comparison": {
+    "reference_station_type": "THROAT",
+    "relative_tolerance": 1e-09,
+    "h_l_absolute_tolerance_W_m2K": 1e-09,
+    "friction_gradient_absolute_tolerance_Pa_m": 1e-06
+  },
+  "candidate_space": {
+    "geometry_policy": "CONSTANT_RIB_WIDTH_AXIAL",
+    "path_type": "AXIAL",
+    "circuit_passes": 1,
+    "channel_count_candidates": [80, 90, 100],
+    "rib_thickness_candidates_m": [0.0003, 0.0004, 0.0005, 0.0006],
+    "channel_height_candidates_m": [0.0012],
+    "channel_width_limits_m": [0.0009, 0.0027],
+    "candidate_range_source": "SYNTHETIC_NON_DESIGN_MULTI_CANDIDATE_FIXTURE_NOT_A_SPACE_Y_DESIGN_RANGE",
+    "geometry_source": "SYNTHETIC_MEAN_RADIUS_PROFILE_NOT_A_REAL_CHAMBER_OR_NOZZLE_CONTOUR",
+    "equivalent_sand_roughness_m": 0.000012,
+    "roughness_source": "BOOTCAMP_REFERENCE_VALUE_12_UM_NOT_AS_MANUFACTURED_SPACE_Y_DATA",
+    "assumptions": [
+      "CONSTANT_RIB_WIDTH",
+      "CONSTANT_CHANNEL_HEIGHT",
+      "AXIAL_ONE_PASS",
+      "SYNTHETIC_MEAN_RADIUS_PROFILE",
+      "CONSTANT_SYNTHETIC_FLUID_PROPERTIES",
+      "RECOMMENDATION_IS_RELATIVE_AND_PRELIMINARY"
+    ],
+    "mean_radius_profile": [
+      {
+        "station_id": "SYN-INLET",
+        "x_m": -0.1,
+        "mean_channel_radius_m": 0.03,
+        "is_throat": false,
+        "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+      },
+      {
+        "station_id": "SYN-THROAT",
+        "x_m": 0.0,
+        "mean_channel_radius_m": 0.02,
+        "is_throat": true,
+        "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+      },
+      {
+        "station_id": "SYN-EXIT",
+        "x_m": 0.1,
+        "mean_channel_radius_m": 0.04,
+        "is_throat": false,
+        "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+      }
+    ]
+  },
+  "coolant_conditions": {
+    "coolant_mass_flow_kg_s": 0.6,
+    "coolant_mass_flow_source": "SYNTHETIC_NON_DESIGN_MASS_FLOW",
+    "property_policy": "CONSTANT_SUPPLIED_PROPERTIES",
+    "default_fluid_properties": {
+      "density_kg_m3": 800.0,
+      "viscosity_Pa_s": 0.001,
+      "cp_J_kgK": 2000.0,
+      "conductivity_W_mK": 0.15,
+      "property_source": "SYNTHETIC_ARITHMETIC_FIXTURE_NOT_IPA_DATA",
+      "property_version": "TEST-ONLY-V1"
+    }
+  },
+  "model_conditions": {
+    "closure_geometry": "RECTANGULAR_CLOSED_DUCT_USING_HYDRAULIC_DIAMETER",
+    "fully_developed": true,
+    "thermal_boundary_condition": "SYNTHETIC_UNIFORM_HEAT_FLUX",
+    "heat_transfer_thermal_boundary_condition": "SYNTHETIC_UNIFORM_HEAT_FLUX",
+    "heat_transfer_domain": {
+      "source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM",
+      "re_range": [3000.0, 5000000.0],
+      "pr_range": [0.5, 100.0],
+      "geometry": "RECTANGULAR_CLOSED_DUCT_USING_HYDRAULIC_DIAMETER",
+      "fully_developed_required": true
+    },
+    "friction_domain": {
+      "source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM",
+      "re_range": [3000.0, 5000000.0],
+      "relative_roughness_range": [0.0, 0.05],
+      "geometry": "RECTANGULAR_CLOSED_DUCT_USING_HYDRAULIC_DIAMETER"
+    }
+  }
+}

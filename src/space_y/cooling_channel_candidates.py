@@ -16,6 +16,7 @@ from .coolant import (
     build_rectangular_channel_cross_section,
     evaluate_rectangular_cooling_hl,
 )
+from .cooling_channel_recommendation import classify_cooling_channel_candidates
 
 
 INTERFACE_VERSION = "SPACE_Y_COOLING_CHANNEL_SWEEP_V1"
@@ -562,6 +563,12 @@ def solve_cooling_channel_candidates(request: dict[str, Any]) -> dict[str, Any]:
         else:
             overall_status = "OUTSIDE"
 
+        recommendation = classify_cooling_channel_candidates(
+            candidates,
+            request.get("comparison"),
+            request.get("baseline_reference"),
+        )
+
         return {
             "interface_version": INTERFACE_VERSION,
             "run_id": run_id,
@@ -597,6 +604,7 @@ def solve_cooling_channel_candidates(request: dict[str, Any]) -> dict[str, Any]:
                 "outside_station_count": outside_station_count,
                 "input_unknown_station_count": input_unknown_station_count,
             },
+            "candidate_recommendation": recommendation,
             "candidates": candidates,
             "not_implemented": [
                 "helical channels",
@@ -676,6 +684,7 @@ def write_candidate_results_csv(path: str | Path, result: dict[str, Any]) -> Non
     fieldnames = [
         "candidate_id",
         "candidate_decision",
+        "recommendation_tags",
         "channel_count",
         "rib_thickness_m",
         "channel_height_m",
@@ -706,6 +715,9 @@ def write_candidate_results_csv(path: str | Path, result: dict[str, Any]) -> Non
                     {
                         "candidate_id": candidate.get("candidate_id"),
                         "candidate_decision": candidate.get("decision"),
+                        "recommendation_tags": "|".join(
+                            candidate.get("recommendation_tags", [])
+                        ),
                         "channel_count": candidate.get("channel_count"),
                         "rib_thickness_m": candidate.get("rib_thickness_m"),
                         "channel_height_m": candidate.get("channel_height_m"),
@@ -734,3 +746,72 @@ def write_candidate_results_csv(path: str | Path, result: dict[str, Any]) -> Non
                         ),
                     }
                 )
+
+
+def write_candidate_summary_csv(path: str | Path, result: dict[str, Any]) -> None:
+    """Write one comparison row per candidate for downstream integration review."""
+
+    output = Path(path)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    fieldnames = [
+        "candidate_id",
+        "channel_count",
+        "rib_thickness_m",
+        "channel_height_m",
+        "candidate_decision",
+        "geometric_validity_status",
+        "model_applicability",
+        "reference_station_id",
+        "h_l_at_reference_W_m2K",
+        "friction_pressure_gradient_at_reference_Pa_m",
+        "minimum_h_l_W_m2K",
+        "maximum_h_l_W_m2K",
+        "maximum_friction_pressure_gradient_Pa_m",
+        "pareto_status",
+        "recommendation_tags",
+        "exclusion_reasons",
+        "design_approved",
+    ]
+    with output.open("w", encoding="utf-8", newline="") as stream:
+        writer = csv.DictWriter(stream, fieldnames=fieldnames)
+        writer.writeheader()
+        for candidate in result.get("candidates", []):
+            comparison = candidate.get("comparison") or {}
+            summary = candidate.get("summary") or {}
+            writer.writerow(
+                {
+                    "candidate_id": candidate.get("candidate_id"),
+                    "channel_count": candidate.get("channel_count"),
+                    "rib_thickness_m": candidate.get("rib_thickness_m"),
+                    "channel_height_m": candidate.get("channel_height_m"),
+                    "candidate_decision": candidate.get("decision"),
+                    "geometric_validity_status": candidate.get(
+                        "geometric_validity_status"
+                    ),
+                    "model_applicability": comparison.get(
+                        "model_applicability"
+                    ),
+                    "reference_station_id": comparison.get(
+                        "reference_station_id"
+                    ),
+                    "h_l_at_reference_W_m2K": comparison.get(
+                        "h_l_at_reference_W_m2K"
+                    ),
+                    "friction_pressure_gradient_at_reference_Pa_m": comparison.get(
+                        "friction_pressure_gradient_at_reference_Pa_m"
+                    ),
+                    "minimum_h_l_W_m2K": summary.get("minimum_h_l_W_m2K"),
+                    "maximum_h_l_W_m2K": summary.get("maximum_h_l_W_m2K"),
+                    "maximum_friction_pressure_gradient_Pa_m": summary.get(
+                        "maximum_friction_pressure_gradient_Pa_m"
+                    ),
+                    "pareto_status": comparison.get("pareto_status"),
+                    "recommendation_tags": "|".join(
+                        candidate.get("recommendation_tags", [])
+                    ),
+                    "exclusion_reasons": "|".join(
+                        candidate.get("exclusion_reasons", [])
+                    ),
+                    "design_approved": candidate.get("design_approved", False),
+                }
+            )

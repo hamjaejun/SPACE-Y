@@ -264,3 +264,11 @@ ODREC의 `N=90, w=1 mm, h=6 mm`, Fagherazzi의 41개 축방향 가변 물냉각 
 폭 제한 위반 후보는 폭을 clipping하지 않고 `EXCLUDE_GEOMETRIC_CONSTRAINT`로 계산 전에 제외한다. 반경이 없으면 일정 폭 국소 산술만 허용하며 원주 배치는 `INPUT_U`다. 구간별 물성이 명시되면 station 단위로 재계산하고 보간하지 않는다. 점수·가중합·자동 순위·최종 최적화는 없다.
 
 합성 예제의 4개 후보 중 `N=80, b=0.6 mm, h=1.2 mm`만 합성 세 위치의 폭 제약을 만족했다. 이는 합성 반경·물성·유량에 대한 기능 검산이며 SPACE Y 기준안이 아니다. 실제 후보에는 승인된 재생냉각 유량, IPA 구간 물성, 평균 채널 배치반경 정의, 제작 폭·리브·조도 제약이 필요하다. `MODEL_U`, `V01–V12=NOT_RUN`, `final_design_selection=false`를 유지한다.
+
+## 20. 2026-11-01 냉각 채널 Baseline·예비 추천 계층
+
+`src/space_y/cooling_channel_recommendation.py`를 추가했다. Baseline은 명시된 참고자료를 그대로 기록하며 추천 결과로 자동 변경하지 않는다. 모든 후보를 하나의 명시적 목 또는 station에서 비교하고, 경로 전체의 기하·상관식 계산이 통과한 후보에만 최고 `h_l`, 최소 국소 마찰 구배와 상대 Pareto 태그를 부여한다. 동점은 지표별 단위를 가진 절대 허용오차와 공통 상대 허용오차로 처리한다.
+
+다중 합성 fixture에서 유효 후보는 5개였다. 목 기준 CH-0004가 최고 `h_l`, CH-0005가 최소 국소 마찰 구배였고, 5개 모두 두 지표의 비지배 후보였다. 이는 기존 합성 반경·폭 제한·유량·일정 물성에서의 알고리즘 검산이다. 전체 압력손실, 벽온도, IPA 상태 marching, 상변화, 구조·제작·공급 제약을 평가하지 않으므로 SPACE Y Baseline·최적 형상·안전 설계가 아니다.
+
+JSON은 Baseline, 비교 station, 허용오차, 후보별 태그와 제외 이유를 보존한다. 위치별 CSV와 후보 요약 CSV를 제공한다. 실제 적용에는 승인된 `r_m(x)`, 냉각 유량, 구간별 IPA 물성, 제작 제약과 전체 통합 열해석 결과가 필요하다. `validated_engine_prediction=false`, `V01–V12=NOT_RUN`, `final_design_selection=false`를 유지한다.
