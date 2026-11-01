@@ -58,11 +58,11 @@
 | 자산 | 현재 가능한 판단 | 현재 불가능한 판단 |
 |---|---|---|
 | CEA | 명시 입력의 정상 열화학·추진 성능, station별 상태 | 연소 동적 안정성, 실제 형상 좌표 자동 보간 |
-| RPA | 정상 성능, 문서화된 chamber/nozzle sizing·geometry 실행 준비 | 실제 후보 미입력 상태의 형상값, 안전 승인 |
+| RPA | 정상 성능, chamber/nozzle sizing·geometry, 팀 PPT에 보존된 작업 후보의 입력·출력 스크린샷 검토 | 승인 후보의 재현 실행, raw project/ASCII/DXF 검증, 안전 승인 |
 | GAS/Bartz | 명시 station의 가스 대류 열전달 | 미입력 복사를 0으로 둔 실제 열설계 완료 |
 | M0 | 단일/다구간 상태 전달, 보존식, 합성 수치 검산 | 실제 IPA 기반 냉각 안전성, 상변화·비등·병렬 분배 |
 | Property Adapter | 공급자·범위·단위·엔탈피 기준 interface | 검증된 실제 IPA backend |
-| Decision Engine | hard constraint, 상태·증거 추적, 후보 제외/보류 | 입력이 없는 실제 후보 추천 |
+| Decision Engine | hard constraint, 상태·증거 추적, 후보 제외/보류 | 승인되지 않은 PPT/v5 작업안을 실제 PDR 후보로 자동 승격 |
 
 Y01–Y05 정의와 계산 경로는 존재하지만 실제 IPA, 형상, 경계조건과 station mapping이 없으므로 실제 엔진 출력은 아직 생성할 수 없다. `validated_engine_prediction=false`, V01–V12는 `NOT_RUN`이다.
 
@@ -77,7 +77,7 @@ Y01–Y05 정의와 계산 경로는 존재하지만 실제 IPA, 형상, 경계�
 - Size and Geometry는 chamber/nozzle 치수와 관련 결과를 표시한다.
 - 결과의 ASCII 저장과 chamber contour의 DXF export가 문서화돼 있다.
 
-DXF export는 매뉴얼에 문서화됐지만 실제 SPACE Y 입력으로 로컬 실행·파일 검증은 하지 않았다. 따라서 `DOCUMENTED_NOT_EXECUTED_FOR_SPACE_Y`다. CAD 자동 생성·승인 기능은 구현하지 않는다.
+DXF export는 매뉴얼에 문서화됐지만 SPACE Y 입력으로 파일 검증은 하지 않았다. 팀 `Parameter.pptx`에는 RPA 입력·결과 화면이 있어 과거 작업 후보 실행 자체는 확인되지만, raw project·ASCII·DXF와 실행 로그는 확보되지 않았다. 현재 열린 RPA는 `product is not activated` 상태라 재현 실행도 완료하지 못했다. CAD 자동 생성·승인 기능은 구현하지 않는다.
 
 `config/SPACE_Y_RPA_design_handoff_template.json`은 다음을 분리한다.
 
@@ -88,11 +88,11 @@ DXF export는 매뉴얼에 문서화됐지만 실제 SPACE Y 입력으로 로컬
 5. ASCII/DXF export의 문서 상태와 실제 실행 상태
 6. RPA가 결정하지 않는 injector, regenerative channel, wall/material, joints/ports/interface
 
-모든 실제 값, source candidate와 실행 결과는 현재 `null`, `INPUT_U` 또는 `NOT_RUN`이다.
+팀 PPT의 작업값과 화면에 보이는 RPA 결과는 `PROVISIONAL`/`CALCULATED`로 기록했다. `source_candidate_id=TEAM-PPT-RPA-WORKING-CASE`지만 `team_selected_baseline=false`, 전체 status는 `INPUT_U`다. 화면 캡처의 존재를 팀 승인, 재현 가능한 원본 설정 또는 검증된 엔진 예측으로 해석하지 않는다.
 
 ## 7. 실제 파라미터 선정에 필요한 자료
 
-`config/SPACE_Y_PDR_input_readiness.json`에 항목별 `current_value`, `source`, `owner`, `due_date`, `decision_impact`를 추가했다. 현재 실제 설계값, 담당자와 확보 기한은 제공되지 않아 `null`이다.
+`config/SPACE_Y_PDR_input_readiness.json`에는 공식 요구조건, 과거 v5와 팀 PPT 작업 후보, 즉시 결정 gate를 분리했다. 팀 PPT 값은 존재하지만 승인자·승인일·결정 기록, 담당자와 확보 기한은 제공되지 않았다.
 
 RPA 예비 형상 설계를 시작하려면 최소한 다음이 팀 승인 상태여야 한다.
 
@@ -139,6 +139,7 @@ RPA 예비 형상 설계를 시작하려면 최소한 다음이 팀 승인 상�
 | `AEL-AEDN-1904-I1` | AEL Race2Space ICD, AEDN-1904 Issue 1, 2025-11-17 | PDF 1–7쪽 | 시설 공급·장착·계측·점화 인터페이스 |
 | `RPA-USER-MANUAL-2.3` | 로컬 RPA Standard Edition v.2.3.2 User Manual | 인쇄 33–35쪽 | RPA chamber/nozzle sizing 입력·출력 기능 |
 | `MEET-2026-10-26` | 팀 설계 방향 회의 전사 | 15:21, 37:43–38:09, 45:29 | 안정성 우선 방향과 결정 필요성. 정식 승인 기록은 아님 |
+| `TEAM-PARAMETER-PPT-2026-10-31` | `Parameter.pptx`, SHA-256 `45e618...d964b8` | 슬라이드 5–10과 내장 RPA 화면 | 3 MPa·O/F 3·1.6 kg/s 작업 후보와 RPA 결과. 승인 기록 없음 |
 | `HIST-SY-V5-2026-10-29` | SPACE Y v5 개인 검토안과 CEA 계산 근거 | 초기 제안서·`calculation_basis.json` | 과거 3 kN·25 bar(a)·O/F 2.50·10 s 케이스. 팀 확정값 아님 |
 
 ## 10. A — 요구조건 정리표
@@ -184,13 +185,16 @@ RPA 예비 형상 설계를 시작하려면 최소한 다음이 팀 승인 상�
 | 팀 승인 연소실압력 후보 | 미입력 | bar(a) | 승인 기록 미발견 | 팀 설계 변수 | `SOURCE_NOT_FOUND` |
 | 팀 승인 O/F 후보 | 미입력 | - | 승인 기록 미발견 | 팀 설계 변수 | `SOURCE_NOT_FOUND` |
 | 팀 승인 연소시간·duty | 미입력 | s, cycle | 승인 기록 미발견 | 팀 시험 목표 | `SOURCE_NOT_FOUND` |
+| 팀 PPT 작업 후보 | N2O(L)/IPA, Pc 3 MPa, O/F 3, 총유량 1.6 kg/s, 산화제/연료 1.2/0.4 kg/s | 복합 | `TEAM-PARAMETER-PPT` 슬라이드 5–8 | 현재 작업 후보 | `PROVISIONAL` |
+| 팀 PPT 추진제 온도·노즐 조건 | N2O 288.15 K, IPA 298.15 K, Ac/At 4, 출구압 1 atm | 복합 | `TEAM-PARAMETER-PPT` 슬라이드 6–7 | 작업 입력·가정 | `PROVISIONAL` |
+| 팀 PPT 시험 수량 가정 | 10 s × 2회, N2O 1.2 kg/s | s, kg/s | `TEAM-PARAMETER-PPT` 슬라이드 5 | 재고 기반 가정 | `PROVISIONAL` |
 | 과거 v5 검토 케이스 | N2O/IPA, 3 kN, 25 bar(a), O/F 2.50, 10 s | 복합 | `HIST-SY-V5`, 2026-10-29 개인 검토안 | 과거 예비 케이스 | `PROVISIONAL` |
 | 검증된 실제 IPA 냉각 물성 | 미입력 | SI | Property Adapter 감사 기록 | 냉각 제약 | `INPUT_U` |
 | 냉각채널·벽·재료·허용기준 | 미입력 | 복합 | PDR readiness C/T 항목 | 열·구조 제약 | `INPUT_U` |
 | 공급 압력–유량 포락선·압손 | 미입력 | Pa, kg/s | PDR readiness S 항목 | 공급 제약 | `INPUT_U` |
 | 연소 동적 안정성 기준·증거 | 미입력 | 복합 | PDR readiness B 항목 | 연소 안정성 | `INPUT_U` |
 
-회의 전사에는 “안정성”과 설명 가능한 논리를 우선한다는 방향이 있으나(`MEET` 37:43–38:09), 서명·승인된 수치 요구조건은 아니다. 과거 v5는 실제 CEA가 실행된 비교 케이스이지만 팀 확정값·최적값·안전 설계가 아니다.
+회의 전사에는 “안정성”과 설명 가능한 논리를 우선한다는 방향이 있으나(`MEET` 37:43–38:09), 서명·승인된 수치 요구조건은 아니다. 팀 PPT는 실제 RPA 작업 후보를 담고 있어 v5보다 RPA 착수에 가까운 자료지만, 승인자·선정 기준·raw project가 없다. 두 케이스 모두 팀 확정값·최적값·안전 설계가 아니다.
 
 ## 11. B — 파라미터 선정 근거표
 
@@ -217,34 +221,48 @@ RPA의 계산 결과와 팀 입력을 혼동하지 않는다. 승인 입력이 �
 
 | 비교 항목 | 현재 확보 자료 | 지금 가능한 비교 | 판단 불가능한 부분 | 준비 상태 |
 |---|---|---|---|---|
-| 실제 후보 정의 | 승인 후보 없음; v5 단일 과거 케이스만 있음 | 후보 입력 양식과 비교 기준 검토 | 후보 간 우열·선정 | `SOURCE_NOT_FOUND` |
-| 정상 성능 | CEA/GAS 실행·RPA interface, v5 CEA 기록 | 승인된 동일 경계 후보가 생기면 Isp·c*·Cf·Tc·성분 유량 비교 | 실제 효율·연소 동특성·실증 성능 | `CONDITIONAL_REVIEW` 준비 가능 |
+| 실제 후보 정의 | 팀 PPT RPA 작업 후보와 과거 v5 CEA 후보 | 입력·재고·명목 시설 경계의 사전 비교 | 승인된 후보 우열·최종 선정 | `PROVISIONAL` 2건 |
+| 정상 성능 | PPT의 RPA 결과 화면, v5 CEA 원출력 | 서로 다른 입력/모델임을 명시한 1차 대조 | 공통 경계의 직접 성능 비교·실증 성능 | `CONDITIONAL_REVIEW` |
 | 시설 상한/재고 | 공식 GUIDE·AEL ICD | Pc·추력·개별 명목 유량·명목 탱크 용량 대조 | 동시 압력–유량, 실가용량, bay 배정, 과도 | `CONFIRMED` 경계 / 후보 입력 `INPUT_U` |
 | 냉각 | M0 수치 구조·합성 검산 | 형식·상태전파·보존식 점검 | 실제 IPA 냉각 안전성·벽비등·실제 벽온 | `INPUT_U` |
 | 공급 | 요구 인터페이스와 압력예산 항목 | 필요한 데이터와 노드 정의 | 목표시간 공급 유지·droop·과도 | `INPUT_U` |
 | 구조 | 1차 검토 요구 항목 | 하중 케이스 입력 구조 | 온도 의존 허용강도·열응력·joint margin | `INPUT_U` |
 | 연소 안정성 | steady CEA/RPA 범위와 미확인 위험 정의 | 정상 열화학 결과 확인 | 동적 안정성·점화/종료·acoustic coupling | `INPUT_U` |
-| Decision Engine | hard constraint·증거 정책 구현 | 승인 후보 JSON을 입력하면 `EXCLUDED/UNKNOWN/CONDITIONAL_REVIEW/ELIGIBLE_FOR_PDR_SELECTION` 재현 | 값이 없는 실제 후보 추천·안전 보증 | 소프트웨어 `AVAILABLE`, 실제 입력 `INPUT_U` |
+| Decision Engine | hard constraint·증거 정책 구현 | 팀 승인 후 두 후보를 실제 PDR 입력으로 평가 | 승인 전 자동 승격·안전 보증 | 소프트웨어 `AVAILABLE`, 승인 `INPUT_U` |
 
-따라서 **실제 후보 비교를 즉시 실행할 수는 없다.** 최소한 팀이 추진제 조합, 목표 추력/ambient, Pc·O/F 후보, 연소시간과 후보 ID를 승인해야 한다. v5를 후보 하나로 재사용하려면 “과거 개인 검토안”을 팀 회의에서 명시적으로 후보로 채택하는 별도 결정 기록이 필요하다.
+### 12.1 승인 전 사전 비교
+
+| 항목 | `TEAM-PPT-RPA-WORKING-CASE` | `SY-V5-PROPOSAL` | 해석 |
+|---|---:|---:|---|
+| 상태 | 팀 작업 PPT, 승인 없음 | 개인 검토안, 승인 없음 | 둘 다 `PROVISIONAL` |
+| Pc | 30 bar(a) | 25 bar(a) | 둘 다 50 bar(a) 상한 아래. 공급·과도·구조 여유는 미검증 |
+| O/F | 3.0 | 2.50 | PPT는 연료 유량이 더 적어 냉각유량 관점에서 불리할 수 있으나 실제 냉각 분기·열부하는 미확인 |
+| 총/산화제/연료 유량 | 1.6 / 1.2 / 0.4 kg/s | 1.5463 / 1.1045 / 0.4418 kg/s | 모두 AEL 개별 명목 최대 아래. 동시 압력–유량 포락선은 미확인 |
+| 10 s 소비 | N2O 12 / IPA 4 kg | N2O 11.0448 / IPA 4.4179 kg | 두 안 모두 J1 N2O 8 kg를 초과하고 J2 명목량 안 |
+| 반복 시험 | N2O 24 kg로 10 s 2회 가정 | 10 s 단일 검토 | PPT 안은 팀 N2O 제공량 24 kg를 정확히 소진해 비연소 소비·잔량·예비가 0이므로 그대로 승인할 수 없음 |
+| 정상 성능 | RPA opt thrust 3.14030 kN, opt Isp 200.13844 s | CEA target 3.000 kN, Isp 197.83944 s | 입력·온도·Pc·O/F·프로그램이 달라 직접 모델 검증이나 우월성 판단 불가 |
+| 형상 | Dc 61.89, Dt 30.95, De 64.05, Lc 266.53, Le 53.38 mm, Ae/At 4.28 | 없음 | PPT는 예비 형상 출발점이 있으나 L*=1 m·parabolic default의 선정 근거와 raw run이 없음 |
+| 냉각·공급·구조·연소 안정성 | `UNKNOWN` | `UNKNOWN` | 합성 M0·steady 성능으로 안전성을 PASS 처리하지 않음 |
+
+현재 가능한 것은 위 **사전 비교**다. 실제 Design Decision Engine 평가는 두 후보 ID, 공통 ambient/exit 경계, 목표 추력·시간, 입력 출처와 팀 승인 기록이 정해진 뒤 수행한다. 승인 전에는 어느 안도 `ELIGIBLE_FOR_PDR_SELECTION`으로 생성하지 않는다.
 
 `ELIGIBLE_FOR_PDR_SELECTION`은 PDR에서 계속 검토할 자격이지 안전성 확보나 제작 승인 상태가 아니다. 냉각·공급·구조·연소의 필수 증거가 없으면 `UNKNOWN` 또는 `CONDITIONAL_REVIEW`를 유지한다.
 
 ## 13. D — RPA 입력 준비표
 
-`config/SPACE_Y_RPA_design_handoff_template.json`은 값 없이 상태와 출처만 갱신했다. 과거 v5 수치를 템플릿에 복사하지 않았다.
+`config/SPACE_Y_RPA_design_handoff_template.json`에 팀 PPT 작업 후보의 입력과 화면에서 확인한 결과를 `PROVISIONAL`/`CALCULATED`로 기록했다. 승인 상태는 올리지 않았다.
 
 | 구분 | 항목 | 현재 상태 | 다음 조치 |
 |---|---|---|---|
 | 현재 확정된 RPA 입력 | 없음 | `INPUT_U` | 팀 승인 기록 필요 |
 | 외부 경계로 확정된 사항 | Pc 최대 50 bar(a), AEL 최대 추력 10 kN, 시설 propellant/flow/interface 능력 | `CONFIRMED` | 후보 생성 범위와 사전 필터로만 사용 |
-| 팀 결정 필요 direct input | exact propellant/inlet state, Pc, O/F, nozzle inlet/exit condition, sizing control, chamber count, nozzle shape | `INPUT_U` | 결정회의에서 후보별 값·단위·출처 승인 |
-| 문헌 근거가 필요한 geometry input | chamber length 또는 L*, contraction angle/radii, bell/conical contour parameter | `INPUT_U` | 출처·적용범위·민감도·변경 trigger 기록 후 `PROVISIONAL` 가능 |
-| RPA 계산 결과 | thrust chamber/nozzle size, throat/chamber/exit dimensions, contour, 일부 loss | `NOT_RUN` | 승인 후보로 실행 artifact와 단위 변환 기록 |
+| PPT direct input | N2O(L)/IPA, 288.15/298.15 K, Pc 3 MPa, O/F 3, 총유량 1.6 kg/s, 1 chamber, Ac/At 4, Pe 1 atm | `PROVISIONAL` | 압력·조성·선정기준과 팀 승인 보완 |
+| 형상 관련 가정 | L*=1 m와 parabolic bell이 결과에 나타남. contraction/nozzle 상세 근거 없음 | 일부 `PROVISIONAL`, 나머지 `INPUT_U` | 문헌·적용범위·민감도·변경 trigger 기록 |
+| RPA 계산 결과 | opt thrust/Isp와 chamber/throat/exit/length가 PPT 화면에 존재 | `CALCULATED`, screenshot evidence | raw project/ASCII로 재현하고 단위 변환·버전 기록 |
 | RPA가 제공하지 않는 상세설계 | injector, regenerative channel, wall/material, joint/seal/port/mount/instrumentation | `INPUT_U` | M0·구조·제조·시험 계획과 별도 연결 |
-| 실제 실행·export | SPACE Y run, ASCII, DXF | `NOT_RUN` | 입력 충족 뒤 조건부 예비 형상으로 실행·검증 |
+| 현재 재실행·export | 현재 RPA `product is not activated`; ASCII/DXF 미확보 | `INPUT_U` / `NOT_RUN` | 실행 가능한 라이선스 복구 후 raw artifact 보존 |
 
-RPA 문서상 기능이 있다는 것과 SPACE Y 입력으로 실행·export에 성공했다는 것은 다르다. 현재 장애물은 소프트웨어 기능 부족보다 **팀 승인 sizing/thermochemistry/geometry 입력 부재**다. 실제 IPA 냉각 backend는 상세 열설계의 장애물이지만, 범위를 명시한 chamber/nozzle 조건부 예비 형상 실행 자체를 모든 냉각 검증 완료 때까지 지연시킬 이유는 아니다.
+PPT 화면은 RPA가 한 번 계산됐다는 증거지만 재현 가능한 설계 artifact는 아니다. 현재 장애물은 **팀 승인 입력 부재, raw run 부재, 로컬 RPA 비활성 상태**다. 실제 IPA 냉각 backend는 상세 열설계의 장애물이지만, 승인·실행환경이 확보되면 조건부 chamber/nozzle 예비 형상을 냉각 검증과 병행할 수 있다.
 
 ## 14. E — 팀 결정 사항 요약
 
@@ -252,14 +270,15 @@ RPA 문서상 기능이 있다는 것과 SPACE Y 입력으로 실행·export에 
 
 ### 14.1 즉시 결정 필요
 
-1. 추진제 조합과 예상 AEL bay/배정 확인 경로
-2. 목표 추력·허용편차와 ambient/back-pressure design condition
-3. 비교할 Pc와 O/F의 후보 범위 또는 2–3개 이산 후보
-4. 목표 최대 연소시간과 duty cycle
-5. 각 후보 ID, 입력표, 단위, 출처와 팀 승인자/결정 기록
-6. RPA sizing control, chamber count, nozzle design condition과 nozzle shape
+1. 팀 PPT 안을 `TEAM-PPT-RPA-WORKING-CASE`로 승인할지, v5를 두 번째 후보로 유지할지 결정
+2. 목표 추력과 허용편차 결정. PPT는 목표 추력이 아니라 1.6 kg/s sizing의 결과로 3.14030 kN을 제시함
+3. N2O 24 kg를 10 s 2회에 전량 배정하는 가정을 승인·수정. 현재 비연소 소비·잔류량·예비가 0임
+4. 공통 비교 경계 확정: ambient/Pe, 추진제 온도·상태, equilibrium/frozen, 손실 포함 범위
+5. Pc/O/F 후보 승인: PPT 30 bar(a)/3.0, v5 25 bar(a)/2.50 또는 팀이 승인한 대안
+6. Ac/At=4, L*=1 m, parabolic bell default, 1 atm exit 조건의 출처·민감도·승인 상태 결정
+7. 예상 AEL J2 배정 확인과 RPA 활성화, raw project/ASCII/DXF 보존 방법 결정
 
-이 여섯 묶음이 없으면 CEA/RPA 후보 비교와 예비 형상 산출을 재현 가능한 상태로 시작할 수 없다.
+이 결정을 마치면 PPT 안을 조건부 예비 형상 기준으로 재실행하거나, 두 안을 공통 CEA/RPA 경계에서 비교할 수 있다.
 
 ### 14.2 근거를 기록하면 잠정 가정 가능
 
@@ -282,24 +301,26 @@ RPA 문서상 기능이 있다는 것과 SPACE Y 입력으로 실행·export에 
 ### 15.1 지금 결정할 수 있는 것
 
 - 공식 상한과 시설 능력으로 후보 생성 범위를 제한할 수 있다.
-- 팀은 지금 즉시 2–3개 Pc/O/F/추력/시간 후보를 승인하고 동일 경계의 CEA/RPA 비교를 시작할 수 있다.
+- 팀 PPT 안은 현재 유일하게 RPA 형상 화면까지 존재하므로 **첫 승인·재현 검토 대상**으로 둘 수 있다. 이는 잠정 기준안 선정이나 안전성 PASS가 아니다.
+- v5는 더 낮은 Pc·O/F와 더 많은 연료유량을 가진 비교 대안으로 유지할 수 있다. 서로 다른 모델 결과만으로 냉각 우위나 성능 우위를 확정하지 않는다.
 - 출처가 있는 geometry 가정을 `PROVISIONAL`로 명시하면, 안전성 완료와 구분된 조건부 예비 RPA 형상 계산을 진행할 수 있다.
 - Decision Engine은 승인 입력이 들어오면 제약 위반 후보를 제외하고 근거 부족 후보를 보류 상태로 재현 가능하게 기록할 수 있다.
 
 ### 15.2 지금 결정할 수 없는 것
 
-- v5가 최적 또는 팀 기준안이라는 결론
+- PPT 안이나 v5가 최적 또는 팀 기준안이라는 결론
+- PPT의 10 s 2회가 실제 가능한 시험계획이라는 결론. N2O 명목 제공량 여유가 0임
 - AEL 개별 최대값을 동시에 만족하는 실제 공급 작동점
 - 실제 IPA 재생냉각의 안전성, 고온 구조 건전성 또는 연소 동적 안정성
 - RPA 형상 결과만으로 한 제작·시험 안전 승인
 
 ### 15.3 임계경로
 
-1. **1–2일:** 즉시 결정 6개 묶음과 담당자·기한을 회의에서 승인한다. v5를 후보로 유지할지 폐기할지도 여기서 결정한다.
-2. **2–4일:** 승인된 2–3개 후보를 같은 CEA/RPA 경계로 실행하고, 성능·유량·명목 시설 경계를 비교한다.
+1. **1일:** PPT 안의 수치·2회 시험 가정·RPA 기본 형상을 팀이 후보로 승인할지 결정하고, v5의 비교 후보 유지 여부를 함께 기록한다.
+2. **1–3일:** RPA 활성 상태를 복구하고 승인 후보를 같은 CEA/RPA 경계로 재실행해 raw project·ASCII·DXF와 버전을 보존한다.
 3. **4–6일:** Decision Engine으로 hard constraint·근거·미확인 위험을 고정하고 잠정 기준 후보를 팀이 선택한다.
 4. **6–9일:** 잠정 기준 후보로 RPA Size and Geometry를 실행하고 ASCII/DXF provenance를 남긴다. 결과는 조건부 예비 형상으로 표시한다.
 5. **병행:** 공급 포락선/배정·실가용량, IPA 물성, 재료·제조·인젝터·점화·계측 자료를 확보한다.
 6. **9–14일:** RPA 형상을 CAD에 전달하되 결정값·잠정값·미확인값과 변경 trigger를 분리하고, PDR 본문에 선정·보류 이유를 기록한다.
 
-가장 먼저 필요한 결정은 “어떤 요구조건을 만족시키기 위해 어떤 후보들을 비교할 것인가”이다. 구체적으로는 추진제 조합, 추력/ambient, Pc, O/F, 연소시간과 후보 ID다. 이것이 승인되기 전에는 RPA가 계산할 형상의 목적함수가 없고, 승인된 후에는 모든 후속 안전성 검증이 끝나지 않았더라도 범위를 명시한 예비 형상 계산을 시작할 수 있다.
+가장 먼저 필요한 결정은 PPT의 `Pc=30 bar(a), O/F=3, total flow=1.6 kg/s, 10 s×2`를 실제 후보로 승인할지 여부다. 동시에 목표 추력과 N2O 예비량 기준을 정해야 한다. 승인 후에는 기존 RPA 화면값을 그대로 확정하지 않고, 출처가 불명확한 L*=1 m·Ac/At=4·parabolic default를 표시한 채 재현 실행한다. 이 단계가 완료되면 조건부 예비 형상을 CAD 검토에 넘길 수 있고, 냉각·공급·구조·연소 검증은 계속 `UNKNOWN`으로 병행한다.

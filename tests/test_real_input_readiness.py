@@ -96,11 +96,24 @@ class RealInputReadinessTests(unittest.TestCase):
                 encoding="utf-8"
             )
         )
-        historical = record["historical_provisional_cases"]
-        self.assertEqual(len(historical), 1)
-        self.assertEqual(historical[0]["status"], "PROVISIONAL")
-        self.assertFalse(historical[0]["team_approved"])
-        self.assertFalse(historical[0]["adopted_as_rpa_baseline"])
+        historical = {
+            item["id"]: item for item in record["historical_provisional_cases"]
+        }
+        self.assertEqual(len(historical), 2)
+        self.assertEqual(historical["SY-V5-PROPOSAL"]["status"], "PROVISIONAL")
+        self.assertFalse(historical["SY-V5-PROPOSAL"]["team_approved"])
+        self.assertFalse(
+            historical["SY-V5-PROPOSAL"]["adopted_as_rpa_baseline"]
+        )
+        self.assertEqual(
+            historical["TEAM-PPT-RPA-WORKING-CASE"]["values"][
+                "total_mass_flow_kg_s"
+            ],
+            1.6,
+        )
+        self.assertFalse(
+            historical["TEAM-PPT-RPA-WORKING-CASE"]["team_approved"]
+        )
         self.assertTrue(
             any(
                 item["status"] == "SOURCE_NOT_FOUND"
@@ -160,22 +173,28 @@ class RealInputReadinessTests(unittest.TestCase):
             )
         )
         jsonschema.Draft202012Validator(schema).validate(record)
-        self.assertIsNone(record["source_candidate_id"])
+        self.assertEqual(
+            record["source_candidate_id"], "TEAM-PPT-RPA-WORKING-CASE"
+        )
         self.assertFalse(record["team_selected_baseline"])
-        self.assertTrue(all(item["value"] is None for item in record["rpa_direct_inputs"]))
         self.assertTrue(
-            all(item["status"] == "NOT_RUN" for item in record["rpa_computed_outputs"])
+            all(item["status"] == "PROVISIONAL" for item in record["rpa_direct_inputs"])
+        )
+        self.assertTrue(
+            any(item["status"] == "CALCULATED" for item in record["rpa_computed_outputs"])
         )
         self.assertTrue(record["separately_decided_design_items"])
         self.assertTrue(
             any(
-                "PROVISIONAL_NOT_APPROVED" in source_id
+                "TEAM-PARAMETER-PPT-2026-10-31" in source_id
                 for item in record["rpa_direct_inputs"]
                 for source_id in item["source_ids"]
             )
         )
-        self.assertFalse(record["rpa_run_completed"])
+        self.assertTrue(record["rpa_run_completed"])
         self.assertFalse(record["geometry_export_verified"])
+        self.assertFalse(record["team_selected_baseline"])
+        self.assertEqual(record["status"], "INPUT_U")
 
     def test_rpa_geometry_audit_is_documentation_not_execution_evidence(self) -> None:
         record = json.loads(

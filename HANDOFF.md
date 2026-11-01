@@ -229,3 +229,11 @@ RPA Standard Edition v.2.3.2 매뉴얼 33–35쪽에서 Chamber Geometry의 Desi
 과거 `3 kN / 25 bar(a) / O/F 2.50 / 10 s` v5 계산은 `PROVISIONAL`, `team_approved=false`, `adopted_as_rpa_baseline=false`로 보존했다. 저장소와 workspace에서 팀 승인 실제 후보 기록을 찾지 못했으므로 목표 추력·ambient, Pc/O/F 후보, 연소시간/duty, 후보 ID와 RPA sizing/nozzle 선택은 `INPUT_U` 또는 `SOURCE_NOT_FOUND`다. 실제 후보 비교와 RPA SPACE Y 형상 실행은 아직 시작할 수 없다.
 
 기존 PDR 준비 문서에 요구조건 표, 파라미터 선정 근거, 후보 비교 준비, RPA 입력 분류와 팀 결정 게이트를 추가했고 PDR readiness Schema/JSON을 V2로 갱신했다. 새 물리 모델·최적화·임의 설계값은 추가하지 않았다. 전체 자동 테스트 103개, Python compile, JSON 56개 파싱과 `git diff --check`가 통과했다. 실제 엔진 예측은 계속 `false`, V01–V12는 `NOT_RUN`이다.
+
+## 16. 팀 Parameter PPT 후보와 RPA 작업 화면
+
+2026-11-01 후속 조사에서 동일 SHA-256의 `Parameter.pptx` 사본을 확인했다. 슬라이드 5–10에는 N2O(L)/IPA, Pc 3 MPa, O/F 3, total/oxidizer/fuel flow 1.6/1.2/0.4 kg/s, 추진제 온도 288.15/298.15 K, Ac/At 4, exit 1 atm과 RPA 입력·결과 화면이 있다. RPA 화면은 opt thrust 3.14030 kN, opt Isp 200.13844 s, Dc/Dt/De 61.89/30.95/64.05 mm, Ae/At 4.28을 보여준다.
+
+이 자료는 실제 팀 작업 후보와 과거 RPA 실행의 화면 증거다. 그러나 승인자·승인일·선정 기준, raw RPA project·ASCII·DXF가 없고 L*=1 m와 parabolic nozzle default의 근거도 확인되지 않았다. 현재 열린 RPA는 `product is not activated` 상태다. 따라서 이 안은 `TEAM-PPT-RPA-WORKING-CASE`, `PROVISIONAL`, `team_approved=false`, `team_selected_baseline=false`로 기록한다. 기존 v5도 별도 `PROVISIONAL` 대안으로 유지한다.
+
+PPT 안은 N2O 24 kg를 1.2 kg/s로 10 s씩 두 번 전량 사용하는 가정이라 비연소 소비·잔류량·예비가 0이다. 두 안 모두 10 s N2O 소비가 J1 8 kg를 넘으므로 J2 배정 확인이 필요하다. 실제 Design Decision Engine 입력이나 승인된 RPA 재현 실행은 팀이 후보 ID, 목표 추력, 공통 경계, 시험시간·예비량 기준과 형상 가정을 승인한 뒤 진행한다.

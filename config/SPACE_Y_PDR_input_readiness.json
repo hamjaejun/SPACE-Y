@@ -46,6 +46,16 @@
       "publication_scope": "Discussion finding only; not treated as a signed or approved design decision record."
     },
     {
+      "id": "TEAM-PARAMETER-PPT-2026-10-31",
+      "title": "SPACE Y Parameter working presentation",
+      "revision": "local team working deck, last modified 2026-10-31",
+      "source_type": "TEAM_DISCUSSION",
+      "locator": "Parameter.pptx slides 5-10 and embedded RPA screenshots",
+      "sha256": "45e6182b3213d35e24572fdeef498f8999180cabf785a09a0d542d0de0d964b8",
+      "review_status": "PROVISIONAL",
+      "publication_scope": "Page-level findings, selected values and file hash only; the source presentation and embedded screenshots are not added to the repository."
+    },
+    {
       "id": "HIST-SY-V5-2026-10-29",
       "title": "SPACE Y v5 initial design proposal and CEA calculation basis",
       "revision": "2026-10-29 personal review case",
@@ -228,6 +238,34 @@
   ],
   "historical_provisional_cases": [
     {
+      "id": "TEAM-PPT-RPA-WORKING-CASE",
+      "status": "PROVISIONAL",
+      "values": {
+        "propellants": "N2O(L)/IPA",
+        "chamber_pressure_Pa_abs": 3000000,
+        "mixture_ratio_oxidizer_to_fuel": 3.0,
+        "total_mass_flow_kg_s": 1.6,
+        "oxidizer_mass_flow_kg_s": 1.2,
+        "fuel_mass_flow_kg_s": 0.4,
+        "oxidizer_temperature_K": 288.15,
+        "fuel_temperature_K": 298.15,
+        "contraction_area_ratio": 4.0,
+        "nozzle_exit_pressure": "1 atm",
+        "chamber_count": 1,
+        "inventory_basis": "two 10 s tests using the 24 kg team N2O allocation",
+        "rpa_reported_optimum_thrust_N": 3140.3,
+        "rpa_reported_optimum_specific_impulse_s": 200.13844,
+        "rpa_reported_chamber_diameter_mm": 61.89,
+        "rpa_reported_throat_diameter_mm": 30.95,
+        "rpa_reported_exit_diameter_mm": 64.05,
+        "rpa_reported_expansion_area_ratio": 4.28
+      },
+      "source_ids": ["TEAM-PARAMETER-PPT-2026-10-31"],
+      "team_approved": false,
+      "adopted_as_rpa_baseline": false,
+      "interpretation": "A team working presentation containing RPA input/output screenshots. It is a real working candidate, but no approver, decision date, raw RPA project file, selected nozzle-shape record or approval statement was found."
+    },
+    {
       "id": "SY-V5-PROPOSAL",
       "status": "PROVISIONAL",
       "values": {"propellants": "N2O/IPA", "cooling": "IPA regenerative", "thrust_N": 3000, "chamber_pressure_bar_abs": 25, "mixture_ratio_oxidizer_to_fuel": 2.5, "burn_duration_s": 10, "fuel_temperature_K": 293, "oxidizer_temperature_K": 283},
@@ -239,12 +277,13 @@
   ],
   "team_decision_gates": {
     "immediate": [
-      {"id": "DEC-NOW-01", "item": "select propellant pair and intended AEL bay/assignment basis", "status": "INPUT_U", "owner": null, "due_date": null, "reason": "Required to establish facility envelope and exact fluid definitions; the competition options do not select a SPACE Y configuration."},
+      {"id": "DEC-NOW-01", "item": "select propellant pair and intended AEL bay/assignment basis", "status": "PROVISIONAL", "owner": null, "due_date": null, "reason": "The team working deck uses N2O/IPA, but no approval or J1/J2 assignment record was found."},
       {"id": "DEC-NOW-02", "item": "approve target thrust, ambient/back-pressure condition, and tolerance", "status": "SOURCE_NOT_FOUND", "owner": null, "due_date": null, "reason": "Blocks sizing basis, performance comparison and RPA preliminary geometry."},
-      {"id": "DEC-NOW-03", "item": "approve chamber-pressure and mixture-ratio candidate set", "status": "SOURCE_NOT_FOUND", "owner": null, "due_date": null, "reason": "Blocks CEA/RPA candidate comparison; historical 25 bar(a) and O/F 2.50 are not team-approved."},
-      {"id": "DEC-NOW-04", "item": "approve burn duration and duty-cycle definition", "status": "SOURCE_NOT_FOUND", "owner": null, "due_date": null, "reason": "Required for propellant inventory, cooling duration, supply and test planning."},
-      {"id": "DEC-NOW-05", "item": "define 2-3 actual candidate IDs and approve one comparison input sheet", "status": "INPUT_U", "owner": null, "due_date": null, "reason": "The Decision Engine cannot compare actual candidates without an approved candidate set."},
-      {"id": "DEC-NOW-06", "item": "select RPA sizing control, chamber count, nozzle design condition and nozzle shape", "status": "INPUT_U", "owner": null, "due_date": null, "reason": "Required for a reproducible conditional preliminary geometry run."}
+      {"id": "DEC-NOW-03", "item": "approve chamber-pressure and mixture-ratio candidate set", "status": "PROVISIONAL", "owner": null, "due_date": null, "reason": "The team working deck uses 3 MPa and O/F 3.0; historical v5 uses 25 bar(a) and O/F 2.50. Neither is team-approved."},
+      {"id": "DEC-NOW-04", "item": "approve burn duration and duty-cycle definition", "status": "PROVISIONAL", "owner": null, "due_date": null, "reason": "The team working deck allocates N2O as 24 kg divided by two 10 s tests, but this leaves no N2O mass margin and is not an approval record."},
+      {"id": "DEC-NOW-05", "item": "define and approve the actual candidate set and comparison input sheet", "status": "INPUT_U", "owner": null, "due_date": null, "reason": "Two provisional cases now exist, but the Decision Engine cannot treat them as actual PDR candidates until the team approves their IDs, common boundaries and comparison purpose."},
+      {"id": "DEC-NOW-06", "item": "approve RPA sizing control, chamber count, nozzle design condition and nozzle shape", "status": "PROVISIONAL", "owner": null, "due_date": null, "reason": "The team working deck used total mass flow 1.6 kg/s, one chamber, contraction area ratio 4 and exit pressure 1 atm. The output is a parabolic nozzle, but an explicit nozzle-shape decision and geometry-assumption source were not found."},
+      {"id": "DEC-NOW-07", "item": "restore a runnable licensed RPA environment and preserve the raw project/run artifact", "status": "INPUT_U", "owner": null, "due_date": null, "reason": "The current RPA window reports that the product is not activated. The deck contains prior screenshots, not a reproducible local project file or export."}
     ],
     "provisional_possible": [
       {"id": "DEC-PROV-01", "item": "chamber characteristic length or chamber length basis", "status": "INPUT_U", "owner": null, "due_date": null, "reason": "May be adopted provisionally only with a literature/source range, sensitivity case and change trigger."},
