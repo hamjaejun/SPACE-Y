@@ -82,6 +82,7 @@ class CoolantHeatTransferClosure:
     Nusselt: float
     h_l_W_m2K: float
     velocity_m_s: float | None
+    friction_pressure_gradient_Pa_m: float | None
     relative_roughness: float
     heat_transfer_applicability: dict[str, Any]
     friction_applicability: dict[str, Any]
@@ -475,8 +476,13 @@ def evaluate_local_coolant_heat_transfer(
         raise CoolantStop("OUTSIDE", "Gnielinski displayed form returned non-positive Nusselt number")
 
     velocity = None
+    friction_pressure_gradient = None
     if density_kg_m3 is not None:
-        velocity = mass_flow / (_positive(density_kg_m3, "density") * area)
+        density = _positive(density_kg_m3, "density")
+        velocity = mass_flow / (density * area)
+        friction_pressure_gradient = (
+            factor / hydraulic_diameter * density * velocity**2 / 2.0
+        )
     return CoolantHeatTransferClosure(
         Reynolds=re,
         Prandtl=pr,
@@ -484,6 +490,7 @@ def evaluate_local_coolant_heat_transfer(
         Nusselt=nu,
         h_l_W_m2K=nu * conductivity_W_mK / hydraulic_diameter,
         velocity_m_s=velocity,
+        friction_pressure_gradient_Pa_m=friction_pressure_gradient,
         relative_roughness=relative_roughness,
         heat_transfer_applicability=asdict(heat_applicability),
         friction_applicability={

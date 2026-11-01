@@ -50,6 +50,26 @@
         "The coolant is liquid hydrogen and the engine scale is not SPACE Y.",
         "The fabrication bounds and channel counts are study constraints, not automatic SPACE Y limits."
       ]
+    },
+    {
+      "id": "BOOTCAMP_CONSTANT_RIB_WIDTH_REFERENCE",
+      "classification": "USER_REPORTED_REFERENCE_PRESET",
+      "not_space_y_default": true,
+      "source": "User-confirmed bootcamp software input example; primary software project file not committed",
+      "context": "Constant-rib-width axial one-pass reference settings; channel count was not specified",
+      "rib_thickness_m": 0.0009,
+      "channel_width_min_m": 0.0009,
+      "channel_width_max_m": 0.0027,
+      "channel_height_m": 0.0012,
+      "equivalent_sand_roughness_m": 0.000012,
+      "width_mode": "CONSTANT_RIB_WIDTH",
+      "path_type": "AXIAL",
+      "circuit_passes": 1,
+      "channel_count": null,
+      "limitations": [
+        "The channel count is not supplied and must not be borrowed automatically from ODREC.",
+        "These are software-training reference inputs, not validated manufacturing constraints or an optimum SPACE Y design."
+      ]
     }
   ]
 }

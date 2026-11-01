@@ -6,6 +6,10 @@ from pathlib import Path
 import sys
 
 from .contract import build_validation_report
+from .cooling_channel_candidates import (
+    solve_cooling_channel_candidates_file,
+    write_candidate_results_csv,
+)
 from .cooling_hc import solve_cooling_hc_file
 from .design_decision import solve_design_decision_file
 from .design_space import explore_design_space_file
@@ -111,6 +115,14 @@ def build_parser() -> argparse.ArgumentParser:
         "--schema", default="schemas/SPACE_Y_cooling_hc.schema.json"
     )
     cooling_hc.add_argument("--output")
+
+    cooling_sweep = sub.add_parser("cooling-channel-sweep")
+    cooling_sweep.add_argument("request")
+    cooling_sweep.add_argument(
+        "--schema", default="schemas/SPACE_Y_cooling_channel_sweep.schema.json"
+    )
+    cooling_sweep.add_argument("--output")
+    cooling_sweep.add_argument("--csv-output")
     return parser
 
 
@@ -150,6 +162,10 @@ def main(argv: list[str] | None = None) -> int:
         result = explore_design_space_file(args.request, args.schema)
     elif args.command == "cooling-hc-run":
         result = solve_cooling_hc_file(args.request, args.schema)
+    elif args.command == "cooling-channel-sweep":
+        result = solve_cooling_channel_candidates_file(args.request, args.schema)
+        if args.csv_output:
+            write_candidate_results_csv(args.csv_output, result)
     else:
         raise AssertionError(args.command)
     _emit(result, args.output)

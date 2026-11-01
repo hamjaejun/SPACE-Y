@@ -256,3 +256,11 @@ PPT 안은 N2O 24 kg를 1.2 kg/s로 10 s씩 두 번 전량 사용하는 가정�
 ODREC의 `N=90, w=1 mm, h=6 mm`, Fagherazzi의 41개 축방향 가변 물냉각 채널, Wadel의 100/200채널 액체수소 연구를 `REFERENCE_PRESET`으로만 기록했다. SPACE Y 기본값은 없다. 팀 IPA 표는 exact CAS와 물성 후보를 제공하지만 검증된 압력 의존 `p,T` 상태·상평형 공급원으로 채택하지 않았다. 실제 냉각유량/분기, 채널 형상, 제작 조도·국부손실, IPA 단상 상태, 상관식 적용 근거는 계속 `INPUT_U`/`MODEL_U`다.
 
 합성 fixture, 최소 `h_l` 경로, 문헌 참고 형상과 엄격한 불리언 입력 검증을 자동 테스트한다. 합성 결과는 `V01–V12=NOT_RUN`, `validated_engine_prediction=false`, `safety_approval=false`이며 실제 SPACE Y 냉각 성능이나 안전성을 뜻하지 않는다. ⑦은 노즐 설계 담당이며 축방향 통합 열해석 담당으로 지정하지 않는다.
+
+## 19. 2026-11-01 냉각 채널 후보 생성 계층
+
+`src/space_y/cooling_channel_candidates.py`와 `space-y cooling-channel-sweep`을 추가했다. `N`, 리브 두께 `b`, 채널 높이 `h` 조합과 명시적 평균 채널 배치반경 `r_m(x)`에서 Constant-rib-width Axial 1-pass 형상을 생성한다. 위치별 폭, 전체 유로면적, 수력직경, 기존 `h_l` 코어 결과와 Darcy 마찰 압력손실 구배 `dP_f/ds`를 JSON/CSV로 반환한다.
+
+폭 제한 위반 후보는 폭을 clipping하지 않고 `EXCLUDE_GEOMETRIC_CONSTRAINT`로 계산 전에 제외한다. 반경이 없으면 일정 폭 국소 산술만 허용하며 원주 배치는 `INPUT_U`다. 구간별 물성이 명시되면 station 단위로 재계산하고 보간하지 않는다. 점수·가중합·자동 순위·최종 최적화는 없다.
+
+합성 예제의 4개 후보 중 `N=80, b=0.6 mm, h=1.2 mm`만 합성 세 위치의 폭 제약을 만족했다. 이는 합성 반경·물성·유량에 대한 기능 검산이며 SPACE Y 기준안이 아니다. 실제 후보에는 승인된 재생냉각 유량, IPA 구간 물성, 평균 채널 배치반경 정의, 제작 폭·리브·조도 제약이 필요하다. `MODEL_U`, `V01–V12=NOT_RUN`, `final_design_selection=false`를 유지한다.

@@ -1,0 +1,460 @@
+{
+  "interface_version": "SPACE_Y_COOLING_CHANNEL_SWEEP_V1",
+  "run_id": "SYNTHETIC-COOLING-CHANNEL-SWEEP-001",
+  "status": "MODEL_U",
+  "fixture_classification": "SYNTHETIC_NON_DESIGN",
+  "comparison_policy": {
+    "basis": "same supplied coolant flow and property conditions",
+    "ranking_performed": false,
+    "scalar_weighting_performed": false,
+    "pareto_final_design_claim": false,
+    "statement": "High h_l alone is not a final design criterion; pressure-gradient, whole-engine thermal, phase, structural, manufacturing, and supply constraints remain external."
+  },
+  "inputs_consumed": {
+    "coolant_mass_flow_kg_s": 0.6,
+    "coolant_mass_flow_source": "SYNTHETIC_NON_DESIGN_MASS_FLOW",
+    "property_policy": "CONSTANT_SUPPLIED_PROPERTIES",
+    "default_property_source": "SYNTHETIC_ARITHMETIC_FIXTURE_NOT_IPA_DATA",
+    "default_property_version": "TEST-ONLY-V1",
+    "equivalent_sand_roughness_m": 1.2e-05,
+    "roughness_source": "BOOTCAMP_REFERENCE_VALUE_12_UM_NOT_AS_MANUFACTURED_SPACE_Y_DATA"
+  },
+  "counts": {
+    "candidate_count": 4,
+    "successful_station_count": 3,
+    "outside_station_count": 0,
+    "input_unknown_station_count": 0
+  },
+  "candidates": [
+    {
+      "candidate_id": "CH-0001",
+      "channel_count": 60,
+      "rib_thickness_m": 0.0006,
+      "channel_height_m": 0.0012,
+      "geometry_policy": "CONSTANT_RIB_WIDTH_AXIAL",
+      "path_type": "AXIAL",
+      "circuit_passes": 1,
+      "candidate_range_source": "SYNTHETIC_SWEEP_AROUND_ODREC_AND_BOOTCAMP_REFERENCE_POINTS_NOT_SPACE_Y_DESIGN_RANGE",
+      "assumptions": [
+        "CONSTANT_RIB_WIDTH",
+        "CONSTANT_CHANNEL_HEIGHT",
+        "AXIAL_ONE_PASS",
+        "SYNTHETIC_MEAN_RADIUS_PROFILE",
+        "CONSTANT_SYNTHETIC_FLUID_PROPERTIES"
+      ],
+      "design_approved": false,
+      "geometric_validity_status": "OUTSIDE",
+      "calculation_allowed": false,
+      "stations": [
+        {
+          "station_id": "SYN-INLET",
+          "x_m": -0.1,
+          "mean_channel_radius_m": 0.03,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.003141592653589793,
+          "channel_width_m": 0.002541592653589793,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.00018299467105846508,
+          "hydraulic_diameter_m": 0.0016302743065210897,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+        },
+        {
+          "station_id": "SYN-THROAT",
+          "x_m": 0.0,
+          "mean_channel_radius_m": 0.02,
+          "is_throat": true,
+          "circumferential_pitch_m": 0.0020943951023931957,
+          "channel_width_m": 0.0014943951023931958,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.0001075964473723101,
+          "hydraulic_diameter_m": 0.00133111444663704,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+        },
+        {
+          "station_id": "SYN-EXIT",
+          "x_m": 0.1,
+          "mean_channel_radius_m": 0.04,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.004188790204786391,
+          "channel_width_m": 0.0035887902047863915,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.00025839289474462017,
+          "hydraulic_diameter_m": 0.0017985954955551315,
+          "geometric_validity_status": "OUTSIDE",
+          "geometric_reasons": [
+            "channel width is above the supplied maximum"
+          ],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+        }
+      ],
+      "decision": "EXCLUDE_GEOMETRIC_CONSTRAINT",
+      "summary": {
+        "valid_calculation_station_count": 0,
+        "geometric_validity_status": "OUTSIDE",
+        "correlation_applicability_status": "NOT_RUN",
+        "throat_h_l_W_m2K": null,
+        "minimum_h_l_W_m2K": null,
+        "maximum_h_l_W_m2K": null,
+        "maximum_friction_pressure_gradient_Pa_m": null,
+        "limitations": [
+          "At least one station violates supplied channel-width constraints."
+        ]
+      }
+    },
+    {
+      "candidate_id": "CH-0002",
+      "channel_count": 60,
+      "rib_thickness_m": 0.0009,
+      "channel_height_m": 0.0012,
+      "geometry_policy": "CONSTANT_RIB_WIDTH_AXIAL",
+      "path_type": "AXIAL",
+      "circuit_passes": 1,
+      "candidate_range_source": "SYNTHETIC_SWEEP_AROUND_ODREC_AND_BOOTCAMP_REFERENCE_POINTS_NOT_SPACE_Y_DESIGN_RANGE",
+      "assumptions": [
+        "CONSTANT_RIB_WIDTH",
+        "CONSTANT_CHANNEL_HEIGHT",
+        "AXIAL_ONE_PASS",
+        "SYNTHETIC_MEAN_RADIUS_PROFILE",
+        "CONSTANT_SYNTHETIC_FLUID_PROPERTIES"
+      ],
+      "design_approved": false,
+      "geometric_validity_status": "OUTSIDE",
+      "calculation_allowed": false,
+      "stations": [
+        {
+          "station_id": "SYN-INLET",
+          "x_m": -0.1,
+          "mean_channel_radius_m": 0.03,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.003141592653589793,
+          "channel_width_m": 0.002241592653589793,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.0001613946710584651,
+          "hydraulic_diameter_m": 0.0015631781300451165,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+        },
+        {
+          "station_id": "SYN-THROAT",
+          "x_m": 0.0,
+          "mean_channel_radius_m": 0.02,
+          "is_throat": true,
+          "circumferential_pitch_m": 0.0020943951023931957,
+          "channel_width_m": 0.0011943951023931957,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 8.599644737231009e-05,
+          "hydraulic_diameter_m": 0.001197190991110263,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+        },
+        {
+          "station_id": "SYN-EXIT",
+          "x_m": 0.1,
+          "mean_channel_radius_m": 0.04,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.004188790204786391,
+          "channel_width_m": 0.0032887902047863916,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.00023679289474462016,
+          "hydraulic_diameter_m": 0.0017584017366351718,
+          "geometric_validity_status": "OUTSIDE",
+          "geometric_reasons": [
+            "channel width is above the supplied maximum"
+          ],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+        }
+      ],
+      "decision": "EXCLUDE_GEOMETRIC_CONSTRAINT",
+      "summary": {
+        "valid_calculation_station_count": 0,
+        "geometric_validity_status": "OUTSIDE",
+        "correlation_applicability_status": "NOT_RUN",
+        "throat_h_l_W_m2K": null,
+        "minimum_h_l_W_m2K": null,
+        "maximum_h_l_W_m2K": null,
+        "maximum_friction_pressure_gradient_Pa_m": null,
+        "limitations": [
+          "At least one station violates supplied channel-width constraints."
+        ]
+      }
+    },
+    {
+      "candidate_id": "CH-0003",
+      "channel_count": 80,
+      "rib_thickness_m": 0.0006,
+      "channel_height_m": 0.0012,
+      "geometry_policy": "CONSTANT_RIB_WIDTH_AXIAL",
+      "path_type": "AXIAL",
+      "circuit_passes": 1,
+      "candidate_range_source": "SYNTHETIC_SWEEP_AROUND_ODREC_AND_BOOTCAMP_REFERENCE_POINTS_NOT_SPACE_Y_DESIGN_RANGE",
+      "assumptions": [
+        "CONSTANT_RIB_WIDTH",
+        "CONSTANT_CHANNEL_HEIGHT",
+        "AXIAL_ONE_PASS",
+        "SYNTHETIC_MEAN_RADIUS_PROFILE",
+        "CONSTANT_SYNTHETIC_FLUID_PROPERTIES"
+      ],
+      "design_approved": false,
+      "geometric_validity_status": "PASS",
+      "calculation_allowed": true,
+      "stations": [
+        {
+          "station_id": "SYN-INLET",
+          "x_m": -0.1,
+          "mean_channel_radius_m": 0.03,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.002356194490192345,
+          "channel_width_m": 0.001756194490192345,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.0001685946710584651,
+          "hydraulic_diameter_m": 0.001425774518708134,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE",
+          "calculation": {
+            "status": "MODEL_U",
+            "reason": "arithmetic completed within supplied correlation domains",
+            "results": {
+              "Reynolds": 5074.091048395137,
+              "Prandtl": 13.333333333333334,
+              "darcy_factor": 0.045721098119212475,
+              "Nusselt": 57.085000021895254,
+              "h_l_W_m2K": 6005.683150406437,
+              "velocity_m_s": 4.448539181525587,
+              "friction_pressure_gradient_Pa_m": 253840.33679972676,
+              "relative_roughness": 0.00841647809141165,
+              "heat_transfer_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "reasons": []
+              },
+              "friction_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM",
+                "re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "relative_roughness_range": [
+                  0.0,
+                  0.05
+                ]
+              }
+            },
+            "property_basis": "CONSTANT_DEFAULT",
+            "property_source": "SYNTHETIC_ARITHMETIC_FIXTURE_NOT_IPA_DATA",
+            "property_version": "TEST-ONLY-V1"
+          }
+        },
+        {
+          "station_id": "SYN-THROAT",
+          "x_m": 0.0,
+          "mean_channel_radius_m": 0.02,
+          "is_throat": true,
+          "circumferential_pitch_m": 0.0015707963267948967,
+          "channel_width_m": 0.0009707963267948967,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 9.319644737231008e-05,
+          "hydraulic_diameter_m": 0.0010732979209282995,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE",
+          "calculation": {
+            "status": "MODEL_U",
+            "reason": "arithmetic completed within supplied correlation domains",
+            "results": {
+              "Reynolds": 6909.906661831773,
+              "Prandtl": 13.333333333333334,
+              "darcy_factor": 0.0461773365825609,
+              "Nusselt": 83.29590798975755,
+              "h_l_W_m2K": 11641.116557513862,
+              "velocity_m_s": 8.04751705828258,
+              "friction_pressure_gradient_Pa_m": 1114531.6224066368,
+              "relative_roughness": 0.01118049310076102,
+              "heat_transfer_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "reasons": []
+              },
+              "friction_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM",
+                "re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "relative_roughness_range": [
+                  0.0,
+                  0.05
+                ]
+              }
+            },
+            "property_basis": "CONSTANT_DEFAULT",
+            "property_source": "SYNTHETIC_ARITHMETIC_FIXTURE_NOT_IPA_DATA",
+            "property_version": "TEST-ONLY-V1"
+          }
+        },
+        {
+          "station_id": "SYN-EXIT",
+          "x_m": 0.1,
+          "mean_channel_radius_m": 0.04,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.0031415926535897933,
+          "channel_width_m": 0.0025415926535897935,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.00024399289474462014,
+          "hydraulic_diameter_m": 0.0016302743065210895,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE",
+          "calculation": {
+            "status": "MODEL_U",
+            "reason": "arithmetic completed within supplied correlation domains",
+            "results": {
+              "Reynolds": 4008.9879868693242,
+              "Prandtl": 13.333333333333334,
+              "darcy_factor": 0.04679934995458054,
+              "Nusselt": 42.74640569209255,
+              "h_l_W_m2K": 3933.05643606482,
+              "velocity_m_s": 3.073860002296386,
+              "friction_pressure_gradient_Pa_m": 108494.3933383779,
+              "relative_roughness": 0.007360724481763625,
+              "heat_transfer_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "reasons": []
+              },
+              "friction_applicability": {
+                "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+                "source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM",
+                "re_range": [
+                  3000.0,
+                  5000000.0
+                ],
+                "relative_roughness_range": [
+                  0.0,
+                  0.05
+                ]
+              }
+            },
+            "property_basis": "CONSTANT_DEFAULT",
+            "property_source": "SYNTHETIC_ARITHMETIC_FIXTURE_NOT_IPA_DATA",
+            "property_version": "TEST-ONLY-V1"
+          }
+        }
+      ],
+      "decision": "RETAIN_FOR_INTEGRATION_REVIEW",
+      "summary": {
+        "valid_calculation_station_count": 3,
+        "geometric_validity_status": "PASS",
+        "correlation_applicability_status": "APPLICABLE_TO_SUPPLIED_DOMAINS",
+        "throat_h_l_W_m2K": 11641.116557513862,
+        "minimum_h_l_W_m2K": 3933.05643606482,
+        "maximum_h_l_W_m2K": 11641.116557513862,
+        "maximum_friction_pressure_gradient_Pa_m": 1114531.6224066368,
+        "limitations": [
+          "No heat-load, wall-temperature, phase-change, manufacturing, structural, or supply-pressure approval is performed.",
+          "No scalar score or final optimum is assigned."
+        ]
+      }
+    },
+    {
+      "candidate_id": "CH-0004",
+      "channel_count": 80,
+      "rib_thickness_m": 0.0009,
+      "channel_height_m": 0.0012,
+      "geometry_policy": "CONSTANT_RIB_WIDTH_AXIAL",
+      "path_type": "AXIAL",
+      "circuit_passes": 1,
+      "candidate_range_source": "SYNTHETIC_SWEEP_AROUND_ODREC_AND_BOOTCAMP_REFERENCE_POINTS_NOT_SPACE_Y_DESIGN_RANGE",
+      "assumptions": [
+        "CONSTANT_RIB_WIDTH",
+        "CONSTANT_CHANNEL_HEIGHT",
+        "AXIAL_ONE_PASS",
+        "SYNTHETIC_MEAN_RADIUS_PROFILE",
+        "CONSTANT_SYNTHETIC_FLUID_PROPERTIES"
+      ],
+      "design_approved": false,
+      "geometric_validity_status": "OUTSIDE",
+      "calculation_allowed": false,
+      "stations": [
+        {
+          "station_id": "SYN-INLET",
+          "x_m": -0.1,
+          "mean_channel_radius_m": 0.03,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.002356194490192345,
+          "channel_width_m": 0.001456194490192345,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.00013979467105846509,
+          "hydraulic_diameter_m": 0.00131574204726573,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+        },
+        {
+          "station_id": "SYN-THROAT",
+          "x_m": 0.0,
+          "mean_channel_radius_m": 0.02,
+          "is_throat": true,
+          "circumferential_pitch_m": 0.0015707963267948967,
+          "channel_width_m": 0.0006707963267948967,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 6.439644737231007e-05,
+          "hydraulic_diameter_m": 0.0008605486130421792,
+          "geometric_validity_status": "OUTSIDE",
+          "geometric_reasons": [
+            "channel width is below the supplied minimum"
+          ],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+        },
+        {
+          "station_id": "SYN-EXIT",
+          "x_m": 0.1,
+          "mean_channel_radius_m": 0.04,
+          "is_throat": false,
+          "circumferential_pitch_m": 0.0031415926535897933,
+          "channel_width_m": 0.002241592653589793,
+          "channel_height_m": 0.0012,
+          "flow_area_m2": 0.00021519289474462012,
+          "hydraulic_diameter_m": 0.0015631781300451165,
+          "geometric_validity_status": "PASS",
+          "geometric_reasons": [],
+          "geometry_source": "SYNTHETIC_RADIUS_PROFILE"
+        }
+      ],
+      "decision": "EXCLUDE_GEOMETRIC_CONSTRAINT",
+      "summary": {
+        "valid_calculation_station_count": 0,
+        "geometric_validity_status": "OUTSIDE",
+        "correlation_applicability_status": "NOT_RUN",
+        "throat_h_l_W_m2K": null,
+        "minimum_h_l_W_m2K": null,
+        "maximum_h_l_W_m2K": null,
+        "maximum_friction_pressure_gradient_Pa_m": null,
+        "limitations": [
+          "At least one station violates supplied channel-width constraints."
+        ]
+      }
+    }
+  ],
+  "not_implemented": [
+    "helical channels",
+    "coolant axial energy/state marching",
+    "wall temperature or heat-load calculation",
+    "minor, manifold, inlet, or outlet losses",
+    "full-path pressure-loss integration",
+    "automatic optimum or final design selection"
+  ],
+  "validated_engine_prediction": false,
+  "physical_validation_v01_v12": "NOT_RUN",
+  "safety_approval": false,
+  "final_design_selection": false,
+  "provenance": {
+    "request_sha256": "894288b66098fbf5ce817b914a27532ea010eb7354b42d54f6c9df0674fbc3eb",
+    "schema_sha256": "8f749f4546b9e549e49ce88212aa09ed2706b1aaeaea7f3f865f175c2d714d5e"
+  }
+}

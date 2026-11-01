@@ -6,8 +6,8 @@
   "items": [
     {"id": "CHC-I01", "name": "actual regenerative-path IPA mass flow; beta/split only as an optional derivation", "provider": "system/propellant-flow team", "status": "INPUT_U"},
     {"id": "CHC-I02", "name": "upstream diversion and downstream film branch locations/flows", "provider": "system/propellant-flow team", "status": "INPUT_U"},
-    {"id": "CHC-I03", "name": "section-wise channel width, height, and count; length only for pressure drop", "provider": "chamber/nozzle geometry team; nozzle geometry by role 7", "status": "INPUT_U"},
-    {"id": "CHC-I04", "name": "rib thickness and mean channel radius/layout evidence", "status": "INPUT_U"},
+    {"id": "CHC-I03", "name": "channel-count, rib-thickness, and channel-height candidate ranges with provenance", "provider": "cooling-channel/h_l role 6 with team approval", "status": "INPUT_U"},
+    {"id": "CHC-I04", "name": "section-wise mean channel placement radius profile and its definition", "provider": "chamber/nozzle geometry team; nozzle base contour by role 7", "status": "INPUT_U"},
     {"id": "CHC-I05", "name": "as-manufactured equivalent sand roughness", "provider": "materials/manufacturing team", "status": "INPUT_U"},
     {"id": "CHC-I06", "name": "section local-loss coefficients and their basis", "status": "INPUT_U"},
     {"id": "CHC-I07", "name": "IPA density, viscosity, cp, and conductivity with p,T/source/range evidence", "provider": "IPA property team", "status": "INPUT_U"},

@@ -62,6 +62,7 @@
 - [단일 구간 완전 결합 구현 기록](docs/M0_단일구간_GAS_WALL_COOLANT_결합_구현기록.md)
 - `src/space_y/coolant.py`: 단상 벌크영역 및 Gnielinski/Colebrook 공급 영역 검사
 - `src/space_y/cooling_hc.py`: 외부 제공 냉각유량·물성과 직사각 채널의 독립 냉각 측 `Re/Pr/f/Nu/h_l(=h_c)` 인터페이스. `evaluate_rectangular_cooling_hl()`은 비엔탈피·길이 없이 국소 `h_l`을 계산하고, 기존 통합 API는 압손 기능을 유지함. 균등분배는 명시적 가정이며 실제 매니폴드·IPA 검증을 뜻하지 않음
+- `src/space_y/cooling_channel_candidates.py`: Axial 직사각 채널의 `N/b/h` 조합과 명시적 `r_m(x)`에서 Constant-rib-width 후보를 생성하고 위치별 `h_l`과 Darcy 마찰 압력손실 구배를 계산함. 점수·순위·최종 최적화는 수행하지 않음
 - `src/space_y/m0_coupled.py`: GAS–WALL과 가변물성 냉각 엔탈피·압손의 중첩 반복
 - [결합 실행 Schema](schemas/SPACE_Y_M0_coupled_single_segment.schema.json)
 - [비설계 합성 입력](examples/m0_coupled_synthetic_single_segment.json)과 `artifacts/m0_coupled/` 실행 증거
@@ -169,3 +170,11 @@ PDR 합성 분기 실행:
 냉각유체 측 계수는 이번 업무 정의에서 `h_l`, 기존 M0 호환 출력에서는 `h_c_W_m2K`로 표기하며 둘은 같은 양이다. 실제 재생냉각 통과유량 `coolant_mass_flow_kg_s`가 기본 입력이고 `beta` 및 분기 입력은 선택적인 질량회계 검증 경로다. 전체 IPA/N2O 유량 결정은 이 모듈의 책임이 아니다.
 
 2026-11-01 냉각 `h_l` 독립 인터페이스 추가 후 전체 자동 테스트를 재실행했다. 테스트 수는 소프트웨어 회귀검사 결과이며 실제 엔진 물리 검증 건수가 아니다.
+
+후보 생성 합성 예제:
+
+```powershell
+.\.venv\Scripts\space-y.exe cooling-channel-sweep examples\cooling_channel_sweep_synthetic_axial.json --output artifacts\cooling_channel_sweep\synthetic_axial_result.json --csv-output artifacts\cooling_channel_sweep\synthetic_axial_stations.csv
+```
+
+[후보 생성 구현 기록](docs/냉각채널_후보생성_hl_구현기록.md)의 탐색 범위와 반경은 합성·참고 입력이며 실제 SPACE Y 승인 설계범위가 아니다. 높은 `h_l`은 최종 형상 선정 기준이 아니며 전체 벽온도·상변화·압력예산·제작·구조 검토가 남아 있다.
