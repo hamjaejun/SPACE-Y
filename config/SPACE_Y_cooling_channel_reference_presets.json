@@ -1,0 +1,75 @@
+{
+  "classification": "REFERENCE_PRESETS_NOT_SPACE_Y_DEFAULTS",
+  "use_policy": "Literature context only. Copying a preset into a SPACE Y run requires separate applicability evidence.",
+  "presets": [
+    {
+      "id": "ODREC_2024_TABLE1",
+      "classification": "REFERENCE_PRESET",
+      "not_space_y_default": true,
+      "source": "Kose and Celik, Applied Sciences 14(1), 71, DOI 10.3390/app14010071, Table 1",
+      "context": "ODREC LOX/LCH4 and LOX/LC3H8 comparison study; not IPA and not SPACE Y",
+      "channel_count": 90,
+      "width_m": 0.001,
+      "height_m": 0.006,
+      "equivalent_sand_roughness_m": 0.0000063,
+      "limitations": [
+        "The paper case uses oxygen, methane, or propane coolants rather than 2-propanol.",
+        "The values are study inputs, not a validated design rule for SPACE Y."
+      ]
+    },
+    {
+      "id": "FAGHERAZZI_2023_EXPERIMENTAL_NOZZLE",
+      "classification": "INCOMPLETE_REFERENCE_PRESET",
+      "not_space_y_default": true,
+      "source": "Fagherazzi et al., Aerospace 10(5), 403, DOI 10.3390/aerospace10050403",
+      "context": "Water-cooled approximately 450 N experimental thrust chamber; channel geometry varies axially",
+      "channel_count": 41,
+      "equivalent_sand_roughness_m": 0.00002,
+      "width_m": null,
+      "height_m": null,
+      "limitations": [
+        "A single constant width/height pair is not represented by this reference.",
+        "Water, chamber scale, material, and test conditions differ from SPACE Y."
+      ]
+    },
+    {
+      "id": "WADEL_1997_HIGH_ASPECT_RATIO",
+      "classification": "INCOMPLETE_REFERENCE_PRESET",
+      "not_space_y_default": true,
+      "source": "Wadel, NASA TM-107473 / AIAA-97-2913, NTRS 19970024873",
+      "context": "Liquid-hydrogen-cooled 89 kN-class high-aspect-ratio channel study",
+      "channel_count_cases": [100, 200],
+      "baseline_aspect_ratio": 2.5,
+      "reported_fabrication_bounds": {
+        "aspect_ratio_max_exclusive": 8.0,
+        "height_max_m": 0.0051,
+        "width_min_m": 0.00051,
+        "land_width_min_m": 0.00051
+      },
+      "limitations": [
+        "The coolant is liquid hydrogen and the engine scale is not SPACE Y.",
+        "The fabrication bounds and channel counts are study constraints, not automatic SPACE Y limits."
+      ]
+    },
+    {
+      "id": "BOOTCAMP_CONSTANT_RIB_WIDTH_REFERENCE",
+      "classification": "USER_REPORTED_REFERENCE_PRESET",
+      "not_space_y_default": true,
+      "source": "User-confirmed bootcamp software input example; primary software project file not committed",
+      "context": "Constant-rib-width axial one-pass reference settings; channel count was not specified",
+      "rib_thickness_m": 0.0009,
+      "channel_width_min_m": 0.0009,
+      "channel_width_max_m": 0.0027,
+      "channel_height_m": 0.0012,
+      "equivalent_sand_roughness_m": 0.000012,
+      "width_mode": "CONSTANT_RIB_WIDTH",
+      "path_type": "AXIAL",
+      "circuit_passes": 1,
+      "channel_count": null,
+      "limitations": [
+        "The channel count is not supplied and must not be borrowed automatically from ODREC.",
+        "These are software-training reference inputs, not validated manufacturing constraints or an optimum SPACE Y design."
+      ]
+    }
+  ]
+}

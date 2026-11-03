@@ -177,6 +177,7 @@ README의 “수식 구분자를 GitHub Markdown용으로 정리했다”는 설
 
 - Phase 1: 실제 JSON Schema와 의미 검증, Y01–Y05 의존표, 기본 물리식 검산, NASA CEA 실행 어댑터, RPA 2.3 scripting smoke test
 - M0: 지정 유량·정상·단일경로 1D 합성 검산 코어. 가스 열입력, 벽 저항, 냉각 엔탈피 상승, Gnielinski/Colebrook/Darcy–Weisbach 압손을 연결
+- 냉각 `h_l` (`h_c`) 독립 인터페이스: 외부에서 받은 실제 재생냉각 통과유량이 기본 입력이다. `beta * 연료유량`과 상·하류 분기는 선택적인 일관성 검사이며 전체 IPA/N2O 유량을 결정하지 않는다. 직사각 폐채널 `A/D_h`, 균등 채널분배 가정, 기존 Gnielinski/Colebrook/Darcy–Weisbach 폐쇄식을 연결한다. 실제 IPA·채널 입력은 `INPUT_U`, 실제 물리검증은 `NOT_RUN`이다.
 - GAS: CEA rocket station/transport 출력에서 RPA 2012 기본 Bartz 식을 계산해 M0 `gas_boundary` 형식으로 내보내는 비설계 매핑
 - 자동검사: 총 25개 테스트 통과. CEA RP-1311 Example 13 기준값 5개 통과
 
@@ -245,3 +246,67 @@ RPA Standard Edition v.2.3.2 매뉴얼 33–35쪽에서 Chamber Geometry의 Desi
 이 자료는 실제 팀 작업 후보와 과거 RPA 실행의 화면 증거다. 그러나 승인자·승인일·선정 기준, raw RPA project·ASCII·DXF가 없고 L*=1 m와 parabolic nozzle default의 근거도 확인되지 않았다. 현재 열린 RPA는 `product is not activated` 상태다. 따라서 이 안은 `TEAM-PPT-RPA-WORKING-CASE`, `PROVISIONAL`, `team_approved=false`, `team_selected_baseline=false`로 기록한다. 기존 v5도 별도 `PROVISIONAL` 대안으로 유지한다.
 
 PPT 안은 N2O 24 kg를 1.2 kg/s로 10 s씩 두 번 전량 사용하는 가정이라 비연소 소비·잔류량·예비가 0이다. 두 안 모두 10 s N2O 소비가 J1 8 kg를 넘으므로 J2 배정 확인이 필요하다. 실제 Design Decision Engine 입력이나 승인된 RPA 재현 실행은 팀이 후보 ID, 목표 추력, 공통 경계, 시험시간·예비량 기준과 형상 가정을 승인한 뒤 진행한다.
+
+## 18. 2026-11-01 냉각 측 `h_l` (`h_c`) 독립 인터페이스
+
+`src/space_y/cooling_hc.py`와 `space-y cooling-hc-run`을 추가했다. 시스템 담당이 제공한 직접 냉각유량이 기본 입력이고 `beta * 연료유량`은 선택적인 검산 경로다. 상류 바이패스는 재생냉각 유량에서 차감하지만 재생냉각 이후 필름 분기는 채널 유량에서 중복 차감하지 않는다. 직접·beta·분기 정의가 함께 있으면 질량유량 일치를 검사한다. 채널별 유량은 `ASSUMED_EQUAL_DISTRIBUTION`이며 매니폴드 해석 결과가 아니다.
+
+직사각 폐채널의 한 채널 면적, 전체 유로면적, 젖은둘레, `D_h`, 내부 젖은면적과 명목 열벽 바닥면적을 분리했다. `evaluate_rectangular_cooling_hl()`은 비엔탈피·길이·국부손실 없이 국소 `h_l`을 계산하며, 기존 통합 경로는 압력손실 기능을 유지한다. 기존 `coolant.py`의 Gnielinski/Colebrook/Darcy–Weisbach 폐쇄식을 재사용한다. 누락은 `INPUT_U`, 범위 이탈은 `OUTSIDE`, 수치 실패는 `NUM_U`, 정상 산술 결과도 실제 물리검증 전에는 `MODEL_U`다.
+
+ODREC의 `N=90, w=1 mm, h=6 mm`, Fagherazzi의 41개 축방향 가변 물냉각 채널, Wadel의 100/200채널 액체수소 연구를 `REFERENCE_PRESET`으로만 기록했다. SPACE Y 기본값은 없다. 팀 IPA 표는 exact CAS와 물성 후보를 제공하지만 검증된 압력 의존 `p,T` 상태·상평형 공급원으로 채택하지 않았다. 실제 냉각유량/분기, 채널 형상, 제작 조도·국부손실, IPA 단상 상태, 상관식 적용 근거는 계속 `INPUT_U`/`MODEL_U`다.
+
+합성 fixture, 최소 `h_l` 경로, 문헌 참고 형상과 엄격한 불리언 입력 검증을 자동 테스트한다. 합성 결과는 `V01–V12=NOT_RUN`, `validated_engine_prediction=false`, `safety_approval=false`이며 실제 SPACE Y 냉각 성능이나 안전성을 뜻하지 않는다. ⑦은 노즐 설계 담당이며 축방향 통합 열해석 담당으로 지정하지 않는다.
+
+## 19. 2026-11-01 냉각 채널 후보 생성 계층
+
+`src/space_y/cooling_channel_candidates.py`와 `space-y cooling-channel-sweep`을 추가했다. `N`, 리브 두께 `b`, 채널 높이 `h` 조합과 명시적 평균 채널 배치반경 `r_m(x)`에서 Constant-rib-width Axial 1-pass 형상을 생성한다. 위치별 폭, 전체 유로면적, 수력직경, 기존 `h_l` 코어 결과와 Darcy 마찰 압력손실 구배 `dP_f/ds`를 JSON/CSV로 반환한다.
+
+폭 제한 위반 후보는 폭을 clipping하지 않고 `EXCLUDE_GEOMETRIC_CONSTRAINT`로 계산 전에 제외한다. 반경이 없으면 일정 폭 국소 산술만 허용하며 원주 배치는 `INPUT_U`다. 구간별 물성이 명시되면 station 단위로 재계산하고 보간하지 않는다. 점수·가중합·자동 순위·최종 최적화는 없다.
+
+합성 예제의 4개 후보 중 `N=80, b=0.6 mm, h=1.2 mm`만 합성 세 위치의 폭 제약을 만족했다. 이는 합성 반경·물성·유량에 대한 기능 검산이며 SPACE Y 기준안이 아니다. 실제 후보에는 승인된 재생냉각 유량, IPA 구간 물성, 평균 채널 배치반경 정의, 제작 폭·리브·조도 제약이 필요하다. `MODEL_U`, `V01–V12=NOT_RUN`, `final_design_selection=false`를 유지한다.
+
+## 20. 2026-11-01 냉각 채널 Baseline·예비 추천 계층
+
+`src/space_y/cooling_channel_recommendation.py`를 추가했다. Baseline은 명시된 참고자료를 그대로 기록하며 추천 결과로 자동 변경하지 않는다. 모든 후보를 하나의 명시적 목 또는 station에서 비교하고, 경로 전체의 기하·상관식 계산이 통과한 후보에만 최고 `h_l`, 최소 국소 마찰 구배와 상대 Pareto 태그를 부여한다. 동점은 지표별 단위를 가진 절대 허용오차와 공통 상대 허용오차로 처리한다.
+
+다중 합성 fixture에서 유효 후보는 5개였다. 목 기준 CH-0004가 최고 `h_l`, CH-0005가 최소 국소 마찰 구배였고, 5개 모두 두 지표의 비지배 후보였다. 이는 기존 합성 반경·폭 제한·유량·일정 물성에서의 알고리즘 검산이다. 전체 압력손실, 벽온도, IPA 상태 marching, 상변화, 구조·제작·공급 제약을 평가하지 않으므로 SPACE Y Baseline·최적 형상·안전 설계가 아니다.
+
+JSON은 Baseline, 비교 station, 허용오차, 후보별 태그와 제외 이유를 보존한다. 위치별 CSV와 후보 요약 CSV를 제공한다. 실제 적용에는 승인된 `r_m(x)`, 냉각 유량, 구간별 IPA 물성, 제작 제약과 전체 통합 열해석 결과가 필요하다. `validated_engine_prediction=false`, `V01–V12=NOT_RUN`, `final_design_selection=false`를 유지한다.
+
+## 21. 2026-11-01 냉각 `h_l` 상관식 적용성 정책
+
+Gnielinski 계산범위와 팀 예비 Re 설계 권고를 분리했다. 정책은 경계 포함
+`Re=[3000,5e6]`, `Pr=[0.5,2000]`, 팀 권고 `min(Re)>=5000`, `Re<10000`
+천이 경고를 기록한다. 모든 명시 station이 완료돼야 최소 Re station·좌표·여유를
+평가하며 연속 위치의 만족을 주장하지 않는다.
+
+각 station에서 같은 Re의 거친/매끈 Colebrook Darcy 계수비를 기록한다. 비가 4 이상이면
+열전달 과대예측 가능성 경고만 남기고 `f`, `Nu`, `h_l`을 임의 제한하지 않는다.
+Colebrook 적용영역은 Gnielinski 범위와 별도로 실행 입력에 요구한다. 직사각 채널은
+`D_h=2wh/(w+h)` 근사와 `h/w`를 기록하지만 형상효과·입구영역·완전발달 근거를 해결한
+것으로 간주하지 않는다.
+
+`w_ref` 5개, 리브 4개, 높이 4개의 80개 참고 템플릿을 추가했다. 실제 목 평균 채널
+배치반경 없이는 `N`을 만들지 않고, 반경이 있어도 `N_ideal` 인접 정수 후보만 제시한다.
+다중 합성 fixture의 비교 가능 후보 5개는 모두 출구에서 최소 Re가 5000 미만이므로
+Pareto 태그와 별도로 Re 권고 미달/천이 경고이며 실제 설계 권고 후보는 0개다. 이는
+합성 정책 검산이다. 실제 IPA 물성·유량·반경·조도·가열경계가 없으므로 실제 엔진
+검증은 `false`, V01–V12는 `NOT_RUN`, 최종 설계 선택은 `false`다.
+
+## 22. 2026-11-01 80개 템플릿–`h_l` 통합 파이프라인
+
+`src/space_y/cooling_channel_pipeline.py`와 `space-y cooling-channel-pipeline`을
+추가했다. 80개 `(w_ref,b,h)` 템플릿마다 실제 목 평균 채널 배치반경으로 인접 정수 N을
+만들고, 대응하지 않는 N/b/h Cartesian 조합은 만들지 않는다. 동일 `(N,b,h)` 형상은
+한 번만 계산하면서 모든 template ID, 목표 폭, 실제 목 폭과 차이를 보존한다.
+
+입력이 없으면 `TEMPLATE_ONLY`, 반경만 있거나 coolant/model이 없으면
+`GEOMETRY_ONLY`, 모든 입력이 있을 때만 `FULL_CANDIDATE_EVALUATION`으로 진행한다.
+실제 screening은 팀 형상·제조 증거, exact 2-propanol 식별과 완전한 입력을 요구한다.
+기존 직접 N sweep과 M0 인터페이스는 유지한다.
+
+80개 합성 fixture에서는 raw template–N 연결 160개, 고유 형상 160개, 합성 기하 통과
+156개와 468개 station 계산을 재현했다. 최고 목 `h_l`/최소 목 마찰 구배 태그는 각각
+1개이고 비지배 후보는 58개다. 이는 합성 반경·제약·유량·물성에 대한 통합 코드
+검산이다. 실제 최적 형상, IPA 열유체 성능 또는 안전성을 뜻하지 않으며
+`validated_engine_prediction=false`, V01–V12 `NOT_RUN`, `final_design_selection=false`다.

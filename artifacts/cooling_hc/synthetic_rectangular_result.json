@@ -1,0 +1,138 @@
+{
+  "interface_version": "SPACE_Y_COOLING_HC_V1",
+  "run_id": "SYNTHETIC-COOLING-HC-RECTANGULAR-001",
+  "status": "MODEL_U",
+  "numerical_status": "PASS",
+  "applicability_status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+  "fixture_classification": "SYNTHETIC_NON_DESIGN",
+  "inputs_consumed": {
+    "fluid_state": {
+      "temperature_K": 300.0,
+      "pressure_Pa_abs": 2000000.0,
+      "enthalpy_J_kg": 100000.0,
+      "density_kg_m3": 800.0,
+      "viscosity_Pa_s": 0.001,
+      "cp_J_kgK": 2000.0,
+      "conductivity_W_mK": 0.15
+    },
+    "fluid_identity": {
+      "canonical_name": "SYNTHETIC_TEST_FLUID",
+      "cas_number": "NOT_APPLICABLE",
+      "property_source": "SYNTHETIC_ARITHMETIC_FIXTURE_NOT_IPA_DATA",
+      "property_version": "TEST-ONLY-V1"
+    },
+    "flow_conditions": {
+      "coolant_mass_flow_kg_s": 0.3,
+      "channel_count": 20,
+      "channel_mass_flow_kg_s": 0.015,
+      "fuel_mass_flow_kg_s": 0.3,
+      "regenerative_fraction_beta": 1.0,
+      "upstream_diversion_mass_flow_kg_s": 0.0,
+      "downstream_film_mass_flow_kg_s": 0.03,
+      "post_regen_to_injector_mass_flow_kg_s": 0.27,
+      "resolution_basis": "DIRECT_COOLANT_MASS_FLOW + BETA_TIMES_FUEL_MASS_FLOW + FUEL_MINUS_UPSTREAM_DIVERSION",
+      "distribution_status": "ASSUMED_EQUAL_DISTRIBUTION",
+      "branch_accounting_status": "CHECKED",
+      "consistency_residuals_kg_s": {
+        "DIRECT_COOLANT_MASS_FLOW": 0.0,
+        "BETA_TIMES_FUEL_MASS_FLOW": 0.0,
+        "FUEL_MINUS_UPSTREAM_DIVERSION": 0.0
+      }
+    },
+    "channel_geometry": {
+      "width_m": 0.001,
+      "height_m": 0.002,
+      "channel_count": 20,
+      "length_m": 0.1,
+      "channel_flow_area_m2": 2e-06,
+      "total_flow_area_m2": 3.9999999999999996e-05,
+      "channel_wetted_perimeter_m": 0.006,
+      "hydraulic_diameter_m": 0.0013333333333333333,
+      "total_internal_wetted_area_m2": 0.012,
+      "nominal_hot_wall_base_area_m2": 0.002,
+      "rib_thickness_m": 0.001,
+      "mean_radius_m": 0.02,
+      "circumferential_pitch_m": 0.006283185307179587,
+      "layout_check_status": "GEOMETRIC_IDENTITY_CHECKED"
+    },
+    "model_conditions": {
+      "single_phase_domain": {
+        "classification": "SINGLE_PHASE_SYNTHETIC",
+        "source": "SYNTHETIC_DOMAIN_FOR_ERROR_PATH_TESTING",
+        "temperature_min_K": 250.0,
+        "temperature_max_K": 350.0,
+        "pressure_min_Pa_abs": 1000000.0,
+        "pressure_max_Pa_abs": 3000000.0
+      },
+      "heat_transfer_domain": {
+        "source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM",
+        "re_min": 3000.0,
+        "re_max": 5000000.0,
+        "pr_min": 0.5,
+        "pr_max": 100.0,
+        "geometry": "RECTANGULAR_CLOSED_DUCT_USING_HYDRAULIC_DIAMETER",
+        "fully_developed_required": true
+      },
+      "friction_domain": {
+        "source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM",
+        "re_min": 3000.0,
+        "re_max": 5000000.0,
+        "relative_roughness_min": 0.0,
+        "relative_roughness_max": 0.05,
+        "geometry": "RECTANGULAR_CLOSED_DUCT_USING_HYDRAULIC_DIAMETER"
+      },
+      "thermal_boundary_condition": "SYNTHETIC_UNIFORM_HEAT_FLUX",
+      "fully_developed": true
+    }
+  },
+  "results": {
+    "Reynolds": 10000.0,
+    "Prandtl": 13.333333333333334,
+    "darcy_factor": 0.0320158514247114,
+    "Nusselt": 101.87250203626638,
+    "h_c_W_m2K": 11460.656479079968,
+    "velocity_m_s": 9.375,
+    "pressure_drop_Pa": 101994.92074875078,
+    "relative_roughness": 0.00075,
+    "heat_transfer_applicability": {
+      "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+      "reasons": []
+    },
+    "friction_applicability": {
+      "status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+      "source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM",
+      "re_range": [
+        3000.0,
+        5000000.0
+      ],
+      "relative_roughness_range": [
+        0.0,
+        0.05
+      ]
+    }
+  },
+  "checks": {
+    "mass_distribution": "ASSUMED_EQUAL_DISTRIBUTION",
+    "branch_accounting": "CHECKED",
+    "single_phase_bulk_state": "WITHIN_SUPPLIED_DOMAIN",
+    "geometry_layout": "GEOMETRIC_IDENTITY_CHECKED",
+    "heat_transfer_correlation": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+    "friction_correlation": "APPLICABLE_TO_SUPPLIED_DOMAIN"
+  },
+  "assumptions": [
+    "ASSUMED_EQUAL_DISTRIBUTION",
+    "STEADY_ONE_DIMENSIONAL_LOCAL_CLOSURE",
+    "CLOSED_RECTANGULAR_DUCT_HYDRAULIC_DIAMETER",
+    "PRESCRIBED_BULK_FLUID_STATE"
+  ],
+  "not_implemented": [
+    "parallel-manifold maldistribution",
+    "boiling or two-phase heat transfer",
+    "property extrapolation",
+    "automatic coolant-flow or channel-dimension selection",
+    "gas-side, wall, structural, or supply-system solution"
+  ],
+  "physical_validation_v01_v12": "NOT_RUN",
+  "validated_engine_prediction": false,
+  "safety_approval": false
+}

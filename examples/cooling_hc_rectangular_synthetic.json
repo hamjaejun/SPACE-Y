@@ -1,0 +1,67 @@
+{
+  "purpose": "NON_DESIGN_ARITHMETIC_VERIFICATION",
+  "run_id": "SYNTHETIC-COOLING-HC-RECTANGULAR-001",
+  "input_evidence_complete": false,
+  "fluid_state": {
+    "canonical_name": "SYNTHETIC_TEST_FLUID",
+    "cas_number": "NOT_APPLICABLE",
+    "temperature_K": 300.0,
+    "pressure_Pa_abs": 2000000.0,
+    "enthalpy_J_kg": 100000.0,
+    "density_kg_m3": 800.0,
+    "viscosity_Pa_s": 0.001,
+    "cp_J_kgK": 2000.0,
+    "conductivity_W_mK": 0.15,
+    "property_source": "SYNTHETIC_ARITHMETIC_FIXTURE_NOT_IPA_DATA",
+    "property_version": "TEST-ONLY-V1"
+  },
+  "flow_conditions": {
+    "coolant_mass_flow_kg_s": 0.3,
+    "fuel_mass_flow_kg_s": 0.3,
+    "regenerative_fraction_beta": 1.0,
+    "upstream_diversion_mass_flow_kg_s": 0.0,
+    "downstream_film_mass_flow_kg_s": 0.03,
+    "coolant_mass_flow_source": "SYNTHETIC_MASS_CONSERVATION_FIXTURE",
+    "consistency_relative_tolerance": 1e-09
+  },
+  "channel_geometry": {
+    "width_m": 0.001,
+    "height_m": 0.002,
+    "channel_count": 20,
+    "length_m": 0.1,
+    "rib_thickness_m": 0.001,
+    "mean_radius_m": 0.02,
+    "equivalent_sand_roughness_m": 1e-06,
+    "local_loss_coefficient": 0.5,
+    "geometry_source": "SYNTHETIC_ARITHMETIC_FIXTURE_NOT_SPACE_Y_GEOMETRY",
+    "roughness_source": "SYNTHETIC_ARITHMETIC_FIXTURE",
+    "local_loss_source": "SYNTHETIC_ARITHMETIC_FIXTURE"
+  },
+  "model_conditions": {
+    "single_phase_domain": {
+      "classification": "SINGLE_PHASE_SYNTHETIC",
+      "source": "SYNTHETIC_DOMAIN_FOR_ERROR_PATH_TESTING",
+      "temperature_range_K": [250.0, 350.0],
+      "pressure_range_Pa_abs": [1000000.0, 3000000.0]
+    },
+    "closure_geometry": "RECTANGULAR_CLOSED_DUCT_USING_HYDRAULIC_DIAMETER",
+    "fully_developed": true,
+    "fully_developed_evidence_source": "SYNTHETIC_TEST_CONDITION",
+    "thermal_boundary_condition": "SYNTHETIC_UNIFORM_HEAT_FLUX",
+    "thermal_boundary_condition_source": "SYNTHETIC_TEST_CONDITION",
+    "heat_transfer_thermal_boundary_condition": "SYNTHETIC_UNIFORM_HEAT_FLUX",
+    "heat_transfer_domain": {
+      "source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM",
+      "re_range": [3000.0, 5000000.0],
+      "pr_range": [0.5, 100.0],
+      "geometry": "RECTANGULAR_CLOSED_DUCT_USING_HYDRAULIC_DIAMETER",
+      "fully_developed_required": true
+    },
+    "friction_domain": {
+      "source": "SYNTHETIC_TEST_DOMAIN_NOT_A_LITERATURE_APPLICABILITY_CLAIM",
+      "re_range": [3000.0, 5000000.0],
+      "relative_roughness_range": [0.0, 0.05],
+      "geometry": "RECTANGULAR_CLOSED_DUCT_USING_HYDRAULIC_DIAMETER"
+    }
+  }
+}

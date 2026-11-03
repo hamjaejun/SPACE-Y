@@ -68,6 +68,111 @@ def prandtl_number(cp_J_kgK: float, viscosity_Pa_s: float, conductivity_W_mK: fl
     return cp_J_kgK * viscosity_Pa_s / conductivity_W_mK
 
 
+def rectangular_duct_aspect_ratio(width_m: float, height_m: float) -> float:
+    """Return Shah--London rectangular-duct aspect ratio in ``(0, 1]``."""
+
+    width = float(width_m)
+    height = float(height_m)
+    if not math.isfinite(width) or not math.isfinite(height) or min(width, height) <= 0:
+        raise ValueError("rectangular duct width and height must be finite and positive")
+    return min(width, height) / max(width, height)
+
+
+def rectangular_laminar_nusselt(
+    aspect_ratio: float,
+) -> tuple[float, float]:
+    """Return fully developed rectangular-duct ``(Nu_T, Nu_H1)``.
+
+    The polynomials are the Shah & London (1978) correlations requested for
+    constant wall temperature (``T``) and the distinct ``H1`` thermal boundary
+    condition.  The caller must not equate H1 with an arbitrary statement of
+    uniform local wall heat flux.
+    """
+
+    alpha = float(aspect_ratio)
+    if not math.isfinite(alpha) or not 0.0 < alpha <= 1.0:
+        raise ValueError("rectangular duct aspect ratio must be in (0, 1]")
+    nu_t = 7.541 * (
+        1.0
+        - 2.610 * alpha
+        + 4.970 * alpha**2
+        - 5.119 * alpha**3
+        + 2.702 * alpha**4
+        - 0.548 * alpha**5
+    )
+    nu_h1 = 8.235 * (
+        1.0
+        - 2.0421 * alpha
+        + 3.0853 * alpha**2
+        - 2.4765 * alpha**3
+        + 1.0578 * alpha**4
+        - 0.1861 * alpha**5
+    )
+    return nu_t, nu_h1
+
+
+def rectangular_laminar_darcy_friction_factor(
+    reynolds: float, aspect_ratio: float
+) -> float:
+    """Return the fully developed rectangular-duct Darcy friction factor.
+
+    The Shah--London polynomial gives ``f_D Re``.  This function intentionally
+    returns the Darcy--Weisbach factor, not the Fanning factor.
+    """
+
+    re_value = float(reynolds)
+    alpha = float(aspect_ratio)
+    if not math.isfinite(re_value) or re_value <= 0:
+        raise ValueError("Reynolds number must be finite and positive")
+    if not math.isfinite(alpha) or not 0.0 < alpha <= 1.0:
+        raise ValueError("rectangular duct aspect ratio must be in (0, 1]")
+    poiseuille = 96.0 * (
+        1.0
+        - 1.3553 * alpha
+        + 1.9467 * alpha**2
+        - 1.7012 * alpha**3
+        + 0.9564 * alpha**4
+        - 0.2537 * alpha**5
+    )
+    return poiseuille / re_value
+
+
+def linear_transition_nusselt(
+    reynolds: float,
+    laminar_endpoint_nusselt: float,
+    turbulent_endpoint_nusselt: float,
+    *,
+    reynolds_low: float = 2300.0,
+    reynolds_high: float = 3000.0,
+) -> tuple[float, float]:
+    """Linearly connect two explicitly supplied Nusselt endpoints.
+
+    This is a numerical interpolation primitive, not a literature correlation.
+    SPACE Y Model B uses it only after evaluating the rectangular Shah--London
+    endpoint at ``reynolds_low`` and the existing Gnielinski--Colebrook path at
+    ``reynolds_high``.  The returned tuple is ``(Nusselt, gamma)``.
+    """
+
+    re_value = float(reynolds)
+    re_low = float(reynolds_low)
+    re_high = float(reynolds_high)
+    nu_low = float(laminar_endpoint_nusselt)
+    nu_high = float(turbulent_endpoint_nusselt)
+    if not all(
+        math.isfinite(value)
+        for value in (re_value, re_low, re_high, nu_low, nu_high)
+    ):
+        raise ValueError("transition interpolation inputs must be finite")
+    if re_high <= re_low:
+        raise ValueError("transition Reynolds endpoints must be increasing")
+    if not re_low <= re_value <= re_high:
+        raise ValueError("Reynolds number lies outside interpolation endpoints")
+    if min(nu_low, nu_high) <= 0:
+        raise ValueError("transition Nusselt endpoints must be positive")
+    gamma = (re_value - re_low) / (re_high - re_low)
+    return (1.0 - gamma) * nu_low + gamma * nu_high, gamma
+
+
 def colebrook_darcy_friction_factor(
     reynolds: float, relative_roughness: float, *, tolerance: float = 1e-12, max_iterations: int = 100
 ) -> float:
