@@ -99,11 +99,17 @@
       "properties": {
         "single_phase_domain": {"$ref": "#/$defs/singlePhaseDomain"},
         "closure_geometry": {"type": "string", "minLength": 1},
-        "fully_developed": {"type": "boolean"},
+        "fully_developed": {"type": ["boolean", "null"]},
         "fully_developed_evidence_source": {"type": "string", "minLength": 1},
         "thermal_boundary_condition": {"type": "string", "minLength": 1},
         "thermal_boundary_condition_source": {"type": "string", "minLength": 1},
         "heat_transfer_thermal_boundary_condition": {"type": "string", "minLength": 1},
+        "laminar_thermal_boundary_condition": {
+          "enum": ["CONSTANT_WALL_TEMPERATURE", "SHAH_LONDON_H1"]
+        },
+        "transition_heat_transfer_model": {
+          "enum": ["MODEL_A_NULL_2300_3000", "MODEL_B_LINEAR_2300_3000"]
+        },
         "heat_transfer_domain": {"$ref": "#/$defs/heatDomain"},
         "friction_domain": {"$ref": "#/$defs/frictionDomain"},
         "applicability_policy": {"$ref": "#/$defs/applicabilityPolicy"}

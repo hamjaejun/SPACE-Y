@@ -248,15 +248,30 @@ def assess_candidate_station_path(
         for item in records
         if item["local"].get("transition_region_warning") is True
     ]
-    correlation_status = (
-        "ALL_DISCRETE_STATIONS_WITHIN_GNIELINSKI_POLICY_DOMAIN"
-        if all(
-            item["local"].get("correlation_applicability_status")
-            == "WITHIN_GNIELINSKI_POLICY_DOMAIN"
-            for item in records
+    local_correlation_statuses = [
+        item["local"].get("correlation_applicability_status")
+        for item in records
+    ]
+    if all(
+        status == "WITHIN_GNIELINSKI_POLICY_DOMAIN"
+        for status in local_correlation_statuses
+    ):
+        correlation_status = "ALL_DISCRETE_STATIONS_WITHIN_GNIELINSKI_POLICY_DOMAIN"
+    elif all(
+        status
+        in {
+            "WITHIN_GNIELINSKI_POLICY_DOMAIN",
+            "WITHIN_RECTANGULAR_LAMINAR_MODEL_DOMAIN",
+        }
+        for status in local_correlation_statuses
+    ):
+        correlation_status = (
+            "ALL_DISCRETE_STATIONS_WITHIN_SELECTED_CORRELATION_DOMAINS"
         )
-        else "AT_LEAST_ONE_DISCRETE_STATION_OUTSIDE_GNIELINSKI_POLICY_DOMAIN"
-    )
+    else:
+        correlation_status = (
+            "AT_LEAST_ONE_DISCRETE_STATION_OUTSIDE_SELECTED_CORRELATION_DOMAIN"
+        )
     minimum_local = minimum["local"]
     ratios = [
         (
@@ -269,7 +284,15 @@ def assess_candidate_station_path(
             (int, float),
         )
     ]
-    if policy.compare_rough_to_smooth_friction and len(ratios) != len(records):
+    roughness_records = [item["roughness"] for item in records]
+    if roughness_records and all(
+        item.get("status") == "NOT_APPLICABLE_LAMINAR_BRANCH"
+        for item in roughness_records
+    ):
+        roughness_status = "NOT_APPLICABLE_LAMINAR_BRANCH"
+        max_ratio = None
+        max_ratio_station = None
+    elif policy.compare_rough_to_smooth_friction and len(ratios) != len(records):
         roughness_status = "NOT_EVALUATED_INCOMPLETE_PATH"
         max_ratio = None
         max_ratio_station = None

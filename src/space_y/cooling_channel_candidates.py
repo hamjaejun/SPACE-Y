@@ -15,6 +15,7 @@ from .cooling_applicability import (
 )
 from .coolant import (
     CoolantStop,
+    TRANSITION_HEAT_TRANSFER_MODEL_B,
     build_friction_domain,
     build_heat_transfer_domain,
     build_rectangular_channel_cross_section,
@@ -410,9 +411,11 @@ def solve_cooling_channel_candidates(request: dict[str, Any]) -> dict[str, Any]:
         model = request.get("model_conditions")
         if not isinstance(model, dict):
             raise CandidateSweepStop("INPUT_U", "model_conditions must be an object")
-        fully_developed = _required_bool(
-            model.get("fully_developed"), "fully developed condition"
-        )
+        fully_developed = model.get("fully_developed")
+        if fully_developed is not None and not isinstance(fully_developed, bool):
+            raise CandidateSweepStop(
+                "INPUT_U", "fully developed condition must be true, false, or null"
+            )
         closure_geometry = _required_text(
             model.get("closure_geometry"), "closure geometry"
         )
@@ -422,6 +425,21 @@ def solve_cooling_channel_candidates(request: dict[str, Any]) -> dict[str, Any]:
         correlation_boundary = _required_text(
             model.get("heat_transfer_thermal_boundary_condition"),
             "heat-transfer correlation thermal boundary",
+        )
+        laminar_boundary = (
+            None
+            if model.get("laminar_thermal_boundary_condition") is None
+            else _required_text(
+                model.get("laminar_thermal_boundary_condition"),
+                "laminar thermal boundary condition",
+            )
+        )
+        transition_model = _required_text(
+            model.get(
+                "transition_heat_transfer_model",
+                TRANSITION_HEAT_TRANSFER_MODEL_B,
+            ),
+            "transition heat-transfer model",
         )
         heat_domain = build_heat_transfer_domain(model.get("heat_transfer_domain"))
         friction_domain = build_friction_domain(model.get("friction_domain"))
@@ -486,12 +504,14 @@ def solve_cooling_channel_candidates(request: dict[str, Any]) -> dict[str, Any]:
                         friction_domain=friction_domain,
                         density_kg_m3=fluid["density_kg_m3"],
                         applicability_policy=applicability_policy,
+                        laminar_thermal_boundary_condition=laminar_boundary,
+                        transition_heat_transfer_model=transition_model,
                     )
                 except CoolantStop as error:
                     station["calculation"] = {
                         "status": error.status,
                         "reason": str(error),
-                        "results": None,
+                        "results": error.details,
                         "property_basis": property_basis,
                         "property_source": fluid["property_source"],
                         "property_version": fluid["property_version"],
@@ -515,9 +535,20 @@ def solve_cooling_channel_candidates(request: dict[str, Any]) -> dict[str, Any]:
                     continue
 
                 local_result = asdict(local)
+                flow_regime = (
+                    local_result.get("applicability_assessment") or {}
+                ).get("flow_regime", "TURBULENT")
                 station["calculation"] = {
                     "status": "MODEL_U",
-                    "reason": "arithmetic completed within supplied correlation domains",
+                    "reason": (
+                        "fully developed rectangular laminar reference arithmetic completed"
+                        if flow_regime == "LAMINAR"
+                        else (
+                            "SPACE Y transition Model B Nusselt interpolation completed; friction remains unsupported"
+                            if flow_regime == "TRANSITION_MODEL_B"
+                            else "arithmetic completed within supplied correlation domains"
+                        )
+                    ),
                     "results": local_result,
                     "property_basis": property_basis,
                     "property_source": fluid["property_source"],

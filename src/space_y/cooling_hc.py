@@ -10,6 +10,7 @@ from .cooling_applicability import build_cooling_applicability_policy
 from .coolant import (
     CoolantGeometry,
     CoolantStop,
+    TRANSITION_HEAT_TRANSFER_MODEL_B,
     build_friction_domain,
     build_heat_transfer_domain,
     build_rectangular_channel_geometry,
@@ -156,9 +157,9 @@ def solve_cooling_hc(request: dict[str, Any]) -> dict[str, Any]:
             "thermal boundary condition",
         )
         fully_developed = model_spec.get("fully_developed")
-        if not isinstance(fully_developed, bool):
+        if fully_developed is not None and not isinstance(fully_developed, bool):
             raise CoolantStop(
-                "INPUT_U", "fully developed condition must be an explicit boolean"
+                "INPUT_U", "fully developed condition must be true, false, or null"
             )
         _source(
             model_spec.get("fully_developed_evidence_source"),
@@ -173,6 +174,23 @@ def solve_cooling_hc(request: dict[str, Any]) -> dict[str, Any]:
         if not heat_transfer_boundary:
             raise CoolantStop(
                 "INPUT_U", "heat-transfer correlation thermal boundary is required"
+            )
+        laminar_boundary = model_spec.get("laminar_thermal_boundary_condition")
+        if laminar_boundary is not None:
+            laminar_boundary = str(laminar_boundary).strip()
+            if not laminar_boundary:
+                raise CoolantStop(
+                    "INPUT_U", "laminar thermal boundary condition must be explicit"
+                )
+        transition_model = str(
+            model_spec.get(
+                "transition_heat_transfer_model",
+                TRANSITION_HEAT_TRANSFER_MODEL_B,
+            )
+        ).strip()
+        if not transition_model:
+            raise CoolantStop(
+                "INPUT_U", "transition heat-transfer model must be explicit"
             )
 
         geometry = CoolantGeometry(
@@ -194,11 +212,19 @@ def solve_cooling_hc(request: dict[str, Any]) -> dict[str, Any]:
             heat_transfer_thermal_boundary_condition=heat_transfer_boundary,
             friction_domain=friction_domain,
             applicability_policy=applicability_policy,
+            rectangular_width_m=derived_geometry.width_m,
+            rectangular_height_m=derived_geometry.height_m,
+            rectangular_channel_count=derived_geometry.channel_count,
+            laminar_thermal_boundary_condition=laminar_boundary,
+            transition_heat_transfer_model=transition_model,
         )
 
         local_results = asdict(local)
         local_results["channel_aspect_ratio_h_over_w"] = (
             derived_geometry.height_m / derived_geometry.width_m
+        )
+        flow_regime = local.applicability_assessment.get(
+            "flow_regime", "TURBULENT"
         )
 
         return {
@@ -206,7 +232,11 @@ def solve_cooling_hc(request: dict[str, Any]) -> dict[str, Any]:
             "run_id": run_id,
             "status": "MODEL_U",
             "numerical_status": "PASS",
-            "applicability_status": "APPLICABLE_TO_SUPPLIED_DOMAIN",
+            "applicability_status": (
+                "MODEL_U_FULLY_DEVELOPED_LAMINAR_REFERENCE"
+                if flow_regime == "LAMINAR"
+                else "APPLICABLE_TO_SUPPLIED_DOMAIN"
+            ),
             "fixture_classification": (
                 "SYNTHETIC_NON_DESIGN"
                 if purpose == "NON_DESIGN_ARITHMETIC_VERIFICATION"
@@ -233,6 +263,16 @@ def solve_cooling_hc(request: dict[str, Any]) -> dict[str, Any]:
                         if applicability_policy is not None
                         else None
                     ),
+                    **(
+                        {
+                            "laminar_thermal_boundary_condition": (
+                                laminar_boundary
+                            )
+                        }
+                        if laminar_boundary is not None
+                        else {}
+                    ),
+                    "transition_heat_transfer_model": transition_model,
                 },
             },
             "results": local_results,
@@ -255,7 +295,15 @@ def solve_cooling_hc(request: dict[str, Any]) -> dict[str, Any]:
                 "STEADY_ONE_DIMENSIONAL_LOCAL_CLOSURE",
                 "CLOSED_RECTANGULAR_DUCT_HYDRAULIC_DIAMETER",
                 "PRESCRIBED_BULK_FLUID_STATE",
-            ],
+            ]
+            + (
+                [
+                    "FULLY_DEVELOPED_RECTANGULAR_LAMINAR_REFERENCE",
+                    "ENTRANCE_EFFECTS_NOT_MODELLED",
+                ]
+                if flow_regime == "LAMINAR"
+                else []
+            ),
             "not_implemented": [
                 "parallel-manifold maldistribution",
                 "boiling or two-phase heat transfer",
@@ -268,7 +316,12 @@ def solve_cooling_hc(request: dict[str, Any]) -> dict[str, Any]:
             "safety_approval": False,
         }
     except CoolantStop as error:
-        return _failure(run_id, error.status, str(error))
+        return _failure(
+            run_id,
+            error.status,
+            str(error),
+            results=error.details,
+        )
     except (KeyError, TypeError, ValueError, OverflowError) as error:
         return _failure(run_id, "INPUT_U", f"invalid or missing input: {error}")
     except RuntimeError as error:

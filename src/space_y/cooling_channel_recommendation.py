@@ -276,10 +276,11 @@ def classify_cooling_channel_candidates(
             None,
             "NOT_EVALUATED",
             "ALL_DISCRETE_STATIONS_WITHIN_GNIELINSKI_POLICY_DOMAIN",
+            "ALL_DISCRETE_STATIONS_WITHIN_SELECTED_CORRELATION_DOMAINS",
         }:
             candidate["recommendation_tags"].append("EXCLUDED_CORRELATION")
             candidate["exclusion_reasons"].append(
-                "at least one discrete station is outside the supplied Gnielinski policy domain"
+                "at least one discrete station is outside its selected correlation domain"
             )
             continue
         stations = candidate.get("stations", [])
