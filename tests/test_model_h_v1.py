@@ -101,6 +101,34 @@ class ModelHV1Tests(unittest.TestCase):
                     actual["hydraulic_diameter_m"], expected["hydraulic_diameter_m"]
                 )
 
+    def test_engine_gas_side_radius_mode_matches_model_b_at_beta_zero(self) -> None:
+        engine_geometry = {
+            **{key: value for key, value in self.geometry.items() if key != "mean_channel_radius_m"},
+            "gas_side_radius_m": [0.032, 0.024, 0.042],
+            "wall_thickness_m": 0.001,
+        }
+        base = generate_channel_candidates(**engine_geometry)
+        helical = generate_model_h_candidates(
+            **engine_geometry,
+            helix_angles_deg=[0.0],
+        )
+        base_by_key = {
+            (item["channel_count"], item["rib_thickness_m"], item["channel_height_m"]): item
+            for item in base["candidates"]
+        }
+        for candidate in helical["candidates"]:
+            key = (
+                candidate["channel_count"],
+                candidate["rib_thickness_m"],
+                candidate["channel_height_m"],
+            )
+            reference = base_by_key[key]
+            for actual, expected in zip(candidate["stations"], reference["stations"]):
+                self.assertEqual(actual["mean_channel_radius_m"], expected["mean_channel_radius_m"])
+                self.assertEqual(actual["channel_width_m"], expected["channel_width_m"])
+                self.assertEqual(actual["total_flow_area_m2"], expected["flow_area_m2"])
+                self.assertEqual(actual["hydraulic_diameter_m"], expected["hydraulic_diameter_m"])
+
     def test_beta_zero_path_matches_model_b_values(self) -> None:
         path = helical_coolant_path_distances(self.x_m, self.r_m, 0.0)
         self.assertEqual(path["s_H_m"], path["s_B_m"])
@@ -310,6 +338,24 @@ class ModelHV1Tests(unittest.TestCase):
         self.assertEqual(candidate["stations"][2]["status"], "INPUT_U")
         self.assertIsNone(candidate["stations"][1]["h_l_W_m2K"])
         self.assertIsNone(candidate["stations"][2]["Reynolds"])
+
+    def test_stopped_property_stations_do_not_require_extrapolated_values(self) -> None:
+        result = evaluate_model_h_candidates(
+            **{
+                **self.evaluation,
+                "density_kg_m3": [800.0, None, None],
+                "viscosity_Pa_s": [0.0012, None, None],
+                "cp_J_kgK": [2300.0, None, None],
+                "conductivity_W_mK": [0.15, None, None],
+                "property_validity_status": ["MODEL_U", "OUTSIDE", "INPUT_U"],
+            },
+            helix_angles_deg=[0.0],
+            laminar_model=LAMINAR_MODEL_FULLY_DEVELOPED,
+        )
+        candidate = next(item for item in result["candidates"] if item["valid"])
+        self.assertEqual(candidate["stations"][0]["status"], "MODEL_U")
+        self.assertEqual(candidate["stations"][1]["status"], "OUTSIDE")
+        self.assertEqual(candidate["stations"][2]["status"], "INPUT_U")
 
     def test_result_keeps_model_and_validation_limits_explicit(self) -> None:
         result = evaluate_model_h_candidates(

@@ -130,6 +130,37 @@ def _station_text_values(
     return values
 
 
+def _property_station_values(
+    value: float | Sequence[float | None],
+    station_count: int,
+    statuses: Sequence[str],
+    name: str,
+) -> list[float | None]:
+    """Validate properties only where the adapter authorizes calculation.
+
+    ``INPUT_U``, ``OUTSIDE`` and ``NUM_U`` stations may carry ``None`` so an
+    integration layer does not have to manufacture or extrapolate a property
+    solely to satisfy array shape validation.
+    """
+
+    if isinstance(value, (str, bytes)):
+        raise ModelHError("INPUT_U", f"{name} must be numeric or a station array")
+    if isinstance(value, Sequence):
+        raw = list(value)
+        if len(raw) != station_count:
+            raise ModelHError("INPUT_U", f"{name} length must equal station count")
+    else:
+        raw = [value] * station_count
+    stopped = {"INPUT_U", "OUTSIDE", "NUM_U"}
+    values: list[float | None] = []
+    for index, (item, status) in enumerate(zip(raw, statuses)):
+        if status in stopped and item is None:
+            values.append(None)
+        else:
+            values.append(_positive(item, f"{name}[{index}]"))
+    return values
+
+
 def generate_model_h_templates(
     *,
     width_candidates_mm: Sequence[float] = MODEL_H_WIDTH_CANDIDATES_MM,
@@ -318,7 +349,9 @@ def evaluate_model_h_hl(
 def generate_model_h_candidates(
     *,
     x_m: Sequence[float],
-    mean_channel_radius_m: Sequence[float],
+    mean_channel_radius_m: Sequence[float] | None = None,
+    gas_side_radius_m: Sequence[float] | None = None,
+    wall_thickness_m: float | None = None,
     throat_station_index: int,
     channel_width_limits_m: tuple[float, float],
     minimum_rib_thickness_m: float,
@@ -347,6 +380,8 @@ def generate_model_h_candidates(
     base = generate_channel_candidates(
         x_m=x_m,
         mean_channel_radius_m=mean_channel_radius_m,
+        gas_side_radius_m=gas_side_radius_m,
+        wall_thickness_m=wall_thickness_m,
         throat_station_index=throat_station_index,
         channel_width_limits_m=channel_width_limits_m,
         minimum_rib_thickness_m=minimum_rib_thickness_m,
@@ -471,13 +506,15 @@ def generate_model_h_candidates(
 def evaluate_model_h_candidates(
     *,
     x_m: Sequence[float],
-    mean_channel_radius_m: Sequence[float],
+    mean_channel_radius_m: Sequence[float] | None = None,
+    gas_side_radius_m: Sequence[float] | None = None,
+    wall_thickness_m: float | None = None,
     throat_station_index: int,
     mdot_total_kg_s: float,
-    density_kg_m3: float | Sequence[float],
-    viscosity_Pa_s: float | Sequence[float],
-    cp_J_kgK: float | Sequence[float],
-    conductivity_W_mK: float | Sequence[float],
+    density_kg_m3: float | Sequence[float | None],
+    viscosity_Pa_s: float | Sequence[float | None],
+    cp_J_kgK: float | Sequence[float | None],
+    conductivity_W_mK: float | Sequence[float | None],
     roughness_m: float,
     thermal_boundary_condition: str,
     fully_developed: bool | None,
@@ -501,7 +538,15 @@ def evaluate_model_h_candidates(
     """Evaluate all Model H candidates using the unchanged Model B closures."""
 
     station_count = len(x_m)
-    if station_count <= 0 or len(mean_channel_radius_m) != station_count:
+    explicit_radius_mode = mean_channel_radius_m is not None
+    gas_radius_mode = gas_side_radius_m is not None or wall_thickness_m is not None
+    if explicit_radius_mode == gas_radius_mode:
+        raise ModelHError(
+            "INPUT_U",
+            "supply either mean_channel_radius_m or gas_side_radius_m with wall_thickness_m",
+        )
+    radius_input = mean_channel_radius_m if explicit_radius_mode else gas_side_radius_m
+    if station_count <= 0 or radius_input is None or len(radius_input) != station_count:
         raise ModelHError("INPUT_U", "station geometry arrays must have equal length")
     if thermal_boundary_condition not in THERMAL_BOUNDARY_CONDITIONS:
         raise ModelHError("INPUT_U", "unsupported thermal boundary condition")
@@ -517,16 +562,20 @@ def evaluate_model_h_candidates(
     roughness = _finite(roughness_m, "equivalent sand roughness")
     if roughness < 0.0:
         raise ModelHError("INPUT_U", "equivalent sand roughness must be non-negative")
-    densities = _numeric_station_values(density_kg_m3, station_count, "density_kg_m3")
-    viscosities = _numeric_station_values(
-        viscosity_Pa_s, station_count, "viscosity_Pa_s"
-    )
-    heat_capacities = _numeric_station_values(cp_J_kgK, station_count, "cp_J_kgK")
-    conductivities = _numeric_station_values(
-        conductivity_W_mK, station_count, "conductivity_W_mK"
-    )
     property_statuses = _station_text_values(
         property_validity_status, station_count, "property_validity_status"
+    )
+    densities = _property_station_values(
+        density_kg_m3, station_count, property_statuses, "density_kg_m3"
+    )
+    viscosities = _property_station_values(
+        viscosity_Pa_s, station_count, property_statuses, "viscosity_Pa_s"
+    )
+    heat_capacities = _property_station_values(
+        cp_J_kgK, station_count, property_statuses, "cp_J_kgK"
+    )
+    conductivities = _property_station_values(
+        conductivity_W_mK, station_count, property_statuses, "conductivity_W_mK"
     )
     if not isinstance(fluid_identity, str) or not fluid_identity.strip():
         raise ModelHError("INPUT_U", "fluid identity must be explicit")
@@ -536,6 +585,8 @@ def evaluate_model_h_candidates(
     geometry = generate_model_h_candidates(
         x_m=x_m,
         mean_channel_radius_m=mean_channel_radius_m,
+        gas_side_radius_m=gas_side_radius_m,
+        wall_thickness_m=wall_thickness_m,
         throat_station_index=throat_station_index,
         channel_width_limits_m=channel_width_limits_m,
         minimum_rib_thickness_m=minimum_rib_thickness_m,
@@ -546,20 +597,17 @@ def evaluate_model_h_candidates(
         rib_candidates_mm=rib_candidates_mm,
         height_candidates_mm=height_candidates_mm,
     )
-    paths = {
-        float(angle): helical_coolant_path_distances(
-            x_m, mean_channel_radius_m, float(angle)
-        )
-        for angle in helix_angles_deg
-    }
-
     successful_station_count = 0
     failed_station_count = 0
     regime_counts = {"LAMINAR": 0, "TRANSITION_MODEL_B": 0, "TURBULENT": 0}
     evaluated: list[dict[str, Any]] = []
     for candidate in geometry["candidates"]:
         angle = float(candidate["helix_angle_deg"])
-        path = paths[angle]
+        candidate_radii = [
+            float(station["mean_channel_radius_m"])
+            for station in candidate["stations"]
+        ]
+        path = helical_coolant_path_distances(x_m, candidate_radii, angle)
         station_results: list[dict[str, Any]] = []
         h_values: list[float] = []
         re_values: list[float] = []
@@ -617,20 +665,24 @@ def evaluate_model_h_candidates(
                     }
                 )
                 continue
+            density = float(densities[index])
+            viscosity = float(viscosities[index])
+            heat_capacity = float(heat_capacities[index])
+            conductivity = float(conductivities[index])
             area = float(station["total_flow_area_m2"])
-            velocity = mass_flow / (densities[index] * area)
+            velocity = mass_flow / (density * area)
             try:
                 local = evaluate_model_h_hl(
                     mdot_total_kg_s=mass_flow,
-                    density_kg_m3=densities[index],
+                    density_kg_m3=density,
                     mean_channel_radius_m=station["mean_channel_radius_m"],
                     channel_count=int(candidate["channel_count"]),
                     rib_thickness_m=float(candidate["rib_thickness_m"]),
                     channel_height_m=float(candidate["channel_height_m"]),
                     helix_angle_deg=angle,
-                    viscosity_Pa_s=viscosities[index],
-                    cp_J_kgK=heat_capacities[index],
-                    conductivity_W_mK=conductivities[index],
+                    viscosity_Pa_s=viscosity,
+                    cp_J_kgK=heat_capacity,
+                    conductivity_W_mK=conductivity,
                     roughness_m=roughness,
                     thermal_boundary_condition=thermal_boundary_condition,
                     fully_developed=fully_developed,
@@ -737,6 +789,11 @@ def evaluate_model_h_candidates(
         "failed_station_count": failed_station_count,
         "flow_regime_counts": regime_counts,
         "mass_flow_total_kg_s": mass_flow,
+        "radius_input_mode": (
+            "EXPLICIT_MEAN_CHANNEL_RADIUS"
+            if explicit_radius_mode
+            else "GAS_SIDE_RADIUS_PLUS_WALL_AND_HALF_CHANNEL_HEIGHT"
+        ),
         "equal_parallel_channel_flow_assumed": True,
         "laminar_model": laminar_model,
         "thermal_boundary_condition": thermal_boundary_condition,

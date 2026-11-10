@@ -13,6 +13,7 @@ dependencies = []
 validation = ["jsonschema>=4.23"]
 cea = ["cea==3.3.4"]
 test = ["jsonschema>=4.23"]
+engine-integration = ["cea==3.3.4", "CoolProp==8.0.0", "scipy>=1.14,<2"]
 
 [project.scripts]
 space-y = "space_y.cli:main"
