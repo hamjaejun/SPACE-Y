@@ -1,0 +1,129 @@
+{
+  "angle_counts": {
+    "0": {
+      "candidate_count": 336,
+      "input_u_station_count": 0,
+      "invalid_candidate_count": 0,
+      "model_u_station_count": 1344,
+      "num_u_station_count": 0,
+      "outside_reason_counts": {},
+      "outside_station_count": 0,
+      "valid_candidate_count": 336
+    },
+    "20": {
+      "candidate_count": 336,
+      "input_u_station_count": 0,
+      "invalid_candidate_count": 0,
+      "model_u_station_count": 1344,
+      "num_u_station_count": 0,
+      "outside_reason_counts": {},
+      "outside_station_count": 0,
+      "valid_candidate_count": 336
+    },
+    "30": {
+      "candidate_count": 336,
+      "input_u_station_count": 0,
+      "invalid_candidate_count": 0,
+      "model_u_station_count": 1343,
+      "num_u_station_count": 0,
+      "outside_reason_counts": {
+        "Lee-Garimella H1 correlation requires major/minor aspect ratio in [1, 10]": 1
+      },
+      "outside_station_count": 1,
+      "valid_candidate_count": 336
+    },
+    "35": {
+      "candidate_count": 336,
+      "input_u_station_count": 0,
+      "invalid_candidate_count": 0,
+      "model_u_station_count": 1332,
+      "num_u_station_count": 0,
+      "outside_reason_counts": {
+        "Lee-Garimella H1 correlation requires major/minor aspect ratio in [1, 10]": 12
+      },
+      "outside_station_count": 12,
+      "valid_candidate_count": 336
+    }
+  },
+  "angle_expanded_candidate_count": 1344,
+  "base_raw_candidate_count": 336,
+  "base_unique_candidate_count": 336,
+  "beta_zero_model_b_regression": {
+    "beta_zero_candidate_count": 336,
+    "compared_station_count": 1344,
+    "maximum_absolute_difference": {
+      "Nusselt": 0.0,
+      "Prandtl": 0.0,
+      "Reynolds": 0.0,
+      "channel_width_m": 0.0,
+      "h_l_W_m2K": 0.0,
+      "hydraulic_diameter_m": 0.0,
+      "s_m": 0.0,
+      "total_flow_area_m2": 0.0
+    },
+    "mismatches": [],
+    "status": "PASS"
+  },
+  "experimental_validation": false,
+  "failed_station_count": 13,
+  "fixture_classification": "SYNTHETIC_NON_DESIGN_ARITHMETIC_VERIFICATION",
+  "flow_regime_counts": {
+    "LAMINAR": 5088,
+    "TRANSITION_MODEL_B": 253,
+    "TURBULENT": 22
+  },
+  "fluid_identity": "SYNTHETIC_TEST_FLUID_NOT_IPA",
+  "initial_template_angle_combination_count": 672,
+  "invalid_candidate_count": 0,
+  "limitations": [
+    "Model B correlations are applied to an equivalent straight rectangular duct.",
+    "Dean vortices and other curvature-induced secondary-flow enhancement are not modelled.",
+    "Curvature-dependent laminar-transition-turbulent Reynolds boundaries are not modelled.",
+    "The Model B Re=2300-3000 interpolation is retained for numerical continuity only.",
+    "One-dimensional geometry does not prove three-dimensional machinability or rib clearance.",
+    "Pressure loss, manifold maldistribution, phase change, wall conduction, and gas-side heat transfer are outside this module.",
+    "Actual IPA property validity must be established by the external Property Adapter."
+  ],
+  "physical_validation_v01_v12": "NOT_RUN",
+  "representative_angle_comparison": {
+    "angles": {
+      "0": {
+        "maximum_Reynolds": 1489.8267407418978,
+        "maximum_h_l_W_m2K": 1079.2689098425935,
+        "minimum_Reynolds": 616.4631529111613,
+        "minimum_h_l_W_m2K": 304.69398547479074,
+        "path_length_factor": 1.0
+      },
+      "20": {
+        "maximum_Reynolds": 1549.983706739932,
+        "maximum_h_l_W_m2K": 1178.4024292737072,
+        "minimum_Reynolds": 647.6666250469502,
+        "minimum_h_l_W_m2K": 289.1623392711665,
+        "path_length_factor": 1.064177772475912
+      },
+      "30": {
+        "maximum_Reynolds": 1630.4007952915078,
+        "maximum_h_l_W_m2K": 1336.4925302908896,
+        "minimum_Reynolds": 690.3510669427079,
+        "minimum_h_l_W_m2K": 269.76975111444347,
+        "path_length_factor": 1.1547005383792515
+      },
+      "35": {
+        "maximum_Reynolds": 1686.0612007019913,
+        "maximum_h_l_W_m2K": 1472.798716643957,
+        "minimum_Reynolds": 720.5676003077077,
+        "minimum_h_l_W_m2K": 266.5033923902058,
+        "path_length_factor": 1.220774588761456
+      }
+    },
+    "base_model_b_candidate_id": "GCH-0139",
+    "channel_count": 58,
+    "channel_height_m": 0.003,
+    "rib_thickness_m": 0.0015
+  },
+  "status": "PASS",
+  "successful_station_count": 5363,
+  "template_count": 168,
+  "valid_candidate_count": 1344,
+  "validated_engine_prediction": false
+}
