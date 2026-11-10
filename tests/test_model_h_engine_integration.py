@@ -1,10 +1,15 @@
 from __future__ import annotations
 
+import math
+import types
 import unittest
 
 from model_h_engine_integration import (
+    PROPERTY_POLICY_ALLOW_EXTRAPOLATION,
     assess_supplied_ipa_states,
     evaluate_candidate_key_by_angle,
+    evaluate_supplied_ipa_state,
+    existing_loop_segment_length_factor,
 )
 from model_h_v1 import generate_model_h_candidates
 
@@ -44,6 +49,14 @@ class ModelHEngineIntegrationTests(unittest.TestCase):
             ipa=ipa,
         )
         self.assertEqual(result["status_by_station"], ["MODEL_U", "OUTSIDE", "INPUT_U"])
+        self.assertEqual(
+            result["property_range_status_by_station"],
+            ["IN_RANGE", "OUTSIDE", "INPUT_U"],
+        )
+        self.assertEqual(
+            result["property_range_status_counts"],
+            {"IN_RANGE": 1, "EXTRAPOLATED": 0, "OUTSIDE": 1, "INPUT_U": 1},
+        )
         self.assertEqual(ipa.property_calls, 4)
         self.assertIsNone(result["viscosity_Pa_s"][1])
         self.assertIsNone(result["conductivity_W_mK"][2])
@@ -59,6 +72,32 @@ class ModelHEngineIntegrationTests(unittest.TestCase):
         )
         self.assertEqual(result["status_by_station"], ["OUTSIDE"])
         self.assertEqual(ipa.property_calls, 0)
+
+    def test_explicit_property_policy_separates_range_and_model_status(self) -> None:
+        ipa = FakeIPA()
+        strict = evaluate_supplied_ipa_state(
+            temperature_K=420.0,
+            pressure_Pa_abs=4.0e6,
+            ipa=ipa,
+        )
+        extrapolated = evaluate_supplied_ipa_state(
+            temperature_K=420.0,
+            pressure_Pa_abs=4.0e6,
+            ipa=ipa,
+            policy=PROPERTY_POLICY_ALLOW_EXTRAPOLATION,
+        )
+        self.assertEqual(strict["status"], "OUTSIDE")
+        self.assertEqual(extrapolated["status"], "EXTRAPOLATED")
+        self.assertEqual(extrapolated["calculation_status"], "MODEL_U")
+        self.assertFalse(extrapolated["pressure_effects_in_transport_properties"])
+
+    def test_existing_loop_length_adapter_scales_only_hypot_and_restores_math(self) -> None:
+        module = types.SimpleNamespace(math=math)
+        original = module.math
+        with existing_loop_segment_length_factor(module, 1.25):
+            self.assertAlmostEqual(module.math.hypot(3.0, 4.0), 6.25)
+            self.assertEqual(module.math.sqrt(9.0), 3.0)
+        self.assertIs(module.math, original)
 
     def test_beta_zero_regression_with_engine_radius_mode_is_exact(self) -> None:
         x_m = [0.0, 0.01, 0.02]

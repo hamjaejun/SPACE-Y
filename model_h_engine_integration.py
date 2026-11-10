@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import math
 import statistics
+from contextlib import contextmanager
 from typing import Any, Protocol, Sequence
 
 from cooling_model_b import (
@@ -32,6 +33,8 @@ IPA_FLUID_NAME = "2-propanol (IPA)"
 IPA_CAS = "67-63-0"
 IPA_TRANSPORT_OVERLAP_K = (187.35, 408.0)
 STOP_STATUSES = {"INPUT_U", "OUTSIDE", "NUM_U"}
+PROPERTY_POLICY_STRICT = "STRICT_IN_RANGE"
+PROPERTY_POLICY_ALLOW_EXTRAPOLATION = "ALLOW_SUPPLIED_EXTRAPOLATION"
 
 
 class IPAPropertyModule(Protocol):
@@ -44,6 +47,43 @@ class IPAPropertyModule(Protocol):
     def T_sat(self, pressure_Pa: float) -> float | None: ...
 
 
+class _MathProxy:
+    """Forward ``math`` except for the coolant-path segment length."""
+
+    def __init__(self, original: Any, path_length_factor: float) -> None:
+        self._original = original
+        self._path_length_factor = path_length_factor
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._original, name)
+
+    def hypot(self, x: float, y: float) -> float:
+        return self._original.hypot(x, y) * self._path_length_factor
+
+
+@contextmanager
+def existing_loop_segment_length_factor(
+    cooling_loop_module: Any, path_length_factor: float
+):
+    """Apply helical length once inside the unchanged existing cooling loop.
+
+    ``cooling_loop_V1.march`` obtains every coolant segment length from its one
+    ``math.hypot(dx, dr)`` call.  Replacing only the module's math reference
+    keeps its wall iteration, fin efficiency, heat-resistance network and
+    coolant energy equation unchanged.
+    """
+
+    factor = _finite(path_length_factor, "path length factor")
+    if factor <= 0.0:
+        raise ValueError("path length factor must be positive")
+    original = cooling_loop_module.math
+    cooling_loop_module.math = _MathProxy(original, factor)
+    try:
+        yield
+    finally:
+        cooling_loop_module.math = original
+
+
 def _finite(value: Any, name: str) -> float:
     try:
         number = float(value)
@@ -52,6 +92,130 @@ def _finite(value: Any, name: str) -> float:
     if not math.isfinite(number):
         raise ValueError(f"{name} must be finite")
     return number
+
+
+def evaluate_supplied_ipa_state(
+    *,
+    temperature_K: float | None,
+    pressure_Pa_abs: float | None,
+    ipa: IPAPropertyModule,
+    policy: str = PROPERTY_POLICY_STRICT,
+) -> dict[str, Any]:
+    """Evaluate one supplied IPA state with explicit range/extrapolation status."""
+
+    if policy not in {PROPERTY_POLICY_STRICT, PROPERTY_POLICY_ALLOW_EXTRAPOLATION}:
+        raise ValueError("unsupported IPA property policy")
+    if temperature_K is None or pressure_Pa_abs is None:
+        return {
+            "status": "INPUT_U",
+            "calculation_status": "INPUT_U",
+            "reason": "coolant temperature or pressure is unavailable",
+            "temperature_K": temperature_K,
+            "pressure_Pa_abs": pressure_Pa_abs,
+        }
+    try:
+        temperature = _finite(temperature_K, "temperature")
+        pressure = _finite(pressure_Pa_abs, "pressure")
+    except ValueError as error:
+        return {
+            "status": "INPUT_U",
+            "calculation_status": "INPUT_U",
+            "reason": str(error),
+            "temperature_K": temperature_K,
+            "pressure_Pa_abs": pressure_Pa_abs,
+        }
+    if temperature <= 0.0 or pressure <= 0.0:
+        return {
+            "status": "INPUT_U",
+            "calculation_status": "INPUT_U",
+            "reason": "temperature and pressure must be positive",
+            "temperature_K": temperature,
+            "pressure_Pa_abs": pressure,
+        }
+    try:
+        saturation_temperature = ipa.T_sat(pressure)
+    except (RuntimeError, ValueError) as error:
+        return {
+            "status": "OUTSIDE",
+            "calculation_status": "OUTSIDE",
+            "reason": f"saturation gate failed: {error}",
+            "temperature_K": temperature,
+            "pressure_Pa_abs": pressure,
+        }
+    if temperature >= float(ipa.T_CRIT):
+        return {
+            "status": "OUTSIDE",
+            "calculation_status": "OUTSIDE",
+            "reason": "temperature is at or above the supplied critical temperature",
+            "temperature_K": temperature,
+            "pressure_Pa_abs": pressure,
+            "saturation_temperature_K": saturation_temperature,
+        }
+    if saturation_temperature is not None and temperature >= saturation_temperature:
+        return {
+            "status": "OUTSIDE",
+            "calculation_status": "OUTSIDE",
+            "reason": "bulk state is at or above the supplied saturation boundary",
+            "temperature_K": temperature,
+            "pressure_Pa_abs": pressure,
+            "saturation_temperature_K": saturation_temperature,
+        }
+
+    lower, upper = IPA_TRANSPORT_OVERLAP_K
+    in_range = lower <= temperature <= upper
+    if not in_range and policy == PROPERTY_POLICY_STRICT:
+        return {
+            "status": "OUTSIDE",
+            "calculation_status": "OUTSIDE",
+            "reason": (
+                f"T={temperature:.6g} K is outside the common rho/mu/cp/k "
+                f"correlation interval {lower}..{upper} K; no extrapolation"
+            ),
+            "temperature_K": temperature,
+            "pressure_Pa_abs": pressure,
+            "saturation_temperature_K": saturation_temperature,
+        }
+    try:
+        values = {
+            "density_kg_m3": float(ipa.rho(temperature)),
+            "viscosity_Pa_s": float(ipa.mu(temperature)),
+            "cp_J_kgK": float(ipa.cp(temperature)),
+            "conductivity_W_mK": float(ipa.k(temperature)),
+        }
+    except (ArithmeticError, RuntimeError, ValueError) as error:
+        return {
+            "status": "OUTSIDE",
+            "calculation_status": "NUM_U",
+            "reason": f"property evaluation failed: {error}",
+            "temperature_K": temperature,
+            "pressure_Pa_abs": pressure,
+            "saturation_temperature_K": saturation_temperature,
+        }
+    if not all(math.isfinite(value) and value > 0.0 for value in values.values()):
+        return {
+            "status": "OUTSIDE",
+            "calculation_status": "NUM_U",
+            "reason": "property module returned a non-positive or non-finite value",
+            "temperature_K": temperature,
+            "pressure_Pa_abs": pressure,
+            "saturation_temperature_K": saturation_temperature,
+        }
+    status = "IN_RANGE" if in_range else "EXTRAPOLATED"
+    reason = (
+        "within the common supplied transport-correlation interval"
+        if in_range
+        else "supplied temperature-only correlations extrapolated by explicit policy"
+    )
+    return {
+        "status": status,
+        "calculation_status": "MODEL_U",
+        "reason": reason,
+        "temperature_K": temperature,
+        "pressure_Pa_abs": pressure,
+        "saturation_temperature_K": saturation_temperature,
+        "pressure_effects_in_transport_properties": False,
+        **values,
+    }
 
 
 def assess_supplied_ipa_states(
@@ -75,6 +239,7 @@ def assess_supplied_ipa_states(
         "conductivity_W_mK": [],
     }
     counts = {"MODEL_U": 0, "OUTSIDE": 0, "INPUT_U": 0, "NUM_U": 0}
+    range_counts = {"IN_RANGE": 0, "EXTRAPOLATED": 0, "OUTSIDE": 0, "INPUT_U": 0}
     lower, upper = IPA_TRANSPORT_OVERLAP_K
 
     for index, (raw_temperature, raw_pressure) in enumerate(zip(temperatures, pressures)):
@@ -90,6 +255,7 @@ def assess_supplied_ipa_states(
         values: tuple[float, float, float, float] | None = None
         if raw_temperature is None or raw_pressure is None:
             status = "INPUT_U"
+            range_status = "INPUT_U"
             reason = "coolant temperature or pressure is unavailable"
         else:
             try:
@@ -99,6 +265,7 @@ def assess_supplied_ipa_states(
                     raise ValueError("temperature and pressure must be positive")
                 if not lower <= temperature <= upper:
                     status = "OUTSIDE"
+                    range_status = "OUTSIDE"
                     reason = (
                         f"T={temperature:.6g} K is outside the common rho/mu/cp/k "
                         f"correlation interval {lower}..{upper} K; no extrapolation"
@@ -108,6 +275,7 @@ def assess_supplied_ipa_states(
                     record["saturation_temperature_K"] = saturation_temperature
                     if saturation_temperature is not None and temperature >= saturation_temperature:
                         status = "OUTSIDE"
+                        range_status = "OUTSIDE"
                         reason = "bulk state is at or above the supplied saturation boundary"
                     else:
                         values = (
@@ -119,16 +287,21 @@ def assess_supplied_ipa_states(
                         if not all(math.isfinite(item) and item > 0.0 for item in values):
                             raise ArithmeticError("property module returned a non-positive value")
                         status = "MODEL_U"
+                        range_status = "IN_RANGE"
                         reason = (
                             "within supplied temperature correlation and saturation gates; "
                             "temperature-only saturated-liquid fits remain model uncertainty"
                         )
             except (ArithmeticError, RuntimeError, ValueError) as error:
                 status = "NUM_U"
+                range_status = "OUTSIDE"
                 reason = str(error)
 
         counts[status] += 1
-        record.update({"status": status, "reason": reason})
+        range_counts[range_status] += 1
+        record.update(
+            {"status": status, "property_range_status": range_status, "reason": reason}
+        )
         records.append(record)
         for key, value in zip(arrays, values or (None, None, None, None)):
             arrays[key].append(value)
@@ -141,7 +314,11 @@ def assess_supplied_ipa_states(
         "pressure_effects_in_transport_properties": False,
         "single_phase_gate": "SUPPLIED_T_SAT_P_CORRELATION",
         "status_counts": counts,
+        "property_range_status_counts": range_counts,
         "status_by_station": [item["status"] for item in records],
+        "property_range_status_by_station": [
+            item["property_range_status"] for item in records
+        ],
         "records": records,
         **arrays,
         "experimental_validation": False,
@@ -369,6 +546,10 @@ __all__ = [
     "IPA_CAS",
     "IPA_FLUID_NAME",
     "IPA_TRANSPORT_OVERLAP_K",
+    "PROPERTY_POLICY_ALLOW_EXTRAPOLATION",
+    "PROPERTY_POLICY_STRICT",
     "assess_supplied_ipa_states",
+    "evaluate_supplied_ipa_state",
     "evaluate_candidate_key_by_angle",
+    "existing_loop_segment_length_factor",
 ]

@@ -1,0 +1,4 @@
+﻿source,location,x_mm,reported_h_l_W_m2K,reported_T_wg_K,reproduction_status,reason
+SPACE_Y_R2S_Model_B_Entry_V1_Briefing.pptx slide 4,throat,387.5,12292,698,INPUT_U,"complete source geometry, channel and thermal inputs are not embedded in the deck"
+SPACE_Y_R2S_Model_B_Entry_V1_Briefing.pptx slide 4,maximum wall temperature,420.0,2391,736,INPUT_U,"complete source geometry, channel and thermal inputs are not embedded in the deck"
+SPACE_Y_R2S_Model_B_Entry_V1_Briefing.pptx slide 4,nozzle exit,439.5,3702,575,INPUT_U,"complete source geometry, channel and thermal inputs are not embedded in the deck"

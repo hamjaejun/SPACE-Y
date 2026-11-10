@@ -17,6 +17,7 @@ import io
 import json
 from pathlib import Path
 import runpy
+import re
 import sys
 import tempfile
 import types
@@ -88,7 +89,14 @@ def _install_plot_stub() -> None:
     sys.modules["matplotlib.pyplot"] = pyplot
 
 
-def _run_supplied_engine(bundle_root: Path) -> tuple[dict[str, Any], list[str]]:
+def _run_supplied_engine(
+    bundle_root: Path,
+    assignment_overrides: dict[str, str] | None = None,
+) -> tuple[dict[str, Any], list[str]]:
+    previous_plot_modules = {
+        name: sys.modules.get(name)
+        for name in ("matplotlib", "matplotlib.pyplot")
+    }
     sys.path.insert(0, str(bundle_root))
     for name in (
         "ipa_props",
@@ -108,13 +116,33 @@ def _run_supplied_engine(bundle_root: Path) -> tuple[dict[str, Any], list[str]]:
     cooling_loop.plot_table = lambda *args, **kwargs: None
     cooling_loop.plot_axial = lambda *args, **kwargs: None
 
+    main_path = bundle_root / "liquid_engine_design_V1.py"
+    if assignment_overrides:
+        source = main_path.read_text(encoding="utf-8")
+        for name, replacement in assignment_overrides.items():
+            pattern = rf"(?m)^{re.escape(name)}\s*=\s*[^\r\n]+$"
+            source, count = re.subn(pattern, f"{name} = {replacement}", source, count=1)
+            if count != 1:
+                raise ValueError(f"engine scenario assignment not found exactly once: {name}")
+        main_path = bundle_root / "_scenario_liquid_engine_design_V1.py"
+        main_path.write_text(source, encoding="utf-8")
+
     capture = io.StringIO()
-    with contextlib.redirect_stdout(capture), contextlib.redirect_stderr(capture):
-        namespace = runpy.run_path(
-            str(bundle_root / "liquid_engine_design_V1.py"),
-            run_name="__model_h_engine_input__",
-        )
-    return namespace, capture.getvalue().splitlines()
+    try:
+        with contextlib.redirect_stdout(capture), contextlib.redirect_stderr(capture):
+            namespace = runpy.run_path(
+                str(main_path),
+                run_name="__model_h_engine_input__",
+            )
+        return namespace, capture.getvalue().splitlines()
+    finally:
+        for name, previous in previous_plot_modules.items():
+            if previous is None:
+                sys.modules.pop(name, None)
+            else:
+                sys.modules[name] = previous
+        if sys.path and sys.path[0] == str(bundle_root):
+            sys.path.pop(0)
 
 
 def _geometry_summary(geometry: dict[str, Any]) -> dict[str, Any]:
