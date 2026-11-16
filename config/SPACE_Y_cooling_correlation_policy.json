@@ -1,0 +1,47 @@
+{
+  "policy_id": "SPACE_Y_COOLING_APPLICABILITY_POLICY_V1",
+  "classification": "PRELIMINARY_MODEL_POLICY_NOT_DESIGN_APPROVAL",
+  "heat_transfer_correlation": {
+    "model": "GNIELINSKI_DISPLAYED_COMMON_FORM",
+    "re_range": [3000.0, 5000000.0],
+    "pr_range": [0.5, 2000.0],
+    "source": "Team-reported Incropera et al., Fundamentals of Heat and Mass Transfer, 7th ed., section 8.5; range cross-checked against published Gnielinski usage. Exact licensed textbook page is not redistributed.",
+    "fully_developed_required": true,
+    "geometry_application": "RECTANGULAR_CLOSED_DUCT_USING_HYDRAULIC_DIAMETER_APPROXIMATION"
+  },
+  "design_recommendation": {
+    "recommended_re_min": 5000.0,
+    "transition_warning_re_threshold": 10000.0,
+    "evaluate_minimum_re_over_all_stations": true,
+    "source": "SPACE Y team preliminary recommendation; not a Gnielinski validity limit or a proven fully-turbulent threshold"
+  },
+  "roughness_assessment": {
+    "compare_rough_to_smooth_friction": true,
+    "roughness_friction_ratio_warning_threshold": 4.0,
+    "apply_arbitrary_friction_cap": false,
+    "apply_arbitrary_heat_transfer_cap": false,
+    "source": "Team-reported Incropera rough-tube caution; corroborated as an approximate warning in secondary engineering literature, not implemented as a saturation law"
+  },
+  "colebrook_policy": {
+    "source": "Colebrook 1939 and Colebrook-White 1937 rough-pipe experiments",
+    "flow_regime": "TURBULENT_PIPE_FLOW",
+    "darcy_factor_definition": "DARCY_WEISBACH_NOT_FANNING",
+    "fixed_re_range": null,
+    "fixed_relative_roughness_range": null,
+    "domain_policy": "Each run must supply a separately sourced friction domain; the Gnielinski range is not copied automatically."
+  },
+  "rectangular_channel_policy": {
+    "hydraulic_diameter_definition": "4A/P_w",
+    "specific_rectangular_form": "2wh/(w+h)",
+    "status": "MODEL_APPROXIMATION",
+    "limitations": [
+      "Circular-tube friction and heat-transfer relations are approximated with hydraulic diameter.",
+      "Hydraulic diameter does not remove cross-sectional shape and aspect-ratio effects.",
+      "Fully developed flow is an input assertion requiring independent evidence.",
+      "The total wetted perimeter is not the same as the effective heated wall area."
+    ]
+  },
+  "validated_engine_prediction": false,
+  "physical_validation_v01_v12": "NOT_RUN",
+  "safety_approval": false
+}

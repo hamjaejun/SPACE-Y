@@ -1,0 +1,109 @@
+{
+  "schema_version": "SPACE_Y_COOLING_CHANNEL_PIPELINE_V1",
+  "purpose": "NON_DESIGN_ARITHMETIC_VERIFICATION",
+  "run_id": "SYNTHETIC-COOLING-CHANNEL-PIPELINE-80-001",
+  "input_evidence_complete": false,
+  "template_grid": {
+    "classification": "REFERENCE_GRID_NOT_APPROVED_DESIGN_RANGE",
+    "source": "TEAM_REQUESTED_PRELIMINARY_REFERENCE_GRID_NOT_A_SPACE_Y_MANUFACTURING_RELEASE",
+    "reference_width_candidates_m": [0.0009, 0.0012, 0.0015, 0.002, 0.0027],
+    "rib_thickness_candidates_m": [0.0009, 0.001, 0.0012, 0.0015],
+    "channel_height_candidates_m": [0.0012, 0.0015, 0.002, 0.003],
+    "expected_template_count": 80,
+    "channel_count_policy": {
+      "formula": "N_ideal=2*pi*r_m_throat/(w_ref+b)",
+      "integer_candidates": "distinct floor and ceil of N_ideal",
+      "requires_actual_throat_mean_channel_radius": true,
+      "selection_performed": false
+    },
+    "design_approved": false
+  },
+  "geometry_input": {
+    "classification": "SYNTHETIC_NON_DESIGN_GEOMETRY",
+    "geometry_policy": "CONSTANT_RIB_WIDTH_AXIAL",
+    "path_type": "AXIAL",
+    "circuit_passes": 1,
+    "throat_station_id": "SYN-THROAT",
+    "mean_channel_radius_definition": "SYNTHETIC_MEAN_CHANNEL_CENTERLINE_RADIUS",
+    "geometry_source": "SYNTHETIC_RADIUS_PROFILE_NOT_A_REAL_CHAMBER_OR_NOZZLE",
+    "mean_radius_profile": [
+      {"station_id": "SYN-INLET", "x_m": -0.1, "mean_channel_radius_m": 0.03, "geometry_source": "SYNTHETIC_RADIUS_PROFILE"},
+      {"station_id": "SYN-THROAT", "x_m": 0.0, "mean_channel_radius_m": 0.02, "geometry_source": "SYNTHETIC_RADIUS_PROFILE"},
+      {"station_id": "SYN-EXIT", "x_m": 0.1, "mean_channel_radius_m": 0.04, "geometry_source": "SYNTHETIC_RADIUS_PROFILE"}
+    ]
+  },
+  "manufacturing_constraints": {
+    "classification": "SYNTHETIC_NON_DESIGN_CONSTRAINTS",
+    "channel_width_limits_m": [0.0005, 0.007],
+    "minimum_rib_thickness_m": 0.0009,
+    "allowed_channel_heights_m": [0.0012, 0.0015, 0.002, 0.003],
+    "equivalent_sand_roughness_m": 0.000012,
+    "constraints_source": "SYNTHETIC_NON_DESIGN_CONSTRAINTS_FOR_PIPELINE_ARITHMETIC_ONLY",
+    "roughness_source": "SYNTHETIC_REFERENCE_ROUGHNESS_NOT_AS_MANUFACTURED_DATA"
+  },
+  "coolant_conditions": {
+    "fluid_identity": {
+      "classification": "SYNTHETIC_TEST_FLUID_NOT_IPA",
+      "canonical_name": "synthetic-test-fluid",
+      "cas_number": null
+    },
+    "coolant_mass_flow_kg_s": 0.6,
+    "coolant_mass_flow_source": "SYNTHETIC_NON_DESIGN_MASS_FLOW",
+    "property_policy": "CONSTANT_SUPPLIED_PROPERTIES",
+    "default_fluid_properties": {
+      "density_kg_m3": 800.0,
+      "viscosity_Pa_s": 0.001,
+      "cp_J_kgK": 2000.0,
+      "conductivity_W_mK": 0.15,
+      "property_source": "SYNTHETIC_ARITHMETIC_FIXTURE_NOT_IPA_DATA",
+      "property_version": "TEST-ONLY-V1"
+    }
+  },
+  "model_conditions": {
+    "closure_geometry": "RECTANGULAR_CLOSED_DUCT_USING_HYDRAULIC_DIAMETER",
+    "fully_developed": true,
+    "thermal_boundary_condition": "SYNTHETIC_UNIFORM_HEAT_FLUX",
+    "heat_transfer_thermal_boundary_condition": "SYNTHETIC_UNIFORM_HEAT_FLUX",
+    "heat_transfer_domain": {
+      "source": "SYNTHETIC_DOMAIN_USING_REPORTED_GNIELINSKI_LIMITS_NOT_PHYSICAL_VALIDATION",
+      "re_range": [3000.0, 5000000.0],
+      "pr_range": [0.5, 2000.0],
+      "geometry": "RECTANGULAR_CLOSED_DUCT_USING_HYDRAULIC_DIAMETER",
+      "fully_developed_required": true
+    },
+    "friction_domain": {
+      "source": "SYNTHETIC_TEST_DOMAIN_NOT_A_UNIVERSAL_COLEBROOK_RANGE_CLAIM",
+      "re_range": [3000.0, 10000000.0],
+      "relative_roughness_range": [0.0, 0.1],
+      "geometry": "RECTANGULAR_CLOSED_DUCT_USING_HYDRAULIC_DIAMETER"
+    },
+    "applicability_policy": {
+      "policy_id": "SPACE_Y_COOLING_APPLICABILITY_POLICY_V1",
+      "classification": "PRELIMINARY_MODEL_POLICY_NOT_DESIGN_APPROVAL",
+      "heat_transfer_correlation": {
+        "source": "TEAM_REPORTED_INCROPERA_7E_RANGE_CROSS_CHECKED_NOT_A_PHYSICAL_VALIDATION",
+        "re_range": [3000.0, 5000000.0],
+        "pr_range": [0.5, 2000.0]
+      },
+      "design_recommendation": {
+        "recommended_re_min": 5000.0,
+        "transition_warning_re_threshold": 10000.0,
+        "evaluate_minimum_re_over_all_stations": true,
+        "source": "SPACE_Y_TEAM_PRELIMINARY_RECOMMENDATION_NOT_CORRELATION_LIMIT"
+      },
+      "roughness_assessment": {
+        "compare_rough_to_smooth_friction": true,
+        "roughness_friction_ratio_warning_threshold": 4.0,
+        "apply_arbitrary_friction_cap": false,
+        "apply_arbitrary_heat_transfer_cap": false,
+        "source": "APPROXIMATE_ROUGH_TUBE_WARNING_NOT_A_SATURATION_MODEL"
+      }
+    }
+  },
+  "comparison": {
+    "reference_station_type": "THROAT",
+    "relative_tolerance": 1e-09,
+    "h_l_absolute_tolerance_W_m2K": 1e-09,
+    "friction_gradient_absolute_tolerance_Pa_m": 1e-06
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "schema_version": "SPACE_Y_COOLING_CHANNEL_PIPELINE_V1",
+  "purpose": "ENGINE_CANDIDATE_SCREENING",
+  "run_id": "SPACE-Y-COOLING-CHANNEL-PIPELINE-READINESS",
+  "input_evidence_complete": false,
+  "template_grid": {
+    "classification": "REFERENCE_GRID_NOT_APPROVED_DESIGN_RANGE",
+    "source": "TEAM_REQUESTED_PRELIMINARY_REFERENCE_GRID_NOT_A_SPACE_Y_MANUFACTURING_RELEASE",
+    "reference_width_candidates_m": [0.0009, 0.0012, 0.0015, 0.002, 0.0027],
+    "rib_thickness_candidates_m": [0.0009, 0.001, 0.0012, 0.0015],
+    "channel_height_candidates_m": [0.0012, 0.0015, 0.002, 0.003],
+    "expected_template_count": 80,
+    "channel_count_policy": {
+      "formula": "N_ideal=2*pi*r_m_throat/(w_ref+b)",
+      "integer_candidates": "distinct floor and ceil of N_ideal",
+      "requires_actual_throat_mean_channel_radius": true,
+      "selection_performed": false
+    },
+    "design_approved": false
+  }
+}
