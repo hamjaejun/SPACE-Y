@@ -1,0 +1,439 @@
+{
+  "all_angle_reference_sensitivity": {
+    "angle_summaries": [
+      {
+        "base_model_b_candidate_id": "GCH-0232",
+        "candidate_id": "HCH-00925",
+        "channel_count": 34,
+        "channel_height_m": 0.0015,
+        "computed_station_count": 116,
+        "flow_regime_counts": {
+          "LAMINAR": 9,
+          "TRANSITION_MODEL_B": 7,
+          "TURBULENT": 100
+        },
+        "geometry_exclusion_reason_types": [],
+        "geometry_valid": true,
+        "helix_angle_deg": 0.0,
+        "maximum_Nusselt": 207.39538656720396,
+        "maximum_Reynolds": 21425.411658557277,
+        "maximum_channel_width_m": 0.00498661315896772,
+        "maximum_h_l_W_m2K": 9854.697848346066,
+        "maximum_hydraulic_diameter_m": 0.00230626354775315,
+        "minimum_Nusselt": 31.001802931173234,
+        "minimum_Reynolds": 1782.0383992914562,
+        "minimum_channel_width_m": 0.001905006201359805,
+        "minimum_h_l_W_m2K": 1925.134244336296,
+        "minimum_hydraulic_diameter_m": 0.0016784165038516217,
+        "path_length_m": 0.456532203827572,
+        "rib_thickness_m": 0.0015,
+        "status_counts": {
+          "MODEL_U": 116,
+          "OUTSIDE": 84
+        },
+        "stopped_station_count": 84
+      },
+      {
+        "base_model_b_candidate_id": "GCH-0232",
+        "candidate_id": "HCH-00926",
+        "channel_count": 34,
+        "channel_height_m": 0.0015,
+        "computed_station_count": 116,
+        "flow_regime_counts": {
+          "LAMINAR": 7,
+          "TRANSITION_MODEL_B": 7,
+          "TURBULENT": 102
+        },
+        "geometry_exclusion_reason_types": [],
+        "geometry_valid": true,
+        "helix_angle_deg": 20.0,
+        "maximum_Nusselt": 221.52539104049873,
+        "maximum_Reynolds": 22800.44685318292,
+        "maximum_channel_width_m": 0.004595422519374738,
+        "maximum_h_l_W_m2K": 10733.31266094839,
+        "maximum_hydraulic_diameter_m": 0.0022617410875626054,
+        "minimum_Nusselt": 32.41415846892554,
+        "minimum_Reynolds": 1896.4056542245226,
+        "minimum_channel_width_m": 0.0016996592011480657,
+        "minimum_h_l_W_m2K": 2042.1957173795079,
+        "minimum_hydraulic_diameter_m": 0.0015936002189278907,
+        "path_length_m": 0.4858314237327446,
+        "rib_thickness_m": 0.0015,
+        "status_counts": {
+          "MODEL_U": 116,
+          "OUTSIDE": 84
+        },
+        "stopped_station_count": 84
+      },
+      {
+        "base_model_b_candidate_id": "GCH-0232",
+        "candidate_id": "HCH-00927",
+        "channel_count": 34,
+        "channel_height_m": 0.0015,
+        "computed_station_count": 116,
+        "flow_regime_counts": {
+          "LAMINAR": 4,
+          "TRANSITION_MODEL_B": 8,
+          "TURBULENT": 104
+        },
+        "geometry_exclusion_reason_types": [],
+        "geometry_valid": true,
+        "helix_angle_deg": 30.0,
+        "maximum_Nusselt": 241.6675405308561,
+        "maximum_Reynolds": 24739.934377133177,
+        "maximum_channel_width_m": 0.004117571780188473,
+        "maximum_h_l_W_m2K": 12043.63750641974,
+        "maximum_hydraulic_diameter_m": 0.0021989421450972504,
+        "minimum_Nusselt": 34.4736188165818,
+        "minimum_Reynolds": 2057.7206990743443,
+        "minimum_channel_width_m": 0.001448821870421143,
+        "minimum_h_l_W_m2K": 2233.389839583276,
+        "minimum_hydraulic_diameter_m": 0.0014739668254843345,
+        "path_length_m": 0.5271579815471635,
+        "rib_thickness_m": 0.0015,
+        "status_counts": {
+          "MODEL_U": 116,
+          "OUTSIDE": 84
+        },
+        "stopped_station_count": 84
+      },
+      {
+        "base_model_b_candidate_id": "GCH-0232",
+        "candidate_id": "HCH-00928",
+        "channel_count": 34,
+        "channel_height_m": 0.0015,
+        "computed_station_count": 116,
+        "flow_regime_counts": {
+          "LAMINAR": 2,
+          "TRANSITION_MODEL_B": 9,
+          "TURBULENT": 105
+        },
+        "geometry_exclusion_reason_types": [],
+        "geometry_valid": true,
+        "helix_angle_deg": 35.0,
+        "maximum_Nusselt": 256.5371881707651,
+        "maximum_Reynolds": 26155.598106520163,
+        "maximum_channel_width_m": 0.003813522429680283,
+        "maximum_h_l_W_m2K": 13056.85090424146,
+        "maximum_hydraulic_diameter_m": 0.00215310416779952,
+        "minimum_Nusselt": 36.06334634484077,
+        "minimum_Reynolds": 2175.467194052151,
+        "minimum_channel_width_m": 0.0012892177906605787,
+        "minimum_h_l_W_m2K": 2382.413574182598,
+        "minimum_hydraulic_diameter_m": 0.0013866444509755362,
+        "path_length_m": 0.5573229133839654,
+        "rib_thickness_m": 0.0015,
+        "status_counts": {
+          "MODEL_U": 116,
+          "OUTSIDE": 84
+        },
+        "stopped_station_count": 84
+      }
+    ],
+    "beta_zero_model_b_regression": {
+      "comparison_count": 116,
+      "maximum_absolute_residuals": {
+        "Nusselt": 0.0,
+        "Prandtl": 0.0,
+        "Reynolds": 0.0,
+        "h_l_W_m2K": 0.0
+      },
+      "pass": true
+    },
+    "candidate_key": {
+      "channel_count": 34,
+      "channel_height_m": 0.0015,
+      "rib_thickness_m": 0.0015
+    },
+    "coolant_state_coupling": "FROZEN_PROVIDED_MODEL_B_BASELINE_PROFILE",
+    "recoupled_helical_wall_coolant_march": false,
+    "selection_basis": "FIRST_DETERMINISTIC_ALL_ANGLE_VALID_REFERENCE_NOT_SELECTED_DESIGN",
+    "stationwise_h_l_relative_to_beta_zero_percent": {
+      "20": {
+        "maximum_percent": 14.066312586606934,
+        "mean_percent": 9.198431046126506,
+        "median_percent": 9.067067799372396,
+        "minimum_percent": 0.036104591799124286,
+        "paired_station_count": 116
+      },
+      "30": {
+        "maximum_percent": 35.850604781714004,
+        "mean_percent": 23.334465928085407,
+        "median_percent": 22.57775826963826,
+        "minimum_percent": 0.30384965750580584,
+        "paired_station_count": 116
+      },
+      "35": {
+        "maximum_percent": 54.835087083305844,
+        "mean_percent": 34.56330448014715,
+        "median_percent": 32.99579804243595,
+        "minimum_percent": 0.6355408411689689,
+        "paired_station_count": 116
+      }
+    }
+  },
+  "captured_engine_log_line_count": 90,
+  "engine_scenario": {
+    "chamber_pressure_Pa_abs": 2500000.0,
+    "coolant_flow_direction": "NOZZLE_EXIT_TO_CHAMBER",
+    "coolant_inlet_pressure_Pa_abs": 4000000.0,
+    "coolant_inlet_temperature_K": 293.15,
+    "coolant_pressure_profile": "CONSTANT_PLACEHOLDER_NO_PRESSURE_LOSS_MODEL",
+    "input_status": {
+      "characteristic_length": "INPUT_U_SOURCE_MARKED_BLANK",
+      "contraction_ratio": "INPUT_U_SOURCE_MARKED_BLANK",
+      "coolant_inlet_pressure": "INPUT_U_SOURCE_MARKED_BLANK",
+      "wall_and_manufacturing_limits": "MODEL_U_SOURCE_MARKED_VERIFICATION_ONLY"
+    },
+    "mdot_coolant_kg_s": 0.4571428571428572,
+    "mdot_total_kg_s": 1.6,
+    "of_ratio": 2.5,
+    "station_count": 200,
+    "throat_station_index": 173,
+    "throat_x_m": 0.3898072884867599
+  },
+  "experimental_validation": false,
+  "interface_findings": {
+    "double_length_correction_applied": false,
+    "h_l_definition": "LOCAL_COEFFICIENT_ON_ACTUAL_CHANNEL_WETTED_SURFACE",
+    "helical_length_applied_in_existing_cooling_loop_area": false,
+    "helical_length_applied_in_model_h_path": true,
+    "required_follow_up": "cooling_loop_V1 must accept an explicit station segment length for helical wetted area before beta>0 wall/coolant recoupling"
+  },
+  "ipa_property_gate": {
+    "cas": "67-63-0",
+    "experimental_validation": false,
+    "fluid_name": "2-propanol (IPA)",
+    "pressure_effects_in_transport_properties": false,
+    "property_source_classification": "SUPPLIED_T_ONLY_CORRELATIONS_MODEL_U",
+    "single_phase_gate": "SUPPLIED_T_SAT_P_CORRELATION",
+    "status_counts": {
+      "INPUT_U": 0,
+      "MODEL_U": 116,
+      "NUM_U": 0,
+      "OUTSIDE": 84
+    },
+    "transport_common_temperature_range_K": [
+      187.35,
+      408.0
+    ],
+    "validated_engine_prediction": false
+  },
+  "limitations": [
+    "The engine source labels several geometry, material, manufacturing, and supply inputs as BLANK or verification-only.",
+    "The supplied IPA transport properties are temperature-only saturated-liquid correlations and omit pressure dependence.",
+    "Stations above the common 408 K transport limit are OUTSIDE and are not extrapolated by this integration result.",
+    "The existing cooling loop holds pressure constant and does not calculate Darcy or helical pressure loss.",
+    "Angle sensitivity holds the provided Model B coolant temperature profile fixed; beta>0 is not a recoupled wall/coolant solution.",
+    "Dean secondary flow, curvature-shifted transition, 3D interference, manifold distribution, and helical pressure loss are not modelled."
+  ],
+  "model_h_geometry": {
+    "angle_expanded_candidate_count": 1340,
+    "base_raw_candidate_count": 336,
+    "base_unique_candidate_count": 335,
+    "counts_by_angle_deg": {
+      "0": {
+        "outside": 127,
+        "total": 335,
+        "valid": 208
+      },
+      "20": {
+        "outside": 190,
+        "total": 335,
+        "valid": 145
+      },
+      "30": {
+        "outside": 199,
+        "total": 335,
+        "valid": 136
+      },
+      "35": {
+        "outside": 228,
+        "total": 335,
+        "valid": 107
+      }
+    },
+    "exclusion_reason_candidate_counts": {
+      "channel width is above supplied maximum": 412,
+      "channel width is below supplied minimum": 96,
+      "helical channel width is above supplied maximum": 323,
+      "helical channel width is below supplied minimum": 332
+    },
+    "initial_template_angle_combination_count": 672,
+    "invalid_candidate_count": 744,
+    "template_count": 168,
+    "three_dimensional_manufacturability_verified": false,
+    "valid_candidate_count": 596
+  },
+  "physical_validation_v01_v12": "NOT_RUN",
+  "provided_model_b_baseline": {
+    "accepted_as_design_validation": false,
+    "candidate_key": {
+      "channel_count": 48,
+      "channel_height_m": 0.0012,
+      "rib_thickness_m": 0.0015
+    },
+    "coolant_outlet_temperature_K": 474.8691475985285,
+    "cooling_failed": false,
+    "cooling_failure_reason": "",
+    "maximum_gas_side_wall_temperature_K": 852.8347522763274,
+    "selected_candidate_id": "GCH-0026",
+    "source_reported_boil_ok": false,
+    "source_reported_wall_ok": false
+  },
+  "run_classification": "PROVIDED_ENGINE_SCENARIO_MODEL_U_NOT_VALIDATED_DESIGN",
+  "safety_approval": false,
+  "selected_candidate_angle_sensitivity": {
+    "angle_summaries": [
+      {
+        "base_model_b_candidate_id": "GCH-0086",
+        "candidate_id": "HCH-00341",
+        "channel_count": 48,
+        "channel_height_m": 0.0012,
+        "computed_station_count": 116,
+        "flow_regime_counts": {
+          "LAMINAR": 6,
+          "TRANSITION_MODEL_B": 8,
+          "TURBULENT": 102
+        },
+        "geometry_exclusion_reason_types": [],
+        "geometry_valid": true,
+        "helix_angle_deg": 0.0,
+        "maximum_Nusselt": 235.1128369069001,
+        "maximum_Reynolds": 23027.337129836462,
+        "maximum_channel_width_m": 0.003075049366850532,
+        "maximum_h_l_W_m2K": 16102.562717874254,
+        "maximum_hydraulic_diameter_m": 0.0017263235689552463,
+        "minimum_Nusselt": 30.74112528648364,
+        "minimum_Reynolds": 1918.641036269125,
+        "minimum_channel_width_m": 0.0008922444385449256,
+        "minimum_h_l_W_m2K": 2549.9389930295015,
+        "minimum_hydraulic_diameter_m": 0.001023487797628977,
+        "path_length_m": 0.456532203827572,
+        "rib_thickness_m": 0.0015,
+        "status_counts": {
+          "MODEL_U": 116,
+          "OUTSIDE": 84
+        },
+        "stopped_station_count": 84
+      },
+      {
+        "base_model_b_candidate_id": "GCH-0086",
+        "candidate_id": "HCH-00342",
+        "channel_count": 48,
+        "channel_height_m": 0.0012,
+        "computed_station_count": 0,
+        "flow_regime_counts": {},
+        "geometry_exclusion_reason_types": [
+          "helical channel width is below supplied minimum"
+        ],
+        "geometry_valid": false,
+        "helix_angle_deg": 20.0,
+        "maximum_Nusselt": null,
+        "maximum_Reynolds": null,
+        "maximum_channel_width_m": 0.0027991401297606873,
+        "maximum_h_l_W_m2K": null,
+        "maximum_hydraulic_diameter_m": 0.0016798451900778123,
+        "minimum_Nusselt": null,
+        "minimum_Reynolds": null,
+        "minimum_channel_width_m": 0.0007479744460167953,
+        "minimum_h_l_W_m2K": null,
+        "minimum_hydraulic_diameter_m": 0.0009215411804353983,
+        "path_length_m": 0.4858314237327446,
+        "rib_thickness_m": 0.0015,
+        "status_counts": {
+          "OUTSIDE": 200
+        },
+        "stopped_station_count": 200
+      },
+      {
+        "base_model_b_candidate_id": "GCH-0086",
+        "candidate_id": "HCH-00343",
+        "channel_count": 48,
+        "channel_height_m": 0.0012,
+        "computed_station_count": 0,
+        "flow_regime_counts": {},
+        "geometry_exclusion_reason_types": [
+          "helical channel width is below supplied minimum"
+        ],
+        "geometry_valid": false,
+        "helix_angle_deg": 30.0,
+        "maximum_Nusselt": null,
+        "maximum_Reynolds": null,
+        "maximum_channel_width_m": 0.002462108975260473,
+        "maximum_h_l_W_m2K": null,
+        "maximum_hydraulic_diameter_m": 0.0016135679141565807,
+        "minimum_Nusselt": null,
+        "minimum_Reynolds": null,
+        "minimum_channel_width_m": 0.000571744455841947,
+        "minimum_h_l_W_m2K": null,
+        "minimum_hydraulic_diameter_m": 0.0007744834135059273,
+        "path_length_m": 0.5271579815471635,
+        "rib_thickness_m": 0.0015,
+        "status_counts": {
+          "OUTSIDE": 200
+        },
+        "stopped_station_count": 200
+      },
+      {
+        "base_model_b_candidate_id": "GCH-0086",
+        "candidate_id": "HCH-00344",
+        "channel_count": 48,
+        "channel_height_m": 0.0012,
+        "computed_station_count": 0,
+        "flow_regime_counts": {},
+        "geometry_exclusion_reason_types": [
+          "helical channel width is below supplied minimum"
+        ],
+        "geometry_valid": false,
+        "helix_angle_deg": 35.0,
+        "maximum_Nusselt": null,
+        "maximum_Reynolds": null,
+        "maximum_channel_width_m": 0.002247661041578671,
+        "maximum_h_l_W_m2K": null,
+        "maximum_hydraulic_diameter_m": 0.0015646510590028133,
+        "minimum_Nusselt": null,
+        "minimum_Reynolds": null,
+        "minimum_channel_width_m": 0.0004596119222730474,
+        "minimum_h_l_W_m2K": null,
+        "minimum_hydraulic_diameter_m": 0.0006646545488444808,
+        "path_length_m": 0.5573229133839654,
+        "rib_thickness_m": 0.0015,
+        "status_counts": {
+          "OUTSIDE": 200
+        },
+        "stopped_station_count": 200
+      }
+    ],
+    "beta_zero_model_b_regression": {
+      "comparison_count": 116,
+      "maximum_absolute_residuals": {
+        "Nusselt": 0.0,
+        "Prandtl": 0.0,
+        "Reynolds": 0.0,
+        "h_l_W_m2K": 0.0
+      },
+      "pass": true
+    },
+    "coolant_state_coupling": "FROZEN_PROVIDED_MODEL_B_BASELINE_PROFILE",
+    "recoupled_helical_wall_coolant_march": false,
+    "selection_basis": "PROVIDED_MODEL_B_BASELINE_CANDIDATE",
+    "stationwise_h_l_relative_to_beta_zero_percent": {}
+  },
+  "source_manifest": {
+    "archive_name": "liquid_engine_design_V1.zip",
+    "archive_sha256": "38c94c3907c9a83bd44b11409f4a126aa8870ad15ba02f709465621be76419fd",
+    "current_repository_model_b_substituted_for_bundle_h_l_V1": true,
+    "raw_bundle_committed": false,
+    "source_file_sha256": {
+      "cooling_loop_V1.py": "0b8093c90b9787e147f280e2d9ff1b11a69f28fdf85c1c69acc80bb0df783d97",
+      "hg_candidates_v1.py": "d735fdd34a111bbbd46e093b8c407ece5e1d8988005af7563f5b1d05dde2774a",
+      "ipa_props.py": "700c143457d074fc81235cc7794cc36f07661d6a21d9e520188265a821626351",
+      "liquid_engine_design_V1.py": "344ee6d54db7a0f188ec5c8526c6d7c08b1280f53abbdd759a344525569ed815",
+      "nozzle_contour_V1.py": "fbad04426e876c3c9d3995068612f3ad0524058fa0cfa227409fd7ac7c3dc3a7",
+      "stations_v1.py": "a6eb21354118f2baee7a19c0fa0f55334e9195009fc373774ce904b9ff694caf",
+      "wall_material_V1.py": "8c1c8836b6663e3c8744d42c50fc182d87edd2eba0ebbd93b20169a09c479ef5"
+    }
+  },
+  "validated_engine_prediction": false
+}
